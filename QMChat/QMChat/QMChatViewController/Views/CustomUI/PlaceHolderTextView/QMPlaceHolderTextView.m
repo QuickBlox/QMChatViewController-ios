@@ -7,7 +7,7 @@
 //
 
 #import "QMPlaceHolderTextView.h"
-#import "NSString+HasText.h"
+#import "NSString+QM.h"
 
 @implementation QMPlaceHolderTextView
 
