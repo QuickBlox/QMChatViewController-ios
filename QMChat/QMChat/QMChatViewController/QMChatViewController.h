@@ -13,6 +13,7 @@
 #import "QMChatCollectionViewFlowLayout.h"
 #import "QMChatActionsHandler.h"
 #import "QMInputToolbar.h"
+#import <Quickblox/Quickblox.h>
 
 @interface QMChatViewController : UIViewController
 <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>

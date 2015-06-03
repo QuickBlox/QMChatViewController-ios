@@ -196,10 +196,6 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     return YES;
 }
 
-- (void)setMessage:(QBChatMessage *)message {
-    
-}
-
 + (QMChatCellLayoutModel)layoutModel {
     
     QMChatCellLayoutModel defaultLayoutModel = {

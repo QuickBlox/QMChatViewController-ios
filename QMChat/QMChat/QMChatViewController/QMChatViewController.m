@@ -486,29 +486,31 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (Class)viewClassForItem:(QBChatMessage *)item {
     
-    if (item.messageType == QMMessageTypeContactRequest) {
-        
-        if (item.senderID != self.senderID) {
-            
-            return [QMChatContactRequestCell class];
-        }
-    }
     
-    else if (item.messageType == QMMessageTypeRejectContactRequest) {
-        
-        return [QMChatNotificationCell class];
-    }
-    else if (item.messageType == QMMessageTypeText) {
-        
-        if (item.senderID != self.senderID) {
-            
-            return [QMChatIncomingCell class];
-        }
-        else {
-            
-            return [QMChatOutgoingCell class];
-        }
-    }
+    return [QMChatIncomingCell class];
+//    if (item.messageType == QMMessageTypeContactRequest) {
+//        
+//        if (item.senderID != self.senderID) {
+//            
+//            return [QMChatContactRequestCell class];
+//        }
+//    }
+//    
+//    else if (item.messageType == QMMessageTypeRejectContactRequest) {
+//        
+//        return [QMChatNotificationCell class];
+//    }
+//    else if (item.messageType == QMMessageTypeText) {
+//        
+//        if (item.senderID != self.senderID) {
+//            
+//            return [QMChatIncomingCell class];
+//        }
+//        else {
+//            
+//            return [QMChatOutgoingCell class];
+//        }
+//    }
     
     return nil;
 }

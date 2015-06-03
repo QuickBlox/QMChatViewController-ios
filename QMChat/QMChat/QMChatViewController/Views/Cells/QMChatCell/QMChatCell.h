@@ -112,8 +112,6 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  */
 @property (weak, nonatomic) id <QMChatCellDelegate> delegate;
 
-- (void)setMessage:(QBChatMessage *)message;
-
 #pragma mark - Class methods
 
 /**
