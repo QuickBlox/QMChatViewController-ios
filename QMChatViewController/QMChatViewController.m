@@ -398,8 +398,25 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
     
     cell.textView.attributedText = [self attributedStringForItem:messageItem];
+    cell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
+    cell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
     
     return cell;
+}
+
+- (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem {
+    
+    return nil;
+}
+
+- (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
+    
+    return nil;
+}
+
+- (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem {
+    
+    return nil;
 }
 
 - (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
@@ -479,10 +496,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
 }
 
-- (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
-    
-    return nil;
-}
+
 
 - (Class)viewClassForItem:(QBChatMessage *)item {
     

@@ -68,6 +68,19 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 - (void)awakeFromNib {
     [super awakeFromNib];
     
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    self.messageContainerTopInsetConstraint.constant = 0;
+    self.messageContainerLeftInsetConstraint.constant = 0;
+    self.messageContainerBottomInsetConstraint.constant = 0;
+    self.messageContainerRightInsetConstraint.constant = 0;
+    
+    self.avatarContainerViewWidthConstraint.constant = 0;
+    self.avatarContainerViewHeightConstraint.constant = 0;
+    
+    self.topLableHeightConstraint.constant = 0;
+    self.bottomLableHeightConstraint.constant = 0;
+    
 #if Q_DEBUG_COLORS == 0
     self.backgroundColor = [UIColor clearColor];
     self.messageContainer.backgroundColor = [UIColor clearColor];
@@ -76,7 +89,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.bottomLabel.backgroundColor = [UIColor clearColor];
     self.containerView.backgroundColor = [UIColor clearColor];
 #endif
-    self.translatesAutoresizingMaskIntoConstraints = NO;
+
     
     UITapGestureRecognizer *tap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
@@ -99,16 +112,28 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [super applyLayoutAttributes:layoutAttributes];
     
     QMChatCellLayoutAttributes *customAttributes = (id)layoutAttributes;
-    self.avatarContainerViewHeightConstraint.constant = customAttributes.avatarSize.height;
-    self.avatarContainerViewWidthConstraint.constant = customAttributes.avatarSize.width;
-    self.containerWidthConstraint.constant = customAttributes.containerSize.width;
-    self.topLableHeightConstraint.constant = customAttributes.topLabelHeight;
-    self.bottomLableHeightConstraint.constant = customAttributes.bottomLabelHeight;
     
-    self.messageContainerTopInsetConstraint.constant = customAttributes.containerInsets.top;
-    self.messageContainerLeftInsetConstraint.constant = customAttributes.containerInsets.left;
-    self.messageContainerBottomInsetConstraint.constant = customAttributes.containerInsets.bottom;
-    self.messageContainerRightInsetConstraint.constant = customAttributes.containerInsets.right;
+    [self updateConstraint:self.avatarContainerViewHeightConstraint withConstant:customAttributes.avatarSize.height];
+    [self updateConstraint:self.avatarContainerViewWidthConstraint withConstant:customAttributes.avatarSize.width];
+    
+    [self updateConstraint:self.containerWidthConstraint withConstant:customAttributes.containerSize.width];
+    
+    [self updateConstraint:self.topLableHeightConstraint withConstant:customAttributes.topLabelHeight];
+    [self updateConstraint:self.bottomLableHeightConstraint withConstant:customAttributes.bottomLabelHeight];
+    
+    [self updateConstraint:self.messageContainerTopInsetConstraint withConstant:customAttributes.containerInsets.top];
+    [self updateConstraint:self.messageContainerLeftInsetConstraint withConstant:customAttributes.containerInsets.left];
+    [self updateConstraint:self.messageContainerBottomInsetConstraint withConstant:customAttributes.containerInsets.bottom];
+    [self updateConstraint:self.messageContainerRightInsetConstraint withConstant:customAttributes.containerInsets.right];
+}
+
+- (void)updateConstraint:(NSLayoutConstraint *)constraint withConstant:(CGFloat)constant {
+
+    if ((int)constraint.constant == (int)constant) {
+        return;
+    }
+    
+    constraint.constant = constant;
 }
 
 - (void)setBounds:(CGRect)bounds {
@@ -201,10 +226,10 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     QMChatCellLayoutModel defaultLayoutModel = {
 
         .avatarSize = CGSizeMake(30, 30),
-        .containerInsets = UIEdgeInsetsMake(4, 7, 4, 5),
+        .containerInsets = UIEdgeInsetsMake(4, 5, 4, 5),
         .containerSize = CGSizeZero,
-        .topLabelHeight = 18,
-        .bottomLabelHeight = 18
+        .topLabelHeight = 17,
+        .bottomLabelHeight = 14
     };
     
     return defaultLayoutModel;

@@ -84,6 +84,8 @@
 @property (strong, nonatomic) NSMutableArray *items;
 
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem;
+- (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem;
+- (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem;
 
 #pragma mark - Class methods
 

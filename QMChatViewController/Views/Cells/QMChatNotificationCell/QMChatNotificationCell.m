@@ -10,12 +10,17 @@
 
 @implementation QMChatNotificationCell
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
++ (QMChatCellLayoutModel)layoutModel {
+    
+    QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
+    
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(3, 7, 3, 7),
+    defaultLayoutModel.avatarSize = CGSizeMake(0, 0);
+    defaultLayoutModel.topLabelHeight = 0;
+    defaultLayoutModel.bottomLabelHeight = 0;
+    
+    return defaultLayoutModel;
 }
-*/
+
 
 @end

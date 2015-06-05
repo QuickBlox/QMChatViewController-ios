@@ -60,11 +60,12 @@
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="8"/>
+                                <real key="value" value="4"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
                                 <color key="value" red="0.25201231060606055" green="0.25201231060606055" blue="0.25201231060606055" alpha="0.41999999999999998" colorSpace="calibratedRGB"/>
                             </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="arrow" value="NO"/>
                         </userDefinedRuntimeAttributes>
                     </view>
                 </subviews>

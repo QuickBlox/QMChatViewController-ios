@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 @class QMChatCollectionView;
 @class QMChatCollectionViewFlowLayout;
 @class QMChatCollectionViewCell;
@@ -28,6 +29,7 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel ;
 - (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath;
 
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth;
+- (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Notifies the delegate that the collection view's header did receive a tap event.

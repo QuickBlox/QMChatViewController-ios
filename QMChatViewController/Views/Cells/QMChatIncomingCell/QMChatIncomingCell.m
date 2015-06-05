@@ -10,10 +10,18 @@
 
 @implementation QMChatIncomingCell
 
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    self.containerView.bgColor = [UIColor whiteColor];
+}
 
 + (QMChatCellLayoutModel)layoutModel {
     
-    return [super layoutModel];
+    QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(4, 15, 4, 4);
+    
+    return defaultLayoutModel;
 }
 
 @end

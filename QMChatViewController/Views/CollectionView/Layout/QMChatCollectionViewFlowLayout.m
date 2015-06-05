@@ -55,7 +55,7 @@
                                                object:nil];
     
     self.cache = [[NSCache alloc] init];
-    self.cache.countLimit = 200;
+    self.cache.countLimit = 3000;
     self.cache.name = @"com.qm.chat.sizes";
 }
 
@@ -352,7 +352,7 @@
         
         CGFloat horizontalInsetsTotal = horizontalContainerInsets + spacingBetweenAvatarAndBubble;
         
-        CGFloat maximumWidth = self.itemWidth - 40 - layoutModel.avatarSize.width - horizontalInsetsTotal;
+        CGFloat maximumWidth = self.itemWidth - layoutModel.avatarSize.width - horizontalInsetsTotal;
         
         CGSize dynamicSize = [self.chatCollectionView.delegate collectionView:self.chatCollectionView
                                                        dynamicSizeAtIndexPath:indexPath
@@ -365,9 +365,12 @@
         CGFloat finalWidth = dynamicSize.width + horizontalInsetsTotal;
         
         CGFloat cellHeight = dynamicSize.height + verticalContainerInsets;
-        CGFloat finalCellHeigh = MAX(cellHeight, layoutModel.avatarSize.height + verticalContainerInsets);
+        CGFloat finalCellHeigh = MAX(cellHeight, layoutModel.avatarSize.height);
         
-        finalSize = CGSizeMake(finalWidth, finalCellHeigh);
+        CGFloat minWidht = [self.chatCollectionView.delegate collectionView:self.chatCollectionView minWidthAtIndexPath:indexPath];
+        minWidht+=horizontalContainerInsets;
+        
+        finalSize = CGSizeMake(MAX(finalWidth, minWidht), finalCellHeigh);
     }
     else {
         

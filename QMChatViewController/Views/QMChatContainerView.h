@@ -14,6 +14,10 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor *bgColor;
 @property (strong, nonatomic) IBInspectable UIColor *highlightColor;
 @property (assign, nonatomic) IBInspectable CGFloat cornerRadius;
+@property (assign, nonatomic) IBInspectable BOOL arrow;
+@property (assign, nonatomic) IBInspectable BOOL leftArrow;
+@property (assign, nonatomic) IBInspectable CGSize arrowSize;
+
 @property (assign, nonatomic) BOOL highlighted;
 
 @end
