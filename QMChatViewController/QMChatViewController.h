@@ -15,8 +15,12 @@
 #import "QMInputToolbar.h"
 #import <Quickblox/Quickblox.h>
 
-@interface QMChatViewController : UIViewController
-<QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
+#import "QMChatContactRequestCell.h"
+#import "QMChatIncomingCell.h"
+#import "QMChatOutgoingCell.h"
+#import "QMChatNotificationCell.h"
+
+@interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
 @property (weak, nonatomic) id <QMChatActionsHandler> actionsHandler;
 
@@ -86,6 +90,8 @@
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem;
 - (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem;
 - (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem;
+
+- (Class)viewClassForItem:(QBChatMessage *)item;
 
 #pragma mark - Class methods
 

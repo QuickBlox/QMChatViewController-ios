@@ -1,4 +1,4 @@
 platform :ios, '8.0'
 
-pod 'TTTAttributedLabel', '1.13.3'
+pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'
 pod 'QuickBlox', '2.2.4'

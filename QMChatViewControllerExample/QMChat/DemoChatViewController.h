@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  DemoChatViewController.h
 //  QMChat
 //
 //  Created by Andrey Ivanov on 06.04.15.
@@ -8,7 +8,7 @@
 
 #import "QMChatViewController.h"
 
-@interface ViewController : QMChatViewController
+@interface DemoChatViewController : QMChatViewController
 
 
 @end

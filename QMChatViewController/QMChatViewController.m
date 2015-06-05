@@ -18,10 +18,7 @@
 #import "QMLoadEarlierHeaderView.h"
 #import "TTTAttributedLabel.h"
 
-#import "QMChatContactRequestCell.h"
-#import "QMChatIncomingCell.h"
-#import "QMChatOutgoingCell.h"
-#import "QMChatNotificationCell.h"
+
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
@@ -374,7 +371,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
-    return 0;
+    return self.items.count;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -458,22 +455,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark - Collection view delegate
 
 - (BOOL)collectionView:(QMChatCollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-    //  disable menu for media messages
-    //    id<QMChatMessageData> messageItem =
-    //    [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
-    //
-    //    if ([messageItem isMediaMessage]) {
-    //        return NO;
-    //    }
-    //
-    //    self.selectedIndexPathForMenu = indexPath;
-    
-    //  textviews are selectable to allow data detectors
-    //  however, this allows the 'copy, define, select' UIMenuController to show
-    //  which conflicts with the collection view's UIMenuController
-    //  temporarily disable 'selectable' to prevent this issue
-    //    QMChatCollectionViewCell *selectedCell = (QMChatCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    //    selectedCell.textView.selectable = NO;
+
+    self.selectedIndexPathForMenu = indexPath;
+
     
     return YES;
 }
@@ -496,39 +480,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
 }
 
-
-
 - (Class)viewClassForItem:(QBChatMessage *)item {
-    
-    
-    if (item.messageType == QMMessageTypeContactRequest) {
-        
-        if (item.senderID != self.senderID) {
-            
-            return [QMChatContactRequestCell class];
-        }
-    }
-    
-    else if (item.messageType == QMMessageTypeRejectContactRequest) {
-        
-        return [QMChatNotificationCell class];
-    }
-    
-    else if (item.messageType == QMMessageTypeAcceptContactRequest) {
-        
-        return [QMChatNotificationCell class];
-    }
-    else if (item.messageType == QMMessageTypeText) {
-        
-        if (item.senderID != self.senderID) {
-            
-            return [QMChatIncomingCell class];
-        }
-        else {
-            
-            return [QMChatOutgoingCell class];
-        }
-    }
     
     return nil;
 }
