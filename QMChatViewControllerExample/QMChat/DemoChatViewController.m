@@ -76,7 +76,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     [super viewDidAppear:animated];
     
     self.collectionView.collectionViewLayout.springResistanceFactor = 1000;
-    self.collectionView.collectionViewLayout.springinessEnabled = YES;
+    self.collectionView.collectionViewLayout.springinessEnabled = NO;
 }
 
 #pragma mark - Tool bar

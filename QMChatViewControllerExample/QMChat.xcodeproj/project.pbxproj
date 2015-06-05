@@ -44,6 +44,7 @@
 		865A690F1B21C4AC003AC969 /* QMLoadEarlierHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 865A68EE1B21C4AC003AC969 /* QMLoadEarlierHeaderView.xib */; };
 		865A69101B21C4AC003AC969 /* QMTypingIndicatorFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 865A68F11B21C4AC003AC969 /* QMTypingIndicatorFooterView.m */; };
 		865A69111B21C4AC003AC969 /* QMTypingIndicatorFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 865A68F21B21C4AC003AC969 /* QMTypingIndicatorFooterView.xib */; };
+		865A69121B21EE62003AC969 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4DC4561B1F3AF50083A3A2 /* Main.storyboard */; };
 		FB2ED4341B21DEE20024A627 /* QMChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB2ED4321B21DEE20024A627 /* QMChatViewController.xib */; };
 		FB2ED4351B21DFCF0024A627 /* DemoChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC4AC1B1F3AF50083A3A2 /* DemoChatViewController.m */; };
 		FB4DC4AD1B1F3AF50083A3A2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */; };
@@ -477,6 +478,7 @@
 				865A69111B21C4AC003AC969 /* QMTypingIndicatorFooterView.xib in Resources */,
 				FB4DC4B11B1F3AF50083A3A2 /* Info.plist in Resources */,
 				865A68FF1B21C4AC003AC969 /* QMChatIncomingCell.xib in Resources */,
+				865A69121B21EE62003AC969 /* Main.storyboard in Resources */,
 				FB4DC4B01B1F3AF50083A3A2 /* Images.xcassets in Resources */,
 				865A690A1B21C4AC003AC969 /* QMToolbarContentView.xib in Resources */,
 				865A69011B21C4AC003AC969 /* QMChatNotificationCell.xib in Resources */,
