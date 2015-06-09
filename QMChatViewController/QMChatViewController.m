@@ -432,8 +432,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return nil;
 }
 
-- (CGSize)collectionView:(QMChatCollectionView *)collectionView
-                  layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+- (CGSize)collectionView:(QMChatCollectionView *)collectionView layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
     
     if (!self.showTypingIndicator) {
         return CGSizeZero;
@@ -442,8 +441,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return CGSizeMake([collectionViewLayout itemWidth], kQMTypingIndicatorFooterViewHeight);
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     
     if (!self.showLoadEarlierMessagesHeader) {
         return CGSizeZero;
@@ -457,7 +455,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 - (BOOL)collectionView:(QMChatCollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
 
     self.selectedIndexPathForMenu = indexPath;
-
     
     return YES;
 }
