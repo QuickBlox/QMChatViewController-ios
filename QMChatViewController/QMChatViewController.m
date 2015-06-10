@@ -402,17 +402,17 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem {
-    
+    NSAssert(NO, @"Have to be overriden in subclasses!");
     return nil;
 }
 
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
-    
+    NSAssert(NO, @"Have to be overriden in subclasses!");
     return nil;
 }
 
 - (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem {
-    
+    NSAssert(NO, @"Have to be overriden in subclasses!");
     return nil;
 }
 
