@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  Input field with placeholder.
+ */
 @interface QMPlaceHolderTextView : UITextView
 
 /**

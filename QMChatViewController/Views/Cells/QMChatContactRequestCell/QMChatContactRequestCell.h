@@ -11,6 +11,9 @@
 
 @protocol QMChatContactRequestCellActions;
 
+/**
+ *  Contact request cell, includes accept/reject actions delegate.
+ */
 @interface QMChatContactRequestCell : QMChatCell
 
 @property (weak, nonatomic) id <QMChatActionsHandler> actionsHandler;

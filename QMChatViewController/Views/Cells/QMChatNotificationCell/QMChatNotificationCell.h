@@ -8,6 +8,9 @@
 
 #import "QMChatCell.h"
 
+/**
+ *  Chat message cell typically used for system notifications.
+ */
 @interface QMChatNotificationCell : QMChatCell
 
 @end

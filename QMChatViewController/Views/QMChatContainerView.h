@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 IB_DESIGNABLE
+/**
+ *  Customisable chat container view.
+ */
 @interface QMChatContainerView : UIView
 
 @property (strong, nonatomic) IBInspectable UIColor *bgColor;

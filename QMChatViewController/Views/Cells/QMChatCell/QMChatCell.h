@@ -69,6 +69,9 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
 
 @end
 
+/**
+ *  Base chat cell class.
+ */
 @interface QMChatCell : UICollectionViewCell
 
 /**
@@ -97,8 +100,32 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  */
 @property (weak, nonatomic, readonly) UIView *avatarContainerView;
 @property (weak, nonatomic, readonly) UIImage *avatarImageView;
+
+/**
+ *  Returns chat message attributed label.
+ *
+ *  @warning You should not try to manipulate any properties of this view, for example adjusting
+ *  its frame, nor should you remove this view from the cell or remove any of its subviews.
+ *  Doing so could result in unexpected behavior.
+ */
 @property (weak, nonatomic, readonly) TTTAttributedLabel *textView;
+
+/**
+ *  Returns top chat message attributed label.
+ *
+ *  @warning You should not try to manipulate any properties of this view, for example adjusting
+ *  its frame, nor should you remove this view from the cell or remove any of its subviews.
+ *  Doing so could result in unexpected behavior.
+ */
 @property (weak, nonatomic, readonly) TTTAttributedLabel *topLabel;
+
+/**
+ *  Returns bottom chat message attributed label.
+ *
+ *  @warning You should not try to manipulate any properties of this view, for example adjusting
+ *  its frame, nor should you remove this view from the cell or remove any of its subviews.
+ *  Doing so could result in unexpected behavior.
+ */
 @property (weak, nonatomic, readonly) TTTAttributedLabel *bottomLabel;
 
 /**
@@ -141,6 +168,11 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  */
 + (void)registerMenuAction:(SEL)action;
 
+/**
+ *  Model that allows modifying layout without changing constraints directly.
+ *
+ *  @return QMChatCellLayoutModel struct
+ */
 + (QMChatCellLayoutModel)layoutModel;
 
 @end

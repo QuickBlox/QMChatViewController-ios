@@ -16,6 +16,9 @@
 #import "QMChatCollectionViewDelegateFlowLayout.h"
 #import "QMChatCell.h"
 
+/**
+ *  Collection View with chat cells.
+ */
 @interface QMChatCollectionView : UICollectionView
 /**
  *  The object that provides the data for the collection view.
