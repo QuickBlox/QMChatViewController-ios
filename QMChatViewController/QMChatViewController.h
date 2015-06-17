@@ -85,12 +85,45 @@
  */
 @property (assign, nonatomic) CGFloat topContentAdditionalInset;
 
+/**
+ *  Chat message items.
+ */
 @property (strong, nonatomic) NSMutableArray *items;
 
+/**
+ *  Method to create chat message text attributed string. Have to be overriden in subclasses.
+ *
+ *  @param messageItem Chat message instance.
+ *
+ *  @return Configured attributed string.
+ */
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem;
+
+/**
+ *  Method to create chat message top label attributed string (Usually - chat message owner name). Have to be overriden in subclasses.
+ *
+ *  @param messageItem Chat message instance.
+ *
+ *  @return Configured attributed string.
+ */
 - (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem;
+
+/**
+ *  Method to create chat message bottom label attributed string (Usually - chat message date sent). Have to be overriden in subclasses.
+ *
+ *  @param messageItem Chat message instance.
+ *
+ *  @return Configured attributed string.
+ */
 - (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem;
 
+/**
+ *  Collection Cell View class for specific message. Have to be overriden in subclasses. Defaults cells are supplied with QMChatViewController.
+ *
+ *  @param item Chat message instance.
+ *
+ *  @return Collection Cell View Class
+ */
 - (Class)viewClassForItem:(QBChatMessage *)item;
 
 #pragma mark - Class methods

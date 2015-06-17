@@ -478,7 +478,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (Class)viewClassForItem:(QBChatMessage *)item {
-    
+    NSAssert(NO, @"Have to be overriden in subclasses.");
     return nil;
 }
 
