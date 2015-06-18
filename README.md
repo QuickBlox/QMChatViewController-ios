@@ -13,7 +13,9 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - TTTAttributedLabel
 
 # Installation
-Drag QMChatViewController folder to your project folder and link to the appropriate target.
+* Drag QMChatViewController folder to your project folder and link to the appropriate target.
+
+* Install dependencies.
 
 # Dependencies
 - TTTAttributedLabel (If you are using pods, add this to your Podfile - *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*)
