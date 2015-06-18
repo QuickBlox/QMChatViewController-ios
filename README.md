@@ -163,7 +163,7 @@ Set array of chat messages and reload collection view:
     
     return timeStamp;
 }
-````'
+````
 
 # Quick tips
 
