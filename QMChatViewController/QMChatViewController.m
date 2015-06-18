@@ -224,13 +224,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     [self addActionToInteractivePopGestureRecognizer:NO];
     self.collectionView.collectionViewLayout.springinessEnabled = NO;
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    
-    [super viewDidDisappear:animated];
-    [self removeObservers];
-    [self.keyboardController endListeningForKeyboard];
+	
+	[self removeObservers];
+	[self.keyboardController endListeningForKeyboard];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -666,7 +662,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)setToolbarBottomLayoutGuideConstant:(CGFloat)constant {
-    
+	
+	if (fabs(self.toolbarBottomLayoutGuide.constant - constant) < 0.01) {
+		return;
+	}
+	
     self.toolbarBottomLayoutGuide.constant = constant;
     [self.view setNeedsUpdateConstraints];
     [self.view layoutIfNeeded];
