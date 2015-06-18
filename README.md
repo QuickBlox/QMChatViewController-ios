@@ -50,13 +50,13 @@ Set array of chat messages and reload collection view:
     
     [self finishSendingMessageAnimated:YES];
     
-// Save message to your cache/memory storage.                     
+     // Save message to your cache/memory storage.                     
 }
 
 ````
 
 4. Return cell view classes specific to chat message:
-````
+````objective-c
 - (Class)viewClassForItem:(QBChatMessage *)item {
 	 // Cell class for message
         if (item.senderID != self.senderID) {
@@ -88,7 +88,7 @@ Set array of chat messages and reload collection view:
 - (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
     
     QBChatMessage *item = self.items[indexPath.item];
-    
+    я
     NSAttributedString *attributedString =
     [item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
     
@@ -139,6 +139,7 @@ Set array of chat messages and reload collection view:
     
     return attrStr;
 }
+
 - (NSString *)timeStampWithDate:(NSDate *)date {
     
     static NSDateFormatter *dateFormatter = nil;
@@ -156,6 +157,9 @@ Set array of chat messages and reload collection view:
 ````
 
 # Quick tips
+Load earlier messages.
+Attachments.
+
 
 # Questions & Help
 
