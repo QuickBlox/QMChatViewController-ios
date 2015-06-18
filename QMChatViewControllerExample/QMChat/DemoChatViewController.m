@@ -43,23 +43,23 @@ NS_ENUM(NSUInteger, QMMessageType) {
     QBChatMessage *msg = [QBChatMessage message];
     msg.ID = @"1";
     msg.senderID = QMMessageTypeContactRequest;
-    msg.senderNick = @"Andrey Moskvin ";
-    msg.text = @"Andrey Moskvin\nwould like to chat with you";
+    msg.senderNick = @"Andrey M. ";
+    msg.text = @"Andrey M.\nwould like to chat with you";
     msg.datetime = [NSDate date];
     [self.items addObject:msg];
     //**********************************************************************************
     QBChatMessage *msg2 = [QBChatMessage message];
     msg2.ID = @"2";
     msg2.senderID = 2000;
-    msg2.senderNick = @"Ivanov Andrey";
-    msg2.text = @"How do you do?";
+    msg2.senderNick = @"Andrey I.";
+    msg2.text = @"Why Q-municate is a right choice?";
     msg2.datetime = [NSDate date];
     [self.items addObject:msg2];
     //**********************************************************************************
     QBChatMessage *msg3 = [QBChatMessage message];
     msg3.ID = @"3";
     msg3.senderID = 20001;
-    msg3.senderNick = @"Andrey Moskvin";
+    msg3.senderNick = @"Andrey M.";
     msg3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
     msg3.datetime = [NSDate date];
     [self.items addObject:msg3];
