@@ -15,6 +15,11 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 # Installation
 Drag QMChatViewController folder to your project folder and link to the appropriate target.
 
+# Dependencies
+- TTTAttributedLabel (If you are using pods, add this to your Podfile - *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*)
+- Quickblox iOS SDK v2.0+ (If you are using pods, add this to your Podfile - *pod 'QuickBlox', '2.3'*)
+
+
 #Features
 
 - Ready-to-go chat view controller with a set of cells.
@@ -174,10 +179,6 @@ You could create an issue on GitHub if you are experiencing any problems. We wil
 
 # Documentation
 Inline code documentation available.
-
-# Dependencies
-- TTTAttributedLabel (If you are using pods, add this to your Podfile - *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*)
-- Quickblox iOS SDK v2.0+ (If you are using pods, add this to your Podfile - *pod 'QuickBlox', '2.3'*)
 
 #About
 
