@@ -8,7 +8,9 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 # Requirements
 - iOS 7.0+
 - ARC
+- Xcode 6
 - Quickblox 2.0+
+- TTTAttributedLabel
 
 # Installation
 Drag QMChatViewController folder to your project folder and link to the appropriate target.
