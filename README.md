@@ -21,7 +21,6 @@ Drag QMChatViewController folder to your project folder and link to the appropri
 
 
 #Features
-
 - Ready-to-go chat view controller with a set of cells.
 - Automatic cell size calculation.
 - UI customisation  for chat cells.
@@ -33,22 +32,27 @@ Drag QMChatViewController folder to your project folder and link to the appropri
 Example is included in repository. Try it out to see how chat view controller works.
 
 Steps to add QMChatViewController to Your app:
+
 1. Create a subclass of QMChatViewController. You could create it both from code and Interface Builder.
-2. Open QMChatViewController.m and in *viewDidLoad* method.
+2. Open your subclass of QMChatViewController and in *viewDidLoad* method.
 
 Configure chat sender ID and display name:
+
 ````objective-c
-	self.senderID = 2000;
-	self.senderDisplayName = @"hello";
+    self.senderID = 2000;
+    self.senderDisplayName = @"user1";
 ````
 
 Set array of chat messages and reload collection view:
+
 ````objective-c
-	self.items = [array of messages];
-	[self.collectionView reloadData];
-````
-3. Handle message sending: 
-````objective-c
+    self.items = <array of messages>;
+    [self.collectionView reloadData];
+````    
+
+3. Handle message sending.
+
+  ````objective-c
 - (void)didPressSendButton:(UIButton *)button
            withMessageText:(NSString *)text
                   senderId:(NSUInteger)senderId
@@ -67,12 +71,13 @@ Set array of chat messages and reload collection view:
     [self finishSendingMessageAnimated:YES];
     
      // Save message to your cache/memory storage.                     
+     // Send message using Quickblox SDK
 }
-
-````
+  ````
 
 4. Return cell view classes specific to chat message:
-````objective-c
+
+  ````objective-c
 - (Class)viewClassForItem:(QBChatMessage *)item {
 	 // Cell class for message
         if (item.senderID != self.senderID) {
@@ -86,9 +91,11 @@ Set array of chat messages and reload collection view:
     
     return nil;
 }
-````
+  ````
+  
 5. Calculate size of cell and minimum width:
-````objective-c
+
+  ````objective-c
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth {
     
     QBChatMessage *item = self.items[indexPath.item];
@@ -114,9 +121,11 @@ Set array of chat messages and reload collection view:
     
     return size.width;
 }
-````
-6.  Top, bottom and text labels.
-````objective-c
+  ````
+
+6. Top, bottom and text labels.
+
+  ````objective-c
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
     
     UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor whiteColor] : [UIColor colorWithWhite:0.290 alpha:1.000];
@@ -150,27 +159,12 @@ Set array of chat messages and reload collection view:
     
     NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
     NSMutableAttributedString *attrStr =
-    [[NSMutableAttributedString alloc] initWithString:[self timeStampWithDate:messageItem.datetime]
+    [[NSMutableAttributedString alloc] initWithString:[messageItem.dateSent description]
                                            attributes:attributes];
     
     return attrStr;
 }
-
-- (NSString *)timeStampWithDate:(NSDate *)date {
-    
-    static NSDateFormatter *dateFormatter = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"HH:mm";
-    });
-    
-    NSString *timeStamp = [dateFormatter stringFromDate:date];
-    
-    return timeStamp;
-}
-````
+  ````
 
 # Quick tips
 
