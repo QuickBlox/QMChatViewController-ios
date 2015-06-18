@@ -29,6 +29,8 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - Flexibility in improving and extending functionality.
 - Easy to connect with Quickblox.
 - Optimised and performant.
+- Supports portrait and landscape orientations.
+- Auto Layout inside.
 
 # Getting started
 Example is included in repository. Try it out to see how chat view controller works.
