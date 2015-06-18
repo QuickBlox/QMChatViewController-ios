@@ -22,6 +22,9 @@
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
+/**
+ *  Cell's contact request delegate.
+ */
 @property (weak, nonatomic) id <QMChatActionsHandler> actionsHandler;
 
 /**

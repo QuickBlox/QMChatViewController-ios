@@ -45,7 +45,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg.senderID = QMMessageTypeContactRequest;
     msg.senderNick = @"Andrey M. ";
     msg.text = @"Andrey M.\nwould like to chat with you";
-    msg.datetime = [NSDate date];
+    msg.dateSent = [NSDate date];
     [self.items addObject:msg];
     //**********************************************************************************
     QBChatMessage *msg2 = [QBChatMessage message];
@@ -53,7 +53,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg2.senderID = 2000;
     msg2.senderNick = @"Andrey I.";
     msg2.text = @"Why Q-municate is a right choice?";
-    msg2.datetime = [NSDate date];
+    msg2.dateSent = [NSDate date];
     [self.items addObject:msg2];
     //**********************************************************************************
     QBChatMessage *msg3 = [QBChatMessage message];
@@ -61,7 +61,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg3.senderID = 20001;
     msg3.senderNick = @"Andrey M.";
     msg3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
-    msg3.datetime = [NSDate date];
+    msg3.dateSent = [NSDate date];
     [self.items addObject:msg3];
     [self.collectionView reloadData];
     [self scrollToBottomAnimated:NO];
@@ -245,7 +245,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
     NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
     NSMutableAttributedString *attrStr =
-    [[NSMutableAttributedString alloc] initWithString:[self timeStampWithDate:messageItem.datetime]
+    [[NSMutableAttributedString alloc] initWithString:[self timeStampWithDate:messageItem.dateSent]
                                            attributes:attributes];
     
     return attrStr;

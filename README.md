@@ -8,16 +8,25 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 # Requirements
 - iOS 7.0+
 - ARC
-- Quickblox
+- Quickblox 2.0+
 
 # Installation
 Drag QMChatViewController folder to your project folder and link to the appropriate target.
 
-# Getting started
-Example with basic setup is included in repository. 
+#Features
 
-To start:
-1. Create a subclass of QMChatViewController.
+- Ready-to-go chat view controller with a set of cells.
+- Automatic cell size calculation.
+- UI customisation  for chat cells.
+- Flexibility in improving and extending functionality.
+- Easy to connect with Quickblox.
+- Optimised and performant.
+
+# Getting started
+Example is included in repository. Try it out to see how chat view controller works.
+
+Steps to add QMChatViewController to Your app:
+1. Create a subclass of QMChatViewController. You could create it both from code and Interface Builder.
 2. Open QMChatViewController.m and in *viewDidLoad* method.
 
 Configure chat sender ID and display name:
@@ -154,20 +163,19 @@ Set array of chat messages and reload collection view:
     
     return timeStamp;
 }
-````
+````'
 
 # Quick tips
-Load earlier messages.
-Attachments.
-
 
 # Questions & Help
+You could create an issue on GitHub if you are experiencing any problems. We will be happy to help you.
 
 # Documentation
+Inline code documentation available.
 
 # Dependencies
-- TTTAttributedLabel
-- Quickblox
+- TTTAttributedLabel (If you are using pods, add this to your Podfile - *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*)
+- Quickblox iOS SDK v2.0+ (If you are using pods, add this to your Podfile - *pod 'QuickBlox', '2.3'*)
 
 #About
 
