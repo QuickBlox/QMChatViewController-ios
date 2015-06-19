@@ -102,67 +102,66 @@ Steps to add QMChatViewController to Your app:
   ````objective-c
 	- (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath 	*)indexPath maxWidth:(CGFloat)maxWidth {
     
-	QBChatMessage *item = self.items[indexPath.item];
+		QBChatMessage *item = self.items[indexPath.item];
     
-    	NSAttributedString *attributedString = [self attributedStringForItem:item];
+		NSAttributedString *attributedString = [self attributedStringForItem:item];
     
-    	CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
-	                                               withConstraints:CGSizeMake(maxWidth, MAXFLOAT)
-        	                                limitedToNumberOfLines:0];
-    	return size;
-}
+		CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
+	        	                                       withConstraints:CGSizeMake(maxWidth, MAXFLOAT)
+        	        	                        limitedToNumberOfLines:0];
+		return size;
+	}
 
-- (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
+	- (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
+		QBChatMessage *item = self.items[indexPath.item];
     
-	QBChatMessage *item = self.items[indexPath.item];
+		NSAttributedString *attributedString =
+		[item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
     
-	NSAttributedString *attributedString =
-	[item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
-    
-	CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
+		CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
                                                        withConstraints:CGSizeMake(1000, 10000)
                                                 limitedToNumberOfLines:1];
     
-    	return size.width;
+    		return size.width;
 }
   ````
 
 6. Top, bottom and text labels.
 
   ````objective-c
-- (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
-	UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor whiteColor] : [UIColor colorWithWhite:0.290 alpha:1.000];
-	UIFont *font = [UIFont fontWithName:@"Helvetica" size:15];
-	NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
+	- (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
+		UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor whiteColor] : [UIColor colorWithWhite:0.290 alpha:1.000];
+		UIFont *font = [UIFont fontWithName:@"Helvetica" size:15];
+		NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
 
-	NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:messageItem.text attributes:attributes];
+		NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:messageItem.text attributes:attributes];
     
-	return attrStr;
-}
+		return attrStr;
+	}
 
-- (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem {
-	UIFont *font = [UIFont fontWithName:@"Helvetica" size:14];
+	- (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem {
+		UIFont *font = [UIFont fontWithName:@"Helvetica" size:14];
     
-	if ([messageItem senderID] == self.senderID) {
-	    return nil;
-    	}
-    	NSDictionary *attributes = @{ NSForegroundColorAttributeName:[UIColor colorWithRed:0.184 green:0.467 blue:0.733 alpha:1.000], NSFontAttributeName:font};
+		if ([messageItem senderID] == self.senderID) {
+	    		return nil;
+    		}
+    		NSDictionary *attributes = @{ NSForegroundColorAttributeName:[UIColor colorWithRed:0.184 green:0.467 blue:0.733 alpha:1.000], NSFontAttributeName:font};
     
-	NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:messageItem.senderNick attributes:attributes];
+		NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] 	initWithString:messageItem.senderNick attributes:attributes];
     
-    	return attrStr;
-}
+	    	return attrStr;
+	}
 
-- (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem {
-    	UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor colorWithWhite:1.000 alpha:0.510] : [UIColor colorWithWhite:0.000 alpha:0.490];
-	UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
+	- (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem {
+    		UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor colorWithWhite:1.000 alpha:0.510] : [UIColor colorWithWhite:0.000 alpha:0.490];
+    		UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
     
-    	NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
-    	NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[messageItem.dateSent description]
+    		NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
+    		NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[messageItem.dateSent description]
                                            					    attributes:attributes];
     
-    	return attrStr;
-}
+    		return attrStr;
+	}
   ````
   
 7. Modifying collection chat cell attributes without changing constraints:
@@ -190,12 +189,12 @@ Steps to add QMChatViewController to Your app:
 	You can modify this attributes in this method:
 	
 	````objective-c
-		- (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
-		    QMChatCellLayoutModel layoutModel = [super collectionView:collectionView layoutModelAtIndexPath:indexPath];
-		    // update attributes here
+	- (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
+		QMChatCellLayoutModel layoutModel = [super collectionView:collectionView layoutModelAtIndexPath:indexPath];
+		// update attributes here
     
-		    return layoutModel;
-		}
+		return layoutModel;
+	}
 	````
 	
 	So if you want to hide top label or bottom label you just need to set their height to 0.
