@@ -196,11 +196,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [self.collectionView.collectionViewLayout invalidateLayout];
     
     if (self.automaticallyScrollsToMostRecentMessage) {
-        
+		__weak __typeof(self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            [self scrollToBottomAnimated:NO];
-            [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
+            [weakSelf scrollToBottomAnimated:NO];
+            [weakSelf.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
         });
     }
     

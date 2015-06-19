@@ -215,12 +215,12 @@
         
         attributesInRect = attributesInRectCopy;
     }
-    
+	__weak __typeof(self)weakSelf = self;
     [attributesInRect enumerateObjectsUsingBlock:^(QMChatCellLayoutAttributes *attributesItem, NSUInteger idx, BOOL *stop) {
         
         if (attributesItem.representedElementCategory == UICollectionElementCategoryCell) {
-            
-            [self configureCellLayoutAttributes:attributesItem];
+			__typeof(self)strongSelf = weakSelf;
+            [strongSelf configureCellLayoutAttributes:attributesItem];
         }
         else {
             
@@ -252,10 +252,12 @@
         self.latestDelta = delta;
         
         CGPoint touchLocation = [self.collectionView.panGestureRecognizer locationInView:self.collectionView];
+		
+		__weak __typeof(self)weakSelf = self;
         [self.dynamicAnimator.behaviors enumerateObjectsUsingBlock:^(UIAttachmentBehavior *springBehaviour, NSUInteger idx, BOOL *stop) {
-            
-            [self adjustSpringBehavior:springBehaviour forTouchLocation:touchLocation];
-            [self.dynamicAnimator updateItemUsingCurrentState:[springBehaviour.items firstObject]];
+            __typeof(self)strongSelf = weakSelf;
+            [strongSelf adjustSpringBehavior:springBehaviour forTouchLocation:touchLocation];
+            [strongSelf.dynamicAnimator updateItemUsingCurrentState:[springBehaviour.items firstObject]];
         }];
     }
     
@@ -273,22 +275,24 @@
 - (void)prepareForCollectionViewUpdates:(NSArray *)updateItems {
     
     [super prepareForCollectionViewUpdates:updateItems];
-    
+	
+	
+	__weak __typeof(self)weakSelf = self;
     [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger index, BOOL *stop) {
-        
+        __typeof(self)strongSelf = weakSelf;
         if (updateItem.updateAction == UICollectionUpdateActionInsert) {
             
-            if (self.springinessEnabled && [self.dynamicAnimator layoutAttributesForCellAtIndexPath:updateItem.indexPathAfterUpdate]) {
+            if (strongSelf.springinessEnabled && [strongSelf.dynamicAnimator layoutAttributesForCellAtIndexPath:updateItem.indexPathAfterUpdate]) {
                 *stop = YES;
             }
             
-            CGFloat collectionViewHeight = CGRectGetHeight(self.collectionView.bounds);
+            CGFloat collectionViewHeight = CGRectGetHeight(strongSelf.collectionView.bounds);
             
             QMChatCellLayoutAttributes *attributes =
             [QMChatCellLayoutAttributes layoutAttributesForCellWithIndexPath:updateItem.indexPathAfterUpdate];
             
             if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
-                [self configureCellLayoutAttributes:attributes];
+                [strongSelf configureCellLayoutAttributes:attributes];
             }
             
             attributes.frame = CGRectMake(0.0f,
@@ -296,10 +300,10 @@
                                           CGRectGetWidth(attributes.frame),
                                           CGRectGetHeight(attributes.frame));
             
-            if (self.springinessEnabled) {
+            if (strongSelf.springinessEnabled) {
                 
-                UIAttachmentBehavior *springBehaviour = [self springBehaviorWithLayoutAttributesItem:attributes];
-                [self.dynamicAnimator addBehavior:springBehaviour];
+                UIAttachmentBehavior *springBehaviour = [strongSelf springBehaviorWithLayoutAttributesItem:attributes];
+                [strongSelf.dynamicAnimator addBehavior:springBehaviour];
             }
         }
     }];
@@ -433,13 +437,15 @@
     
     NSArray *newlyVisibleItems = [visibleItems objectsAtIndexes:indexSet];
     CGPoint touchLocation = [self.collectionView.panGestureRecognizer locationInView:self.collectionView];
-    
+	
+	__weak __typeof(self)weakSelf = self;
+	
     [newlyVisibleItems enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes *item, NSUInteger index, BOOL *stop) {
-        
-        UIAttachmentBehavior *springBehaviour = [self springBehaviorWithLayoutAttributesItem:item];
-        [self adjustSpringBehavior:springBehaviour forTouchLocation:touchLocation];
-        [self.dynamicAnimator addBehavior:springBehaviour];
-        [self.visibleIndexPaths addObject:item.indexPath];
+		__typeof(self)strongSelf = weakSelf;
+        UIAttachmentBehavior *springBehaviour = [strongSelf springBehaviorWithLayoutAttributesItem:item];
+        [strongSelf adjustSpringBehavior:springBehaviour forTouchLocation:touchLocation];
+        [strongSelf.dynamicAnimator addBehavior:springBehaviour];
+        [strongSelf.visibleIndexPaths addObject:item.indexPath];
     }];
 }
 
@@ -454,12 +460,14 @@
     }];
     
     NSArray *behaviorsToRemove = [self.dynamicAnimator.behaviors objectsAtIndexes:indexSet];
-    
+	
+	__weak __typeof(self)weakSelf = self;
+	
     [behaviorsToRemove enumerateObjectsUsingBlock:^(UIAttachmentBehavior *springBehaviour, NSUInteger index, BOOL *stop) {
-        
+        __typeof(self)strongSelf = weakSelf;
         UICollectionViewLayoutAttributes *layoutAttributes = [springBehaviour.items firstObject];
-        [self.dynamicAnimator removeBehavior:springBehaviour];
-        [self.visibleIndexPaths removeObject:layoutAttributes.indexPath];
+        [strongSelf.dynamicAnimator removeBehavior:springBehaviour];
+        [strongSelf.visibleIndexPaths removeObject:layoutAttributes.indexPath];
     }];
 }
 

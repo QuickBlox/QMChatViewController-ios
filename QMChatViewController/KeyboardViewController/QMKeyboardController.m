@@ -176,7 +176,7 @@ static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardContro
     self.keyboardView = nil;
     
     __weak __typeof(self)weakSelf = self;
-    [weakSelf handleKeyboardNotification:notification completion:^(BOOL finished) {
+    [self handleKeyboardNotification:notification completion:^(BOOL finished) {
         
         [weakSelf.panGestureRecognizer removeTarget:weakSelf action:NULL];
     }];
