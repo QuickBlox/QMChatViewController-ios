@@ -164,6 +164,41 @@ Steps to add QMChatViewController to Your app:
     	return attrStr;
 }
   ````
+  
+7. Modifying collection chat cell attributes without changing constraints:
+
+	````objective-c
+	struct QMChatLayoutModel {
+	    
+	    CGSize avatarSize;
+	    CGSize containerSize;
+	    UIEdgeInsets containerInsets;
+	    CGFloat topLabelHeight;
+	    CGFloat bottomLabelHeight;
+	    CGSize staticContainerSize;
+	};
+	
+	typedef struct QMChatLayoutModel QMChatCellLayoutModel;
+	````
+	
+	* size of the avatar image view
+	* message view container size
+	* top label height
+	* bottom label height
+	* static size of container view
+
+	You can modify this attributes in this method:
+	
+	````objective-c
+		- (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
+		    QMChatCellLayoutModel layoutModel = [super collectionView:collectionView layoutModelAtIndexPath:indexPath];
+		    // update attributes here
+    
+		    return layoutModel;
+		}
+	````
+	
+	So if you want to hide top label or bottom label you just need to set their height to 0.
 
 # Quick tips
 
