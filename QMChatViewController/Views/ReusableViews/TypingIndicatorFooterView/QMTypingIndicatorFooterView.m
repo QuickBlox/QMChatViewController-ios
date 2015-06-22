@@ -71,6 +71,8 @@ const CGFloat kQMTypingIndicatorFooterViewHeight = 46.0f;
     
     [self setNeedsUpdateConstraints];
     
+    self.bubbleImageView.backgroundColor = messageBubbleColor;
+    self.typingIndicatorImageView.backgroundColor = ellipsisColor;
     self.typingIndicatorImageView.image = [UIImage imageNamed:@""];
 }
 
