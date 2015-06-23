@@ -207,9 +207,8 @@ You could create an issue on GitHub if you are experiencing any problems. We wil
 # Documentation
 Inline code documentation available.
 
-#About
-
 #License
+See LICENSE file.
 
 #Coming soon
 CocoaPods distribution.
