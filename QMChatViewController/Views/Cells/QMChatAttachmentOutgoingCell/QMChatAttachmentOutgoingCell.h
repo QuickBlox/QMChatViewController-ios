@@ -7,8 +7,9 @@
 //
 
 #import "QMChatCell.h"
+#import "QMChatAttachmentCell.h"
 
-@interface QMChatAttachmentOutgoingCell : QMChatCell
+@interface QMChatAttachmentOutgoingCell : QMChatCell<QMChatAttachmentCell>
 
 @property (nonatomic, weak) IBOutlet UIImageView *attachmentImageView;
 
