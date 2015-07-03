@@ -8,6 +8,7 @@
 
 @protocol QMChatAttachmentCell <NSObject>
 
-@property (nonatomic, weak) UIImageView *attachmentImageView;
+- (void)setAttachmentImage:(UIImage *)attachmentImage;
+- (void)updateLoadingProgress:(CGFloat)progress;
 
 @end

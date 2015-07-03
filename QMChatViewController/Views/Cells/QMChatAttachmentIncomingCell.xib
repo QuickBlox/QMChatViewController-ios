@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -39,13 +39,20 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fa7-ju-G0X">
                                         <rect key="frame" x="7" y="0.0" width="142" height="69"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CK2-f9-FBA">
+                                        <rect key="frame" x="57" y="24" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="Fa7-ju-G0X" firstAttribute="top" secondItem="1rv-oZ-ov9" secondAttribute="top" id="kcQ-Wp-HcQ"/>
+                                    <constraint firstAttribute="centerY" secondItem="CK2-f9-FBA" secondAttribute="centerY" id="ksQ-1a-n5E"/>
                                     <constraint firstAttribute="bottom" secondItem="Fa7-ju-G0X" secondAttribute="bottom" id="mGp-6w-jA6"/>
+                                    <constraint firstAttribute="centerX" secondItem="CK2-f9-FBA" secondAttribute="centerX" id="t4f-Nd-X9N"/>
                                     <constraint firstAttribute="trailing" secondItem="Fa7-ju-G0X" secondAttribute="trailing" id="x6E-80-NrW"/>
                                     <constraint firstItem="Fa7-ju-G0X" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" constant="7" id="xUT-Sx-H5g"/>
                                 </constraints>
@@ -98,6 +105,7 @@
                 <outlet property="messageContainerLeftInsetConstraint" destination="6cV-Cw-axM" id="6Kj-gl-lJt"/>
                 <outlet property="messageContainerRightInsetConstraint" destination="pbC-kb-YUv" id="RXW-oj-jIB"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="JYn-ad-AzN" id="kBu-AD-ojU"/>
+                <outlet property="progressLabel" destination="CK2-f9-FBA" id="13E-Q9-fp8"/>
             </connections>
             <point key="canvasLocation" x="206" y="430.5"/>
         </collectionViewCell>
