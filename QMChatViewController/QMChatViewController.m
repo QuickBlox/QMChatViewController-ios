@@ -140,6 +140,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     UINib *incomingNib = [QMChatIncomingCell nib];
     NSString *incomingIdentifier = [QMChatIncomingCell cellReuseIdentifier];
     [self.collectionView  registerNib:incomingNib forCellWithReuseIdentifier:incomingIdentifier];
+    
+    UINib *attachmentIncomingNib  = [QMChatAttachmentIncomingCell nib];
+    NSString *attachmentIncomingIdentifier = [QMChatAttachmentIncomingCell cellReuseIdentifier];
+    [self.collectionView registerNib:attachmentIncomingNib forCellWithReuseIdentifier:attachmentIncomingIdentifier];
+    
+    UINib *attachmentOutgoingNib  = [QMChatAttachmentOutgoingCell nib];
+    NSString *attachmentOutgoingIdentifier = [QMChatAttachmentOutgoingCell cellReuseIdentifier];
+    [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
 }
 
 #pragma mark - Setters
@@ -384,17 +392,29 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     QMChatCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:itemIdentifier forIndexPath:indexPath];
     
+    [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+    
     if ([cell isKindOfClass:[QMChatContactRequestCell class]]) {
         
         QMChatContactRequestCell *conatactRequestCell = (id)cell;
         conatactRequestCell.actionsHandler = self.actionsHandler;
     }
     
-    cell.textView.attributedText = [self attributedStringForItem:messageItem];
-    cell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
-    cell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
-    
-    return cell;
+    if ([cell isKindOfClass:[QMChatCell class]]) {
+        
+        QMChatCell *chatCell = (QMChatCell *)cell;
+        
+        id messageItem = self.items[indexPath.row];
+        
+        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
+        chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
+        chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
+    }
 }
 
 - (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem {

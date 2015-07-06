@@ -19,6 +19,8 @@
 #import "QMChatIncomingCell.h"
 #import "QMChatOutgoingCell.h"
 #import "QMChatNotificationCell.h"
+#import "QMChatAttachmentIncomingCell.h"
+#import "QMChatAttachmentOutgoingCell.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
@@ -128,6 +130,8 @@
  *  @return Collection Cell View Class
  */
 - (Class)viewClassForItem:(QBChatMessage *)item;
+
+- (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Class methods
 
