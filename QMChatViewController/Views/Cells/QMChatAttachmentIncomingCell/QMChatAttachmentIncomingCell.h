@@ -12,5 +12,6 @@
 @interface QMChatAttachmentIncomingCell : QMChatCell<QMChatAttachmentCell>
 
 @property (nonatomic, weak) IBOutlet UIImageView *attachmentImageView;
+@property (nonatomic, strong) NSString *attachmentID;
 
 @end
