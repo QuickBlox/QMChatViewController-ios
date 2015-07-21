@@ -15,6 +15,7 @@
 @end
 
 @implementation QMChatAttachmentIncomingCell
+@synthesize attachmentID = _attachmentID;
 
 + (UINib *)nib {
     return [UINib nibWithNibName:[self cellReuseIdentifier] bundle:[NSBundle bundleForClass:[self class]]];

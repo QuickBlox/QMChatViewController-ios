@@ -9,9 +9,14 @@
 #import "QMChatCell.h"
 #import "QMChatAttachmentCell.h"
 
+/**
+ *  Incoming attachment message cell class.
+ */
 @interface QMChatAttachmentIncomingCell : QMChatCell<QMChatAttachmentCell>
 
+/**
+ *  Attachment image view.
+ */
 @property (nonatomic, weak) IBOutlet UIImageView *attachmentImageView;
-@property (nonatomic, strong) NSString *attachmentID;
 
 @end
