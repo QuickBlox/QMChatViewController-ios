@@ -42,7 +42,7 @@ Example is included in repository. Try it out to see how chat view controller wo
 Steps to add QMChatViewController to Your app:
 
 1. Create a subclass of QMChatViewController. You could create it both from code and Interface Builder.
-2. Open your subclass of QMChatViewController and in *viewDidLoad* method. 
+2. Open your subclass of QMChatViewController and do the following in *viewDidLoad* method:
     * Configure chat sender ID and display name:
 
 	````objective-c
