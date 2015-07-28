@@ -1,5 +1,5 @@
 # QMChatViewController
-An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox mBaaS.
+An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend.
 
 # Screenshots
 ![](Screenshots/screenshot1.png) &nbsp;&nbsp; ![](Screenshots/screenshot3.png)&nbsp;&nbsp;
