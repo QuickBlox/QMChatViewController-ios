@@ -206,10 +206,8 @@ Steps to add QMChatViewController to Your app:
 
 *QMChatViewController* supports image attachment cell messages. *QMChatAttachmentIncomingCell* is used for incoming attachments, *QMChatAttachmentOutgoingCell* is used for outgoing attachments. Both of them have progress label to display loading progress. XIB's are also included.
 
-# Quick tips
-
 # Questions & Help
-You could create an issue on GitHub if you are experiencing any problems. We will be happy to help you.
+You could create an issue on GitHub if you are experiencing any problems. We will be happy to help you. Or you can ask a 'quickblox' tagged question on StackOverflow http://stackoverflow.com/questions/ask
 
 # Documentation
 Inline code documentation available.
