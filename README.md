@@ -9,7 +9,7 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 # Requirements
 - iOS 7.0+
 - ARC
-- Xcode 6
+- Xcode 6+
 - Quickblox SDK 2.0+
 - TTTAttributedLabel
 
