@@ -20,7 +20,7 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 
 # Dependencies
 - TTTAttributedLabel (If you are using pods, add this to your Podfile - *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*)
-- Quickblox iOS SDK v2.0+ (If you are using pods, add this to your Podfile - *pod 'QuickBlox', '2.3'*)
+- Quickblox iOS SDK v2.0+ (If you are using pods, add this to your Podfile - *pod 'QuickBlox'*)
 
 
 #Features
