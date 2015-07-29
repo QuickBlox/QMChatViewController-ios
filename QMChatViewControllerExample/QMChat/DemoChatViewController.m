@@ -23,6 +23,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
     QMMessageTypeDeleteContactRequest
 };
 
+@implementation DemoChatViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
