@@ -1,6 +1,6 @@
 PODS:
   - QuickBlox (2.3)
-  - TTTAttributedLabel (1.13.3)
+  - TTTAttributedLabel (2.0.0)
 
 DEPENDENCIES:
   - QuickBlox (= 2.3)
@@ -12,11 +12,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   TTTAttributedLabel:
-    :commit: 11a4d4a1f4d24f7683a002a7df1a08377400b516
+    :commit: 13d2d877707032dc4d4b888bb3832bac822bf9b0
     :git: https://github.com/TTTAttributedLabel/TTTAttributedLabel.git
 
 SPEC CHECKSUMS:
   QuickBlox: 8b4f5a66e56eeb83625792dd8fd7aeb82f187fec
-  TTTAttributedLabel: 6f3174aef8e738f44dff97c2eb7d8184f6ab6277
+  TTTAttributedLabel: 92aaa37822677380b7ec0baff50bd8010eef08f8
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0
