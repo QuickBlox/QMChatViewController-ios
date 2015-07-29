@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0739E55DBDF9DBEC145B6D2B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F68C41DC14B471EC7F49541 /* libPods.a */; };
 		2CC28D651B68D55F00737B80 /* QMChatAttachmentIncomingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC28D5F1B68D55F00737B80 /* QMChatAttachmentIncomingCell.m */; };
 		2CC28D661B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC28D601B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib */; };
 		2CC28D671B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */; };
 		2CC28D681B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */; };
+		344763DE0E88003383FC1EB9 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38E4A36B363B72DDC056730F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
 		5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED01AE6742F005AA288 /* MobileCoreServices.framework */; };
@@ -53,7 +53,6 @@
 		FB2ED4351B21DFCF0024A627 /* DemoChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC4AC1B1F3AF50083A3A2 /* DemoChatViewController.m */; };
 		FB4DC4AD1B1F3AF50083A3A2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */; };
 		FB4DC4B01B1F3AF50083A3A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB4DC4581B1F3AF50083A3A2 /* Images.xcassets */; };
-		FB4DC4B11B1F3AF50083A3A2 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FB4DC4591B1F3AF50083A3A2 /* Info.plist */; };
 		FB4DC4B21B1F3AF50083A3A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC45A1B1F3AF50083A3A2 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -65,8 +64,8 @@
 		2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatAttachmentOutgoingCell.m; sourceTree = "<group>"; };
 		2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QMChatAttachmentOutgoingCell.xib; sourceTree = "<group>"; };
 		2CC28D6B1B68D65400737B80 /* QMChatAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatAttachmentCell.h; sourceTree = "<group>"; };
-		3F68C41DC14B471EC7F49541 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5501A77D1AD2DA8F00D0AE0D /* QMChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		38E4A36B363B72DDC056730F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChatViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5519EECE1AE67424005AA288 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		5519EED01AE6742F005AA288 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -91,7 +90,6 @@
 		865A68B81B21C4AC003AC969 /* QMChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatViewController.m; sourceTree = "<group>"; };
 		865A68BD1B21C4AC003AC969 /* QMChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatCell.h; sourceTree = "<group>"; };
 		865A68BE1B21C4AC003AC969 /* QMChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatCell.m; sourceTree = "<group>"; };
-		865A68BF1B21C4AC003AC969 /* QMImageViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMImageViewProtocol.h; sourceTree = "<group>"; };
 		865A68C11B21C4AC003AC969 /* QMChatContactRequestCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatContactRequestCell.h; sourceTree = "<group>"; };
 		865A68C21B21C4AC003AC969 /* QMChatContactRequestCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatContactRequestCell.m; sourceTree = "<group>"; };
 		865A68C31B21C4AC003AC969 /* QMChatContactRequestCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QMChatContactRequestCell.xib; sourceTree = "<group>"; };
@@ -154,7 +152,7 @@
 				5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */,
 				5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */,
 				5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */,
-				0739E55DBDF9DBEC145B6D2B /* libPods.a in Frameworks */,
+				344763DE0E88003383FC1EB9 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,7 +201,7 @@
 		5501A77E1AD2DA8F00D0AE0D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5501A77D1AD2DA8F00D0AE0D /* QMChat.app */,
+				5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -218,7 +216,7 @@
 				5519EED81AE67462005AA288 /* SystemConfiguration.framework */,
 				5519EED21AE6743B005AA288 /* CFNetwork.framework */,
 				5519EED01AE6742F005AA288 /* MobileCoreServices.framework */,
-				3F68C41DC14B471EC7F49541 /* libPods.a */,
+				38E4A36B363B72DDC056730F /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -315,7 +313,6 @@
 			children = (
 				865A68BD1B21C4AC003AC969 /* QMChatCell.h */,
 				865A68BE1B21C4AC003AC969 /* QMChatCell.m */,
-				865A68BF1B21C4AC003AC969 /* QMImageViewProtocol.h */,
 			);
 			path = QMChatCell;
 			sourceTree = "<group>";
@@ -461,23 +458,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5501A77C1AD2DA8F00D0AE0D /* QMChat */ = {
+		5501A77C1AD2DA8F00D0AE0D /* QMChatViewControllerExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5501A7A31AD2DA9000D0AE0D /* Build configuration list for PBXNativeTarget "QMChat" */;
+			buildConfigurationList = 5501A7A31AD2DA9000D0AE0D /* Build configuration list for PBXNativeTarget "QMChatViewControllerExample" */;
 			buildPhases = (
 				160F28A3ADF7E411E5BC2B8B /* Check Pods Manifest.lock */,
 				5501A7791AD2DA8F00D0AE0D /* Sources */,
 				5501A77A1AD2DA8F00D0AE0D /* Frameworks */,
 				5501A77B1AD2DA8F00D0AE0D /* Resources */,
 				799015A3E649FE9ABFA7CA9B /* Copy Pods Resources */,
+				1D148BEEF43C1286682B051A /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = QMChat;
+			name = QMChatViewControllerExample;
 			productName = QMChat;
-			productReference = 5501A77D1AD2DA8F00D0AE0D /* QMChat.app */;
+			productReference = 5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -486,7 +484,7 @@
 		5501A7751AD2DA8F00D0AE0D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "QuickBlox Team";
 				TargetAttributes = {
 					5501A77C1AD2DA8F00D0AE0D = {
@@ -494,7 +492,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5501A7781AD2DA8F00D0AE0D /* Build configuration list for PBXProject "QMChat" */;
+			buildConfigurationList = 5501A7781AD2DA8F00D0AE0D /* Build configuration list for PBXProject "QMChatViewControllerExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -507,7 +505,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5501A77C1AD2DA8F00D0AE0D /* QMChat */,
+				5501A77C1AD2DA8F00D0AE0D /* QMChatViewControllerExample */,
 			);
 		};
 /* End PBXProject section */
@@ -518,7 +516,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				865A69111B21C4AC003AC969 /* QMTypingIndicatorFooterView.xib in Resources */,
-				FB4DC4B11B1F3AF50083A3A2 /* Info.plist in Resources */,
 				865A68FF1B21C4AC003AC969 /* QMChatIncomingCell.xib in Resources */,
 				865A69121B21EE62003AC969 /* Main.storyboard in Resources */,
 				FB4DC4B01B1F3AF50083A3A2 /* Images.xcassets in Resources */,
@@ -550,6 +547,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		1D148BEEF43C1286682B051A /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		799015A3E649FE9ABFA7CA9B /* Copy Pods Resources */ = {
@@ -714,6 +726,7 @@
 			baseConfigurationReference = 8C1EDE9B0A2856F9ACF5A244 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -723,7 +736,7 @@
 				INFOPLIST_FILE = QMChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = QMChatViewControllerExample;
 			};
 			name = Debug;
 		};
@@ -732,6 +745,7 @@
 			baseConfigurationReference = 9AA93D1F9A7A4DE000CBEC30 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -741,14 +755,14 @@
 				INFOPLIST_FILE = QMChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = QMChatViewControllerExample;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5501A7781AD2DA8F00D0AE0D /* Build configuration list for PBXProject "QMChat" */ = {
+		5501A7781AD2DA8F00D0AE0D /* Build configuration list for PBXProject "QMChatViewControllerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5501A7A11AD2DA9000D0AE0D /* Debug */,
@@ -757,7 +771,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5501A7A31AD2DA9000D0AE0D /* Build configuration list for PBXNativeTarget "QMChat" */ = {
+		5501A7A31AD2DA9000D0AE0D /* Build configuration list for PBXNativeTarget "QMChatViewControllerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5501A7A41AD2DA9000D0AE0D /* Debug */,

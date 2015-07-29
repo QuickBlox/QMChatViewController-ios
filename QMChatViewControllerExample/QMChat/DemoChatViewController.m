@@ -39,7 +39,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
     
-    //**********************************************************************************
+    // Create test data source
     QBChatMessage *msg = [QBChatMessage message];
     msg.ID = @"1";
     msg.senderID = QMMessageTypeContactRequest;
@@ -47,7 +47,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg.text = @"Andrey M.\nwould like to chat with you";
     msg.dateSent = [NSDate date];
     [self.items addObject:msg];
-    //**********************************************************************************
+
     QBChatMessage *msg2 = [QBChatMessage message];
     msg2.ID = @"2";
     msg2.senderID = 2000;
@@ -55,7 +55,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg2.text = @"Why Q-municate is a right choice?";
     msg2.dateSent = [NSDate date];
     [self.items addObject:msg2];
-    //**********************************************************************************
+
     QBChatMessage *msg3 = [QBChatMessage message];
     msg3.ID = @"3";
     msg3.senderID = 20001;
@@ -63,6 +63,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
     msg3.dateSent = [NSDate date];
     [self.items addObject:msg3];
+    
     [self.collectionView reloadData];
     [self scrollToBottomAnimated:NO];
 }
@@ -83,7 +84,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (UIButton *)accessoryButtonItem {
     
-    UIImage *accessoryImage = [UIImage imageNamed:@"attachment_ic"];
+    UIImage *accessoryImage = [UIImage imageNamed:@"attachmentBtn"];
     UIImage *normalImage = [accessoryImage imageMaskedWithColor:[UIColor lightGrayColor]];
     UIImage *highlightedImage = [accessoryImage imageMaskedWithColor:[UIColor darkGrayColor]];
     

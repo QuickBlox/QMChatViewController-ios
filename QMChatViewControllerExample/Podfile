@@ -1,4 +1,6 @@
 platform :ios, '7.0'
 
+use_frameworks!
+
 pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'
 pod 'QuickBlox', '2.3'
