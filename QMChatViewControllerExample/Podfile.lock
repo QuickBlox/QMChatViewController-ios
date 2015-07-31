@@ -23,20 +23,20 @@ PODS:
 
 DEPENDENCIES:
   - QMChatViewController (from `https://github.com/QuickBlox/QMChatViewController-ios.git`,
-    commit `5481076721c64ac7b1df352049b543da9ee53174`)
+    commit `cf1b06e4af322c4b6089466eaaed317aeb04c52d`)
 
 EXTERNAL SOURCES:
   QMChatViewController:
-    :commit: 5481076721c64ac7b1df352049b543da9ee53174
+    :commit: cf1b06e4af322c4b6089466eaaed317aeb04c52d
     :git: https://github.com/QuickBlox/QMChatViewController-ios.git
 
 CHECKOUT OPTIONS:
   QMChatViewController:
-    :commit: 5481076721c64ac7b1df352049b543da9ee53174
+    :commit: cf1b06e4af322c4b6089466eaaed317aeb04c52d
     :git: https://github.com/QuickBlox/QMChatViewController-ios.git
 
 SPEC CHECKSUMS:
-  QMChatViewController: edb9680153e02e2b2435adabe132112f98759d75
+  QMChatViewController: b23f58bc15b183b77496be90e49687c1c1c4b119
   QuickBlox: 6e10bbefa89a00c26286557d248b16448ad334ef
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
