@@ -196,18 +196,18 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 
 - (void)handleTapGesture:(UITapGestureRecognizer *)tap {
     
-//    CGPoint touchPt = [tap locationInView:self];
+    CGPoint touchPt = [tap locationInView:self];
     
-//    if (CGRectContainsPoint(self.avatarContainerView.frame, touchPt)) {
-//        [self.delegate messagesCollectionViewCellDidTapAvatar:self];
-//    }
-//    else if (CGRectContainsPoint(self.containerView.frame, touchPt)) {
-//        
-//        [self.delegate messagesCollectionViewCellDidTapMessageBubble:self];
-//    }
-//    else {
-//        [self.delegate messagesCollectionViewCellDidTapCell:self atPosition:touchPt];
-//    }
+    if (CGRectContainsPoint(self.avatarContainerView.frame, touchPt)) {
+        [self.delegate chatCellDidTapAvatar:self];
+    }
+    else if (CGRectContainsPoint(self.containerView.frame, touchPt)) {
+        
+        [self.delegate chatCellDidTapContainer:self];
+    }
+    else {
+        [self.delegate chatCell:self didTapAtPosition:touchPt];
+    }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIImage (qmunicate)
+@interface UIImage (QM)
+
+/**
+ *  Added color mask to image
+ *
+ *  @param maskColor color for mask
+ *
+ *  @return masked image
+ */
 
 - (UIImage *)imageMaskedWithColor:(UIColor *)maskColor;
 
