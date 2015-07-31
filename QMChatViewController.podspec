@@ -24,12 +24,15 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
-  s.license      = { :type => "MIT", :file => "LICENSE.txt" }
+  s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "0.1" }
   s.source_files  = "QMChatViewController/**/*.{h,m}"
   s.requires_arc = true
+  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
+  s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
   s.dependency "QuickBlox", "~> 2.3"
+  s.dependency "TTTAttributedLabel", "~> 1.13"
 
 end
