@@ -28,7 +28,24 @@ Pod::Spec.new do |s|
   s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "0.1" }
-  s.source_files  = "QMChatViewController/**/*.{h,m}"
+  s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
+
+  s.subspec 'Categories' do |ss|
+    ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
+  end
+
+  s.subspec 'KeyboardViewController' do |ss|
+    ss.source_files = 'QMChatViewController/KeyboardViewController/*.{h,m}'
+  end
+
+  s.subspec 'Protocols' do |ss|
+    ss.source_files = 'QMChatViewController/Protocols/*.{h}'
+  end
+
+  s.subspec 'Views' do |ss|
+    ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
+  end
+
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
   s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
