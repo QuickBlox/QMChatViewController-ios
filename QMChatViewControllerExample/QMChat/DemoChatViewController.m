@@ -10,6 +10,7 @@
 #import <Quickblox/Quickblox.h>
 #import "UIColor+QM.h"
 #import "UIImage+QM.h"
+#import "UIImage+fixOrientation.h"
 
 NS_ENUM(NSUInteger, QMMessageType) {
 
@@ -35,9 +36,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
     self.title = @"Chat";
     // Do any additional setup after loading the view, typically from a nib.
     self.showLoadEarlierMessagesHeader = YES;
-    //Customize your toolbar buttons
-    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
-    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
     
     // Create test data source
     QBChatMessage *msg = [QBChatMessage message];
@@ -50,7 +48,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
     QBChatMessage *msg2 = [QBChatMessage message];
     msg2.ID = @"2";
-    msg2.senderID = 2000;
+    msg2.senderID = self.senderID;
     msg2.senderNick = @"Andrey I.";
     msg2.text = @"Why Q-municate is a right choice?";
     msg2.dateSent = [NSDate date];
@@ -64,8 +62,20 @@ NS_ENUM(NSUInteger, QMMessageType) {
     msg3.dateSent = [NSDate date];
     [self.items addObject:msg3];
     
-    [self.collectionView reloadData];
-    [self scrollToBottomAnimated:NO];
+    QBChatMessage *msg4 = [QBChatMessage message];
+    msg4.ID = @"4";
+    msg4.senderID = 20001;
+    msg4.senderNick = @"Andrey M.";
+    
+    QBChatAttachment *attachment = [QBChatAttachment new];
+    
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"quickblox-image" ofType:@"png"];
+    
+    attachment.url = imagePath;
+    
+    msg4.attachments = @[attachment];
+    msg4.dateSent = [NSDate date];
+    [self.items addObject:msg4];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,54 +90,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
     self.collectionView.collectionViewLayout.springinessEnabled = NO;
 }
 
-#pragma mark - Tool bar
-
-- (UIButton *)accessoryButtonItem {
-    
-    UIImage *accessoryImage = [UIImage imageNamed:@"attachmentBtn"];
-    UIImage *normalImage = [accessoryImage imageMaskedWithColor:[UIColor lightGrayColor]];
-    UIImage *highlightedImage = [accessoryImage imageMaskedWithColor:[UIColor darkGrayColor]];
-    
-    UIButton *accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, accessoryImage.size.width, 32.0f)];
-    [accessoryButton setImage:normalImage forState:UIControlStateNormal];
-    [accessoryButton setImage:highlightedImage forState:UIControlStateHighlighted];
-    
-    accessoryButton.contentMode = UIViewContentModeScaleAspectFit;
-    accessoryButton.backgroundColor = [UIColor clearColor];
-    accessoryButton.tintColor = [UIColor lightGrayColor];
-    
-    return accessoryButton;
-}
-
-- (UIButton *)sendButtonItem {
-    
-    NSString *sendTitle = NSLocalizedString(@"Send", nil);
-    
-    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    [sendButton setTitle:sendTitle forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [sendButton setTitleColor:[[UIColor blueColor] colorByDarkeningColorWithValue:0.1f] forState:UIControlStateHighlighted];
-    [sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-    
-    sendButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    sendButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    sendButton.titleLabel.minimumScaleFactor = 0.85f;
-    sendButton.contentMode = UIViewContentModeCenter;
-    sendButton.backgroundColor = [UIColor clearColor];
-    sendButton.tintColor = [UIColor blueColor];
-    
-    CGFloat maxHeight = 32.0f;
-    
-    CGRect sendTitleRect = [sendTitle boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight)
-                                                   options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                attributes:@{ NSFontAttributeName : sendButton.titleLabel.font }
-                                                   context:nil];
-    
-    sendButton.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(CGRectIntegral(sendTitleRect)), maxHeight);
-    
-    return sendButton;
-}
-
 #pragma mark Tool bar Actions
 
 - (void)didPressSendButton:(UIButton *)button
@@ -140,16 +102,41 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message.text = text;
     message.senderID = senderId;
     
-    QBChatAttachment *attacment = [[QBChatAttachment alloc] init];
-    message.attachments = @[attacment];
-    
     [self.items addObject:message];
     
     [self finishSendingMessageAnimated:YES];
 }
 
-- (void)didPressAccessoryButton:(UIButton *)sender {
-    
+- (void)didPickAttachmentImage:(UIImage *)image {
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+        UIImage *resizedImage = [self resizedImageFromImage:[image fixOrientation]];
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+        
+        NSData *binaryImageData = UIImagePNGRepresentation(resizedImage);
+        NSString *imageName = [NSString stringWithFormat:@"%f-attachment.png", [[NSDate date] timeIntervalSince1970]];
+        NSString *imagePath = [basePath stringByAppendingPathComponent:imageName];
+        
+        [binaryImageData writeToFile:imagePath atomically:YES];
+        
+        QBChatMessage* message = [QBChatMessage new];
+        message.senderID = self.senderID;
+        
+        QBChatAttachment *attacment = [[QBChatAttachment alloc] init];
+        attacment.url = imagePath;
+        
+        message.attachments = @[attacment];
+        
+        [self.items addObject:message];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self finishSendingMessageAnimated:YES];
+        });
+    });
 }
 
 
@@ -175,12 +162,17 @@ NS_ENUM(NSUInteger, QMMessageType) {
     else {
         
         if (item.senderID != self.senderID) {
-            
-            return [QMChatIncomingCell class];
-        }
-        else {
-            
-            return [QMChatOutgoingCell class];
+            if ((item.attachments != nil && item.attachments.count > 0)) {
+                return [QMChatAttachmentIncomingCell class];
+            } else {
+                return [QMChatIncomingCell class];
+            }
+        } else {
+            if ((item.attachments != nil && item.attachments.count > 0)) {
+                return [QMChatAttachmentOutgoingCell class];
+            } else {
+                return [QMChatOutgoingCell class];
+            }
         }
     }
     
@@ -190,12 +182,19 @@ NS_ENUM(NSUInteger, QMMessageType) {
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth {
     
     QBChatMessage *item = self.items[indexPath.item];
+    Class viewClass = [self viewClassForItem:item];
+    CGSize size;
     
-    NSAttributedString *attributedString = [self attributedStringForItem:item];
+    if (viewClass == [QMChatAttachmentIncomingCell class] || viewClass == [QMChatAttachmentOutgoingCell class]) {
+        size = CGSizeMake(MIN(200, maxWidth), 200);
+    } else {
+        NSAttributedString *attributedString = [self attributedStringForItem:item];
+        
+        size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
+                                                withConstraints:CGSizeMake(maxWidth, MAXFLOAT)
+                                         limitedToNumberOfLines:0];
+    }
     
-    CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
-                                                   withConstraints:CGSizeMake(maxWidth, MAXFLOAT)
-                                            limitedToNumberOfLines:0];
     return size;
 }
 
@@ -213,13 +212,36 @@ NS_ENUM(NSUInteger, QMMessageType) {
     return size.width;
 }
 
+- (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell conformsToProtocol:@protocol(QMChatAttachmentCell)]) {
+        QBChatMessage* message = self.items[indexPath.row];
+        
+        if (message.attachments != nil) {
+            QBChatAttachment* attachment = message.attachments.firstObject;
+            NSData *imageData = [NSData dataWithContentsOfFile:attachment.url];
+            [(UICollectionViewCell<QMChatAttachmentCell> *)cell setAttachmentImage:[UIImage imageWithData:imageData]];
+            
+            [cell updateConstraints];
+        }
+    }
+    
+    [super collectionView:collectionView configureCell:cell forIndexPath:indexPath];
+}
+
+
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
     
     UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor whiteColor] : [UIColor colorWithWhite:0.290 alpha:1.000];
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:15];
     NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
 
-    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:messageItem.text attributes:attributes];
+    NSMutableAttributedString *attrStr;
+    
+    if ([messageItem.text length] > 0) {
+        
+        attrStr = [[NSMutableAttributedString alloc] initWithString:messageItem.text attributes:attributes];
+    }
     
     return attrStr;
 }
@@ -265,6 +287,22 @@ NS_ENUM(NSUInteger, QMMessageType) {
     NSString *timeStamp = [dateFormatter stringFromDate:date];
     
     return timeStamp;
+}
+
+- (UIImage *)resizedImageFromImage:(UIImage *)image
+{
+    CGFloat largestSide = image.size.width > image.size.height ? image.size.width : image.size.height;
+    CGFloat scaleCoefficient = largestSide / 560.0f;
+    CGSize newSize = CGSizeMake(image.size.width / scaleCoefficient, image.size.height / scaleCoefficient);
+    
+    UIGraphicsBeginImageContext(newSize);
+    
+    [image drawInRect:(CGRect){0, 0, newSize.width, newSize.height}];
+    UIImage* resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return resizedImage;
 }
 
 @end

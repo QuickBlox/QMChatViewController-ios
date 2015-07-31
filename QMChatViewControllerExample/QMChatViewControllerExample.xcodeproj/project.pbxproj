@@ -11,6 +11,8 @@
 		2CC28D661B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC28D601B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib */; };
 		2CC28D671B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */; };
 		2CC28D681B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */; };
+		2CD7C7E71B6A5A450061BD59 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CD7C7E61B6A5A450061BD59 /* UIImage+fixOrientation.m */; };
+		2CDD85641B6B5DC60052ADC1 /* quickblox-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */; };
 		344763DE0E88003383FC1EB9 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38E4A36B363B72DDC056730F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
@@ -64,6 +66,9 @@
 		2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatAttachmentOutgoingCell.m; sourceTree = "<group>"; };
 		2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QMChatAttachmentOutgoingCell.xib; sourceTree = "<group>"; };
 		2CC28D6B1B68D65400737B80 /* QMChatAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatAttachmentCell.h; sourceTree = "<group>"; };
+		2CD7C7E51B6A5A450061BD59 /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+fixOrientation.h"; path = "../../../sample-chat/sample-chat/ThirdParty/UIImage+fixOrientation.h"; sourceTree = "<group>"; };
+		2CD7C7E61B6A5A450061BD59 /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+fixOrientation.m"; path = "../../../sample-chat/sample-chat/ThirdParty/UIImage+fixOrientation.m"; sourceTree = "<group>"; };
+		2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickblox-image.png"; sourceTree = "<group>"; };
 		38E4A36B363B72DDC056730F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChatViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -442,6 +447,8 @@
 		FB4DC4511B1F3AF50083A3A2 /* QMChat */ = {
 			isa = PBXGroup;
 			children = (
+				2CD7C7E51B6A5A450061BD59 /* UIImage+fixOrientation.h */,
+				2CD7C7E61B6A5A450061BD59 /* UIImage+fixOrientation.m */,
 				FB4DC4521B1F3AF50083A3A2 /* AppDelegate.h */,
 				FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */,
 				FB4DC4541B1F3AF50083A3A2 /* LaunchScreen.xib */,
@@ -451,6 +458,7 @@
 				FB4DC45A1B1F3AF50083A3A2 /* main.m */,
 				FB4DC4AB1B1F3AF50083A3A2 /* DemoChatViewController.h */,
 				FB4DC4AC1B1F3AF50083A3A2 /* DemoChatViewController.m */,
+				2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */,
 			);
 			path = QMChat;
 			sourceTree = "<group>";
@@ -526,6 +534,7 @@
 				2CC28D661B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib in Resources */,
 				2CC28D681B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib in Resources */,
 				865A68F71B21C4AC003AC969 /* ChatAssets.xcassets in Resources */,
+				2CDD85641B6B5DC60052ADC1 /* quickblox-image.png in Resources */,
 				865A690F1B21C4AC003AC969 /* QMLoadEarlierHeaderView.xib in Resources */,
 				865A69031B21C4AC003AC969 /* QMChatOutgoingCell.xib in Resources */,
 			);
@@ -610,6 +619,7 @@
 				865A68F81B21C4AC003AC969 /* QMKeyboardController.m in Sources */,
 				865A69061B21C4AC003AC969 /* QMCollectionViewFlowLayoutInvalidationContext.m in Sources */,
 				865A68F91B21C4AC003AC969 /* QMChatViewController.m in Sources */,
+				2CD7C7E71B6A5A450061BD59 /* UIImage+fixOrientation.m in Sources */,
 				865A69041B21C4AC003AC969 /* QMChatCellLayoutAttributes.m in Sources */,
 				FB4DC4AD1B1F3AF50083A3A2 /* AppDelegate.m in Sources */,
 			);

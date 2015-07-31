@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="MUd-TY-LP8" customClass="QMChatOutgoingCell">
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="MUd-TY-LP8" customClass="QMChatOutgoingCell">
             <rect key="frame" x="0.0" y="0.0" width="253" height="74"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -44,14 +44,14 @@
                                             <constraint firstAttribute="height" constant="21" id="VYw-Ld-ar1"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message Text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwl-pf-rea" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="0.0" y="21" width="162" height="24"/>
                                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16:44" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KM3-Oj-tba" customClass="TTTAttributedLabel">
@@ -61,7 +61,7 @@
                                             <constraint firstAttribute="height" constant="21" id="WU0-tf-mgf"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -111,7 +111,6 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="7u5-rz-uqE" secondAttribute="trailing" id="Dl5-2o-5N4"/>
                 <constraint firstAttribute="bottom" secondItem="IHn-aU-joG" secondAttribute="bottom" id="HI8-MG-YKY"/>
-                <constraint firstItem="IHn-aU-joG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MUd-TY-LP8" secondAttribute="leading" id="IKj-Vj-35b"/>
                 <constraint firstItem="7u5-rz-uqE" firstAttribute="leading" secondItem="IHn-aU-joG" secondAttribute="trailing" constant="2" id="hRe-dp-gde"/>
                 <constraint firstItem="IHn-aU-joG" firstAttribute="top" secondItem="MUd-TY-LP8" secondAttribute="top" id="kQX-PE-key"/>
                 <constraint firstAttribute="bottom" secondItem="7u5-rz-uqE" secondAttribute="bottom" id="wcc-4f-AaS"/>
@@ -133,7 +132,7 @@
                 <outlet property="topLabel" destination="h8u-4h-IEt" id="hdo-Lk-tvT"/>
                 <outlet property="topLableHeightConstraint" destination="VYw-Ld-ar1" id="UKi-in-P6g"/>
             </connections>
-            <point key="canvasLocation" x="-41.5" y="263"/>
+            <point key="canvasLocation" x="256.5" y="369"/>
         </collectionViewCell>
     </objects>
 </document>
