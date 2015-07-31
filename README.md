@@ -12,7 +12,7 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - Auto Layout inside.
 
 # Screenshots
-![](Screenshots/screenshot1.png) &nbsp;&nbsp; ![](Screenshots/screenshot3.png)&nbsp;&nbsp;
+![](Screenshots/screenshot4.png) &nbsp;&nbsp; ![](Screenshots/screenshot1.png) &nbsp;&nbsp; ![](Screenshots/screenshot3.png)&nbsp;&nbsp;
 
 ![](Screenshots/screenshot2.png)
 
