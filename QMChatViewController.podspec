@@ -46,6 +46,7 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 
+  s.resources = ["QMChatViewController/**/*.xib"]
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
   s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
