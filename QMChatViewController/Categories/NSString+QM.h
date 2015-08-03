@@ -11,11 +11,10 @@
 @interface NSString (QM)
 
 /**
- *  Remove [ ]+ symbols and trim whitespaces and new line characters
+ *  Removes [ ]+ symbols and trim whitespaces and new line characters
  *
  *  @return clean string
  */
-
 - (NSString *)stringByTrimingWhitespace;
 
 @end
