@@ -34,48 +34,47 @@ NS_ENUM(NSUInteger, QMMessageType) {
     self.senderID = 2000;
     self.senderDisplayName = @"hello";
     self.title = @"Chat";
-    // Do any additional setup after loading the view, typically from a nib.
     self.showLoadEarlierMessagesHeader = YES;
     
+    
     // Create test data source
-    QBChatMessage *msg = [QBChatMessage message];
-    msg.ID = @"1";
-    msg.senderID = QMMessageTypeContactRequest;
-    msg.senderNick = @"Andrey M. ";
-    msg.text = @"Andrey M.\nwould like to chat with you";
-    msg.dateSent = [NSDate date];
-    [self.items addObject:msg];
-
-    QBChatMessage *msg2 = [QBChatMessage message];
-    msg2.ID = @"2";
-    msg2.senderID = self.senderID;
-    msg2.senderNick = @"Andrey I.";
-    msg2.text = @"Why Q-municate is a right choice?";
-    msg2.dateSent = [NSDate date];
-    [self.items addObject:msg2];
-
-    QBChatMessage *msg3 = [QBChatMessage message];
-    msg3.ID = @"3";
-    msg3.senderID = 20001;
-    msg3.senderNick = @"Andrey M.";
-    msg3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
-    msg3.dateSent = [NSDate date];
-    [self.items addObject:msg3];
-    
-    QBChatMessage *msg4 = [QBChatMessage message];
-    msg4.ID = @"4";
-    msg4.senderID = 20001;
-    msg4.senderNick = @"Andrey M.";
-    
+    //
+    QBChatMessage *message1 = [QBChatMessage message];
+    message1.senderID = QMMessageTypeContactRequest;
+    message1.senderNick = @"Andrey M. ";
+    message1.text = @"Andrey M.\nwould like to chat with you";
+    message1.dateSent = [NSDate date];
+    [self.items addObject:message1];
+    //
+    //
+    QBChatMessage *message2 = [QBChatMessage message];
+    message2.senderID = self.senderID;
+    message2.senderNick = @"Andrey I.";
+    message2.text = @"Why Q-municate is a right choice?";
+    message2.dateSent = [NSDate date];
+    [self.items addObject:message2];
+    //
+    //
+    QBChatMessage *message3 = [QBChatMessage message];
+    message3.senderID = 20001;
+    message3.senderNick = @"Andrey M.";
+    message3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
+    message3.dateSent = [NSDate date];
+    [self.items addObject:message3];
+    //
+    //
+    // message with an attachment
+    //
+    QBChatMessage *message4 = [QBChatMessage message];
+    message4.ID = @"4";
+    message4.senderID = 20001;
+    message4.senderNick = @"Andrey M.";
     QBChatAttachment *attachment = [QBChatAttachment new];
-    
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"quickblox-image" ofType:@"png"];
-    
     attachment.url = imagePath;
-    
-    msg4.attachments = @[attachment];
-    msg4.dateSent = [NSDate date];
-    [self.items addObject:msg4];
+    message4.attachments = @[attachment];
+    message4.dateSent = [NSDate date];
+    [self.items addObject:message4];
 }
 
 - (void)didReceiveMemoryWarning {

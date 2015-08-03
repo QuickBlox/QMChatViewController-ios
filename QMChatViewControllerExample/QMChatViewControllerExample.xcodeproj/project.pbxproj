@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2CD7C7E71B6A5A450061BD59 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CD7C7E61B6A5A450061BD59 /* UIImage+fixOrientation.m */; };
 		2CDD85641B6B5DC60052ADC1 /* quickblox-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
@@ -25,8 +24,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2CD7C7E51B6A5A450061BD59 /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+fixOrientation.h"; path = "../../../sample-chat/sample-chat/ThirdParty/UIImage+fixOrientation.h"; sourceTree = "<group>"; };
-		2CD7C7E61B6A5A450061BD59 /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+fixOrientation.m"; path = "../../../sample-chat/sample-chat/ThirdParty/UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 		2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickblox-image.png"; sourceTree = "<group>"; };
 		5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChatViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -114,8 +111,6 @@
 		FB4DC4511B1F3AF50083A3A2 /* QMChat */ = {
 			isa = PBXGroup;
 			children = (
-				2CD7C7E51B6A5A450061BD59 /* UIImage+fixOrientation.h */,
-				2CD7C7E61B6A5A450061BD59 /* UIImage+fixOrientation.m */,
 				FB4DC4521B1F3AF50083A3A2 /* AppDelegate.h */,
 				FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */,
 				FB4DC4541B1F3AF50083A3A2 /* LaunchScreen.xib */,
@@ -237,7 +232,6 @@
 			files = (
 				FB4DC4B21B1F3AF50083A3A2 /* main.m in Sources */,
 				FB2ED4351B21DFCF0024A627 /* DemoChatViewController.m in Sources */,
-				2CD7C7E71B6A5A450061BD59 /* UIImage+fixOrientation.m in Sources */,
 				FB4DC4AD1B1F3AF50083A3A2 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
