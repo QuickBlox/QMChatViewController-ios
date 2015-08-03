@@ -1,9 +1,9 @@
 //
 //  QMChatIncomingCell.h
-//  Q-municate
+//  QMChatViewController
 //
 //  Created by Andrey Ivanov on 29.05.15.
-//  Copyright (c) 2015 Quickblox. All rights reserved.
+//  Copyright (c) 2015 QuickBlox Team. All rights reserved.
 //
 
 #import "QMChatCell.h"

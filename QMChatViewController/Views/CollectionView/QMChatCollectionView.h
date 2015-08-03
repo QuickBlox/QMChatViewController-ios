@@ -1,6 +1,6 @@
 //
 //  QMChatCollectionView.h
-//  QMChat
+//  QMChatViewController
 //
 //  Created by Andrey Ivanov on 20.04.15.
 //  Copyright (c) 2015 QuickBlox Team. All rights reserved.
