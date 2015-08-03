@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2CC47BBE1B6F8BF300FFCE70 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC47BBD1B6F8BF300FFCE70 /* UIImage+fixOrientation.m */; };
-		2CDD85641B6B5DC60052ADC1 /* quickblox-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
 		5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED01AE6742F005AA288 /* MobileCoreServices.framework */; };
@@ -17,17 +15,18 @@
 		5519EED71AE67456005AA288 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED61AE67456005AA288 /* libz.dylib */; };
 		5519EED91AE67462005AA288 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED81AE67462005AA288 /* SystemConfiguration.framework */; };
 		5ED085F0F7DC5435935952A9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAEFEA0B1BD3D49332EE268 /* libPods.a */; };
-		865A69121B21EE62003AC969 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4DC4561B1F3AF50083A3A2 /* Main.storyboard */; };
-		FB2ED4351B21DFCF0024A627 /* DemoChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC4AC1B1F3AF50083A3A2 /* DemoChatViewController.m */; };
-		FB4DC4AD1B1F3AF50083A3A2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */; };
-		FB4DC4B01B1F3AF50083A3A2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB4DC4581B1F3AF50083A3A2 /* Images.xcassets */; };
-		FB4DC4B21B1F3AF50083A3A2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4DC45A1B1F3AF50083A3A2 /* main.m */; };
+		BF53312A1B6F9036000B5409 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF53311D1B6F9036000B5409 /* AppDelegate.m */; };
+		BF53312B1B6F9036000B5409 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF53311E1B6F9036000B5409 /* LaunchScreen.xib */; };
+		BF53312C1B6F9036000B5409 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5331201B6F9036000B5409 /* Main.storyboard */; };
+		BF53312D1B6F9036000B5409 /* DemoChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5331231B6F9036000B5409 /* DemoChatViewController.m */; };
+		BF53312E1B6F9036000B5409 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF5331241B6F9036000B5409 /* Images.xcassets */; };
+		BF53312F1B6F9036000B5409 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF5331251B6F9036000B5409 /* Info.plist */; };
+		BF5331301B6F9036000B5409 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5331261B6F9036000B5409 /* main.m */; };
+		BF5331311B6F9036000B5409 /* quickblox-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BF5331271B6F9036000B5409 /* quickblox-image.png */; };
+		BF5331321B6F9036000B5409 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5331291B6F9036000B5409 /* UIImage+fixOrientation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2CC47BBC1B6F8BF300FFCE70 /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+fixOrientation.h"; sourceTree = "<group>"; };
-		2CC47BBD1B6F8BF300FFCE70 /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
-		2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickblox-image.png"; sourceTree = "<group>"; };
 		5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChatViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5519EECE1AE67424005AA288 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -39,15 +38,18 @@
 		8C1EDE9B0A2856F9ACF5A244 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		9AA93D1F9A7A4DE000CBEC30 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		BBAEFEA0B1BD3D49332EE268 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB4DC4521B1F3AF50083A3A2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		FB4DC4551B1F3AF50083A3A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		FB4DC4571B1F3AF50083A3A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		FB4DC4581B1F3AF50083A3A2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		FB4DC4591B1F3AF50083A3A2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FB4DC45A1B1F3AF50083A3A2 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FB4DC4AB1B1F3AF50083A3A2 /* DemoChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoChatViewController.h; sourceTree = "<group>"; };
-		FB4DC4AC1B1F3AF50083A3A2 /* DemoChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoChatViewController.m; sourceTree = "<group>"; };
+		BF53311C1B6F9036000B5409 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BF53311D1B6F9036000B5409 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BF53311F1B6F9036000B5409 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		BF5331211B6F9036000B5409 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BF5331221B6F9036000B5409 /* DemoChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoChatViewController.h; sourceTree = "<group>"; };
+		BF5331231B6F9036000B5409 /* DemoChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoChatViewController.m; sourceTree = "<group>"; };
+		BF5331241B6F9036000B5409 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BF5331251B6F9036000B5409 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF5331261B6F9036000B5409 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BF5331271B6F9036000B5409 /* quickblox-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "quickblox-image.png"; sourceTree = "<group>"; };
+		BF5331281B6F9036000B5409 /* UIImage+fixOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+fixOrientation.h"; sourceTree = "<group>"; };
+		BF5331291B6F9036000B5409 /* UIImage+fixOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+fixOrientation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +74,7 @@
 		5501A7741AD2DA8F00D0AE0D = {
 			isa = PBXGroup;
 			children = (
-				FB4DC4511B1F3AF50083A3A2 /* QMChat */,
+				BF53311B1B6F9036000B5409 /* QMChatViewControllerExample */,
 				5507EBDE1AE8E92800ECD26E /* Frameworks */,
 				5501A77E1AD2DA8F00D0AE0D /* Products */,
 				5BFB38554CE0E135BF8F05D1 /* Pods */,
@@ -111,23 +113,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		FB4DC4511B1F3AF50083A3A2 /* QMChat */ = {
+		BF53311B1B6F9036000B5409 /* QMChatViewControllerExample */ = {
 			isa = PBXGroup;
 			children = (
-				2CC47BBC1B6F8BF300FFCE70 /* UIImage+fixOrientation.h */,
-				2CC47BBD1B6F8BF300FFCE70 /* UIImage+fixOrientation.m */,
-				FB4DC4521B1F3AF50083A3A2 /* AppDelegate.h */,
-				FB4DC4531B1F3AF50083A3A2 /* AppDelegate.m */,
-				FB4DC4541B1F3AF50083A3A2 /* LaunchScreen.xib */,
-				FB4DC4561B1F3AF50083A3A2 /* Main.storyboard */,
-				FB4DC4581B1F3AF50083A3A2 /* Images.xcassets */,
-				FB4DC4591B1F3AF50083A3A2 /* Info.plist */,
-				FB4DC45A1B1F3AF50083A3A2 /* main.m */,
-				FB4DC4AB1B1F3AF50083A3A2 /* DemoChatViewController.h */,
-				FB4DC4AC1B1F3AF50083A3A2 /* DemoChatViewController.m */,
-				2CDD85631B6B5DC60052ADC1 /* quickblox-image.png */,
+				BF53311C1B6F9036000B5409 /* AppDelegate.h */,
+				BF53311D1B6F9036000B5409 /* AppDelegate.m */,
+				BF53311E1B6F9036000B5409 /* LaunchScreen.xib */,
+				BF5331201B6F9036000B5409 /* Main.storyboard */,
+				BF5331221B6F9036000B5409 /* DemoChatViewController.h */,
+				BF5331231B6F9036000B5409 /* DemoChatViewController.m */,
+				BF5331281B6F9036000B5409 /* UIImage+fixOrientation.h */,
+				BF5331291B6F9036000B5409 /* UIImage+fixOrientation.m */,
+				BF5331241B6F9036000B5409 /* Images.xcassets */,
+				BF5331251B6F9036000B5409 /* Info.plist */,
+				BF5331261B6F9036000B5409 /* main.m */,
+				BF5331271B6F9036000B5409 /* quickblox-image.png */,
 			);
-			path = QMChat;
+			path = QMChatViewControllerExample;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,9 +191,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				865A69121B21EE62003AC969 /* Main.storyboard in Resources */,
-				FB4DC4B01B1F3AF50083A3A2 /* Images.xcassets in Resources */,
-				2CDD85641B6B5DC60052ADC1 /* quickblox-image.png in Resources */,
+				BF5331311B6F9036000B5409 /* quickblox-image.png in Resources */,
+				BF53312B1B6F9036000B5409 /* LaunchScreen.xib in Resources */,
+				BF53312C1B6F9036000B5409 /* Main.storyboard in Resources */,
+				BF53312E1B6F9036000B5409 /* Images.xcassets in Resources */,
+				BF53312F1B6F9036000B5409 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,28 +239,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB4DC4B21B1F3AF50083A3A2 /* main.m in Sources */,
-				FB2ED4351B21DFCF0024A627 /* DemoChatViewController.m in Sources */,
-				2CC47BBE1B6F8BF300FFCE70 /* UIImage+fixOrientation.m in Sources */,
-				FB4DC4AD1B1F3AF50083A3A2 /* AppDelegate.m in Sources */,
+				BF53312D1B6F9036000B5409 /* DemoChatViewController.m in Sources */,
+				BF5331321B6F9036000B5409 /* UIImage+fixOrientation.m in Sources */,
+				BF5331301B6F9036000B5409 /* main.m in Sources */,
+				BF53312A1B6F9036000B5409 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FB4DC4541B1F3AF50083A3A2 /* LaunchScreen.xib */ = {
+		BF53311E1B6F9036000B5409 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FB4DC4551B1F3AF50083A3A2 /* Base */,
+				BF53311F1B6F9036000B5409 /* Base */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
-		FB4DC4561B1F3AF50083A3A2 /* Main.storyboard */ = {
+		BF5331201B6F9036000B5409 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FB4DC4571B1F3AF50083A3A2 /* Base */,
+				BF5331211B6F9036000B5409 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -352,7 +356,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = QMChat/Info.plist;
+				INFOPLIST_FILE = QMChatViewControllerExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = QMChatViewControllerExample;
@@ -371,7 +375,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/include/libxml2,
 				);
-				INFOPLIST_FILE = QMChat/Info.plist;
+				INFOPLIST_FILE = QMChatViewControllerExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = QMChatViewControllerExample;
