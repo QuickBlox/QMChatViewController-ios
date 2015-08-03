@@ -1,27 +1,5 @@
 # QMChatViewController
-An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox mBaaS.
-
-# Screenshots
-![](Screenshots/screenshot1.png) &nbsp;&nbsp; ![](Screenshots/screenshot3.png)&nbsp;&nbsp;
-
-![](Screenshots/screenshot2.png)
-
-# Requirements
-- iOS 7.0+
-- ARC
-- Xcode 6
-- Quickblox 2.0+
-- TTTAttributedLabel
-
-# Installation
-* Drag QMChatViewController folder to your project folder and link to the appropriate target.
-
-* Install dependencies.
-
-# Dependencies
-- TTTAttributedLabel (If you are using pods, add this to your Podfile - *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*)
-- Quickblox iOS SDK v2.0+ (If you are using pods, add this to your Podfile - *pod 'QuickBlox', '2.3'*)
-
+An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend.
 
 #Features
 - Ready-to-go chat view controller with a set of cells.
@@ -33,13 +11,38 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - Supports portrait and landscape orientations.
 - Auto Layout inside.
 
+# Screenshots
+![](Screenshots/screenshot1.png) &nbsp;&nbsp; ![](Screenshots/screenshot3.png)&nbsp;&nbsp;
+
+![](Screenshots/screenshot2.png)
+
+# Requirements
+- iOS 7.0+
+- ARC
+- Xcode 6+
+- Quickblox SDK 2.0+
+- TTTAttributedLabel
+
+# Installation
+* Drag QMChatViewController folder to your project folder and link to the appropriate target.
+
+* Install dependencies.
+
+# Dependencies
+- TTTAttributedLabel. If you are using pods, add this to your Podfile:
+
+  *pod 'TTTAttributedLabel', :git => 'https://github.com/TTTAttributedLabel/TTTAttributedLabel.git'*
+- Quickblox iOS SDK v2.0+. If you are using pods, add this to your Podfile:
+
+  *pod 'QuickBlox'*
+
 # Getting started
 Example is included in repository. Try it out to see how chat view controller works.
 
 Steps to add QMChatViewController to Your app:
 
 1. Create a subclass of QMChatViewController. You could create it both from code and Interface Builder.
-2. Open your subclass of QMChatViewController and in *viewDidLoad* method. 
+2. Open your subclass of QMChatViewController and do the following in *viewDidLoad* method:
     * Configure chat sender ID and display name:
 
 	````objective-c
@@ -203,10 +206,9 @@ Steps to add QMChatViewController to Your app:
 
 *QMChatViewController* supports image attachment cell messages. *QMChatAttachmentIncomingCell* is used for incoming attachments, *QMChatAttachmentOutgoingCell* is used for outgoing attachments. Both of them have progress label to display loading progress. XIB's are also included.
 
-# Quick tips
-
 # Questions & Help
-You could create an issue on GitHub if you are experiencing any problems. We will be happy to help you.
+- You could create an issue on GitHub if you are experiencing any problems. We will be happy to help you. 
+- Or you can ask a 'quickblox' tagged question on StackOverflow http://stackoverflow.com/questions/ask
 
 # Documentation
 Inline code documentation available.

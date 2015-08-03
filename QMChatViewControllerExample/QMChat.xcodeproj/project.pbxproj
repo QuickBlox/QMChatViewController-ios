@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0739E55DBDF9DBEC145B6D2B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F68C41DC14B471EC7F49541 /* libPods.a */; };
+		2CC28D651B68D55F00737B80 /* QMChatAttachmentIncomingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC28D5F1B68D55F00737B80 /* QMChatAttachmentIncomingCell.m */; };
+		2CC28D661B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC28D601B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib */; };
+		2CC28D671B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */; };
+		2CC28D681B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
 		5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED01AE6742F005AA288 /* MobileCoreServices.framework */; };
@@ -54,6 +58,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2CC28D5E1B68D55F00737B80 /* QMChatAttachmentIncomingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatAttachmentIncomingCell.h; sourceTree = "<group>"; };
+		2CC28D5F1B68D55F00737B80 /* QMChatAttachmentIncomingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatAttachmentIncomingCell.m; sourceTree = "<group>"; };
+		2CC28D601B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QMChatAttachmentIncomingCell.xib; sourceTree = "<group>"; };
+		2CC28D621B68D55F00737B80 /* QMChatAttachmentOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatAttachmentOutgoingCell.h; sourceTree = "<group>"; };
+		2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMChatAttachmentOutgoingCell.m; sourceTree = "<group>"; };
+		2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QMChatAttachmentOutgoingCell.xib; sourceTree = "<group>"; };
+		2CC28D6B1B68D65400737B80 /* QMChatAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatAttachmentCell.h; sourceTree = "<group>"; };
 		3F68C41DC14B471EC7F49541 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5501A77D1AD2DA8F00D0AE0D /* QMChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -150,6 +161,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2CC28D5D1B68D55F00737B80 /* QMChatAttachmentIncomingCell */ = {
+			isa = PBXGroup;
+			children = (
+				2CC28D5E1B68D55F00737B80 /* QMChatAttachmentIncomingCell.h */,
+				2CC28D5F1B68D55F00737B80 /* QMChatAttachmentIncomingCell.m */,
+				2CC28D601B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib */,
+			);
+			path = QMChatAttachmentIncomingCell;
+			sourceTree = "<group>";
+		};
+		2CC28D611B68D55F00737B80 /* QMChatAttachmentOutgoingCell */ = {
+			isa = PBXGroup;
+			children = (
+				2CC28D621B68D55F00737B80 /* QMChatAttachmentOutgoingCell.h */,
+				2CC28D631B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m */,
+				2CC28D641B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib */,
+			);
+			path = QMChatAttachmentOutgoingCell;
+			sourceTree = "<group>";
+		};
+		2CC28D6A1B68D65400737B80 /* QMChatAttachmentCell */ = {
+			isa = PBXGroup;
+			children = (
+				2CC28D6B1B68D65400737B80 /* QMChatAttachmentCell.h */,
+			);
+			path = QMChatAttachmentCell;
+			sourceTree = "<group>";
+		};
 		5501A7741AD2DA8F00D0AE0D = {
 			isa = PBXGroup;
 			children = (
@@ -259,6 +298,9 @@
 		865A68BB1B21C4AC003AC969 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				2CC28D6A1B68D65400737B80 /* QMChatAttachmentCell */,
+				2CC28D5D1B68D55F00737B80 /* QMChatAttachmentIncomingCell */,
+				2CC28D611B68D55F00737B80 /* QMChatAttachmentOutgoingCell */,
 				865A68BC1B21C4AC003AC969 /* QMChatCell */,
 				865A68C01B21C4AC003AC969 /* QMChatContactRequestCell */,
 				865A68C41B21C4AC003AC969 /* QMChatIncomingCell */,
@@ -484,6 +526,8 @@
 				865A69011B21C4AC003AC969 /* QMChatNotificationCell.xib in Resources */,
 				865A68FD1B21C4AC003AC969 /* QMChatContactRequestCell.xib in Resources */,
 				FB2ED4341B21DEE20024A627 /* QMChatViewController.xib in Resources */,
+				2CC28D661B68D55F00737B80 /* QMChatAttachmentIncomingCell.xib in Resources */,
+				2CC28D681B68D55F00737B80 /* QMChatAttachmentOutgoingCell.xib in Resources */,
 				865A68F71B21C4AC003AC969 /* ChatAssets.xcassets in Resources */,
 				865A690F1B21C4AC003AC969 /* QMLoadEarlierHeaderView.xib in Resources */,
 				865A69031B21C4AC003AC969 /* QMChatOutgoingCell.xib in Resources */,
@@ -537,6 +581,7 @@
 				865A690B1B21C4AC003AC969 /* QMPlaceHolderTextView.m in Sources */,
 				865A690D1B21C4AC003AC969 /* QMChatContainerView.m in Sources */,
 				FB4DC4B21B1F3AF50083A3A2 /* main.m in Sources */,
+				2CC28D651B68D55F00737B80 /* QMChatAttachmentIncomingCell.m in Sources */,
 				865A69091B21C4AC003AC969 /* QMToolbarContentView.m in Sources */,
 				865A69021B21C4AC003AC969 /* QMChatOutgoingCell.m in Sources */,
 				865A68F41B21C4AC003AC969 /* UIColor+QM.m in Sources */,
@@ -545,6 +590,7 @@
 				865A68FB1B21C4AC003AC969 /* QMChatCell.m in Sources */,
 				865A68F61B21C4AC003AC969 /* UIView+QM.m in Sources */,
 				865A68FE1B21C4AC003AC969 /* QMChatIncomingCell.m in Sources */,
+				2CC28D671B68D55F00737B80 /* QMChatAttachmentOutgoingCell.m in Sources */,
 				865A68FC1B21C4AC003AC969 /* QMChatContactRequestCell.m in Sources */,
 				865A69101B21C4AC003AC969 /* QMTypingIndicatorFooterView.m in Sources */,
 				865A69051B21C4AC003AC969 /* QMChatCollectionViewFlowLayout.m in Sources */,
