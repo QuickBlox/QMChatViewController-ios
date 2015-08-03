@@ -24,16 +24,7 @@ PODS:
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
-  - QMChatViewController (from `https://github.com/QuickBlox/QMChatViewController-ios.git`)
-
-EXTERNAL SOURCES:
-  QMChatViewController:
-    :git: https://github.com/QuickBlox/QMChatViewController-ios.git
-
-CHECKOUT OPTIONS:
-  QMChatViewController:
-    :commit: d3c3884475159f33a1a47da368525b0bbccf2ff2
-    :git: https://github.com/QuickBlox/QMChatViewController-ios.git
+  - QMChatViewController
 
 SPEC CHECKSUMS:
   QMChatViewController: 71a5fa3e065d29d3a69d1285cc78b1549d7c629d
