@@ -24,17 +24,15 @@ PODS:
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
-  - QMChatViewController (from `https://github.com/QuickBlox/QMChatViewController-ios.git`,
-    branch `QBIOSSDK-310`)
+  - QMChatViewController (from `https://github.com/QuickBlox/QMChatViewController-ios.git`)
 
 EXTERNAL SOURCES:
   QMChatViewController:
-    :branch: QBIOSSDK-310
     :git: https://github.com/QuickBlox/QMChatViewController-ios.git
 
 CHECKOUT OPTIONS:
   QMChatViewController:
-    :commit: 72f07088fc8666a56cf8020a74d09a1c20b8369f
+    :commit: d3c3884475159f33a1a47da368525b0bbccf2ff2
     :git: https://github.com/QuickBlox/QMChatViewController-ios.git
 
 SPEC CHECKSUMS:
