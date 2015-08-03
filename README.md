@@ -23,7 +23,7 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 
 # Installation
 ## CocoaPods
-* pod 'QMChatViewController', '~> 0.1'
+	pod 'QMChatViewController', '~> 0.1'
 	
 ## Manually
 * Drag QMChatViewController folder to your project folder and link to the appropriate target.
