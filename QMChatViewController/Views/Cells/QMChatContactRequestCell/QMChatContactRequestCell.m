@@ -32,4 +32,13 @@
     return contactRequestModel;
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    
+    if ([touch.view isKindOfClass:[UIButton class]]) {
+        return NO;
+    } else {
+        return [super gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
+    }
+}
+
 @end

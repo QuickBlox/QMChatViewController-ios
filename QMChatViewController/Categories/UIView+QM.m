@@ -8,7 +8,7 @@
 
 #import "UIView+QM.h"
 
-@implementation UIView (qmunicate)
+@implementation UIView (QM)
 
 - (void)pinSubview:(UIView *)subview toEdge:(NSLayoutAttribute)attribute {
     

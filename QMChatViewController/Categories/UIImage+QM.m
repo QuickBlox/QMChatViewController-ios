@@ -8,7 +8,7 @@
 
 #import "UIImage+QM.h"
 
-@implementation UIImage (qmunicate)
+@implementation UIImage (QM)
 
 - (UIImage *)imageMaskedWithColor:(UIColor *)maskColor {
     

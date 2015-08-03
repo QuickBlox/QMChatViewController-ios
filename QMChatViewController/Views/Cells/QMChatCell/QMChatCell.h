@@ -72,7 +72,7 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
 /**
  *  Base chat cell class.
  */
-@interface QMChatCell : UICollectionViewCell
+@interface QMChatCell : UICollectionViewCell <UIGestureRecognizerDelegate>
 
 /**
  *  Returns the message container view of the cell. This view is the superview of

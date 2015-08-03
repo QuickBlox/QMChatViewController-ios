@@ -8,8 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (qmunicate)
+@interface NSString (QM)
 
+/**
+ *  Removes [ ]+ symbols and trim whitespaces and new line characters
+ *
+ *  @return clean string
+ */
 - (NSString *)stringByTrimingWhitespace;
 
 @end

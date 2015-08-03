@@ -14,6 +14,8 @@
 
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
 #import "NSString+QM.h"
+#import "UIColor+QM.h"
+#import "UIImage+QM.h"
 #import "QMTypingIndicatorFooterView.h"
 #import "QMLoadEarlierHeaderView.h"
 #import "TTTAttributedLabel.h"
@@ -22,13 +24,14 @@
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
 
+@property (nonatomic, readonly) UIImagePickerController* pickerController;
 @property (weak, nonatomic) UIView *snapshotView;
 @property (strong, nonatomic) QMKeyboardController *keyboardController;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
@@ -38,6 +41,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @end
 
 @implementation QMChatViewController
+
+@synthesize pickerController = _pickerController;
 
 + (UINib *)nib {
     
@@ -150,6 +155,17 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
 }
 
+#pragma mark - Getters
+
+- (UIImagePickerController *)pickerController
+{
+    if (_pickerController == nil) {
+        _pickerController = [UIImagePickerController new];
+        _pickerController.delegate = self;
+    }
+    return _pickerController;
+}
+
 #pragma mark - Setters
 
 - (void)setShowTypingIndicator:(BOOL)showTypingIndicator {
@@ -192,6 +208,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     [self configureMessagesViewController];
     [self registerForNotifications:YES];
+    
+    //Customize your toolbar buttons
+    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
+    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -243,6 +263,55 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSLog(@"MEMORY WARNING: %s", __PRETTY_FUNCTION__);
 }
 
+#pragma mark - Tool bar
+
+- (UIButton *)accessoryButtonItem {
+    
+    UIImage *accessoryImage = [UIImage imageNamed:@"attachmentBtn"];
+    UIImage *normalImage = [accessoryImage imageMaskedWithColor:[UIColor lightGrayColor]];
+    UIImage *highlightedImage = [accessoryImage imageMaskedWithColor:[UIColor darkGrayColor]];
+    
+    UIButton *accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, accessoryImage.size.width, 32.0f)];
+    [accessoryButton setImage:normalImage forState:UIControlStateNormal];
+    [accessoryButton setImage:highlightedImage forState:UIControlStateHighlighted];
+    
+    accessoryButton.contentMode = UIViewContentModeScaleAspectFit;
+    accessoryButton.backgroundColor = [UIColor clearColor];
+    accessoryButton.tintColor = [UIColor lightGrayColor];
+    
+    return accessoryButton;
+}
+
+- (UIButton *)sendButtonItem {
+    
+    NSString *sendTitle = NSLocalizedString(@"Send", nil);
+    
+    UIButton *sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    [sendButton setTitle:sendTitle forState:UIControlStateNormal];
+    [sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [sendButton setTitleColor:[[UIColor blueColor] colorByDarkeningColorWithValue:0.1f] forState:UIControlStateHighlighted];
+    [sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    
+    sendButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    sendButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    sendButton.titleLabel.minimumScaleFactor = 0.85f;
+    sendButton.contentMode = UIViewContentModeCenter;
+    sendButton.backgroundColor = [UIColor clearColor];
+    sendButton.tintColor = [UIColor blueColor];
+    
+    CGFloat maxHeight = 32.0f;
+    
+    CGRect sendTitleRect = [sendTitle boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight)
+                                                   options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                attributes:@{ NSFontAttributeName : sendButton.titleLabel.font }
+                                                   context:nil];
+    
+    sendButton.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(CGRectIntegral(sendTitleRect)), maxHeight);
+    
+    return sendButton;
+}
+
+
 #pragma mark - View rotation
 
 - (BOOL)shouldAutorotate {
@@ -289,6 +358,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)didPressAccessoryButton:(UIButton *)sender {
     
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:nil otherButtonTitles:@"Camera", @"Photo Library", nil];
+    [actionSheet showInView:self.view];
+}
+
+- (void)didPickAttachmentImage:(UIImage *)image {
     NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
 }
 
@@ -592,6 +669,29 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
     
     [textView resignFirstResponder];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex  == 0) {
+        self.pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:self.pickerController animated:YES completion:nil];
+    } else if (buttonIndex == 1) {
+        self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:self.pickerController animated:YES completion:nil];
+    }
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    UIImage* image = info[UIImagePickerControllerOriginalImage];
+    
+    [self didPickAttachmentImage:image];
 }
 
 #pragma mark - Notifications
