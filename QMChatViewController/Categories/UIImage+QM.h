@@ -11,13 +11,12 @@
 @interface UIImage (QM)
 
 /**
- *  Added color mask to image
+ *  Adds color mask to image
  *
  *  @param maskColor color for mask
  *
  *  @return masked image
  */
-
 - (UIImage *)imageMaskedWithColor:(UIColor *)maskColor;
 
 @end
