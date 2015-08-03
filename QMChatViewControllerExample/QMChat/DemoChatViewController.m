@@ -89,6 +89,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     self.collectionView.collectionViewLayout.springinessEnabled = NO;
 }
 
+
 #pragma mark Tool bar Actions
 
 - (void)didPressSendButton:(UIButton *)button
