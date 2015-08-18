@@ -563,11 +563,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)collectionView:(QMChatCollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    
-    if (action == @selector(copy:)) {
-        
-        [[UIPasteboard generalPasteboard] setString:@"copy text"];
-    }
+    NSAssert(NO, @"Have to be overriden in subclasses.");
 }
 
 - (Class)viewClassForItem:(QBChatMessage *)item {
@@ -673,12 +669,12 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex  == 0) {
+    if (buttonIndex == 0 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         self.pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:self.pickerController animated:YES completion:nil];
-    } else if (buttonIndex == 1) {
+    } else if (buttonIndex == 1 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:self.pickerController animated:YES completion:nil];
     }
@@ -692,6 +688,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     UIImage* image = info[UIImagePickerControllerOriginalImage];
     
     [self didPickAttachmentImage:image];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - Notifications
