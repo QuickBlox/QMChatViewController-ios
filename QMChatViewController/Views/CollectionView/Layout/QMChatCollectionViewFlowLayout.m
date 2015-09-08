@@ -365,9 +365,11 @@
         layoutModel.containerInsets.top + layoutModel.containerInsets.bottom +
         layoutModel.topLabelHeight + layoutModel.bottomLabelHeight;
         
+        CGFloat additionalSpace = layoutModel.spaceBetweenTextViewAndBottomLabel + layoutModel.spaceBetweenTopLabelAndTextView;
+        
         CGFloat finalWidth = dynamicSize.width + horizontalInsetsTotal;
         
-        CGFloat cellHeight = dynamicSize.height + verticalContainerInsets;
+        CGFloat cellHeight = dynamicSize.height + verticalContainerInsets + additionalSpace;
         CGFloat finalCellHeigh = MAX(cellHeight, layoutModel.avatarSize.height);
         
         CGFloat minWidht = [self.chatCollectionView.delegate collectionView:self.chatCollectionView minWidthAtIndexPath:indexPath];
@@ -407,6 +409,8 @@
     layoutAttributes.containerInsets = layoutModel.containerInsets;
     layoutAttributes.topLabelHeight = layoutModel.topLabelHeight;
     layoutAttributes.bottomLabelHeight = layoutModel.bottomLabelHeight;
+    layoutAttributes.spaceBetweenTopLabelAndTextView = layoutModel.spaceBetweenTopLabelAndTextView;
+    layoutAttributes.spaceBetweenTextViewAndBottomLabel = layoutModel.spaceBetweenTextViewAndBottomLabel;
 }
 
 #pragma mark - Spring behavior utilities

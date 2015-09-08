@@ -119,6 +119,7 @@
                 <outlet property="messageContainerLeftInsetConstraint" destination="hqh-sL-9vc" id="Qnp-A7-Ke0"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="5b4-p7-Dki" id="ivg-8j-Kut"/>
                 <outlet property="progressLabel" destination="W2c-d1-FIr" id="2Q0-cr-Aau"/>
+                <outlet property="textViewBottomLableVerticalSpaceConstraint" destination="QGP-lp-lfN" id="TaH-Pe-XyQ"/>
             </connections>
             <point key="canvasLocation" x="-41.5" y="293.5"/>
         </collectionViewCell>

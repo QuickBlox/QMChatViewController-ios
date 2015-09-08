@@ -74,7 +74,9 @@
             ||(int)layoutAttributes.topLabelHeight != (int)self.topLabelHeight
             ||(int)layoutAttributes.bottomLabelHeight != (int)self.bottomLabelHeight
             ||!CGSizeEqualToSize(layoutAttributes.avatarSize, self.avatarSize)
-            ||!UIEdgeInsetsEqualToEdgeInsets(layoutAttributes.containerInsets, self.containerInsets)) {
+            ||!UIEdgeInsetsEqualToEdgeInsets(layoutAttributes.containerInsets, self.containerInsets)
+            || (int)layoutAttributes.spaceBetweenTopLabelAndTextView != (int)self.spaceBetweenTopLabelAndTextView
+            || (int)layoutAttributes.spaceBetweenTextViewAndBottomLabel != (int)self.spaceBetweenTextViewAndBottomLabel) {
             
             return NO;
         }
@@ -103,6 +105,8 @@
     copy.containerInsets = self.containerInsets;
     copy.bottomLabelHeight = self.bottomLabelHeight;
     copy.topLabelHeight = self.topLabelHeight;
+    copy.spaceBetweenTextViewAndBottomLabel = self.spaceBetweenTextViewAndBottomLabel;
+    copy.spaceBetweenTopLabelAndTextView = self.spaceBetweenTopLabelAndTextView;
     
     return copy;
 }

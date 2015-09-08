@@ -129,7 +129,9 @@
                 <outlet property="messageContainerRightInsetConstraint" destination="UcN-qd-Nxu" id="8Mn-ym-bz2"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="Oep-MV-D9j" id="3nI-aa-1UH"/>
                 <outlet property="textView" destination="gwl-pf-rea" id="y5I-qm-hyU"/>
+                <outlet property="textViewBottomLableVerticalSpaceConstraint" destination="BQZ-mi-zJi" id="7Xl-SO-17P"/>
                 <outlet property="topLabel" destination="h8u-4h-IEt" id="hdo-Lk-tvT"/>
+                <outlet property="topLabelTextViewVerticalSpaceConstraint" destination="mbp-Hv-6Tq" id="OJk-NT-Qbw"/>
                 <outlet property="topLableHeightConstraint" destination="VYw-Ld-ar1" id="UKi-in-P6g"/>
             </connections>
             <point key="canvasLocation" x="256.5" y="369"/>
