@@ -19,6 +19,8 @@ struct QMChatLayoutModel {
     CGFloat topLabelHeight;
     CGFloat bottomLabelHeight;
     CGSize staticContainerSize;
+    CGFloat spaceBetweenTopLabelAndTextView;
+    CGFloat spaceBetweenTextViewAndBottomLabel;
 };
 
 typedef struct QMChatLayoutModel QMChatCellLayoutModel;
