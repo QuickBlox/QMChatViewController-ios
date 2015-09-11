@@ -12,7 +12,8 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - Auto Layout inside.
 
 # Screenshots
-![](Screenshots/screenshot4.png) &nbsp;&nbsp;
+
+<img src="Screenshots/screenshot4.png" border="5" alt="Chat View Controller" width="300"> 
 
 # Requirements
 - iOS 7.0+
