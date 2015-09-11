@@ -216,8 +216,8 @@ Steps to add QMChatViewController to Your app:
 # Documentation
 Inline code documentation available.
 
-#License
-See LICENSE file.
+# License
+See [LICENSE](LICENSE)
 
 #Coming soon
 CocoaPods distribution.
