@@ -1,26 +1,26 @@
 PODS:
-  - QMChatViewController (0.1):
-    - QMChatViewController/Categories (= 0.1)
-    - QMChatViewController/KeyboardViewController (= 0.1)
-    - QMChatViewController/Protocols (= 0.1)
-    - QMChatViewController/Views (= 0.1)
+  - QMChatViewController (0.2.1):
+    - QMChatViewController/Categories (= 0.2.1)
+    - QMChatViewController/KeyboardViewController (= 0.2.1)
+    - QMChatViewController/Protocols (= 0.2.1)
+    - QMChatViewController/Views (= 0.2.1)
     - QuickBlox (~> 2.3)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/Categories (0.1):
+  - QMChatViewController/Categories (0.2.1):
     - QuickBlox (~> 2.3)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/KeyboardViewController (0.1):
+  - QMChatViewController/KeyboardViewController (0.2.1):
     - QuickBlox (~> 2.3)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/Protocols (0.1):
+  - QMChatViewController/Protocols (0.2.1):
     - QuickBlox (~> 2.3)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/Views (0.1):
+  - QMChatViewController/Views (0.2.1):
     - QMChatViewController/Categories
     - QMChatViewController/Protocols
     - QuickBlox (~> 2.3)
     - TTTAttributedLabel (~> 1.13)
-  - QuickBlox (2.3.0.4)
+  - QuickBlox (2.4)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
@@ -31,8 +31,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMChatViewController: 71a5fa3e065d29d3a69d1285cc78b1549d7c629d
-  QuickBlox: dd7cbe28afc5c078b10a5d977645ccddff25514b
+  QMChatViewController: 08fd9e71b3fedd6b7784de32e81d754b86faa45e
+  QuickBlox: a748ae53688bf1a4120ed37a677d6e6e44a41a81
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
 COCOAPODS: 0.38.2
