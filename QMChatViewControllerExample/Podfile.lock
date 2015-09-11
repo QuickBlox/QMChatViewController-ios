@@ -20,15 +20,19 @@ PODS:
     - QMChatViewController/Protocols
     - QuickBlox (~> 2.3)
     - TTTAttributedLabel (~> 1.13)
-  - QuickBlox (2.3.0.3)
+  - QuickBlox (2.3.0.4)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
-  - QMChatViewController
+  - QMChatViewController (from `../`)
+
+EXTERNAL SOURCES:
+  QMChatViewController:
+    :path: ../
 
 SPEC CHECKSUMS:
   QMChatViewController: 71a5fa3e065d29d3a69d1285cc78b1549d7c629d
-  QuickBlox: 6e10bbefa89a00c26286557d248b16448ad334ef
+  QuickBlox: dd7cbe28afc5c078b10a5d977645ccddff25514b
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
 COCOAPODS: 0.38.2
