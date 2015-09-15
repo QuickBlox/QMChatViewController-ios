@@ -31,7 +31,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMChatViewController: 08fd9e71b3fedd6b7784de32e81d754b86faa45e
+  QMChatViewController: e6af62b94cba7968c2998463b0b9a858d69883c2
   QuickBlox: a748ae53688bf1a4120ed37a677d6e6e44a41a81
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 

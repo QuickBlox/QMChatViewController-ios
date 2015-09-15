@@ -101,6 +101,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     QBChatMessage *message = [QBChatMessage message];
     message.text = text;
     message.senderID = senderId;
+    message.dateSent = [NSDate date];
     
     [self.items addObject:message];
     
