@@ -51,9 +51,7 @@ Pod::Spec.new do |s|
 
   s.resources = ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.xcassets"]
   s.requires_arc = true
-  s.ios.frameworks      = "MobileCoreServices", "SystemConfiguration", "AVFoundation", "CoreVideo", "Accelerate", "CoreMedia", "AudioToolbox", "CoreLocation", "CoreData", "CoreGraphics", "CFNetwork", "UIKit"
-  s.libraries           = "resolv", "xml2", "stdc++", "z"
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '/usr/include/libxml2', "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework"}
+  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework" }
   s.dependency "TTTAttributedLabel", "~> 1.13"
 
 end
