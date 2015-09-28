@@ -17,7 +17,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7u5-rz-uqE" userLabel="Avatar Container">
                         <rect key="frame" x="209" y="29" width="44" height="45"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Ef-cm-mUT" userLabel="Avatar Image View">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Ef-cm-mUT" userLabel="Avatar Image View" customClass="QMImageView">
                                 <rect key="frame" x="0.0" y="0.0" width="44" height="45"/>
                             </imageView>
                         </subviews>
@@ -119,7 +119,7 @@
             <connections>
                 <outlet property="avatarContainerViewHeightConstraint" destination="G4o-g5-Qyf" id="68d-kl-qQw"/>
                 <outlet property="avatarContainerViewWidthConstraint" destination="uct-ao-DdW" id="jz8-Mx-YYV"/>
-                <outlet property="avatarView" destination="7Ef-cm-mUT" id="hQR-y5-WlO"/>
+                <outlet property="avatarView" destination="7Ef-cm-mUT" id="e3o-co-mQh"/>
                 <outlet property="bottomLabel" destination="KM3-Oj-tba" id="nlu-fs-GAw"/>
                 <outlet property="bottomLableHeightConstraint" destination="WU0-tf-mgf" id="xLU-KS-YqK"/>
                 <outlet property="containerView" destination="IHn-aU-joG" id="FxQ-jl-eL2"/>
