@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="44" height="45"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.95686274510000002" green="0.79795612969999996" blue="0.18798932830000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="45" id="G4o-g5-Qyf"/>
                             <constraint firstItem="7Ef-cm-mUT" firstAttribute="leading" secondItem="7u5-rz-uqE" secondAttribute="leading" id="Wga-7S-eKb"/>
