@@ -27,6 +27,7 @@ struct QMChatLayoutModel {
 typedef struct QMChatLayoutModel QMChatCellLayoutModel;
 
 @class QMChatCell;
+@class QMImageView;
 
 /**
  *  The `QMChatCellDelegate` protocol defines methods that allow you to manage
