@@ -1,15 +1,17 @@
 #
-#  Be sure to run `pod spec lint QMChatViewController.podspec' to ensure this is a
+#  Be sure to run `pod spec lint QMChatViewController.podspec --verbose --use-libraries --allow-warnings' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
 #  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/
+#   
+#  To submit use `pod trunk push QMChatViewController.podspec --verbose --use-libraries --allow-warnings`
 #
 
 Pod::Spec.new do |s|
 
   s.name         = "QMChatViewController"
-  s.version      = "0.2.1"
+  s.version      = "0.2.2"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
@@ -27,7 +29,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "0.2.1" }
+  s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "0.2.2" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
   s.subspec 'Categories' do |ss|
