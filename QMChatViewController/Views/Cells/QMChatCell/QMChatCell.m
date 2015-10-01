@@ -8,6 +8,7 @@
 
 #import "QMChatCell.h"
 #import "QMChatCellLayoutAttributes.h"
+#import "QMImageView.h"
 #import "TTTAttributedLabel.h"
 
 static NSMutableSet *_qmChatCellMenuActions = nil;
