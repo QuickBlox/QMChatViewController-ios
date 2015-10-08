@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
 
   s.resources = ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.xcassets"]
   s.requires_arc = true
-  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework" }
+  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework" "$(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "~> 1.13"
   s.dependency "SDWebImage", "~> 3.6"
 
