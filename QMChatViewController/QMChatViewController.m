@@ -23,7 +23,7 @@
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -827,6 +827,19 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             break;
         default:
             break;
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    NSLog(@"offset: %f", scrollView.contentOffset.y);
+    if (scrollView.contentOffset.y == 0.0) {
+        // top of the screen
+        NSLog(@"WOW IM TOP");
+        if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop)]) {
+            [self.collectionView.delegate collectionViewHasReachedTop];
+        }
     }
 }
 

@@ -30,4 +30,8 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel ;
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth;
 - (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ */
+- (void)collectionViewHasReachedTop;
+
 @end
