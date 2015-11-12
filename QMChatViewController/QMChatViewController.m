@@ -17,7 +17,6 @@
 #import "UIColor+QM.h"
 #import "UIImage+QM.h"
 #import "QMTypingIndicatorFooterView.h"
-#import "QMLoadEarlierHeaderView.h"
 #import "TTTAttributedLabel.h"
 
 
@@ -103,7 +102,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     self.inputToolbar.contentView.textView.delegate = self;
     self.automaticallyScrollsToMostRecentMessage = YES;
     self.showTypingIndicator = NO;
-    self.showLoadEarlierMessagesHeader = NO;
     self.topContentAdditionalInset = 0.0f;
     [self updateCollectionViewInsets];
     
@@ -178,18 +176,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)setShowLoadEarlierMessagesHeader:(BOOL)showLoadEarlierMessagesHeader {
-    
-    if (_showLoadEarlierMessagesHeader == showLoadEarlierMessagesHeader) {
-        return;
-    }
-    
-    _showLoadEarlierMessagesHeader = showLoadEarlierMessagesHeader;
-    [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
-    [self.collectionView.collectionViewLayout invalidateLayout];
-    [self.collectionView reloadData];
 }
 
 - (void)setTopContentAdditionalInset:(CGFloat)topContentAdditionalInset {
@@ -519,10 +505,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
         return [collectionView dequeueTypingIndicatorFooterViewForIndexPath:indexPath];
     }
-    else if (self.showLoadEarlierMessagesHeader && [kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        
-        return [collectionView dequeueLoadEarlierMessagesViewHeaderForIndexPath:indexPath];
-    }
     
     return nil;
 }
@@ -536,14 +518,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return CGSizeMake([collectionViewLayout itemWidth], kQMTypingIndicatorFooterViewHeight);
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    
-    if (!self.showLoadEarlierMessagesHeader) {
-        return CGSizeZero;
-    }
-    
-    return CGSizeMake([collectionViewLayout itemWidth], kQMLoadEarlierHeaderViewHeight);
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+//    
+//    return CGSizeMake([collectionViewLayout itemWidth], kQMLoadEarlierHeaderViewHeight);
+//}
 
 #pragma mark - Collection view delegate
 
