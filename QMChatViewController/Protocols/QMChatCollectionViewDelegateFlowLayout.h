@@ -33,7 +33,9 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel ;
 /**
  *  Called when collection view has reached its top.
  *  You can handle loading of earlier messages here.
+ *
+ *  @param collectionView The collection view object that is notifying the delegate of the event.
  */
-- (void)collectionViewHasReachedTop;
+- (void)collectionViewHasReachedTop:(QMChatCollectionView *)collectionView;
 
 @end

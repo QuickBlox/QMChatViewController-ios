@@ -518,11 +518,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return CGSizeMake([collectionViewLayout itemWidth], kQMTypingIndicatorFooterViewHeight);
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-//    
-//    return CGSizeMake([collectionViewLayout itemWidth], kQMLoadEarlierHeaderViewHeight);
-//}
-
 #pragma mark - Collection view delegate
 
 - (BOOL)collectionView:(QMChatCollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -835,8 +830,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y <= 0.0) {
         // top of the screen
-        if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop)]) {
-            [self.collectionView.delegate collectionViewHasReachedTop];
+        if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop:)]) {
+            [self.collectionView.delegate collectionViewHasReachedTop:self.collectionView];
         }
     }
 }
