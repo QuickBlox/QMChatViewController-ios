@@ -835,7 +835,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y <= 0.0) {
         // top of the screen
-        NSLog(@"WOW IM TOP");
         if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop)]) {
             [self.collectionView.delegate collectionViewHasReachedTop];
         }
