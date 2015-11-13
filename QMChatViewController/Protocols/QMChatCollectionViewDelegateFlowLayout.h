@@ -31,6 +31,8 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel ;
 - (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
+ *  Called when collection view has reached its top.
+ *  You can handle loading of earlier messages here.
  */
 - (void)collectionViewHasReachedTop;
 
