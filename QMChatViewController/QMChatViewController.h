@@ -60,7 +60,9 @@
 /**
  *  The time interval that used to split messages between sections.
  *
- *  @discussion /todo
+ *  @discussion You should set time interval in seconds with '- (NSTimeInterval)timeIntervalBetweenSections' data source method.
+ *  The messages that have dateSent difference from the first message in section not greater then the one you set,
+ *  will appear in one section under one date.
  */
 @property (assign, nonatomic) NSTimeInterval timeIntervalBetweenSections;
 

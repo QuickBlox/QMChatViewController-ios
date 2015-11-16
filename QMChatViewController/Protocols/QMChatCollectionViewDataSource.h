@@ -39,7 +39,7 @@
 - (NSUInteger)senderID;
 
 /**
- *  Time interval that used to split messages between sections.
+ *  Time interval that used to split messages on sections.
  *
  *  @return Time interval that used to split messages on sections
  *

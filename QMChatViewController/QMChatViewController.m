@@ -465,8 +465,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     //  workaround for really long messages not scrolling
     //  if last message is too long, use scroll position bottom for better appearance, else use top
-//    NSUInteger finalRow = MAX(0, [self.collectionView numberOfItemsInSection:0] - 1);
-//    NSIndexPath *finalIndexPath = [NSIndexPath indexPathForItem:finalRow inSection:0];
     NSUInteger finalRow = MAX(0, [self.collectionView numberOfItemsInSection:[self.collectionView numberOfSections] - 1] - 1);
     NSIndexPath *finalIndexPath = [NSIndexPath indexPathForItem:finalRow inSection:[self.collectionView numberOfSections] - 1];
     CGSize finalCellSize = [self.collectionView.collectionViewLayout sizeForItemAtIndexPath:finalIndexPath];

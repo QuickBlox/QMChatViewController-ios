@@ -24,6 +24,8 @@
 
 /** Constructor **/
 - (instancetype)initWithDate:(NSDate *)date;
+- (id)init __attribute__((unavailable("'init' is not a supported initializer for this class.")));
++ (id)new __attribute__((unavailable("'new' is not a supported initializer for this class.")));
 
 /**
  *  Add message to section.
