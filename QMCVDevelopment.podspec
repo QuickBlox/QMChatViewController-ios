@@ -38,6 +38,10 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/KeyboardViewController/*.{h,m}'
   end
 
+  s.subspec 'QMChatSection' do |ss|
+    ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
+  end
+
   s.subspec 'Protocols' do |ss|
     ss.source_files = 'QMChatViewController/Protocols/*.{h}'
   end
