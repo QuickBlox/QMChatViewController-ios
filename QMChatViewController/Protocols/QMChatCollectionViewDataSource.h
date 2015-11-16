@@ -39,6 +39,15 @@
 - (NSUInteger)senderID;
 
 /**
+ *  Time interval that used to split messages between sections.
+ *
+ *  @return Time interval
+ *
+ *  @warning must not return '0' from this method.
+ */
+- (NSTimeInterval)timeIntervalBetweenSections;
+
+/**
  *  Asks the data source for the message data that corresponds to the specified item at indexPath in the collectionView.
  *
  *  @param collectionView The object representing the collection view requesting this information.

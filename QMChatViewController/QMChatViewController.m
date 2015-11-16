@@ -11,11 +11,13 @@
 #import "QMKeyboardController.h"
 #import "QMToolbarContentView.h"
 #import "QMChatCollectionViewFlowLayout.h"
+#import "QMChatSection.h"
 
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
 #import "NSString+QM.h"
 #import "UIColor+QM.h"
 #import "UIImage+QM.h"
+#import "QMHeaderCollectionReusableView.h"
 #import "QMTypingIndicatorFooterView.h"
 #import "TTTAttributedLabel.h"
 
@@ -36,6 +38,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 @property (assign, nonatomic) BOOL isObserving;
 @property (strong, nonatomic) NSCache *cache;
+
+@property (strong, nonatomic) NSArray *chatSections;
 
 @end
 
@@ -120,6 +124,12 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)registerCells {
     /**
+     *  Register header view
+     */
+    UINib *headerNib = [QMHeaderCollectionReusableView nib];
+    NSString *headerView = [QMHeaderCollectionReusableView cellReuseIdentifier];
+    [self.collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headerView];
+    /**
      *  Register contact request cell
      */
     UINib *requestNib = [QMChatContactRequestCell nib];
@@ -143,11 +153,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     UINib *incomingNib = [QMChatIncomingCell nib];
     NSString *incomingIdentifier = [QMChatIncomingCell cellReuseIdentifier];
     [self.collectionView  registerNib:incomingNib forCellWithReuseIdentifier:incomingIdentifier];
-    
+    /**
+     *  Register attachment incoming cell
+     */
     UINib *attachmentIncomingNib  = [QMChatAttachmentIncomingCell nib];
     NSString *attachmentIncomingIdentifier = [QMChatAttachmentIncomingCell cellReuseIdentifier];
     [self.collectionView registerNib:attachmentIncomingNib forCellWithReuseIdentifier:attachmentIncomingIdentifier];
-    
+    /**
+     *  Register outgoing incoming cell
+     */
     UINib *attachmentOutgoingNib  = [QMChatAttachmentOutgoingCell nib];
     NSString *attachmentOutgoingIdentifier = [QMChatAttachmentOutgoingCell cellReuseIdentifier];
     [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
@@ -165,6 +179,33 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 #pragma mark - Setters
+
+- (void)setItems:(NSMutableArray *)items {
+    
+    NSDate *firstMessageOfSectionDate = nil;
+    NSMutableDictionary *sectionsDictionary = [NSMutableDictionary dictionary];
+    NSMutableArray *chatSections = [NSMutableArray array];
+    
+    for (QBChatMessage *message in items) {
+        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
+        
+        if ([message.dateSent timeIntervalSinceDate:firstMessageOfSectionDate] > self.timeIntervalBetweenSections || firstMessageOfSectionDate == nil) {
+            firstMessageOfSectionDate = message.dateSent;
+        }
+        
+        QMChatSection *chatSection = sectionsDictionary[firstMessageOfSectionDate];
+        if (chatSection == nil) {
+            chatSection = [[QMChatSection alloc] initWithDate:firstMessageOfSectionDate];
+            sectionsDictionary[firstMessageOfSectionDate] = chatSection;
+            [chatSections addObject:chatSection];
+        }
+        
+        [chatSection addMessage:message];
+    }
+    
+    self.chatSections = chatSections.copy;
+    _items = items;
+}
 
 - (void)setShowTypingIndicator:(BOOL)showTypingIndicator {
     
@@ -204,6 +245,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     NSParameterAssert(self.senderID != 0);
     NSParameterAssert(self.senderDisplayName != nil);
+    NSParameterAssert(self.timeIntervalBetweenSections != 0);
     
     [super viewWillAppear:animated];
     [self.view layoutIfNeeded];
@@ -423,8 +465,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     //  workaround for really long messages not scrolling
     //  if last message is too long, use scroll position bottom for better appearance, else use top
-    NSUInteger finalRow = MAX(0, [self.collectionView numberOfItemsInSection:0] - 1);
-    NSIndexPath *finalIndexPath = [NSIndexPath indexPathForItem:finalRow inSection:0];
+//    NSUInteger finalRow = MAX(0, [self.collectionView numberOfItemsInSection:0] - 1);
+//    NSIndexPath *finalIndexPath = [NSIndexPath indexPathForItem:finalRow inSection:0];
+    NSUInteger finalRow = MAX(0, [self.collectionView numberOfItemsInSection:[self.collectionView numberOfSections] - 1] - 1);
+    NSIndexPath *finalIndexPath = [NSIndexPath indexPathForItem:finalRow inSection:[self.collectionView numberOfSections] - 1];
     CGSize finalCellSize = [self.collectionView.collectionViewLayout sizeForItemAtIndexPath:finalIndexPath];
     
     CGFloat maxHeightForVisibleMessage =
@@ -438,19 +482,24 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - Collection view data source
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    return CGSizeMake(40, 40);
+}
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
-    return self.items.count;
+    QMChatSection *currentSection = self.chatSections[section];
+    return [currentSection.messages count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     
-    return 1;
+    return [self.chatSections count];
 }
 
 - (UICollectionViewCell *)collectionView:(QMChatCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    id messageItem = self.items[indexPath.row];
+    QBChatMessage *messageItem = [self messageAtSection:indexPath.section andItem:indexPath.item];
     
     Class class = [self viewClassForItem:messageItem];
     NSString *itemIdentifier = [class cellReuseIdentifier];
@@ -474,7 +523,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
         QMChatCell *chatCell = (QMChatCell *)cell;
         
-        id messageItem = self.items[indexPath.row];
+        QBChatMessage *messageItem = [self messageAtSection:indexPath.section andItem:indexPath.item];
         
         chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
         chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
@@ -504,6 +553,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     if (self.showTypingIndicator && [kind isEqualToString:UICollectionElementKindSectionFooter]) {
         
         return [collectionView dequeueTypingIndicatorFooterViewForIndexPath:indexPath];
+    } else if (kind == UICollectionElementKindSectionHeader) {
+        QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
+        
+        QMChatSection *currentSection = self.chatSections[indexPath.section];
+        
+        headerView.headerLabel.text = currentSection.name;
+        
+        return headerView;
     }
     
     return nil;
@@ -556,14 +613,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (NSString *)collectionView:(QMChatCollectionView *)collectionView itemIdAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *message = self.items[indexPath.item];
+    QBChatMessage *message = [self messageAtSection:indexPath.section andItem:indexPath.item];
     
     return message.ID;
 }
 
 - (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *item = self.items[indexPath.row];
+    QBChatMessage *item = [self messageAtSection:indexPath.section andItem:indexPath.item];
     Class class = [self viewClassForItem:item];
     
     return [class layoutModel];
@@ -929,6 +986,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 #pragma mark - Utilities
+
+- (QBChatMessage *)messageAtSection:(NSInteger)section andItem:(NSInteger)item {
+    QMChatSection *currentSection = self.chatSections[section];
+    return currentSection.messages[item];
+}
 
 - (void)addObservers {
     

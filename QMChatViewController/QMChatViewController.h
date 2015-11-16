@@ -58,6 +58,13 @@
 @property (assign, nonatomic) NSUInteger senderID;
 
 /**
+ *  The time interval that used to split messages between sections.
+ *
+ *  @discussion /todo
+ */
+@property (assign, nonatomic) NSTimeInterval timeIntervalBetweenSections;
+
+/**
  *  Specifies whether or not the view controller should automatically scroll to the most recent message
  *  when the view appears and when sending, receiving, and composing a new message.
  *
