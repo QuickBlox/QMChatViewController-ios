@@ -41,7 +41,7 @@
 /**
  *  Time interval that used to split messages between sections.
  *
- *  @return Time interval
+ *  @return Time interval that used to split messages on sections
  *
  *  @warning must not return '0' from this method.
  */

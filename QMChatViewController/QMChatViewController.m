@@ -499,7 +499,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (UICollectionViewCell *)collectionView:(QMChatCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *messageItem = [self messageAtSection:indexPath.section andItem:indexPath.item];
+    QBChatMessage *messageItem = [self messageForIndexPath:indexPath];
     
     Class class = [self viewClassForItem:messageItem];
     NSString *itemIdentifier = [class cellReuseIdentifier];
@@ -523,7 +523,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
         QMChatCell *chatCell = (QMChatCell *)cell;
         
-        QBChatMessage *messageItem = [self messageAtSection:indexPath.section andItem:indexPath.item];
+        QBChatMessage *messageItem = [self messageForIndexPath:indexPath];
         
         chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
         chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
@@ -613,14 +613,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (NSString *)collectionView:(QMChatCollectionView *)collectionView itemIdAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *message = [self messageAtSection:indexPath.section andItem:indexPath.item];
+    QBChatMessage *message = [self messageForIndexPath:indexPath];
     
     return message.ID;
 }
 
 - (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *item = [self messageAtSection:indexPath.section andItem:indexPath.item];
+    QBChatMessage *item = [self messageForIndexPath:indexPath];
     Class class = [self viewClassForItem:item];
     
     return [class layoutModel];
@@ -987,9 +987,22 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - Utilities
 
-- (QBChatMessage *)messageAtSection:(NSInteger)section andItem:(NSInteger)item {
-    QMChatSection *currentSection = self.chatSections[section];
-    return currentSection.messages[item];
+- (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
+    
+    QMChatSection *currentSection = self.chatSections[indexPath.section];
+    return currentSection.messages[indexPath.item];
+}
+
+- (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message {
+    
+    NSIndexPath *indexPath = nil;
+    for (QMChatSection *chatSection in self.chatSections) {
+        if ([chatSection.messages containsObject:message]) {
+            indexPath = [NSIndexPath indexPathForItem:[chatSection.messages indexOfObject:message] inSection:[self.chatSections indexOfObject:chatSection]];
+        }
+    }
+    
+    return indexPath;
 }
 
 - (void)addObservers {

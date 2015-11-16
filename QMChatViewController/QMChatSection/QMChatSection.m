@@ -43,7 +43,7 @@
     NSString *sectionDate = [dateFormatter stringFromDate:date];
     
     if (components.day == currentComponents.day && components.month == currentComponents.month && components.year == currentComponents.year) {
-        formattedString = [NSString stringWithFormat:@"%@", sectionDate];
+        formattedString = [NSString stringWithFormat:@"Today %@", sectionDate];
     } else if (components.day == currentComponents.day-1 && components.month == currentComponents.month && components.year == currentComponents.year) {
         formattedString = [NSString stringWithFormat:@"Yesterday %@", sectionDate];
     } else if (components.year == components.year) {

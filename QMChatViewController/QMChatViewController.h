@@ -230,4 +230,24 @@
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
 
+#pragma mark - Helpers
+
+/**
+ *  Message for index path.
+ *
+ *  @param indexPath    index path to find message
+ *
+ *  @return QBChatMessage instance that conforms to indexPath
+ */
+- (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ *  Index path for message.
+ *
+ *  @param message  message to return index path
+ *
+ *  @return NSIndexPath instance that conforms message or nil if not found
+ */
+- (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message;
+
 @end
