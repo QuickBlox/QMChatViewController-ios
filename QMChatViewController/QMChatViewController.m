@@ -18,7 +18,6 @@
 #import "UIColor+QM.h"
 #import "UIImage+QM.h"
 #import "QMHeaderCollectionReusableView.h"
-#import "QMTypingIndicatorFooterView.h"
 #import "TTTAttributedLabel.h"
 
 
@@ -105,7 +104,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     self.inputToolbar.delegate = self;
     self.inputToolbar.contentView.textView.delegate = self;
     self.automaticallyScrollsToMostRecentMessage = YES;
-    self.showTypingIndicator = NO;
     self.topContentAdditionalInset = 0.0f;
     [self updateCollectionViewInsets];
     
@@ -205,18 +203,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     self.chatSections = [[chatSections reverseObjectEnumerator] allObjects].copy;
     _items = items;
-}
-
-- (void)setShowTypingIndicator:(BOOL)showTypingIndicator {
-    
-    if (_showTypingIndicator == showTypingIndicator) {
-        return;
-    }
-    
-    _showTypingIndicator = showTypingIndicator;
-    
-    [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
-    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)setTopContentAdditionalInset:(CGFloat)topContentAdditionalInset {
@@ -364,13 +350,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    if (self.showTypingIndicator) {
-        
-        self.showTypingIndicator = NO;
-        self.showTypingIndicator = YES;
-        [self.collectionView reloadData];
-    }
 }
 
 #pragma mark - Messages view controller
@@ -428,8 +407,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)finishReceivingMessageAnimated:(BOOL)animated {
-    
-    self.showTypingIndicator = NO;
     
     [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
     [self.collectionView reloadData];
@@ -548,10 +525,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath {
     
-    if (self.showTypingIndicator && [kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        
-        return [collectionView dequeueTypingIndicatorFooterViewForIndexPath:indexPath];
-    } else if (kind == UICollectionElementKindSectionHeader) {
+    if (kind == UICollectionElementKindSectionHeader) {
         QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
         
         QMChatSection *currentSection = self.chatSections[indexPath.section];
@@ -562,15 +536,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
     
     return nil;
-}
-
-- (CGSize)collectionView:(QMChatCollectionView *)collectionView layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    
-    if (!self.showTypingIndicator) {
-        return CGSizeZero;
-    }
-    
-    return CGSizeMake([collectionViewLayout itemWidth], kQMTypingIndicatorFooterViewHeight);
 }
 
 #pragma mark - Collection view delegate

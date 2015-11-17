@@ -76,15 +76,6 @@
 @property (assign, nonatomic) BOOL automaticallyScrollsToMostRecentMessage;
 
 /**
- *  Specifies whether or not the view controller should show the typing indicator for an incoming message.
- *
- *  @discussion Setting this property to `YES` will animate showing the typing indicator immediately.
- *  Setting this property to `NO` will animate hiding the typing indicator immediately. You will need to scroll
- *  to the bottom of the collection view in order to see the typing indicator. You may use `scrollToBottomAnimated:` for this.
- */
-@property (assign, nonatomic) BOOL showTypingIndicator;
-
-/**
  *  Specifies an additional inset amount to be added to the collectionView's contentInsets.top value.
  *
  *  @discussion Use this property to adjust the top content inset to account for a custom subview at the top of your view controller.
@@ -213,7 +204,7 @@
 - (void)finishReceivingMessage;
 
 /**
- *  Completes the "receiving" of a new message by showing the typing indicator, adding a new collection view cell in the collection view,
+ *  Completes the "receiving" of a new message by adding a new collection view cell in the collection view,
  *  reloading the collection view, and scrolling to the newly sent message as specified by `automaticallyScrollsToMostRecentMessage`.
  *  Scrolling to the new message can be animated as specified by the animated parameter.
  *
