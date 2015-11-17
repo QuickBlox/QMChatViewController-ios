@@ -182,28 +182,28 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)setItems:(NSMutableArray *)items {
     
-    NSDate *firstMessageOfSectionDate = nil;
+    NSDate *lastMessageOfSectionDate = nil;
     NSMutableDictionary *sectionsDictionary = [NSMutableDictionary dictionary];
     NSMutableArray *chatSections = [NSMutableArray array];
     
-    for (QBChatMessage *message in items) {
+    for (QBChatMessage *message in [items reverseObjectEnumerator]) {
         NSAssert(message.dateSent != nil, @"Message must have dateSent!");
         
-        if ([message.dateSent timeIntervalSinceDate:firstMessageOfSectionDate] > self.timeIntervalBetweenSections || firstMessageOfSectionDate == nil) {
-            firstMessageOfSectionDate = message.dateSent;
+        if ([lastMessageOfSectionDate timeIntervalSinceDate:message.dateSent] > self.timeIntervalBetweenSections || lastMessageOfSectionDate == nil) {
+            lastMessageOfSectionDate = message.dateSent;
         }
         
-        QMChatSection *chatSection = sectionsDictionary[firstMessageOfSectionDate];
+        QMChatSection *chatSection = sectionsDictionary[lastMessageOfSectionDate];
         if (chatSection == nil) {
-            chatSection = [[QMChatSection alloc] initWithDate:firstMessageOfSectionDate];
-            sectionsDictionary[firstMessageOfSectionDate] = chatSection;
+            chatSection = [QMChatSection chatSection];
+            sectionsDictionary[lastMessageOfSectionDate] = chatSection;
             [chatSections addObject:chatSection];
         }
         
         [chatSection addMessage:message];
     }
     
-    self.chatSections = chatSections.copy;
+    self.chatSections = [[chatSections reverseObjectEnumerator] allObjects].copy;
     _items = items;
 }
 
@@ -481,7 +481,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark - Collection view data source
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(40, 40);
+    return CGSizeMake(0, 40);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -986,7 +986,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark - Utilities
 
 - (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
-    
+
     QMChatSection *currentSection = self.chatSections[indexPath.section];
     return currentSection.messages[indexPath.item];
 }

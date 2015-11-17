@@ -7,29 +7,32 @@
 //
 
 #import "QMChatSection.h"
+#import <Quickblox/Quickblox.h>
 
 @interface QMChatSection()
 
 @property (strong, nonatomic, readwrite) NSString *name;
-@property (strong, nonatomic, readwrite) NSDate *date;
-@property (strong, nonatomic, readwrite) NSMutableArray *messages;
+@property (strong, nonatomic, readwrite) NSArray *messages;
 
 @end
 
 @implementation QMChatSection
 
-- (instancetype)initWithDate:(NSDate *)date {
-    if (self = [super init]) {
-        self.messages = [[NSMutableArray alloc] init];
-        self.name = [self formattedStringFromDate:date];
-        self.date = date;
-    }
-    
-    return self;
++ (QMChatSection *)chatSection {
+    return [[self alloc] init];
+}
+
+- (NSString *)name {
+    QBChatMessage *firstMessage = [self.messages firstObject];
+    return [self formattedStringFromDate:firstMessage.dateSent];
 }
 
 - (void)addMessage:(QBChatMessage *)message {
-    [self.messages addObject:message];
+    NSMutableArray *updatedMessages = [[NSMutableArray alloc] init];
+    [updatedMessages addObject:message];
+    [updatedMessages addObjectsFromArray:self.messages];
+    
+    self.messages = [updatedMessages copy];
 }
 
 - (NSString *)formattedStringFromDate:(NSDate *)date
