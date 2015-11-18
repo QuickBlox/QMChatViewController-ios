@@ -16,7 +16,13 @@
 @property (strong, nonatomic, readonly) NSString *name;
 
 /** Messages in section */
-@property (strong, nonatomic, readonly) NSArray *messages;
+@property (strong, nonatomic) NSMutableArray *messages;
+
+/** Date of first message in section */
+@property (strong, nonatomic, readonly) NSDate *firstMessageDate;
+
+/** Date of last message in section */
+@property (strong, nonatomic, readonly) NSDate *lastMessageDate;
 
 /**
  *  New QMChatSection instance.
@@ -24,12 +30,5 @@
  *  @return new QMChatSection instance
  */
 + (QMChatSection *)chatSection;
-
-/**
- *  Add message to section.
- *
- *  @param message  message to add
- */
-- (void)addMessage:(QBChatMessage *)message;
 
 @end

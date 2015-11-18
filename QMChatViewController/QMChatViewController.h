@@ -82,10 +82,15 @@
  */
 @property (assign, nonatomic) CGFloat topContentAdditionalInset;
 
-/**
- *  Chat message items.
- */
-@property (strong, nonatomic) NSMutableArray *items;
+- (void)insertMessagesToTheTopAnimated:(NSArray <QBChatMessage *> *)messages;
+
+- (void)insertMessageToTheBottomAnimated:(QBChatMessage *)message;
+
+- (void)insertMessagesToTheBottomAnimated:(NSArray <QBChatMessage *> *)messages;
+
+- (NSIndexPath *)updateMessage:(QBChatMessage *)message;
+
+- (NSArray <NSIndexPath *> *)updateMessages:(NSArray <QBChatMessage *> *)messages;
 
 /**
  *  Method to create chat message text attributed string. Have to be overriden in subclasses.
@@ -173,6 +178,11 @@
  */
 - (void)didPressAccessoryButton:(UIButton *)sender;
 
+/**
+ *  This method is called when the user finishes picking attachment image.
+ *
+ *  @param image    image that was picked by user
+ */
 - (void)didPickAttachmentImage:(UIImage *)image;
 
 /**

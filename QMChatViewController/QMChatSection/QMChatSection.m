@@ -9,31 +9,40 @@
 #import "QMChatSection.h"
 #import <Quickblox/Quickblox.h>
 
-@interface QMChatSection()
-
-@property (strong, nonatomic, readwrite) NSString *name;
-@property (strong, nonatomic, readwrite) NSArray *messages;
-
-@end
-
 @implementation QMChatSection
+
+#pragma mark - Class methods
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.messages = [NSMutableArray array];
+    }
+    
+    return self;
+}
 
 + (QMChatSection *)chatSection {
     return [[self alloc] init];
 }
+
+#pragma mark - Instance methods
 
 - (NSString *)name {
     QBChatMessage *firstMessage = [self.messages firstObject];
     return [self formattedStringFromDate:firstMessage.dateSent];
 }
 
-- (void)addMessage:(QBChatMessage *)message {
-    NSMutableArray *updatedMessages = [[NSMutableArray alloc] init];
-    [updatedMessages addObject:message];
-    [updatedMessages addObjectsFromArray:self.messages];
-    
-    self.messages = [updatedMessages copy];
+- (NSDate *)firstMessageDate {
+    QBChatMessage *firstMessage = [self.messages firstObject];
+    return firstMessage.dateSent;
 }
+
+- (NSDate *)lastMessageDate {
+    QBChatMessage *lastMessage = [self.messages lastObject];
+    return lastMessage.dateSent;
+}
+
+#pragma mark - Helpers
 
 - (NSString *)formattedStringFromDate:(NSDate *)date
 {
