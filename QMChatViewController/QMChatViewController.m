@@ -1005,7 +1005,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y <= 0.0) {
+    if (scrollView.contentOffset.y == 0.0) {
         // top of the screen
         if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop:)]) {
             [self.collectionView.delegate collectionViewHasReachedTop:self.collectionView];
@@ -1109,7 +1109,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
 
-//    if (indexPath.item == NSNotFound) return nil;
+    if (indexPath.item == NSNotFound) {
+        // If the update item's index path has an "item" value of NSNotFound, it means it was a section update, not an individual item.
+        return nil;
+    }
+    
     QMChatSection *currentSection = self.chatSections[indexPath.section];
     return currentSection.messages[indexPath.item];
 }
