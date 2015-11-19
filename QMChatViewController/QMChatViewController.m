@@ -209,9 +209,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         firstSection = [sectionsToAdd lastObject];
         if ([message.dateSent timeIntervalSinceDate:[firstSection firstMessageDate]] > self.timeIntervalBetweenSections || firstSection == nil) {
             
-            QMChatSection *chatSection = [QMChatSection chatSection];
-            [chatSection.messages addObject:message];
-            [sectionsToAdd addObject:chatSection];
+            [sectionsToAdd addObject:[QMChatSection chatSectionWithMessage:message]];
             
             NSUInteger sectionIndex = [sectionsToAdd count] - 1;
             [sectionsToInsert addObject:@(sectionIndex)];
@@ -273,12 +271,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             
             QMChatSection *chatSection = sectionsDictionary[lastMessageOfSectionDate];
             if (chatSection == nil) {
-                chatSection = [QMChatSection chatSection];
+                chatSection = [QMChatSection chatSectionWithMessage:message];
                 sectionsDictionary[lastMessageOfSectionDate] = chatSection;
                 [chatSections insertObject:chatSection atIndex:0];
+            } else {
+                
+                [chatSection.messages insertObject:message atIndex:0];
             }
-            
-            [chatSection.messages insertObject:message atIndex:0];
         }
         
         self.chatSections = chatSections.mutableCopy;
@@ -300,9 +299,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
         if ([message.dateSent timeIntervalSinceDate:[lastSection firstMessageDate]] > self.timeIntervalBetweenSections || lastSection == nil) {
             
-            QMChatSection *chatSection = [QMChatSection chatSection];
-            [chatSection.messages addObject:message];
-            [self.chatSections addObject:chatSection];
+            [self.chatSections addObject:[QMChatSection chatSectionWithMessage:message]];
             
             NSUInteger sectionIndex = [self.chatSections count] - 1 + [sectionsToInsert count];
             [sectionsToInsert addObject:@(sectionIndex)];

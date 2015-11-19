@@ -21,8 +21,20 @@
     return self;
 }
 
+- (instancetype)initWithMessage:(QBChatMessage *)message {
+    if (self = [super init]) {
+        self.messages = [NSMutableArray arrayWithObject:message];
+    }
+    
+    return self;
+}
+
 + (QMChatSection *)chatSection {
     return [[self alloc] init];
+}
+
++ (QMChatSection *)chatSectionWithMessage:(QBChatMessage *)message {
+    return [[self alloc] initWithMessage:message];
 }
 
 #pragma mark - Instance methods
