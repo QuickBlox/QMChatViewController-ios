@@ -1006,12 +1006,19 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y == 0.0) {
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (velocity.y < 0.0) {
         // top of the screen
         if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop:)]) {
             [self.collectionView.delegate collectionViewHasReachedTop:self.collectionView];
         }
+    }
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    // top of the screen by tapping status bar
+    if ([self.collectionView.delegate respondsToSelector:@selector(collectionViewHasReachedTop:)]) {
+        [self.collectionView.delegate collectionViewHasReachedTop:self.collectionView];
     }
 }
 
