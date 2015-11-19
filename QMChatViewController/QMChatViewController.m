@@ -618,7 +618,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark - Collection view data source
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(0, 40);
+    return CGSizeMake(0.0f, self.heightForSectionHeader);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
