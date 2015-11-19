@@ -12,6 +12,7 @@
 #import "QMToolbarContentView.h"
 #import "QMChatCollectionViewFlowLayout.h"
 #import "QMChatSection.h"
+#import "QMDateUtils.h"
 
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
 #import "NSString+QM.h"
@@ -631,6 +632,28 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return [self.chatSections count];
 }
 
+- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
+                    sectionHeaderAtIndexPath:(NSIndexPath *)indexPath {
+    QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
+    
+    QMChatSection *chatSection = self.chatSections[indexPath.section];
+    headerView.headerLabel.text = [self nameForSectionWithDate:[chatSection firstMessageDate]];
+    
+    return headerView;
+}
+
+- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath {
+    
+    if (kind == UICollectionElementKindSectionHeader) {
+        
+        return [self collectionView:collectionView sectionHeaderAtIndexPath:indexPath];
+    }
+    
+    return nil;
+}
+
 - (UICollectionViewCell *)collectionView:(QMChatCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     QBChatMessage *messageItem = [self messageForIndexPath:indexPath];
@@ -677,23 +700,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem {
     NSAssert(NO, @"Have to be overriden in subclasses!");
-    return nil;
-}
-
-- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-           viewForSupplementaryElementOfKind:(NSString *)kind
-                                 atIndexPath:(NSIndexPath *)indexPath {
-    
-    if (kind == UICollectionElementKindSectionHeader) {
-        QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
-        
-        QMChatSection *currentSection = self.chatSections[indexPath.section];
-        
-        headerView.headerLabel.text = currentSection.name;
-        
-        return headerView;
-    }
-    
     return nil;
 }
 
@@ -1124,6 +1130,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
     
     return totalMessagesCount;
+}
+
+- (NSString *)nameForSectionWithDate:(NSDate *)date {
+    
+    return [QMDateUtils formattedStringFromDate:date];
 }
 
 - (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {

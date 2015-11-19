@@ -178,6 +178,19 @@
 
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ *  Collection view reusable section header.
+ *
+ *  @param collectionView   collection view to dequeue reusable header
+ *  @param indexPath        index path of section header
+ *
+ *  @discussion Override this method if you want to use custom reusable view as section header.
+ *
+ *  @return collection view reusable view to use as section header
+ */
+- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
+                    sectionHeaderAtIndexPath:(NSIndexPath *)indexPath;
+
 #pragma mark - Class methods
 
 /**
@@ -282,6 +295,15 @@
 - (void)scrollToBottomAnimated:(BOOL)animated;
 
 #pragma mark - Helpers
+
+/**
+ *  Generating name for section with date.
+ *
+ *  @param date Date of section
+ *
+ *  @discussion override this method if you want to generate custom name for section with it's date.
+ */
+- (NSString *)nameForSectionWithDate:(NSDate *)date;
 
 /**
  *  Message for index path.

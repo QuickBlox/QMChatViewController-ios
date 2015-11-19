@@ -12,9 +12,6 @@
 
 @interface QMChatSection : NSObject
 
-/** Section name */
-@property (strong, nonatomic, readonly) NSString *name;
-
 /** Messages in section */
 @property (strong, nonatomic) NSMutableArray *messages;
 
