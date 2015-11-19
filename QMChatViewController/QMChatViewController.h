@@ -82,14 +82,62 @@
  */
 @property (assign, nonatomic) CGFloat topContentAdditionalInset;
 
+/**
+ *  Total count of messages in all sections.
+ *
+ *  @discussion Use this to know how many messages are displayed in chat controller.
+ */
+@property (assign, nonatomic, readonly) NSUInteger totalMessagesCount;
+
+/**
+ *  Insert messages to the top.
+ *
+ *  @param messages array of messages to insert
+ *
+ *  @discussion Use this method to insert older messages in chat.
+ */
 - (void)insertMessagesToTheTopAnimated:(NSArray <QBChatMessage *> *)messages;
 
+/**
+ *  Insert message to the bottom.
+ *
+ *  @param message  message to insert
+ *
+ *  @discussion Use this method to insert new message to the chat controller.
+ */
 - (void)insertMessageToTheBottomAnimated:(QBChatMessage *)message;
 
+/**
+ *  Insert messages to the bottom.
+ *
+ *  @param messages array of messages
+ *
+ *  @discussion Use this method to insert new messages to the chat controller.
+ */
 - (void)insertMessagesToTheBottomAnimated:(NSArray <QBChatMessage *> *)messages;
 
+/**
+ *  Update message in chat controller.
+ *
+ *  @param message  updated message
+ *
+ *  @discussion Use this method to update message in chat controller. As parameter use updated message, it will be replaced in items by it's ID.
+ *  After that you need to reload item with index path which method returns.
+ *
+ *  @return Index path of updated message. Use it to reload item in collection view.
+ */
 - (NSIndexPath *)updateMessage:(QBChatMessage *)message;
 
+/**
+ *  Update messages in chat controller.
+ *
+ *  @param messages array of messages to update
+ *
+ *  @discussion Use this method to update messages in chat controller. As parameter use updated message, it will be replaced in items by it's ID.
+ *  After that you need to reload item with index paths which method returns.
+ *
+ *  @return Index paths of updated messages. Use it to reload item in collection view.
+ */
 - (NSArray <NSIndexPath *> *)updateMessages:(NSArray <QBChatMessage *> *)messages;
 
 /**

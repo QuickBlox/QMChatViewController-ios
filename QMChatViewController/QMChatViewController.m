@@ -359,6 +359,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSMutableArray *indexPaths = [NSMutableArray array];
     for (QBChatMessage *message in messages) {
         NSIndexPath *indexPath = [self indexPathForMessage:message];
+        if (indexPath == nil) continue;
+        
         [indexPaths addObject:indexPath];
         
         QMChatSection *chatSection = self.chatSections[indexPath.section];
@@ -1106,6 +1108,16 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 #pragma mark - Utilities
+
+- (NSUInteger)totalMessagesCount {
+    NSUInteger totalMessagesCount = 0;
+    NSArray *chatSections = [self.chatSections copy];
+    for (QMChatSection *chatSection in chatSections) {
+        totalMessagesCount += [chatSection.messages count];
+    }
+    
+    return totalMessagesCount;
+}
 
 - (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
 
