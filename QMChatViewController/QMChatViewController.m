@@ -227,7 +227,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     NSMutableArray *allSections = [NSMutableArray arrayWithArray:sectionsToAdd];
     [allSections addObjectsFromArray:self.chatSections];
-    self.chatSections = [allSections mutableCopy];
+    self.chatSections = allSections;
     
     CGFloat bottomOffset = self.collectionView.contentSize.height - self.collectionView.contentOffset.y;
     [CATransaction begin];
