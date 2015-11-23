@@ -205,18 +205,25 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         }
     }
 
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+
     __weak __typeof(self)weakSelf = self;
     [self.collectionView performBatchUpdates:^{
         //
         __typeof(weakSelf)strongSelf = weakSelf;
+        
+        if ([[itemsToInsert firstObject] section] == [strongSelf.collectionView numberOfSections] - 1) {
+            // reloading last section cause layout changed
+            [strongSelf.collectionView reloadSections:[NSIndexSet indexSetWithIndex:[strongSelf.collectionView numberOfSections] - 1]];
+        }
         
         if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
         [strongSelf.collectionView insertItemsAtIndexPaths:itemsToInsert];
         
     } completion:^(BOOL finished) {
         //
-        __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf.collectionView.collectionViewLayout invalidateLayout];
+        [CATransaction commit];
     }];
 }
 
@@ -255,7 +262,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             }
         }
     }
-
+    
     self.chatSections = sectionsToAdd;
     
     return @{kQMSectionsInsertKey : sectionsToInsert,
