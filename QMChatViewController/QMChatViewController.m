@@ -579,7 +579,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-                    sectionFooterAtIndexPath:(NSIndexPath *)indexPath {
+                    sectionHeaderAtIndexPath:(NSIndexPath *)indexPath {
     QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                                                                                     withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
     
@@ -595,8 +595,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
                                  atIndexPath:(NSIndexPath *)indexPath {
     
     if (kind == UICollectionElementKindSectionFooter) {
-        
-        return [self collectionView:collectionView sectionFooterAtIndexPath:indexPath];
+        // due to collection view being reversed, section header is actually footer
+        return [self collectionView:collectionView sectionHeaderAtIndexPath:indexPath];
     }
     
     return nil;

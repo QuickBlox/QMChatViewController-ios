@@ -187,17 +187,18 @@
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  Collection view reusable section footer.
+ *  Collection view reusable section header.
  *
  *  @param collectionView   collection view to dequeue reusable header
  *  @param indexPath        index path of section header
  *
- *  @discussion Override this method if you want to use custom reusable view as section footer.
+ *  @discussion Override this method if you want to use custom reusable view as section header.
+ *  Keep in mind that due to collection view being reversed, section header is actually footer.
  *
- *  @return collection view reusable view to use as section footer.
+ *  @return collection view reusable view to use as section header.
  */
 - (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-                    sectionFooterAtIndexPath:(NSIndexPath *)indexPath;
+                    sectionHeaderAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Class methods
 
