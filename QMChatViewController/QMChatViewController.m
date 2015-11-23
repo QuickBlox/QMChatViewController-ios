@@ -275,7 +275,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)insertMessagesToTheBottomAnimated:(NSArray *)messages {
-    NSParameterAssert(messages);
+    NSAssert([messages count] > 0, @"Array must contain messages!");
     
     if (self.chatSections == nil) {
         [self prepareSectionsForMessages:messages];
