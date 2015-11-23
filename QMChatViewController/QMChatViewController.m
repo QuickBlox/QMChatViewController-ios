@@ -26,7 +26,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -552,6 +552,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         NSIndexPath* topIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.collectionView scrollToItemAtIndexPath:topIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
     }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+    // disabling scrolll to bottom when tapping status bar
+    return NO;
 }
 
 #pragma mark - Collection view data source
