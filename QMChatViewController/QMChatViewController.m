@@ -58,6 +58,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return [[[self class] alloc] initWithNibName:NSStringFromClass([QMChatViewController class]) bundle:[NSBundle bundleForClass:[QMChatViewController class]]];
 }
 
+
 - (void)dealloc {
     
     [self registerForNotifications:NO];

@@ -1,3 +1,4 @@
 platform :ios, '7.0'
 
-pod 'QMChatViewController', :path => '../'
+pod 'QuickBlox', '2.5'
+pod 'QMCVDevelopment', :path => '../'
