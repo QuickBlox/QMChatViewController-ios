@@ -32,6 +32,14 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
+  s.subspec 'Utils' do |ss| 
+    ss.source_files = 'QMChatViewController/Utils/QMDateUtils/*.{h,m}'
+  end
+
+  s.subspec 'Sections' do |ss|
+    ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
+  end
+
   s.subspec 'Categories' do |ss|
     ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
   end
