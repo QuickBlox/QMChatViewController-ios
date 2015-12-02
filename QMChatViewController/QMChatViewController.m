@@ -337,6 +337,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     if ([indexPaths count] > 0) {
         [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+        [self.collectionView.collectionViewLayout invalidateLayout];
     }
 }
 
