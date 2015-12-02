@@ -76,6 +76,13 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message4.attachments = @[attachment];
     message4.dateSent = [NSDate dateWithTimeInterval:12.0f sinceDate:[NSDate date]];
     
+//    QBChatMessage *message5 = [QBChatMessage message];
+//    message5.senderID = 20001;
+//    message5.senderNick = @"Andrey M.";
+//    message5.text = @"🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭";
+//    
+//    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
+    
     [self insertMessagesToTheBottomAnimated:@[message1, message2, message3, message4]];
 }
 
@@ -237,7 +244,9 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
     UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor whiteColor] : [UIColor colorWithWhite:0.290 alpha:1.000];
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:15];
-    NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : textColor,
+                                 NSFontAttributeName : font};
 
     NSMutableAttributedString *attrStr;
     
