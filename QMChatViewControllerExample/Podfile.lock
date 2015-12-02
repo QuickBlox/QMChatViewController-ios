@@ -1,38 +1,51 @@
 PODS:
-  - QMChatViewController (0.2.1):
-    - QMChatViewController/Categories (= 0.2.1)
-    - QMChatViewController/KeyboardViewController (= 0.2.1)
-    - QMChatViewController/Protocols (= 0.2.1)
-    - QMChatViewController/Views (= 0.2.1)
-    - QuickBlox (~> 2.3)
+  - QMCVDevelopment (0.3):
+    - QMCVDevelopment/Categories (= 0.3)
+    - QMCVDevelopment/KeyboardViewController (= 0.3)
+    - QMCVDevelopment/Protocols (= 0.3)
+    - QMCVDevelopment/QMChatSection (= 0.3)
+    - QMCVDevelopment/Utils (= 0.3)
+    - QMCVDevelopment/Views (= 0.3)
+    - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/Categories (0.2.1):
-    - QuickBlox (~> 2.3)
+  - QMCVDevelopment/Categories (0.3):
+    - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/KeyboardViewController (0.2.1):
-    - QuickBlox (~> 2.3)
+  - QMCVDevelopment/KeyboardViewController (0.3):
+    - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/Protocols (0.2.1):
-    - QuickBlox (~> 2.3)
+  - QMCVDevelopment/Protocols (0.3):
+    - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMChatViewController/Views (0.2.1):
-    - QMChatViewController/Categories
-    - QMChatViewController/Protocols
-    - QuickBlox (~> 2.3)
+  - QMCVDevelopment/QMChatSection (0.3):
+    - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QuickBlox (2.4)
+  - QMCVDevelopment/Utils (0.3):
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (~> 1.13)
+  - QMCVDevelopment/Views (0.3):
+    - QMCVDevelopment/Categories
+    - QMCVDevelopment/Protocols
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (~> 1.13)
+  - QuickBlox (2.5)
+  - SDWebImage (3.7.3):
+    - SDWebImage/Core (= 3.7.3)
+  - SDWebImage/Core (3.7.3)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
-  - QMChatViewController (from `../`)
+  - QMCVDevelopment (from `../`)
+  - QuickBlox
 
 EXTERNAL SOURCES:
-  QMChatViewController:
+  QMCVDevelopment:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMChatViewController: e6af62b94cba7968c2998463b0b9a858d69883c2
-  QuickBlox: a748ae53688bf1a4120ed37a677d6e6e44a41a81
+  QMCVDevelopment: 9cc22f03f3d6e1c931a818693bc3c5db01aa422d
+  QuickBlox: 631deb7682f4425833ad45468ddbcc7c7454c028
+  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

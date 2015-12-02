@@ -26,16 +26,20 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 @implementation DemoChatViewController
 
+- (NSTimeInterval)timeIntervalBetweenSections {
+    return 300.0f;
+}
+
+- (CGFloat)heightForSectionHeader {
+    return 40.0f;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.items = [NSMutableArray array];
     
     self.senderID = 2000;
     self.senderDisplayName = @"hello";
     self.title = @"Chat";
-    self.showLoadEarlierMessagesHeader = YES;
-    
     
     // Create test data source
     //
@@ -43,24 +47,21 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message1.senderID = QMMessageTypeContactRequest;
     message1.senderNick = @"Andrey M. ";
     message1.text = @"Andrey M.\nwould like to chat with you";
-    message1.dateSent = [NSDate date];
-    [self.items addObject:message1];
+    message1.dateSent = [NSDate dateWithTimeInterval:3.0f sinceDate:[NSDate date]];
     //
     //
     QBChatMessage *message2 = [QBChatMessage message];
     message2.senderID = self.senderID;
     message2.senderNick = @"Andrey I.";
     message2.text = @"Why Q-municate is a right choice?";
-    message2.dateSent = [NSDate date];
-    [self.items addObject:message2];
+    message2.dateSent = [NSDate dateWithTimeInterval:6.0f sinceDate:[NSDate date]];
     //
     //
     QBChatMessage *message3 = [QBChatMessage message];
     message3.senderID = 20001;
     message3.senderNick = @"Andrey M.";
     message3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
-    message3.dateSent = [NSDate date];
-    [self.items addObject:message3];
+    message3.dateSent = [NSDate dateWithTimeInterval:9.0f sinceDate:[NSDate date]];
     //
     //
     // message with an attachment
@@ -73,8 +74,16 @@ NS_ENUM(NSUInteger, QMMessageType) {
     NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"quickblox-image" ofType:@"png"];
     attachment.url = imagePath;
     message4.attachments = @[attachment];
-    message4.dateSent = [NSDate date];
-    [self.items addObject:message4];
+    message4.dateSent = [NSDate dateWithTimeInterval:12.0f sinceDate:[NSDate date]];
+    
+//    QBChatMessage *message5 = [QBChatMessage message];
+//    message5.senderID = 20001;
+//    message5.senderNick = @"Andrey M.";
+//    message5.text = @"🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭";
+//    
+//    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
+    
+    [self insertMessagesToTheBottomAnimated:@[message1, message2, message3, message4]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,7 +112,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message.senderID = senderId;
     message.dateSent = [NSDate date];
     
-    [self.items addObject:message];
+    [self insertMessageToTheBottomAnimated:message];
     
     [self finishSendingMessageAnimated:YES];
 }
@@ -131,7 +140,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
         
         message.attachments = @[attacment];
         
-        [self.items addObject:message];
+        [self insertMessageToTheBottomAnimated:message];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -182,7 +191,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth {
     
-    QBChatMessage *item = self.items[indexPath.item];
+    QBChatMessage *item = [self messageForIndexPath:indexPath];
     Class viewClass = [self viewClassForItem:item];
     CGSize size;
     
@@ -201,7 +210,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *item = self.items[indexPath.item];
+    QBChatMessage *item = [self messageForIndexPath:indexPath];
     
     NSAttributedString *attributedString =
     [item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
@@ -216,7 +225,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell conformsToProtocol:@protocol(QMChatAttachmentCell)]) {
-        QBChatMessage* message = self.items[indexPath.row];
+        QBChatMessage* message = [self messageForIndexPath:indexPath];
         
         if (message.attachments != nil) {
             QBChatAttachment* attachment = message.attachments.firstObject;
@@ -235,7 +244,9 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
     UIColor *textColor = [messageItem senderID] == self.senderID ? [UIColor whiteColor] : [UIColor colorWithWhite:0.290 alpha:1.000];
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:15];
-    NSDictionary *attributes = @{ NSForegroundColorAttributeName:textColor, NSFontAttributeName:font};
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : textColor,
+                                 NSFontAttributeName : font};
 
     NSMutableAttributedString *attrStr;
     
