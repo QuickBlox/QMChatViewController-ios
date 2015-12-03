@@ -176,6 +176,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark - Messages items
 
 - (void)insertMessagesToTheTopAnimated:(NSArray *)messages {
+    NSAssert([NSThread isMainThread], @"You are trying to insert messages in background thread!");
     NSParameterAssert(messages);
 
     NSDictionary *sectionsAndItems = [self prepareSectionsForMessages:messages];
@@ -259,6 +260,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)insertMessagesToTheBottomAnimated:(NSArray *)messages {
+    NSAssert([NSThread isMainThread], @"You are trying to insert messages in background thread!");
     NSAssert([messages count] > 0, @"Array must contain messages!");
     
     if (self.chatSections == nil) {
@@ -318,6 +320,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)updateMessages:(NSArray *)messages {
+    NSAssert([NSThread isMainThread], @"You are trying to update messages in background thread!");
     
     NSMutableArray *indexPaths = [NSMutableArray array];
     
