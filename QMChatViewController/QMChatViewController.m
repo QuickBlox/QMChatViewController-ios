@@ -207,8 +207,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
     } completion:^(BOOL finished) {
         //
-        __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf.collectionView.collectionViewLayout invalidateLayout];
         [CATransaction commit];
     }];
 }
@@ -311,7 +309,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     } completion:^(BOOL finished) {
         //
         __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf.collectionView.collectionViewLayout invalidateLayout];
         [strongSelf scrollToBottomAnimated:NO];
     }];
 }
