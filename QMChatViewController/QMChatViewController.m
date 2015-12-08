@@ -347,14 +347,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 - (void)deleteMessages:(NSArray *)messages {
     NSAssert([NSThread isMainThread], @"You are trying to delete messages in background thread!");
     
-    NSMutableArray *indexPaths = [NSMutableArray array];
+    NSMutableArray *itemsToDelete    = [NSMutableArray array];
     NSMutableArray *sectionsToDelete = [NSMutableArray array];
     
     for (QBChatMessage *message in messages) {
         NSIndexPath *indexPath = [self indexPathForMessage:message];
         if (indexPath == nil) continue;
         
-        [indexPaths addObject:indexPath];
         [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
         
         QMChatSection *chatSection = self.chatSections[indexPath.section];
@@ -363,20 +362,29 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         if ([chatSection.messages count] == 0) {
             [sectionsToDelete addObject:@(indexPath.section)];
             [self.chatSections removeObjectAtIndex:indexPath.section];
+        } else {
+            [itemsToDelete addObject:indexPath];
         }
     }
     
-    if ([indexPaths count] > 0) {
-        [self.collectionView deleteItemsAtIndexPaths:indexPaths];
-        
-        if ([sectionsToDelete count] > 0) {
-            NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-            for (NSNumber *number in sectionsToDelete) {
-                [indexSet addIndex:[number integerValue]];
-            }
-            
-            [self.collectionView deleteSections:indexSet];
+    if ([sectionsToDelete count] > 0) {
+        NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+        for (NSNumber *number in sectionsToDelete) {
+            [indexSet addIndex:[number integerValue]];
         }
+        
+        [self.collectionView deleteSections:indexSet];
+        
+        // no need to remove elements whose section has been removed
+        NSArray *items = [itemsToDelete copy];
+        for (NSIndexPath *indexPath in items) {
+            if ([sectionsToDelete containsObject:@(indexPath.section)]) {
+                [itemsToDelete removeObject:indexPath];
+            }
+        }
+    }
+    if ([itemsToDelete count] > 0) {
+        [self.collectionView deleteItemsAtIndexPaths:itemsToDelete];
     }
 }
 
