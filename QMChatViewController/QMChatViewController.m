@@ -340,6 +340,46 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
 }
 
+- (void)deleteMessage:(QBChatMessage *)message {
+    [self deleteMessages:@[message]];
+}
+
+- (void)deleteMessages:(NSArray *)messages {
+    NSAssert([NSThread isMainThread], @"You are trying to delete messages in background thread!");
+    
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    NSMutableArray *sectionsToDelete = [NSMutableArray array];
+    
+    for (QBChatMessage *message in messages) {
+        NSIndexPath *indexPath = [self indexPathForMessage:message];
+        if (indexPath == nil) continue;
+        
+        [indexPaths addObject:indexPath];
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
+        
+        QMChatSection *chatSection = self.chatSections[indexPath.section];
+        [chatSection.messages removeObjectAtIndex:indexPath.item];
+        
+        if ([chatSection.messages count] == 0) {
+            [sectionsToDelete addObject:@(indexPath.section)];
+            [self.chatSections removeObjectAtIndex:indexPath.section];
+        }
+    }
+    
+    if ([indexPaths count] > 0) {
+        [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+        
+        if ([sectionsToDelete count] > 0) {
+            NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+            for (NSNumber *number in sectionsToDelete) {
+                [indexSet addIndex:[number integerValue]];
+            }
+            
+            [self.collectionView deleteSections:indexSet];
+        }
+    }
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {

@@ -144,6 +144,9 @@
  */
 - (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
+- (void)deleteMessage:(QBChatMessage *)message;
+- (void)deleteMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
 /**
  *  Method to create chat message text attributed string. Have to be overriden in subclasses.
  *
