@@ -362,6 +362,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         if ([chatSection.messages count] == 0) {
             [sectionsToDelete addObject:@(indexPath.section)];
             [self.chatSections removeObjectAtIndex:indexPath.section];
+            
+            // no need to remove elements whose section will be removed
+            NSArray *items = [itemsToDelete copy];
+            for (NSIndexPath *index in items) {
+                if (index.section == indexPath.section) {
+                    [itemsToDelete removeObject:index];
+                }
+            }
         } else {
             [itemsToDelete addObject:indexPath];
         }
@@ -374,14 +382,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         }
         
         [self.collectionView deleteSections:indexSet];
-        
-        // no need to remove elements whose section has been removed
-        NSArray *items = [itemsToDelete copy];
-        for (NSIndexPath *indexPath in items) {
-            if ([sectionsToDelete containsObject:@(indexPath.section)]) {
-                [itemsToDelete removeObject:indexPath];
-            }
-        }
     }
     if ([itemsToDelete count] > 0) {
         [self.collectionView deleteItemsAtIndexPaths:itemsToDelete];
