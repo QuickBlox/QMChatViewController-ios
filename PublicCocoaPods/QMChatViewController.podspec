@@ -63,7 +63,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
   s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
-  s.dependency "QuickBlox", "~> 2.3"
+  s.dependency "QuickBlox", "~> 2.0"
   s.dependency "TTTAttributedLabel", "~> 1.13"
   s.dependency "SDWebImage", "~> 3.6"
 
