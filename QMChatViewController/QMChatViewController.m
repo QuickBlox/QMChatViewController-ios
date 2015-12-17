@@ -433,7 +433,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [super viewWillDisappear:animated];
     
     [self addActionToInteractivePopGestureRecognizer:NO];
-    self.collectionView.collectionViewLayout.springinessEnabled = NO;
 	
 	[self removeObservers];
 	[self.keyboardController endListeningForKeyboard];
