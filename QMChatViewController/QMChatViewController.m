@@ -413,7 +413,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSParameterAssert(self.timeIntervalBetweenSections != 0);
     
     [super viewWillAppear:animated];
-    [self.collectionView.collectionViewLayout invalidateLayout];
     
     [self updateKeyboardTriggerPoint];
 }
