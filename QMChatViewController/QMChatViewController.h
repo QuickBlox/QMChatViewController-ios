@@ -98,6 +98,17 @@
 @property (assign, nonatomic, readonly) NSUInteger totalMessagesCount;
 
 /**
+ *  Updating data source with messages without reloading of collection view.
+ *
+ *  @param messages QBChatMessage instances to update data source with
+ *
+ *  @return dictionary with section indexes and items index pathes to insert
+ *
+ *  @discussion Use this method to update data source without reloading collection view. For example in viewWillAppear method.
+ */
+- (NSDictionary *)updateDataSourceWithMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
+/**
  *  Insert messages to the top.
  *
  *  @param messages array of messages to insert
@@ -143,6 +154,20 @@
  *  and reloaded in collection view.
  */
 - (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
+/**
+ *  Delete message from chat controller.
+ *
+ *  @param message message to delete
+ */
+- (void)deleteMessage:(QBChatMessage *)message;
+
+/**
+ *  Delete messages from chat controller.
+ *
+ *  @param messages array of messages to remove from chat controller
+ */
+- (void)deleteMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
 /**
  *  Method to create chat message text attributed string. Have to be overriden in subclasses.
