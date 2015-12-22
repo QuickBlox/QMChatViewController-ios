@@ -10,6 +10,7 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - Optimised and performant.
 - Supports portrait and landscape orientations.
 - Auto Layout inside.
+- Time header view with custom time intervals
 
 # Screenshots
 
@@ -222,7 +223,7 @@ You can also customize header height using this data source method:
 	}
 ````
 
-If you are not happy with default time header view, you can overload this method and have your own one:
+If you are not happy with default time header view, you can override this method and have your own one:
 
 ````objective-c
 	- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
