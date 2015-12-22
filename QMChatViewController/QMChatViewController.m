@@ -435,6 +435,20 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
 }
 
+- (void)viewDidLayoutSubviews
+{
+  [super viewDidLayoutSubviews];
+  
+  [self.collectionView.collectionViewLayout invalidateLayout];
+  
+  if (self.automaticallyScrollsToMostRecentMessage) {
+    [self scrollToBottomAnimated:NO];
+    [self.collectionView.collectionViewLayout invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
+  }
+  
+  [self updateKeyboardTriggerPoint];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
