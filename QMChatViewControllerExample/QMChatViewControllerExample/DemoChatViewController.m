@@ -83,7 +83,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 //    
 //    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
     
-    [self insertMessagesToTheBottomAnimated:@[message1, message2, message3, message4]];
+    [self updateDataSourceWithMessages:@[message1, message2, message3, message4]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,8 +94,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.collectionView.collectionViewLayout.springResistanceFactor = 1000;
-    self.collectionView.collectionViewLayout.springinessEnabled = NO;
 }
 
 
