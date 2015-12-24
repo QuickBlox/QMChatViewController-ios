@@ -23,12 +23,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="45" id="G4o-g5-Qyf"/>
-                            <constraint firstItem="7Ef-cm-mUT" firstAttribute="leading" secondItem="7u5-rz-uqE" secondAttribute="leading" id="Wga-7S-eKb"/>
-                            <constraint firstItem="7Ef-cm-mUT" firstAttribute="top" secondItem="7u5-rz-uqE" secondAttribute="top" id="eaa-3k-eZK"/>
-                            <constraint firstAttribute="trailing" secondItem="7Ef-cm-mUT" secondAttribute="trailing" id="ekS-9J-vKn"/>
-                            <constraint firstAttribute="bottom" secondItem="7Ef-cm-mUT" secondAttribute="bottom" id="u8k-EY-O50"/>
-                            <constraint firstAttribute="width" constant="44" id="uct-ao-DdW"/>
+                            <constraint firstAttribute="height" constant="45" identifier="outgCellAvaHeight" id="G4o-g5-Qyf"/>
+                            <constraint firstItem="7Ef-cm-mUT" firstAttribute="leading" secondItem="7u5-rz-uqE" secondAttribute="leading" identifier="outgCellAvaLeading" id="Wga-7S-eKb"/>
+                            <constraint firstItem="7Ef-cm-mUT" firstAttribute="top" secondItem="7u5-rz-uqE" secondAttribute="top" identifier="outgCellAvaTop" id="eaa-3k-eZK"/>
+                            <constraint firstAttribute="trailing" secondItem="7Ef-cm-mUT" secondAttribute="trailing" identifier="outgCellAvaTrailing" id="ekS-9J-vKn"/>
+                            <constraint firstAttribute="bottom" secondItem="7Ef-cm-mUT" secondAttribute="bottom" identifier="outgCellAvaBottom" id="u8k-EY-O50"/>
+                            <constraint firstAttribute="width" constant="44" identifier="outgCellAvaWidth" id="uct-ao-DdW"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IHn-aU-joG" userLabel="ContainerView" customClass="QMChatContainerView">
@@ -41,7 +41,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="162" height="21"/>
                                         <color key="backgroundColor" red="0.5758987968" green="0.63260070530000001" blue="0.69994870580000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="VYw-Ld-ar1"/>
+                                            <constraint firstAttribute="height" constant="21" identifier="outgCellTopLabelHeight" id="VYw-Ld-ar1"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -58,7 +58,7 @@
                                         <rect key="frame" x="0.0" y="45" width="162" height="21"/>
                                         <color key="backgroundColor" red="0.0" green="1" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="WU0-tf-mgf"/>
+                                            <constraint firstAttribute="height" constant="21" identifier="outgCellBottomLabelHeight" id="WU0-tf-mgf"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -68,21 +68,21 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="h8u-4h-IEt" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" id="2hL-wa-XL0"/>
-                                    <constraint firstItem="KM3-Oj-tba" firstAttribute="top" secondItem="gwl-pf-rea" secondAttribute="bottom" id="BQZ-mi-zJi"/>
-                                    <constraint firstAttribute="trailing" secondItem="gwl-pf-rea" secondAttribute="trailing" identifier="outgCellMessageTextTrailing" id="C4J-58-vtD"/>
+                                    <constraint firstItem="KM3-Oj-tba" firstAttribute="top" secondItem="gwl-pf-rea" secondAttribute="bottom" priority="750" identifier="outgCellBottomLabelToMessageTextLabel" id="BQZ-mi-zJi"/>
+                                    <constraint firstAttribute="trailing" secondItem="gwl-pf-rea" secondAttribute="trailing" priority="750" identifier="outgCellMessageTextTrailing" id="C4J-58-vtD"/>
                                     <constraint firstAttribute="trailing" secondItem="KM3-Oj-tba" secondAttribute="trailing" id="Cnr-Ch-k1c"/>
                                     <constraint firstItem="h8u-4h-IEt" firstAttribute="top" secondItem="UGA-Lo-mbI" secondAttribute="top" id="E1C-0z-mfn"/>
-                                    <constraint firstAttribute="trailing" secondItem="h8u-4h-IEt" secondAttribute="trailing" id="KrN-Zw-ZY1"/>
+                                    <constraint firstAttribute="trailing" secondItem="h8u-4h-IEt" secondAttribute="trailing" priority="750" id="KrN-Zw-ZY1"/>
                                     <constraint firstAttribute="bottom" secondItem="KM3-Oj-tba" secondAttribute="bottom" id="Qq4-nq-W8i"/>
-                                    <constraint firstItem="KM3-Oj-tba" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" id="UGl-WW-1AM"/>
-                                    <constraint firstItem="gwl-pf-rea" firstAttribute="top" secondItem="h8u-4h-IEt" secondAttribute="bottom" id="mbp-Hv-6Tq"/>
-                                    <constraint firstItem="gwl-pf-rea" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" identifier="outgCellMessageTextLeading" id="x6U-gp-Ps7"/>
+                                    <constraint firstItem="KM3-Oj-tba" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" priority="750" id="UGl-WW-1AM"/>
+                                    <constraint firstItem="gwl-pf-rea" firstAttribute="top" secondItem="h8u-4h-IEt" secondAttribute="bottom" identifier="outgCellMessageTextToTopLabel" id="mbp-Hv-6Tq"/>
+                                    <constraint firstItem="gwl-pf-rea" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" identifier="outgCellMessageTextLeadingToContainer" id="x6U-gp-Ps7"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" priority="750" constant="181" id="D1r-Pq-zcf"/>
+                            <constraint firstAttribute="width" constant="181" identifier="outgCellContainerWidth" id="D1r-Pq-zcf"/>
                             <constraint firstItem="UGA-Lo-mbI" firstAttribute="top" secondItem="IHn-aU-joG" secondAttribute="top" constant="4" id="Oep-MV-D9j"/>
                             <constraint firstAttribute="trailing" secondItem="UGA-Lo-mbI" secondAttribute="trailing" constant="15" id="UcN-qd-Nxu"/>
                             <constraint firstAttribute="bottom" secondItem="UGA-Lo-mbI" secondAttribute="bottom" constant="4" id="XFF-Rw-dM5"/>
