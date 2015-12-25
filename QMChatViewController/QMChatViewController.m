@@ -280,45 +280,59 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     NSMutableArray *sectionsToInsert = [NSMutableArray array];
     NSMutableArray *indexPathToInsert = [NSMutableArray array];
-    
+	
+	NSMutableArray *insertedSections = [NSMutableArray array];
+	
     for (QBChatMessage *message in messages) {
-        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
-        
-        if ([self indexPathForMessage:message] != nil) continue;
-        
-        QMChatSection *firstSection = [self.chatSections firstObject];
-        
-        NSUInteger sectionIndex = [self.chatSections indexOfObject:firstSection];
-        
-        if ([message.dateSent timeIntervalSinceDate:[firstSection firstMessageDate]] > self.timeIntervalBetweenSections || firstSection == nil) {
-            
-            QMChatSection* newSection = [QMChatSection chatSectionWithMessage:message];
-            [self.chatSections insertObject:newSection atIndex:0];
-            
-            sectionIndex = [self.chatSections indexOfObject:newSection];
-            [sectionsToInsert addObject:@(sectionIndex)];
-        } else {
-            [firstSection.messages insertObject:message atIndex:0];
-        }
-        
-        [indexPathToInsert addObject:[NSIndexPath indexPathForRow:0
-                                                        inSection:sectionIndex]];
-
-    }
-    
-    NSIndexSet *sectionsIndexSet = [self indexSetForSectionsToInsert:sectionsToInsert];
-    
-    __weak __typeof(self)weakSelf = self;
-    [self.collectionView performBatchUpdates:^{
-        //
-        __typeof(weakSelf)strongSelf = weakSelf;
-        if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
-        [strongSelf.collectionView insertItemsAtIndexPaths:indexPathToInsert];
-    } completion:^(BOOL finished) {
-        //
-        __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf scrollToBottomAnimated:NO];
-    }];
+		NSAssert(message.dateSent != nil, @"Message must have dateSent!");
+		
+		if ([self indexPathForMessage:message] != nil) continue;
+		
+		QMChatSection *firstSection = [self.chatSections firstObject];
+		
+		if ([message.dateSent timeIntervalSinceDate:[firstSection firstMessageDate]] > self.timeIntervalBetweenSections || firstSection == nil) {
+			
+			QMChatSection* newSection = [QMChatSection chatSectionWithMessage:message];
+			[self.chatSections insertObject:newSection atIndex:0];
+			
+			[insertedSections addObject:newSection];
+			
+			
+			firstSection = [self.chatSections firstObject];
+			
+		} else {
+			[firstSection.messages insertObject:message atIndex:0];
+		}
+		
+		
+		for (QMChatSection *section in insertedSections) {
+			NSUInteger sectionIndex = [self.chatSections indexOfObject:section];
+			
+			[sectionsToInsert addObject:@(sectionIndex)];
+			
+			[indexPathToInsert addObject:[NSIndexPath indexPathForRow:0
+															inSection:sectionIndex]];
+			
+		}
+	
+		NSIndexSet *sectionsIndexSet = [self indexSetForSectionsToInsert:sectionsToInsert];
+		
+		__weak __typeof(self)weakSelf = self;
+		[self.collectionView performBatchUpdates:^{
+			//
+			__typeof(weakSelf)strongSelf = weakSelf;
+			
+			if ([sectionsIndexSet count] > 0) {
+				[strongSelf.collectionView insertSections:sectionsIndexSet];
+			}
+			
+			[strongSelf.collectionView insertItemsAtIndexPaths:indexPathToInsert];
+		} completion:^(BOOL finished) {
+			//
+			__typeof(weakSelf)strongSelf = weakSelf;
+			[strongSelf scrollToBottomAnimated:NO];
+		}];
+	}
 }
 
 - (void)updateMessage:(QBChatMessage *)message {
