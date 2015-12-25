@@ -54,11 +54,11 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="16:44" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sp9-fQ-dGT" customClass="TTTAttributedLabel">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16:44" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sp9-fQ-dGT" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="0.0" y="48" width="149" height="21"/>
                                         <color key="backgroundColor" red="0.0" green="1" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" identifier="incCellBottomLabelHeight" id="cbV-gS-CjC"/>
+                                            <constraint firstAttribute="height" constant="21" id="cbV-gS-CjC"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -69,9 +69,8 @@
                                 <constraints>
                                     <constraint firstItem="FVl-fR-cgk" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="1M0-Jz-tpk"/>
                                     <constraint firstAttribute="trailing" secondItem="sp9-fQ-dGT" secondAttribute="trailing" id="2F6-kG-fDd"/>
-                                    <constraint firstAttribute="bottom" secondItem="sp9-fQ-dGT" secondAttribute="bottom" id="7mH-VH-UBD"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="FVl-fR-cgk" secondAttribute="width" identifier="inCellContainerWidthGreatEqTopLabelWidth" id="9ou-yN-w6L"/>
-                                    <constraint firstItem="sp9-fQ-dGT" firstAttribute="top" secondItem="8ct-WW-zaC" secondAttribute="bottom" priority="750" identifier="incCellBottomLabelToMessageTextLabel" id="HrM-b4-QGY"/>
+                                    <constraint firstAttribute="bottom" secondItem="sp9-fQ-dGT" secondAttribute="bottom" priority="750" identifier="incCellBottomLabelBottom" id="7mH-VH-UBD"/>
+                                    <constraint firstItem="sp9-fQ-dGT" firstAttribute="top" secondItem="8ct-WW-zaC" secondAttribute="bottom" id="HrM-b4-QGY"/>
                                     <constraint firstItem="FVl-fR-cgk" firstAttribute="top" secondItem="cBa-gJ-Bzq" secondAttribute="top" id="Jke-hK-Vbu"/>
                                     <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" id="Kgo-ol-P8W"/>
                                     <constraint firstItem="8ct-WW-zaC" firstAttribute="top" secondItem="FVl-fR-cgk" secondAttribute="bottom" id="L8d-f5-ErX"/>
@@ -79,11 +78,6 @@
                                     <constraint firstItem="sp9-fQ-dGT" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="aB1-om-Upd"/>
                                     <constraint firstAttribute="trailing" secondItem="8ct-WW-zaC" secondAttribute="trailing" id="e74-0T-xyP"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="9ou-yN-w6L"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
