@@ -121,7 +121,7 @@
                 <outlet property="avatarContainerViewWidthConstraint" destination="uct-ao-DdW" id="jz8-Mx-YYV"/>
                 <outlet property="avatarView" destination="7Ef-cm-mUT" id="e3o-co-mQh"/>
                 <outlet property="bottomLabel" destination="KM3-Oj-tba" id="nlu-fs-GAw"/>
-                <outlet property="bottomLableHeightConstraint" destination="WU0-tf-mgf" id="xLU-KS-YqK"/>
+                <outlet property="bottomLabelHeightConstraint" destination="WU0-tf-mgf" id="cf4-8U-nj0"/>
                 <outlet property="containerView" destination="IHn-aU-joG" id="FxQ-jl-eL2"/>
                 <outlet property="containerWidthConstraint" destination="D1r-Pq-zcf" id="Nht-Pz-NMl"/>
                 <outlet property="messageContainer" destination="UGA-Lo-mbI" id="qbe-Vg-Mo6"/>
@@ -130,10 +130,10 @@
                 <outlet property="messageContainerRightInsetConstraint" destination="UcN-qd-Nxu" id="8Mn-ym-bz2"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="Oep-MV-D9j" id="3nI-aa-1UH"/>
                 <outlet property="textView" destination="gwl-pf-rea" id="y5I-qm-hyU"/>
-                <outlet property="textViewBottomLableVerticalSpaceConstraint" destination="BQZ-mi-zJi" id="7Xl-SO-17P"/>
+                <outlet property="textViewBottomLabelVerticalSpaceConstraint" destination="BQZ-mi-zJi" id="dBa-7K-cFG"/>
                 <outlet property="topLabel" destination="h8u-4h-IEt" id="hdo-Lk-tvT"/>
+                <outlet property="topLabelHeightConstraint" destination="VYw-Ld-ar1" id="SGp-H8-Qeb"/>
                 <outlet property="topLabelTextViewVerticalSpaceConstraint" destination="mbp-Hv-6Tq" id="OJk-NT-Qbw"/>
-                <outlet property="topLableHeightConstraint" destination="VYw-Ld-ar1" id="UKi-in-P6g"/>
             </connections>
             <point key="canvasLocation" x="256.5" y="369"/>
         </collectionViewCell>
