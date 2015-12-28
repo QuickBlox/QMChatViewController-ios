@@ -41,7 +41,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="149" height="21"/>
                                         <color key="backgroundColor" red="0.5758987968" green="0.63260070530000001" blue="0.69994870580000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="xq4-Ck-zDx"/>
+                                            <constraint firstAttribute="height" constant="21" identifier="incCellTopLabelHeight" id="xq4-Ck-zDx"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -72,7 +72,7 @@
                                     <constraint firstAttribute="bottom" secondItem="sp9-fQ-dGT" secondAttribute="bottom" priority="750" identifier="incCellBottomLabelBottom" id="7mH-VH-UBD"/>
                                     <constraint firstItem="sp9-fQ-dGT" firstAttribute="top" secondItem="8ct-WW-zaC" secondAttribute="bottom" id="HrM-b4-QGY"/>
                                     <constraint firstItem="FVl-fR-cgk" firstAttribute="top" secondItem="cBa-gJ-Bzq" secondAttribute="top" id="Jke-hK-Vbu"/>
-                                    <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" id="Kgo-ol-P8W"/>
+                                    <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" priority="750" identifier="incCellTopLabelTrailing" id="Kgo-ol-P8W"/>
                                     <constraint firstItem="8ct-WW-zaC" firstAttribute="top" secondItem="FVl-fR-cgk" secondAttribute="bottom" id="L8d-f5-ErX"/>
                                     <constraint firstItem="8ct-WW-zaC" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="MBo-eV-1sQ"/>
                                     <constraint firstItem="sp9-fQ-dGT" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="aB1-om-Upd"/>
@@ -111,7 +111,7 @@
             <constraints>
                 <constraint firstItem="lux-vg-6Z5" firstAttribute="top" secondItem="C3M-tc-m20" secondAttribute="top" id="2aL-wM-yzn"/>
                 <constraint firstItem="W0n-sL-BzS" firstAttribute="leading" secondItem="C3M-tc-m20" secondAttribute="leading" id="Cgk-xL-zfE"/>
-                <constraint firstItem="lux-vg-6Z5" firstAttribute="leading" secondItem="W0n-sL-BzS" secondAttribute="trailing" constant="2" id="NeG-V3-bBd"/>
+                <constraint firstItem="lux-vg-6Z5" firstAttribute="leading" secondItem="W0n-sL-BzS" secondAttribute="trailing" priority="750" constant="2" id="NeG-V3-bBd"/>
                 <constraint firstAttribute="bottom" secondItem="lux-vg-6Z5" secondAttribute="bottom" id="m5g-Xl-Xx2"/>
                 <constraint firstAttribute="bottom" secondItem="W0n-sL-BzS" secondAttribute="bottom" id="tg8-KM-iKr"/>
             </constraints>

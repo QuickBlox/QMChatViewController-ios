@@ -72,7 +72,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [super awakeFromNib];
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    
+	
     self.messageContainerTopInsetConstraint.constant = 0;
     self.messageContainerLeftInsetConstraint.constant = 0;
     self.messageContainerBottomInsetConstraint.constant = 0;
@@ -122,8 +122,6 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [self updateConstraint:self.avatarContainerViewWidthConstraint withConstant:customAttributes.avatarSize.width];
     [self.avatarView layoutIfNeeded];
     
-    [self updateConstraint:self.containerWidthConstraint withConstant:customAttributes.containerSize.width];
-    
     [self updateConstraint:self.topLableHeightConstraint withConstant:customAttributes.topLabelHeight];
     [self updateConstraint:self.bottomLableHeightConstraint withConstant:customAttributes.bottomLabelHeight];
     
@@ -134,7 +132,9 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     
     [self updateConstraint:self.topLabelTextViewVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTopLabelAndTextView];
     [self updateConstraint:self.textViewBottomLableVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
-    
+	
+    [self updateConstraint:self.containerWidthConstraint withConstant:customAttributes.containerSize.width];
+	
     [self layoutIfNeeded];
 }
 
