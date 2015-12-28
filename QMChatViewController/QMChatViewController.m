@@ -520,7 +520,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return YES;
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         return UIInterfaceOrientationMaskAllButUpsideDown;
@@ -678,27 +678,27 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     if ([cell isKindOfClass:[QMChatCell class]]) {
         
         QMChatCell *chatCell = (QMChatCell *)cell;
-        
+
         QBChatMessage *messageItem = [self messageForIndexPath:indexPath];
         
-        chatCell.textView.text = [self attributedStringForItem:messageItem];
+        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
         chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
         chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
     }
 }
 
 - (NSAttributedString *)topLabelAttributedStringForItem:(QBChatMessage *)messageItem {
-    NSAssert(NO, @"Have to be overriden in subclasses!");
+    NSAssert(NO, @"Have to be overridden in subclasses!");
     return nil;
 }
 
 - (NSAttributedString *)attributedStringForItem:(QBChatMessage *)messageItem {
-    NSAssert(NO, @"Have to be overriden in subclasses!");
+    NSAssert(NO, @"Have to be overridden in subclasses!");
     return nil;
 }
 
 - (NSAttributedString *)bottomLabelAttributedStringForItem:(QBChatMessage *)messageItem {
-    NSAssert(NO, @"Have to be overriden in subclasses!");
+    NSAssert(NO, @"Have to be overridden in subclasses!");
     return nil;
 }
 
@@ -712,21 +712,17 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    
-    if (action == @selector(copy:)) {
-        
-        return YES;
-    }
-    
-    return NO;
+
+    return action == @selector(copy:);
+
 }
 
 - (void)collectionView:(QMChatCollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-    NSAssert(NO, @"Have to be overriden in subclasses.");
+    NSAssert(NO, @"Have to be overridden in subclasses.");
 }
 
 - (Class)viewClassForItem:(QBChatMessage *)item {
-    NSAssert(NO, @"Have to be overriden in subclasses.");
+    NSAssert(NO, @"Have to be overridden in subclasses.");
     return nil;
 }
 
@@ -828,8 +824,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         self.pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:self.pickerController animated:YES completion:nil];
@@ -910,8 +905,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         if (object == self.inputToolbar.contentView.textView
             && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]) {
             
-            CGSize oldContentSize = [[change objectForKey:NSKeyValueChangeOldKey] CGSizeValue];
-            CGSize newContentSize = [[change objectForKey:NSKeyValueChangeNewKey] CGSizeValue];
+            CGSize oldContentSize = [change[NSKeyValueChangeOldKey] CGSizeValue];
+            CGSize newContentSize = [change[NSKeyValueChangeNewKey] CGSizeValue];
             
             CGFloat dy = newContentSize.height - oldContentSize.height;
             

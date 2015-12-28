@@ -32,9 +32,9 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *avatarContainerViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *avatarContainerViewHeightConstraint;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLableHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomLableHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomLableVerticalSpaceConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLabelHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomLabelHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomLabelVerticalSpaceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLabelTextViewVerticalSpaceConstraint;
 
 @property (weak, nonatomic, readwrite) UITapGestureRecognizer *tapGestureRecognizer;
@@ -81,11 +81,11 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.avatarContainerViewWidthConstraint.constant = 0;
     self.avatarContainerViewHeightConstraint.constant = 0;
     
-    self.topLableHeightConstraint.constant = 0;
-    self.bottomLableHeightConstraint.constant = 0;
+    self.topLabelHeightConstraint.constant = 0;
+    self.bottomLabelHeightConstraint.constant = 0;
     
     self.topLabelTextViewVerticalSpaceConstraint.constant = 0;
-    self.textViewBottomLableVerticalSpaceConstraint.constant = 0;
+    self.textViewBottomLabelVerticalSpaceConstraint.constant = 0;
     
 #if Q_DEBUG_COLORS == 0
     self.backgroundColor = [UIColor clearColor];
@@ -121,9 +121,9 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [self updateConstraint:self.avatarContainerViewHeightConstraint withConstant:customAttributes.avatarSize.height];
     [self updateConstraint:self.avatarContainerViewWidthConstraint withConstant:customAttributes.avatarSize.width];
     [self.avatarView layoutIfNeeded];
-    
-    [self updateConstraint:self.topLableHeightConstraint withConstant:customAttributes.topLabelHeight];
-    [self updateConstraint:self.bottomLableHeightConstraint withConstant:customAttributes.bottomLabelHeight];
+
+    [self updateConstraint:self.topLabelHeightConstraint withConstant:customAttributes.topLabelHeight];
+    [self updateConstraint:self.bottomLabelHeightConstraint withConstant:customAttributes.bottomLabelHeight];
     
     [self updateConstraint:self.messageContainerTopInsetConstraint withConstant:customAttributes.containerInsets.top];
     [self updateConstraint:self.messageContainerLeftInsetConstraint withConstant:customAttributes.containerInsets.left];
@@ -131,7 +131,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [self updateConstraint:self.messageContainerRightInsetConstraint withConstant:customAttributes.containerInsets.right];
     
     [self updateConstraint:self.topLabelTextViewVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTopLabelAndTextView];
-    [self updateConstraint:self.textViewBottomLableVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
+    [self updateConstraint:self.textViewBottomLabelVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
 	
     [self updateConstraint:self.containerWidthConstraint withConstant:customAttributes.containerSize.width];
 	
