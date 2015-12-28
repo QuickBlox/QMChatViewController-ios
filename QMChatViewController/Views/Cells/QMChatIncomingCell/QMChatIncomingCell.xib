@@ -35,7 +35,7 @@
                         <rect key="frame" x="46" y="0.0" width="163" height="75"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBa-gJ-Bzq" userLabel="Message Container">
-                                <rect key="frame" x="11" y="3" width="149" height="69"/>
+                                <rect key="frame" x="11" y="3" width="149" height="72"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NickName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVl-fR-cgk" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="0.0" y="0.0" width="149" height="21"/>
@@ -47,18 +47,18 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message Text" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ct-WW-zaC" customClass="TTTAttributedLabel">
-                                        <rect key="frame" x="0.0" y="21" width="149" height="27"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Message Text" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ct-WW-zaC" customClass="TTTAttributedLabel">
+                                        <rect key="frame" x="0.0" y="21" width="149" height="30"/>
                                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.25098040699958801" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16:44" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sp9-fQ-dGT" customClass="TTTAttributedLabel">
-                                        <rect key="frame" x="0.0" y="48" width="149" height="21"/>
+                                        <rect key="frame" x="0.0" y="51" width="149" height="21"/>
                                         <color key="backgroundColor" red="0.0" green="1" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="cbV-gS-CjC"/>
+                                            <constraint firstAttribute="height" constant="21" identifier="incCellBottomLabelHeight" id="cbV-gS-CjC"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -69,12 +69,12 @@
                                 <constraints>
                                     <constraint firstItem="FVl-fR-cgk" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="1M0-Jz-tpk"/>
                                     <constraint firstAttribute="trailing" secondItem="sp9-fQ-dGT" secondAttribute="trailing" id="2F6-kG-fDd"/>
-                                    <constraint firstAttribute="bottom" secondItem="sp9-fQ-dGT" secondAttribute="bottom" priority="750" identifier="incCellBottomLabelBottom" id="7mH-VH-UBD"/>
-                                    <constraint firstItem="sp9-fQ-dGT" firstAttribute="top" secondItem="8ct-WW-zaC" secondAttribute="bottom" id="HrM-b4-QGY"/>
-                                    <constraint firstItem="FVl-fR-cgk" firstAttribute="top" secondItem="cBa-gJ-Bzq" secondAttribute="top" id="Jke-hK-Vbu"/>
-                                    <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" priority="750" identifier="incCellTopLabelTrailing" id="Kgo-ol-P8W"/>
-                                    <constraint firstItem="8ct-WW-zaC" firstAttribute="top" secondItem="FVl-fR-cgk" secondAttribute="bottom" id="L8d-f5-ErX"/>
-                                    <constraint firstItem="8ct-WW-zaC" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="MBo-eV-1sQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="sp9-fQ-dGT" secondAttribute="bottom" identifier="incCellMsgContainerToBottomLabelBottom" id="7mH-VH-UBD"/>
+                                    <constraint firstItem="sp9-fQ-dGT" firstAttribute="top" secondItem="8ct-WW-zaC" secondAttribute="bottom" identifier="incCellBottomLabelTopToMsgTextLabelBottom" id="HrM-b4-QGY"/>
+                                    <constraint firstItem="FVl-fR-cgk" firstAttribute="top" secondItem="cBa-gJ-Bzq" secondAttribute="top" identifier="incCellTopLabelTopToMsgContainerTop" id="Jke-hK-Vbu"/>
+                                    <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" priority="750" identifier="incCellMsgContainerTrailingToTopLabelTrailing" id="Kgo-ol-P8W"/>
+                                    <constraint firstItem="8ct-WW-zaC" firstAttribute="top" secondItem="FVl-fR-cgk" secondAttribute="bottom" priority="750" identifier="incCellMsgTextTopToTopLabelBottom" id="L8d-f5-ErX"/>
+                                    <constraint firstItem="8ct-WW-zaC" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" identifier="incCellMsgTextLeadingToMsgContainerLeading" id="MBo-eV-1sQ"/>
                                     <constraint firstItem="sp9-fQ-dGT" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" id="aB1-om-Upd"/>
                                     <constraint firstAttribute="trailing" secondItem="8ct-WW-zaC" secondAttribute="trailing" id="e74-0T-xyP"/>
                                 </constraints>
@@ -82,11 +82,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cBa-gJ-Bzq" firstAttribute="leading" secondItem="lux-vg-6Z5" secondAttribute="leading" constant="11" id="Iyk-PP-Jxf"/>
+                            <constraint firstItem="cBa-gJ-Bzq" firstAttribute="leading" secondItem="lux-vg-6Z5" secondAttribute="leading" constant="11" identifier="incCellMsgContainerLeadingToContainerLeading" id="Iyk-PP-Jxf"/>
                             <constraint firstAttribute="width" constant="163" id="JJF-la-T3e"/>
-                            <constraint firstAttribute="bottom" secondItem="cBa-gJ-Bzq" secondAttribute="bottom" constant="3" id="V2F-O3-LZU"/>
-                            <constraint firstAttribute="trailing" secondItem="cBa-gJ-Bzq" secondAttribute="trailing" constant="3" id="bIP-2g-9Q4"/>
-                            <constraint firstItem="cBa-gJ-Bzq" firstAttribute="top" secondItem="lux-vg-6Z5" secondAttribute="top" constant="3" id="hyM-CH-TM3"/>
+                            <constraint firstAttribute="bottom" secondItem="cBa-gJ-Bzq" secondAttribute="bottom" identifier="incCellContainerBottomToMsgContainerBottom" id="V2F-O3-LZU"/>
+                            <constraint firstAttribute="trailing" secondItem="cBa-gJ-Bzq" secondAttribute="trailing" constant="3" identifier="incCellContainerTrailingToMsgContainerTrailing" id="bIP-2g-9Q4"/>
+                            <constraint firstItem="cBa-gJ-Bzq" firstAttribute="top" secondItem="lux-vg-6Z5" secondAttribute="top" constant="3" identifier="incCellMsgContainerTopToContainerTop" id="hyM-CH-TM3"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
@@ -109,11 +109,11 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="lux-vg-6Z5" firstAttribute="top" secondItem="C3M-tc-m20" secondAttribute="top" id="2aL-wM-yzn"/>
+                <constraint firstItem="lux-vg-6Z5" firstAttribute="top" secondItem="C3M-tc-m20" secondAttribute="top" identifier="incCellContainerTopToCellTop" id="2aL-wM-yzn"/>
                 <constraint firstItem="W0n-sL-BzS" firstAttribute="leading" secondItem="C3M-tc-m20" secondAttribute="leading" id="Cgk-xL-zfE"/>
+                <constraint firstItem="W0n-sL-BzS" firstAttribute="bottom" secondItem="lux-vg-6Z5" secondAttribute="bottom" identifier="incCellAvaContainerBottomToContainerBottom" id="Hq1-4R-ZL2"/>
                 <constraint firstItem="lux-vg-6Z5" firstAttribute="leading" secondItem="W0n-sL-BzS" secondAttribute="trailing" priority="750" constant="2" id="NeG-V3-bBd"/>
-                <constraint firstAttribute="bottom" secondItem="lux-vg-6Z5" secondAttribute="bottom" id="m5g-Xl-Xx2"/>
-                <constraint firstAttribute="bottom" secondItem="W0n-sL-BzS" secondAttribute="bottom" id="tg8-KM-iKr"/>
+                <constraint firstAttribute="bottom" secondItem="lux-vg-6Z5" secondAttribute="bottom" identifier="incCellBottomToContainerBottom" id="m5g-Xl-Xx2"/>
             </constraints>
             <size key="customSize" width="252" height="75"/>
             <connections>
