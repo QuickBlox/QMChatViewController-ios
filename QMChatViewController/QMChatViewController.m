@@ -23,8 +23,8 @@
 
 #import "QMMessagesDataSource.h"
 
-static NSString *const kQMSectionsInsertKey = @"kQMSectionsInsertKey";
-static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
+static NSString *const kQMSectionsIndexSetKey = @"kQMSectionsIndexSetKey";
+static NSString *const kQMItemsIndexPathsKey   = @"kQMItemsIndexPathsKey";
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
@@ -190,10 +190,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSAssert([messages count] > 0, @"Array must contain messages!");
 
     NSDictionary *sectionsAndItems = [self.dataSource addMessagesToTop:messages];
-    NSArray *sectionsToInsert = sectionsAndItems[kQMSectionsInsertKey];
-    NSArray *itemsToInsert = sectionsAndItems[kQMItemsInsertKey];
-    
-    NSIndexSet *sectionsIndexSet = [self indexSetForSectionsToInsert:sectionsToInsert];
+    NSIndexSet *sectionsIndexSet = sectionsAndItems[kQMSectionsIndexSetKey];
+    NSArray *itemsToInsert = sectionsAndItems[kQMItemsIndexPathsKey];
 
     // perform animation changes
     [CATransaction begin];
@@ -228,13 +226,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSAssert([messages count] > 0, @"Array must contain messages!");
     
     NSDictionary *sectionsAndItems = [self.dataSource addMessagesToBottom:messages];
-    NSArray *sectionsToInsert = sectionsAndItems[kQMSectionsInsertKey];
-    NSArray *itemsToInsert = sectionsAndItems[kQMItemsInsertKey];
-
-    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
-    for (NSUInteger i = 0; i < [sectionsToInsert count]; i++) {
-        [sectionsIndexSet addIndex:i];
-    }
+    NSArray *sectionsIndexSet = sectionsAndItems[kQMSectionsIndexSetKey];
+    NSArray *itemsToInsert = sectionsAndItems[kQMItemsIndexPathsKey];
     
     __weak __typeof(self)weakSelf = self;
     [self.collectionView performBatchUpdates:^{
@@ -275,20 +268,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSAssert([NSThread isMainThread], @"You are trying to delete messages in background thread!");
     
     NSDictionary *sectionsAndItems = [self.dataSource removeMessages:messages];
-    NSArray *itemsToDelete    = sectionsAndItems[kQMSectionsInsertKey];
-    NSArray *sectionsToDelete = sectionsAndItems[kQMItemsInsertKey];
+    NSIndexSet *sectionsIndexSet = sectionsAndItems[kQMSectionsIndexSetKey];
+    NSArray *itemsToDelete = sectionsAndItems[kQMItemsIndexPathsKey];
     
     for (QBChatMessage *message in messages) {
         [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
     }
     
-    if ([sectionsToDelete count] > 0) {
-        NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-        for (NSNumber *number in sectionsToDelete) {
-            [indexSet addIndex:[number integerValue]];
-        }
-        
-        [self.collectionView deleteSections:indexSet];
+    if ([sectionsIndexSet count] > 0) {
+        [self.collectionView deleteSections:sectionsIndexSet];
     }
     if ([itemsToDelete count] > 0) {
         [self.collectionView deleteItemsAtIndexPaths:itemsToDelete];
@@ -982,18 +970,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 #pragma mark - Utilities
-
-- (NSIndexSet *)indexSetForSectionsToInsert:(NSArray *)sectionsToInsert {
-    
-    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
-    if ([sectionsToInsert count] > 0) {
-        for (NSNumber *sectionIndex in sectionsToInsert) {
-            [sectionsIndexSet addIndex:[sectionIndex integerValue]];
-        }
-    }
-    
-    return [sectionsIndexSet copy];
-}
 
 - (void)addObservers {
     

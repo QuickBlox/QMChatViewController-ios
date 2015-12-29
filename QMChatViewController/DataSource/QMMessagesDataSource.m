@@ -1,9 +1,9 @@
 //
 //  QMMessagesDataSource.m
-//  Pods
+//  QMChatViewController
 //
 //  Created by Vitaliy Gorbachov on 12/28/15.
-//
+//  Copyright (c) 2015 QuickBlox Team. All rights reserved.
 //
 
 #import "QMMessagesDataSource.h"
@@ -13,8 +13,8 @@
 #import "QMDateUtils.h"
 #import <Quickblox/Quickblox.h>
 
-static NSString *const kQMSectionsInsertKey = @"kQMSectionsInsertKey";
-static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
+static NSString *const kQMSectionsIndexSetKey = @"kQMSectionsIndexSetKey";
+static NSString *const kQMItemsIndexPathsKey   = @"kQMItemsIndexPathsKey";
 
 @interface QMMessagesDataSource()
 
@@ -65,9 +65,15 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     }
     
     self.chatSections = [sectionsToAdd copy];
+    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
+    if ([sectionsToInsert count] > 0) {
+        for (NSNumber *sectionIndex in sectionsToInsert) {
+            [sectionsIndexSet addIndex:[sectionIndex integerValue]];
+        }
+    }
     
-    return @{kQMSectionsInsertKey : sectionsToInsert,
-             kQMItemsInsertKey    : indexPathToInsert};
+    return @{kQMSectionsIndexSetKey : sectionsIndexSet,
+             kQMItemsIndexPathsKey  : indexPathToInsert};
 }
 
 - (NSDictionary *)addMessagesToBottom:(NSArray *)messages {
@@ -109,9 +115,13 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     }
     
     self.chatSections = [sectionsToAdd copy];
+    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
+    for (NSUInteger i = 0; i < [sectionsToInsert count]; i++) {
+        [sectionsIndexSet addIndex:i];
+    }
 
-    return @{kQMSectionsInsertKey : sectionsToInsert,
-             kQMItemsInsertKey    : indexPathToInsert};
+    return @{kQMSectionsIndexSetKey : sectionsIndexSet,
+             kQMItemsIndexPathsKey  : indexPathToInsert};
 }
 
 - (NSIndexPath *)replaceMessage:(QBChatMessage *)message {
@@ -162,9 +172,13 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     }
     
     self.chatSections = [sections copy];
+    NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+    for (NSNumber *number in sectionsToDelete) {
+        [indexSet addIndex:[number integerValue]];
+    }
     
-    return @{kQMSectionsInsertKey : sectionsToDelete,
-             kQMItemsInsertKey    : itemsToDelete};
+    return @{kQMSectionsIndexSetKey : indexSet,
+             kQMItemsIndexPathsKey  : itemsToDelete};
 }
 
 #pragma mark Properties

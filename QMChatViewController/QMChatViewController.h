@@ -312,15 +312,4 @@
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
 
-#pragma mark - Helpers
-
-/**
- *  Generating name for section with date.
- *
- *  @param date Date of section
- *
- *  @discussion override this method if you want to generate custom name for section with it's date.
- */
-- (NSString *)nameForSectionWithDate:(NSDate *)date;
-
 @end

@@ -1,9 +1,9 @@
 //
 //  QMMessagesDataSource.h
-//  Pods
+//  QMChatViewController
 //
 //  Created by Vitaliy Gorbachov on 12/28/15.
-//
+//  Copyright (c) 2015 QuickBlox Team. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -91,5 +91,14 @@
  *  @return NSIndexPath instance that conforms message or nil if not found
  */
 - (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message;
+
+/**
+ *  Generating name for section with date.
+ *
+ *  @param date Date of section
+ *
+ *  @discussion override this method if you want to generate custom name for section with it's date.
+ */
+- (NSString *)nameForSectionWithDate:(NSDate *)date;
 
 @end
