@@ -21,6 +21,7 @@
 #import "QMChatNotificationCell.h"
 #import "QMChatAttachmentIncomingCell.h"
 #import "QMChatAttachmentOutgoingCell.h"
+#import "QMMessagesDataSource.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
@@ -91,22 +92,9 @@
 @property (assign, nonatomic) CGFloat topContentAdditionalInset;
 
 /**
- *  Total count of messages in all sections.
- *
- *  @discussion Use this to know how many messages are displayed in chat controller.
+ *  Data source of QMChatCollectionView
  */
-@property (assign, nonatomic, readonly) NSUInteger totalMessagesCount;
-
-/**
- *  Updating data source with messages without reloading of collection view.
- *
- *  @param messages QBChatMessage instances to update data source with
- *
- *  @return dictionary with section indexes and items index pathes to insert
- *
- *  @discussion Use this method to update data source without reloading collection view. For example in viewWillAppear method.
- */
-- (NSDictionary *)updateDataSourceWithMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+@property (strong, nonatomic) QMMessagesDataSource *dataSource;
 
 /**
  *  Insert messages to the top.
@@ -334,23 +322,5 @@
  *  @discussion override this method if you want to generate custom name for section with it's date.
  */
 - (NSString *)nameForSectionWithDate:(NSDate *)date;
-
-/**
- *  Message for index path.
- *
- *  @param indexPath    index path to find message
- *
- *  @return QBChatMessage instance that conforms to indexPath
- */
-- (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath;
-
-/**
- *  Index path for message.
- *
- *  @param message  message to return index path
- *
- *  @return NSIndexPath instance that conforms message or nil if not found
- */
-- (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message;
 
 @end

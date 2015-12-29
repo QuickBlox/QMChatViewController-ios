@@ -50,6 +50,10 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
   end
 
+  s.subspec 'DataSource' do |ss|
+    ss.source_files = 'QMChatViewController/DataSource/*.{h,m}'
+  end
+
   s.subspec 'Views' do |ss|
   	ss.dependency 'QMCVDevelopment/Protocols'
   	ss.dependency 'QMCVDevelopment/Categories'
