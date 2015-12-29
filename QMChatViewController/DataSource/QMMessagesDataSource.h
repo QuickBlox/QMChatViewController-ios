@@ -25,9 +25,12 @@
 @property (nonatomic, assign, readonly) NSUInteger totalMessagesCount;
 
 /**
- *  Time interval between sections.
+ *  The time interval that used to split messages between sections.
+ *
+ *  @discussion The messages that have dateSent difference from the last message in section not greater then the one you set,
+ *  will appear in one section under one date of the first message in section.
  */
-@property (nonatomic, assign) NSTimeInterval timeIntervalBetweenSections;
+@property (assign, nonatomic) NSTimeInterval timeIntervalBetweenSections;
 
 /**
  *  Adding messages to the top of the data source.

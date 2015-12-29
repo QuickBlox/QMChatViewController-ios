@@ -167,20 +167,12 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return _pickerController;
 }
 
-- (NSTimeInterval)timeIntervalBetweenSections {
-    return self.dataSource.timeIntervalBetweenSections;
-}
-
 #pragma mark - Setters
 
 - (void)setTopContentAdditionalInset:(CGFloat)topContentAdditionalInset {
     
     _topContentAdditionalInset = topContentAdditionalInset;
     [self updateCollectionViewInsets];
-}
-
-- (void)setTimeIntervalBetweenSections:(NSTimeInterval)timeIntervalBetweenSections {
-    self.dataSource.timeIntervalBetweenSections = timeIntervalBetweenSections;
 }
 
 #pragma mark - Messages items

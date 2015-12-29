@@ -59,15 +59,6 @@
 @property (assign, nonatomic) NSUInteger senderID;
 
 /**
- *  The time interval that used to split messages between sections.
- *
- *  @discussion You should set time interval in seconds with '- (NSTimeInterval)timeIntervalBetweenSections' data source method.
- *  The messages that have dateSent difference from the last message in section not greater then the one you set,
- *  will appear in one section under one date of the first message in section.
- */
-@property (assign, nonatomic) NSTimeInterval timeIntervalBetweenSections;
-
-/**
  *  Float value that used as height for section header.
  *
  *  @discussion Set this value with data source method '- (CGFloat)heightForSectionHeader'.
