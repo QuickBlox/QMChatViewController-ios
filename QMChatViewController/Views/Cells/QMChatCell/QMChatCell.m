@@ -151,6 +151,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [super setBounds:bounds];
     
     if ([[UIDevice currentDevice].systemVersion compare:@"8.0" options:NSNumericSearch] == NSOrderedAscending) {
+		[self layoutIfNeeded];
         self.contentView.frame = bounds;
     }
 }

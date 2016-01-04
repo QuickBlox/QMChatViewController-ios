@@ -67,16 +67,16 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="h8u-4h-IEt" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" identifier="outgCellTopLabelLeading" id="2hL-wa-XL0"/>
+                                    <constraint firstItem="h8u-4h-IEt" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" priority="750" identifier="outgCellTopLabelLeading" id="2hL-wa-XL0"/>
                                     <constraint firstItem="KM3-Oj-tba" firstAttribute="top" secondItem="gwl-pf-rea" secondAttribute="bottom" id="BQZ-mi-zJi"/>
-                                    <constraint firstAttribute="trailing" secondItem="gwl-pf-rea" secondAttribute="trailing" priority="750" identifier="outgCellMessageTextLabelTrailing" id="C4J-58-vtD"/>
+                                    <constraint firstAttribute="trailing" secondItem="gwl-pf-rea" secondAttribute="trailing" identifier="outgCellMessageTextLabelTrailing" id="C4J-58-vtD"/>
                                     <constraint firstAttribute="trailing" secondItem="KM3-Oj-tba" secondAttribute="trailing" id="Cnr-Ch-k1c"/>
                                     <constraint firstItem="h8u-4h-IEt" firstAttribute="top" secondItem="UGA-Lo-mbI" secondAttribute="top" id="E1C-0z-mfn"/>
-                                    <constraint firstAttribute="trailing" secondItem="h8u-4h-IEt" secondAttribute="trailing" priority="750" identifier="outgCellTopLabelTrailing" id="KrN-Zw-ZY1"/>
+                                    <constraint firstAttribute="trailing" secondItem="h8u-4h-IEt" secondAttribute="trailing" identifier="outgCellTopLabelTrailing" id="KrN-Zw-ZY1"/>
                                     <constraint firstAttribute="bottom" secondItem="KM3-Oj-tba" secondAttribute="bottom" priority="750" identifier="outgCellBottomLabelBottom" id="Qq4-nq-W8i"/>
-                                    <constraint firstItem="KM3-Oj-tba" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" id="UGl-WW-1AM"/>
+                                    <constraint firstItem="KM3-Oj-tba" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" priority="750" id="UGl-WW-1AM"/>
                                     <constraint firstItem="gwl-pf-rea" firstAttribute="top" secondItem="h8u-4h-IEt" secondAttribute="bottom" id="mbp-Hv-6Tq"/>
-                                    <constraint firstItem="gwl-pf-rea" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" identifier="outgCellMessageTextLabelLeading" id="x6U-gp-Ps7"/>
+                                    <constraint firstItem="gwl-pf-rea" firstAttribute="leading" secondItem="UGA-Lo-mbI" secondAttribute="leading" priority="750" identifier="outgCellMessageTextLabelLeading" id="x6U-gp-Ps7"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -84,7 +84,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="181" identifier="outgCellContainerWidth" id="D1r-Pq-zcf"/>
                             <constraint firstItem="UGA-Lo-mbI" firstAttribute="top" secondItem="IHn-aU-joG" secondAttribute="top" constant="4" identifier="outgCellMessageContainerTopInset" id="Oep-MV-D9j"/>
-                            <constraint firstAttribute="trailing" secondItem="UGA-Lo-mbI" secondAttribute="trailing" priority="999" constant="15" identifier="outgCellMessageContainerTrailingInset" id="UcN-qd-Nxu"/>
+                            <constraint firstAttribute="trailing" secondItem="UGA-Lo-mbI" secondAttribute="trailing" constant="15" identifier="outgCellMessageContainerTrailingInset" id="UcN-qd-Nxu"/>
                             <constraint firstAttribute="bottom" secondItem="UGA-Lo-mbI" secondAttribute="bottom" priority="750" constant="4" identifier="outgCellMessageContainerBottomInset" id="XFF-Rw-dM5"/>
                             <constraint firstItem="UGA-Lo-mbI" firstAttribute="leading" secondItem="IHn-aU-joG" secondAttribute="leading" priority="750" constant="4" identifier="outgCellMessageContainerLeadingInset" id="mRm-gl-BUZ"/>
                         </constraints>
@@ -109,7 +109,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="7u5-rz-uqE" firstAttribute="trailing" secondItem="MUd-TY-LP8" secondAttribute="trailing" priority="750" identifier="outgCellAvaTrailingToCellTrailing" id="Dl5-2o-5N4"/>
+                <constraint firstItem="7u5-rz-uqE" firstAttribute="trailing" secondItem="MUd-TY-LP8" secondAttribute="trailing" identifier="outgCellAvaTrailingToCellTrailing" id="Dl5-2o-5N4"/>
                 <constraint firstAttribute="bottom" secondItem="IHn-aU-joG" secondAttribute="bottom" identifier="outgCellContainerBottom" id="HI8-MG-YKY"/>
                 <constraint firstItem="7u5-rz-uqE" firstAttribute="leading" secondItem="IHn-aU-joG" secondAttribute="trailing" priority="750" constant="2" identifier="outgCellAvaContainerLeadingToContainerTrailing" id="hRe-dp-gde"/>
                 <constraint firstItem="IHn-aU-joG" firstAttribute="top" secondItem="MUd-TY-LP8" secondAttribute="top" identifier="outgCellContainerTop" id="kQX-PE-key"/>
