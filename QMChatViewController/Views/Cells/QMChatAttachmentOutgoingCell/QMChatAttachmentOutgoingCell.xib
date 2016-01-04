@@ -60,7 +60,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W2c-d1-FIr">
-                                        <rect key="frame" x="82" y="67" width="0.0" height="0.0"/>
+                                        <rect key="frame" x="82" y="87.5" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
                                     <constraint firstItem="35y-FC-UxN" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="Xda-1O-jom"/>
                                     <constraint firstAttribute="trailing" secondItem="Tve-03-DKT" secondAttribute="trailing" id="nJl-Te-LvY"/>
                                     <constraint firstAttribute="bottom" secondItem="35y-FC-UxN" secondAttribute="bottom" id="qjn-WF-jgP"/>
-                                    <constraint firstAttribute="centerY" secondItem="W2c-d1-FIr" secondAttribute="centerY" constant="21" id="rwv-1O-YvD"/>
+                                    <constraint firstAttribute="centerY" secondItem="W2c-d1-FIr" secondAttribute="centerY" id="rwv-1O-YvD"/>
                                     <constraint firstAttribute="trailing" secondItem="diF-ca-yd3" secondAttribute="trailing" id="sf6-RH-gfz"/>
                                     <constraint firstItem="Tve-03-DKT" firstAttribute="top" secondItem="diF-ca-yd3" secondAttribute="bottom" id="xs4-sc-NTj"/>
                                 </constraints>

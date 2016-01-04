@@ -72,7 +72,7 @@
                                     <constraint firstAttribute="bottom" secondItem="sp9-fQ-dGT" secondAttribute="bottom" identifier="incCellMsgContainerToBottomLabelBottom" id="7mH-VH-UBD"/>
                                     <constraint firstItem="sp9-fQ-dGT" firstAttribute="top" secondItem="8ct-WW-zaC" secondAttribute="bottom" identifier="incCellBottomLabelTopToMsgTextLabelBottom" id="HrM-b4-QGY"/>
                                     <constraint firstItem="FVl-fR-cgk" firstAttribute="top" secondItem="cBa-gJ-Bzq" secondAttribute="top" identifier="incCellTopLabelTopToMsgContainerTop" id="Jke-hK-Vbu"/>
-                                    <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" priority="750" identifier="incCellMsgContainerTrailingToTopLabelTrailing" id="Kgo-ol-P8W"/>
+                                    <constraint firstAttribute="trailing" secondItem="FVl-fR-cgk" secondAttribute="trailing" identifier="incCellMsgContainerTrailingToTopLabelTrailing" id="Kgo-ol-P8W"/>
                                     <constraint firstItem="8ct-WW-zaC" firstAttribute="top" secondItem="FVl-fR-cgk" secondAttribute="bottom" identifier="incCellMsgTextTopToTopLabelBottom" id="L8d-f5-ErX"/>
                                     <constraint firstItem="8ct-WW-zaC" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" identifier="incCellMsgTextLeadingToMsgContainerLeading" id="MBo-eV-1sQ"/>
                                     <constraint firstItem="sp9-fQ-dGT" firstAttribute="leading" secondItem="cBa-gJ-Bzq" secondAttribute="leading" identifier="incCellBottomLabelLeadingToContainerLeading" id="aB1-om-Upd"/>
