@@ -1,9 +1,9 @@
 //
 //  QMChatSection.h
-//  Pods
+//  QMChatViewController
 //
 //  Created by Vitaliy Gorbachov on 11/16/15.
-//
+//  Copyright (c) 2016 QuickBlox Team. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
