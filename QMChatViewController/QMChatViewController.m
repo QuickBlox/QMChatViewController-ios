@@ -181,8 +181,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths {
     
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
+//    [CATransaction begin];
+//    [CATransaction setDisableActions:YES];
     
     __weak __typeof(self)weakSelf = self;
     [self.collectionView performBatchUpdates:^{
@@ -193,8 +193,35 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
     } completion:^(BOOL finished) {
         
-        [CATransaction commit];
+//        [CATransaction commit];
     }];
+}
+
+- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths {
+    
+    for (NSString *messageID in messagesIDs) {
+        
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
+    }
+    
+    [self.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
+}
+
+- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths withSectionsIndexSet:(NSIndexSet *)sectionsIndexSet {
+    
+    for (NSString *messageID in messagesIDs) {
+        
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
+    }
+    
+    if (sectionsIndexSet.count > 0) {
+        
+        [self.collectionView deleteSections:sectionsIndexSet];
+    }
+    if (itemsIndexPaths.count > 0) {
+        
+        [self.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
+    }
 }
 
 //- (void)insertMessagesToTheTopAnimated:(NSArray *)messages {
@@ -204,7 +231,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 //    NSDictionary *sectionsAndItems = [self updateDataSourceWithMessages:messages];
 //    NSArray *sectionsToInsert = sectionsAndItems[kQMSectionsInsertKey];
 //    NSArray *itemsToInsert = sectionsAndItems[kQMItemsInsertKey];
-//    
+//
 //    NSIndexSet *sectionsIndexSet = [self indexSetForSectionsToInsert:sectionsToInsert];
 //
 //    [CATransaction begin];
@@ -457,6 +484,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    
+    
     [self addObservers];
     [self addActionToInteractivePopGestureRecognizer:YES];
     [self.keyboardController beginListeningForKeyboard];
@@ -470,7 +499,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [super viewWillDisappear:animated];
     
     [self addActionToInteractivePopGestureRecognizer:NO];
-	
+    
+    self.chatSectionManager.delegate = nil;
+    
 	[self removeObservers];
 	[self.keyboardController endListeningForKeyboard];
 }
@@ -615,7 +646,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated {
-    if (self.chatSectionManager.chatSectionsCount > 0) {
+    if (self.chatSectionManager.totalMessagesCount > 0) {
         NSIndexPath* topIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.collectionView scrollToItemAtIndexPath:topIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
     }

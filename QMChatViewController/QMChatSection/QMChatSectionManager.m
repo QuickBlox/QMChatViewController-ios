@@ -90,6 +90,13 @@
                 if ([sectionsIndexSet containsIndex:sectionIndex]) {
                     
                     sectionsIndexSet = [self incrementAllIndexesForIndexSet:sectionsIndexSet startingFromIndex:sectionIndex];
+                    
+                    // move previous sections
+                    NSArray *enumerateIndexPaths = [itemsIndexPaths copy];
+                    for (NSIndexPath *indexPath in enumerateIndexPaths) {
+                        NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section + 1];
+                        [itemsIndexPaths replaceObjectAtIndex:[itemsIndexPaths indexOfObject:indexPath] withObject:updatedIndexPath];
+                    }
                 }
                 
                 [sectionsIndexSet addIndex:sectionIndex];
@@ -156,11 +163,11 @@
 
 - (void)deleteMessages:(NSArray *)messages {
     
-    NSMutableArray *messagesIDs = [NSMutableArray array];
-    NSMutableArray *itemsIndexPaths = [NSMutableArray array];
-    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
-    
     dispatch_async(_serialQueue, ^{
+        
+        NSMutableArray *messagesIDs = [NSMutableArray array];
+        NSMutableArray *itemsIndexPaths = [NSMutableArray array];
+        NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
         
         self.editableSections = self.chatSections.mutableCopy;
         
