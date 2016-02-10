@@ -17,6 +17,8 @@
 
 @required
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths;
+- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths;
+- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths withSectionsIndexSet:(NSIndexSet *)sectionsIndexSet;
 
 @end
 
@@ -37,7 +39,7 @@
 - (void)addMessages:(NSArray *)messages;
 
 - (void)updateMessage:(QBChatMessage *)message;
-- (void)updateMessages:(NSArray *)message;
+- (void)updateMessages:(NSArray *)messages;
 
 - (void)deleteMessage:(QBChatMessage *)message;
 - (void)deleteMessages:(NSArray *)messages;

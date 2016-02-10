@@ -12,7 +12,8 @@
 
 @interface QMChatSectionManager ()
 
-@property (strong, nonatomic) NSMutableArray *chatSections;
+@property (strong, nonatomic) NSArray *chatSections;
+@property (strong, nonatomic) NSMutableArray *editableSections;
 @property (nonatomic) dispatch_queue_t serialQueue;
 
 @end
@@ -42,10 +43,12 @@
 
 - (void)addMessages:(NSArray *)messages {
     
-    NSMutableArray *itemsIndexPaths = [NSMutableArray array];
-    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
-    
     dispatch_async(_serialQueue, ^{
+        
+        self.editableSections = self.chatSections.mutableCopy;
+        
+        NSMutableArray *itemsIndexPaths = [NSMutableArray array];
+        NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
         
         for (QBChatMessage *message in messages) {
             NSAssert(message.dateSent != nil, @"Message must have dateSent!");
@@ -56,7 +59,7 @@
             
             if (correspondingSection != nil) {
                 // section already exists or was created as older/newer one
-                sectionIndex = [self.chatSections indexOfObject:correspondingSection];
+                sectionIndex = [self.editableSections indexOfObject:correspondingSection];
                 
                 if (correspondingSection.isEmpty == 0) {
                     // section was newly created, need to add its index to sections index set
@@ -69,7 +72,7 @@
                 // need to create new section for message
                 correspondingSection = [self createSectionWithMessage:message];
                 
-                sectionIndex = [self.chatSections indexOfObject:correspondingSection];
+                sectionIndex = [self.editableSections indexOfObject:correspondingSection];
                 messageIndex = [correspondingSection insertMessage:message];
                 
                 [sectionsIndexSet addIndex:sectionIndex];
@@ -78,46 +81,114 @@
             [itemsIndexPaths addObject:[NSIndexPath indexPathForItem:messageIndex
                                                            inSection:sectionIndex]];
         }
-    });
-    
-    
-    @synchronized(self) {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            self.chatSections = self.editableSections.copy;
+            self.editableSections = nil;
             
             if ([self.delegate respondsToSelector:@selector(chatSectionManager:didInsertSections:andItems:)]) {
                 
                 [self.delegate chatSectionManager:self didInsertSections:sectionsIndexSet.copy andItems:itemsIndexPaths.copy];
             }
         });
-    }
+    });
 }
 
 #pragma mark - Update messages
 
 - (void)updateMessage:(QBChatMessage *)message {
     
+    [self updateMessages:@[message]];
 }
 
-- (void)updateMessages:(NSArray *)message {
+- (void)updateMessages:(NSArray *)messages {
     
+    dispatch_async(_serialQueue, ^{
+        
+        NSMutableArray *messagesIDs = [NSMutableArray array];
+        NSMutableArray *itemsIndexPaths = [NSMutableArray array];
+        
+        for (QBChatMessage *message in messages) {
+            NSIndexPath *indexPath = [self indexPathForMessage:message];
+            if (indexPath == nil) continue;
+            
+            [itemsIndexPaths addObject:indexPath];
+            [messagesIDs addObject:message.ID];
+            
+            QMChatSection *chatSection = self.chatSections[indexPath.section];
+            [chatSection.messages replaceObjectAtIndex:indexPath.item withObject:message];
+        }
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            if ([self.delegate respondsToSelector:@selector(chatSectionManager:didUpdateMessagesWithIDs:atIndexPaths:)]) {
+                
+                [self.delegate chatSectionManager:self didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy];
+            }
+        });
+    });
 }
 
 #pragma mark - Delete messages
 
 - (void)deleteMessage:(QBChatMessage *)message {
     
+    [self deleteMessages:@[message]];
 }
 
 - (void)deleteMessages:(NSArray *)messages {
     
+    NSMutableArray *messagesIDs = [NSMutableArray array];
+    NSMutableArray *itemsIndexPaths = [NSMutableArray array];
+    NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
+    
+    dispatch_async(_serialQueue, ^{
+        
+        self.editableSections = self.chatSections.mutableCopy;
+        
+        for (QBChatMessage *message in messages) {
+            NSIndexPath *indexPath = [self indexPathForMessage:message];
+            if (indexPath == nil) continue;
+            
+            QMChatSection *chatSection = self.chatSections[indexPath.section];
+            [chatSection.messages removeObjectAtIndex:indexPath.item];
+            
+            if (chatSection.isEmpty) {
+                [sectionsIndexSet addIndex:indexPath.section];
+                [self.editableSections removeObjectAtIndex:indexPath.section];
+                
+                // no need to remove elements whose section will be removed
+                NSArray *items = [itemsIndexPaths copy];
+                for (NSIndexPath *index in items) {
+                    if (index.section == indexPath.section) {
+                        [itemsIndexPaths removeObject:index];
+                    }
+                }
+            } else {
+                
+                [itemsIndexPaths addObject:indexPath];
+            }
+        }
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            
+            self.chatSections = self.editableSections.copy;
+            self.editableSections = nil;
+            
+            if ([self.delegate respondsToSelector:@selector(chatSectionManager:didDeleteMessagesWithIDs:atIndexPaths:withSectionsIndexSet:)]) {
+                
+                [self.delegate chatSectionManager:self didDeleteMessagesWithIDs:messagesIDs atIndexPaths:itemsIndexPaths withSectionsIndexSet:sectionsIndexSet];
+            }
+        });
+    });
 }
 
 #pragma mark - Helpers
 
 - (QMChatSection *)sectionThatCorrespondsToMessage:(QBChatMessage *)message {
     
-    QMChatSection *firstSection = self.chatSections.firstObject;
+    QMChatSection *firstSection = self.editableSections.firstObject;
     
     if ([firstSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending) {
         // message is older then first message of first section
@@ -125,13 +196,13 @@
         if (fabs([message.dateSent timeIntervalSinceDate:firstSection.firstMessageDate]) > self.timeIntervalBetweenSections) {
             
             firstSection = [QMChatSection chatSection];
-            [self.chatSections insertObject:firstSection atIndex:0];
+            [self.editableSections insertObject:firstSection atIndex:0];
         }
         
         return firstSection;
     }
     
-    QMChatSection *lastSection = self.chatSections.lastObject;
+    QMChatSection *lastSection = self.editableSections.lastObject;
     
     if ([lastSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending) {
         // message is newer then last message of last section
@@ -139,18 +210,18 @@
         if (fabs([message.dateSent timeIntervalSinceDate:lastSection.lastMessageDate]) > self.timeIntervalBetweenSections) {
             
             lastSection = [QMChatSection chatSection];
-            [self.chatSections addObject:lastSection];
+            [self.editableSections addObject:lastSection];
         }
         
         return lastSection;
     }
     
-    NSArray *chatSections = self.chatSections.copy;
+    NSArray *chatSections = self.editableSections.copy;
     
     for (QMChatSection *chatSection in chatSections) {
         
         if (([chatSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending
-            && [chatSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending)
+             && [chatSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending)
             || fabs([message.dateSent timeIntervalSinceDate:chatSection.firstMessageDate]) <= self.timeIntervalBetweenSections) {
             
             return chatSection;
@@ -165,10 +236,10 @@
     NSInteger index = 0;
     QMChatSection *newSection = [QMChatSection chatSection];
     
-    if (!self.isEmpty) {
+    if (self.editableSections.count > 0) {
         
         // finding new section spot between all existent sections
-        NSArray *chatSections = self.chatSections.copy;
+        NSArray *chatSections = self.editableSections.copy;
         for (NSInteger i = 0; i < chatSections.count - 1; ++i) {
             
             QMChatSection *chatSection = chatSections[i];
@@ -183,7 +254,7 @@
         }
     }
     
-    [self.chatSections insertObject:newSection atIndex:index];
+    [self.editableSections insertObject:newSection atIndex:index];
     
     return newSection;
 }
