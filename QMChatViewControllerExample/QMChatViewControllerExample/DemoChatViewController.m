@@ -82,22 +82,34 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message1.text = @"Message 1";
     message1.dateSent = [NSDate dateWithTimeIntervalSince1970:5555555555];
     
+    QBChatMessage *message11 = [QBChatMessage message];
+    message11.senderID = 20001;
+    message11.senderNick = @"Message 1-1";
+    message11.text = @"Message 1-1";
+    message11.dateSent = [NSDate dateWithTimeIntervalSince1970:5555555556];
+    
+    QBChatMessage *message12 = [QBChatMessage message];
+    message12.senderID = 20001;
+    message12.senderNick = @"Message 1-2";
+    message12.text = @"Message 1-2";
+    message12.dateSent = [NSDate dateWithTimeIntervalSince1970:5555555557];
+    
     QBChatMessage *message2 = [QBChatMessage message];
     message2.senderID = 2000;
-    message2.senderNick = @"Message 5";
-    message2.text = @"Message 5";
+    message2.senderNick = @"Message 4";
+    message2.text = @"Message 4";
     message2.dateSent = [NSDate dateWithTimeIntervalSince1970:9999999999];
     
     QBChatMessage *message3 = [QBChatMessage message];
     message3.senderID = 2000;
-    message3.senderNick = @"Message 4";
-    message3.text = @"Message 4";
+    message3.senderNick = @"Message 3";
+    message3.text = @"Message 3";
     message3.dateSent = [NSDate dateWithTimeIntervalSince1970:7777777777];
     
     QBChatMessage *message4 = [QBChatMessage message];
     message4.senderID = 20001;
-    message4.senderNick = @"Message 3";
-    message4.text = @"Message 3";
+    message4.senderNick = @"Message 2";
+    message4.text = @"Message 2";
     message4.dateSent = [NSDate dateWithTimeIntervalSince1970:6666666666];
     
 //    QBChatMessage *message5 = [QBChatMessage message];
@@ -107,7 +119,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
 //    
 //    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
     
-    [self updateDataSourceWithMessages:@[message1, message2, message3, message4]];
+//    [self updateDataSourceWithMessages:@[message1, message2, message3, message4]];
+    [self.chatSectionManager addMessages:@[message1, message2, message3, message12, message4, message11]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,6 +133,15 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
 }
 
+#pragma mark - QMChatCellDelegate
+
+- (void)chatCellDidTapContainer:(QMChatCell *)cell {
+    
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    QBChatMessage *message = [self.chatSectionManager messageForIndexPath:indexPath];
+    
+    [self.chatSectionManager deleteMessage:message];
+}
 
 #pragma mark Tool bar Actions
 
@@ -134,7 +156,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message.senderID = senderId;
     message.dateSent = [NSDate date];
     
-    [self insertMessageToTheBottomAnimated:message];
+    [self.chatSectionManager addMessage:message];
     
     [self finishSendingMessageAnimated:YES];
 }
@@ -162,7 +184,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
         
         message.attachments = @[attacment];
         
-        [self insertMessageToTheBottomAnimated:message];
+        [self.chatSectionManager addMessage:message];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -213,7 +235,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath *)indexPath maxWidth:(CGFloat)maxWidth {
     
-    QBChatMessage *item = [self messageForIndexPath:indexPath];
+    QBChatMessage *item = [self.chatSectionManager messageForIndexPath:indexPath];
     Class viewClass = [self viewClassForItem:item];
     CGSize size;
     
@@ -232,22 +254,29 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *item = [self messageForIndexPath:indexPath];
+    QBChatMessage *item = [self.chatSectionManager messageForIndexPath:indexPath];
     
-    NSAttributedString *attributedString =
-    [item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
+    CGSize size;
     
-    CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
-                                                   withConstraints:CGSizeMake(1000, 10000)
-                                            limitedToNumberOfLines:1];
+    if (item != nil) {
+        
+        NSAttributedString *attributedString =
+        [item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
+        
+        size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
+                                                       withConstraints:CGSizeMake(1000, 10000)
+                                                limitedToNumberOfLines:1];
+    }
     
     return size.width;
 }
 
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
+    [(QMChatCell *)cell setDelegate:self];
+    
     if ([cell conformsToProtocol:@protocol(QMChatAttachmentCell)]) {
-        QBChatMessage* message = [self messageForIndexPath:indexPath];
+        QBChatMessage* message = [self.chatSectionManager messageForIndexPath:indexPath];
         
         if (message.attachments != nil) {
             QBChatAttachment* attachment = message.attachments.firstObject;
@@ -264,15 +293,18 @@ NS_ENUM(NSUInteger, QMMessageType) {
 - (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
     
     QMChatCellLayoutModel layoutModel = [super collectionView:collectionView layoutModelAtIndexPath:indexPath];
-    QBChatMessage *item = [self messageForIndexPath:indexPath];
+    QBChatMessage *item = [self.chatSectionManager messageForIndexPath:indexPath];
     
     layoutModel.avatarSize = CGSizeMake(0.0f, 0.0f);
     
-    NSAttributedString *topLabelString = [self topLabelAttributedStringForItem:item];
-    CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:topLabelString
-                                                   withConstraints:CGSizeMake(CGRectGetWidth(self.collectionView.frame), CGFLOAT_MAX)
-                                            limitedToNumberOfLines:1];
-    layoutModel.topLabelHeight = size.height;
+    if (item!= nil) {
+        
+        NSAttributedString *topLabelString = [self topLabelAttributedStringForItem:item];
+        CGSize size = [TTTAttributedLabel sizeThatFitsAttributedString:topLabelString
+                                                       withConstraints:CGSizeMake(CGRectGetWidth(self.collectionView.frame), CGFLOAT_MAX)
+                                                limitedToNumberOfLines:1];
+        layoutModel.topLabelHeight = size.height;
+    }
     
     return layoutModel;
 }

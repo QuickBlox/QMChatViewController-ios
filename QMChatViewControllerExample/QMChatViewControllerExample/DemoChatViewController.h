@@ -8,7 +8,7 @@
 
 #import "QMChatViewController.h"
 
-@interface DemoChatViewController : QMChatViewController
+@interface DemoChatViewController : QMChatViewController <QMChatCellDelegate>
 
 @end
 
