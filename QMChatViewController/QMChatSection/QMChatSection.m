@@ -39,12 +39,45 @@
 
 #pragma mark - Instance methods
 
+- (NSUInteger)insertMessage:(QBChatMessage *)message {
+    
+    NSUInteger index = NSNotFound;
+    
+    NSArray *messages = self.messages.copy;
+    
+    for (QBChatMessage *message_t in messages) {
+        
+        if ([message_t.dateSent compare:message.dateSent] == NSOrderedDescending) {
+            
+            index = [messages indexOfObject:message_t];
+        }
+    }
+    
+    if (index == NSNotFound) {
+        
+        index = self.messages.count;
+    }
+    
+    [self.messages insertObject:message atIndex:index];
+    
+    return index;
+}
+
+#pragma mark - Getters
+
+- (BOOL)isEmpty {
+    
+    return self.messages.count == 0;
+}
+
 - (NSDate *)firstMessageDate {
+    
     QBChatMessage *firstMessage = [self.messages firstObject];
     return firstMessage.dateSent;
 }
 
 - (NSDate *)lastMessageDate {
+    
     QBChatMessage *lastMessage = [self.messages lastObject];
     return lastMessage.dateSent;
 }

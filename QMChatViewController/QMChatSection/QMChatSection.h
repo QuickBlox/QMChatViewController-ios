@@ -40,4 +40,8 @@
  */
 + (QMChatSection *)chatSectionWithMessage:(QBChatMessage *)message;
 
+- (NSUInteger)insertMessage:(QBChatMessage *)message;
+
+- (BOOL)isEmpty;
+
 @end
