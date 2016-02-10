@@ -119,7 +119,7 @@
     
     QMChatSection *firstSection = self.chatSections.firstObject;
     
-    if ([firstSection.firstMessageDate compare:message.dateSent] == NSOrderedDescending) {
+    if ([firstSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending) {
         // message is older then first message of first section
         
         if (fabs([message.dateSent timeIntervalSinceDate:firstSection.firstMessageDate]) > self.timeIntervalBetweenSections) {
@@ -133,7 +133,7 @@
     
     QMChatSection *lastSection = self.chatSections.lastObject;
     
-    if ([lastSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending) {
+    if ([lastSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending) {
         // message is newer then last message of last section
         
         if (fabs([message.dateSent timeIntervalSinceDate:lastSection.lastMessageDate]) > self.timeIntervalBetweenSections) {
@@ -149,8 +149,9 @@
     
     for (QMChatSection *chatSection in chatSections) {
         
-        if ([chatSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending
-            && [chatSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending) {
+        if (([chatSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending
+            && [chatSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending)
+            || fabs([message.dateSent timeIntervalSinceDate:chatSection.firstMessageDate]) <= self.timeIntervalBetweenSections) {
             
             return chatSection;
         }
@@ -161,12 +162,38 @@
 
 - (QMChatSection *)createSectionWithMessage:(QBChatMessage *)message {
     
-    // finding new section spot
+    NSInteger index = 0;
+    QMChatSection *newSection = [QMChatSection chatSection];
     
-    return nil;
+    if (!self.isEmpty) {
+        
+        // finding new section spot between all existent sections
+        NSArray *chatSections = self.chatSections.copy;
+        for (NSInteger i = 0; i < chatSections.count - 1; ++i) {
+            
+            QMChatSection *chatSection = chatSections[i];
+            QMChatSection *nextChatSection = chatSections[i + 1];
+            
+            if ([chatSection.lastMessageDate compare:message.dateSent] == NSOrderedDescending
+                && [nextChatSection.firstMessageDate compare:message.dateSent] == NSOrderedAscending) {
+                
+                index = i + 1;
+                break;
+            }
+        }
+    }
+    
+    [self.chatSections insertObject:newSection atIndex:index];
+    
+    return newSection;
 }
 
 #pragma mark - Getters
+
+- (BOOL)isEmpty {
+    
+    return self.chatSections.count == 0;
+}
 
 - (NSInteger)chatSectionsCount {
     

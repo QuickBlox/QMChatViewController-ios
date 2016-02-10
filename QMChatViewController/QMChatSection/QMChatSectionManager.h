@@ -42,7 +42,7 @@
 - (void)deleteMessage:(QBChatMessage *)message;
 - (void)deleteMessages:(NSArray *)messages;
 
-
+- (BOOL)isEmpty;
 - (NSInteger)chatSectionsCount;
 - (NSInteger)messagesCountForSectionAtIndex:(NSInteger)sectionIndex;
 - (QMChatSection *)chatSectionAtIndex:(NSInteger)sectionIndex;
