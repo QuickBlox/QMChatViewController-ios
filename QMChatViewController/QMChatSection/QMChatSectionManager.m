@@ -61,8 +61,20 @@
                 // section already exists or was created as older/newer one
                 sectionIndex = [self.editableSections indexOfObject:correspondingSection];
                 
-                if (correspondingSection.isEmpty == 0) {
+                if (correspondingSection.isEmpty) {
                     // section was newly created, need to add its index to sections index set
+                    if ([sectionsIndexSet containsIndex:sectionIndex]) {
+                        
+                        sectionsIndexSet = [self incrementAllIndexesForIndexSet:sectionsIndexSet startingFromIndex:sectionIndex];
+                        
+                        // move previous sections
+                        NSArray *enumerateIndexPaths = [itemsIndexPaths copy];
+                        for (NSIndexPath *indexPath in enumerateIndexPaths) {
+                            NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section + 1];
+                            [itemsIndexPaths replaceObjectAtIndex:[itemsIndexPaths indexOfObject:indexPath] withObject:updatedIndexPath];
+                        }
+                    }
+                    
                     [sectionsIndexSet addIndex:sectionIndex];
                 }
                 
@@ -74,6 +86,11 @@
                 
                 sectionIndex = [self.editableSections indexOfObject:correspondingSection];
                 messageIndex = [correspondingSection insertMessage:message];
+                
+                if ([sectionsIndexSet containsIndex:sectionIndex]) {
+                    
+                    sectionsIndexSet = [self incrementAllIndexesForIndexSet:sectionsIndexSet startingFromIndex:sectionIndex];
+                }
                 
                 [sectionsIndexSet addIndex:sectionIndex];
             }
@@ -257,6 +274,16 @@
     [self.editableSections insertObject:newSection atIndex:index];
     
     return newSection;
+}
+
+- (NSMutableIndexSet *)incrementAllIndexesForIndexSet:(NSMutableIndexSet *)indexSet startingFromIndex:(NSInteger)index {
+    
+    NSMutableIndexSet *newIndexSet = [NSMutableIndexSet new];
+    [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [newIndexSet addIndex:idx >= index ? idx + 1 : idx];
+    }];
+    
+    return newIndexSet;
 }
 
 #pragma mark - Getters
