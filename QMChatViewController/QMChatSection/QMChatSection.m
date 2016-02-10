@@ -47,7 +47,7 @@
     
     for (QBChatMessage *message_t in messages) {
         
-        if ([message_t.dateSent compare:message.dateSent] == NSOrderedDescending) {
+        if ([message_t.dateSent compare:message.dateSent] == NSOrderedAscending) {
             
             index = [messages indexOfObject:message_t];
         }
