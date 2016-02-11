@@ -65,15 +65,11 @@
                     // section was newly created, need to add its index to sections index set
                     if ([sectionsIndexSet containsIndex:sectionIndex]) {
                         
-                        sectionsIndexSet = [self incrementAllIndexesForIndexSet:sectionsIndexSet startingFromIndex:sectionIndex];
-                        
-                        // move previous sections
-                        NSArray *enumerateIndexPaths = [itemsIndexPaths copy];
-                        for (NSIndexPath *indexPath in enumerateIndexPaths) {
-                            NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section + 1];
-                            [itemsIndexPaths replaceObjectAtIndex:[itemsIndexPaths indexOfObject:indexPath] withObject:updatedIndexPath];
-                        }
+                        sectionsIndexSet = incrementAllIndexesForIndexSet(sectionsIndexSet, sectionIndex);
                     }
+                    
+                    // move previous sections
+                    itemsIndexPaths = incrementAllSectionsForIndexPaths(itemsIndexPaths, sectionIndex);
                     
                     [sectionsIndexSet addIndex:sectionIndex];
                 }
@@ -89,15 +85,11 @@
                 
                 if ([sectionsIndexSet containsIndex:sectionIndex]) {
                     
-                    sectionsIndexSet = [self incrementAllIndexesForIndexSet:sectionsIndexSet startingFromIndex:sectionIndex];
-                    
-                    // move previous sections
-                    NSArray *enumerateIndexPaths = [itemsIndexPaths copy];
-                    for (NSIndexPath *indexPath in enumerateIndexPaths) {
-                        NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section + 1];
-                        [itemsIndexPaths replaceObjectAtIndex:[itemsIndexPaths indexOfObject:indexPath] withObject:updatedIndexPath];
-                    }
+                    sectionsIndexSet = incrementAllIndexesForIndexSet(sectionsIndexSet, sectionIndex);
                 }
+                
+                // move previous sections
+                itemsIndexPaths = incrementAllSectionsForIndexPaths(itemsIndexPaths, sectionIndex);
                 
                 [sectionsIndexSet addIndex:sectionIndex];
             }
@@ -283,7 +275,7 @@
     return newSection;
 }
 
-- (NSMutableIndexSet *)incrementAllIndexesForIndexSet:(NSMutableIndexSet *)indexSet startingFromIndex:(NSInteger)index {
+static inline NSMutableIndexSet* incrementAllIndexesForIndexSet(NSMutableIndexSet *indexSet, NSInteger index) {
     
     NSMutableIndexSet *newIndexSet = [NSMutableIndexSet new];
     [indexSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
@@ -291,6 +283,21 @@
     }];
     
     return newIndexSet;
+}
+
+static inline NSMutableArray* incrementAllSectionsForIndexPaths(NSMutableArray *indexPaths, NSInteger sectionIndex) {
+    
+    NSArray *enumerateIndexPaths = [indexPaths copy];
+    for (NSIndexPath *indexPath in enumerateIndexPaths) {
+        
+        if (indexPath.section >= sectionIndex) {
+            
+            NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section + 1];
+            [indexPaths replaceObjectAtIndex:[indexPaths indexOfObject:indexPath] withObject:updatedIndexPath];
+        }
+    }
+    
+    return indexPaths;
 }
 
 #pragma mark - Getters
