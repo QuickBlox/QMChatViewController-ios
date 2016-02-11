@@ -39,9 +39,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (strong, nonatomic) QMKeyboardController *keyboardController;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 @property (assign, nonatomic) BOOL isObserving;
-
-//@property (strong, nonatomic) NSMutableArray *chatSections;
 @property (strong, nonatomic) NSTimer* timer;
+
+@property (assign, nonatomic, readonly) BOOL isAppeared;
 
 @end
 
@@ -59,6 +59,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return [[[self class] alloc] initWithNibName:NSStringFromClass([QMChatViewController class]) bundle:[NSBundle bundleForClass:[QMChatViewController class]]];
 }
 
+- (BOOL)isAppeared {
+    
+    return self.isViewLoaded && self.view.window;
+}
 
 - (void)dealloc {
     
@@ -80,8 +84,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     [self.keyboardController endListeningForKeyboard];
     self.keyboardController = nil;
-    
-//    self.chatSections = nil;
 }
 
 #pragma mark - Initialization
@@ -181,9 +183,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths {
     
-//    [CATransaction begin];
-//    [CATransaction setDisableActions:YES];
-    
+    if (!self.isAppeared) {
+        // view is not in didAppear state, no need to perform batch updates
+        // due to collection view will perform its own reload data
+        return;
+    }
     __weak __typeof(self)weakSelf = self;
     [self.collectionView performBatchUpdates:^{
         
@@ -191,10 +195,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
         [strongSelf.collectionView insertItemsAtIndexPaths:itemsIndexPaths];
         
-    } completion:^(BOOL finished) {
-        
-//        [CATransaction commit];
-    }];
+    } completion:nil];
 }
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths {
@@ -223,234 +224,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         [self.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
     }
 }
-
-//- (void)insertMessagesToTheTopAnimated:(NSArray *)messages {
-//    NSAssert([NSThread isMainThread], @"You are trying to insert messages in background thread!");
-//    NSParameterAssert(messages);
-//
-//    NSDictionary *sectionsAndItems = [self updateDataSourceWithMessages:messages];
-//    NSArray *sectionsToInsert = sectionsAndItems[kQMSectionsInsertKey];
-//    NSArray *itemsToInsert = sectionsAndItems[kQMItemsInsertKey];
-//
-//    NSIndexSet *sectionsIndexSet = [self indexSetForSectionsToInsert:sectionsToInsert];
-//
-//    [CATransaction begin];
-//    [CATransaction setDisableActions:YES];
-//
-//    __weak __typeof(self)weakSelf = self;
-//    [self.collectionView performBatchUpdates:^{
-//        //
-//        __typeof(weakSelf)strongSelf = weakSelf;
-//        
-//        if ([[itemsToInsert firstObject] section] == [strongSelf.collectionView numberOfSections] - 1) {
-//            // reloading last section cause layout changed
-//            [strongSelf.collectionView reloadSections:[NSIndexSet indexSetWithIndex:[strongSelf.collectionView numberOfSections] - 1]];
-//        }
-//        
-//        if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
-//        [strongSelf.collectionView insertItemsAtIndexPaths:itemsToInsert];
-//        
-//    } completion:^(BOOL finished) {
-//        //
-//        [CATransaction commit];
-//    }];
-//}
-
-//- (NSDictionary *)updateDataSourceWithMessages:(NSArray *)messages
-//{
-//    NSMutableArray *sectionsToAdd = [NSMutableArray arrayWithArray:self.chatSections];
-//    
-//    NSMutableArray *sectionsToInsert = [NSMutableArray array];
-//    NSMutableArray *indexPathToInsert = [NSMutableArray array];
-//    
-//    if (self.chatSections == nil) {
-//        [sectionsToAdd addObject:[QMChatSection chatSectionWithMessage:[messages lastObject]]];
-//        [sectionsToInsert addObject:@(0)];
-//        [indexPathToInsert addObject:[NSIndexPath indexPathForRow:0
-//                                                        inSection:0]];
-//    }
-//    
-//    for (QBChatMessage *message in [messages reverseObjectEnumerator]) {
-//        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
-//        
-//        QMChatSection* currentSection = [sectionsToAdd lastObject];
-//        NSUInteger sectionIndex = [sectionsToAdd indexOfObject:currentSection];
-//        
-//        if (fabs([[currentSection firstMessageDate] timeIntervalSinceDate:message.dateSent]) > self.timeIntervalBetweenSections) {
-//            QMChatSection *newSection = [QMChatSection chatSectionWithMessage:message];
-//            [sectionsToAdd addObject:newSection];
-//            sectionIndex = [sectionsToAdd indexOfObject:newSection];
-//            
-//            [sectionsToInsert addObject:@(sectionIndex)];
-//            [indexPathToInsert addObject:[NSIndexPath indexPathForRow:0
-//                                                            inSection:sectionIndex]];
-//        } else {
-//            if (![currentSection.messages containsObject:message]) {
-//                [currentSection.messages addObject:message];
-//                
-//                [indexPathToInsert addObject:[NSIndexPath indexPathForRow:[currentSection.messages count] - 1
-//                                                                inSection:sectionIndex]];
-//            }
-//        }
-//    }
-//    
-//    self.chatSections = sectionsToAdd;
-//    
-//    return @{kQMSectionsInsertKey : sectionsToInsert,
-//             kQMItemsInsertKey    : indexPathToInsert};
-//}
-
-//- (void)insertMessageToTheBottomAnimated:(QBChatMessage *)message {
-//    NSParameterAssert(message);
-//    [self insertMessagesToTheBottomAnimated:@[message]];
-//}
-
-//- (void)insertMessagesToTheBottomAnimated:(NSArray *)messages {
-//	NSAssert([NSThread isMainThread], @"You are trying to insert messages in background thread!");
-//	NSAssert([messages count] > 0, @"Array must contain messages!");
-//	
-//	if (self.chatSections == nil) {
-//		NSDictionary *sectionsAndItems = [self updateDataSourceWithMessages:messages];
-//		NSArray *sectionsToInsert = sectionsAndItems[kQMSectionsInsertKey];
-//		NSArray *itemsToInsert = sectionsAndItems[kQMItemsInsertKey];
-//		
-//		NSIndexSet *sectionsIndexSet = [self indexSetForSectionsToInsert:sectionsToInsert];
-//		
-//		__weak __typeof(self)weakSelf = self;
-//		[self.collectionView performBatchUpdates:^{
-//			//
-//			__typeof(weakSelf)strongSelf = weakSelf;
-//			if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
-//			[strongSelf.collectionView insertItemsAtIndexPaths:itemsToInsert];
-//			
-//		} completion:nil];
-//		return;
-//	}
-//	
-//	NSUInteger sectionsToInsert = 0;
-//	NSMutableArray *indexPathToInsert = [NSMutableArray array];
-//	
-//	for (QBChatMessage *message in messages) {
-//		NSAssert(message.dateSent != nil, @"Message must have dateSent!");
-//		
-//		if ([self indexPathForMessage:message] != nil) continue;
-//		
-//		QMChatSection *firstSection = [self.chatSections firstObject];
-//		
-//		NSUInteger sectionIndex = [self.chatSections indexOfObject:firstSection];
-//		
-//		if ([message.dateSent timeIntervalSinceDate:[firstSection firstMessageDate]] > self.timeIntervalBetweenSections || firstSection == nil) {
-//			
-//			// move previous sections
-//			NSArray *indexPathToInsert_t = [indexPathToInsert copy];
-//			for (NSIndexPath *indexPath in indexPathToInsert_t) {
-//				NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section + 1];
-//				[indexPathToInsert replaceObjectAtIndex:[indexPathToInsert indexOfObject:indexPath] withObject:updatedIndexPath];
-//			}
-//			
-//			QMChatSection* newSection = [QMChatSection chatSectionWithMessage:message];
-//			[self.chatSections insertObject:newSection atIndex:0];
-//			
-//			sectionIndex = [self.chatSections indexOfObject:newSection];
-//			sectionsToInsert++;
-//		} else {
-//			[firstSection.messages insertObject:message atIndex:0];
-//		}
-//		
-//		[indexPathToInsert addObject:[NSIndexPath indexPathForRow:0
-//														inSection:sectionIndex]];
-//	}
-//	
-//	NSMutableIndexSet *sectionsIndexSet = [NSMutableIndexSet indexSet];
-//	for (NSUInteger i = 0; i < sectionsToInsert; i++) {
-//		[sectionsIndexSet addIndex:i];
-//	}
-//	
-//	__weak __typeof(self)weakSelf = self;
-//	[self.collectionView performBatchUpdates:^{
-//		//
-//		__typeof(weakSelf)strongSelf = weakSelf;
-//		if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
-//		[strongSelf.collectionView insertItemsAtIndexPaths:indexPathToInsert];
-//	} completion:^(BOOL finished) {
-//		//
-//		__typeof(weakSelf)strongSelf = weakSelf;
-//		[strongSelf scrollToBottomAnimated:NO];
-//	}];
-//}
-
-//- (void)updateMessage:(QBChatMessage *)message {
-//    [self updateMessages:@[message]];
-//}
-
-//- (void)updateMessages:(NSArray *)messages {
-//    NSAssert([NSThread isMainThread], @"You are trying to update messages in background thread!");
-//	
-//    NSMutableArray *indexPaths = [NSMutableArray array];
-//	
-//    for (QBChatMessage *message in messages) {
-//        NSIndexPath *indexPath = [self indexPathForMessage:message];
-//        if (indexPath == nil) continue;
-//		
-//        [indexPaths addObject:indexPath];
-//        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
-//        
-//        QMChatSection *chatSection = self.chatSections[indexPath.section];
-//        [chatSection.messages replaceObjectAtIndex:indexPath.item withObject:message];
-//    }
-//    
-//    if ([indexPaths count] > 0) {
-//        [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-//    }
-//}
-
-//- (void)deleteMessage:(QBChatMessage *)message {
-//    [self deleteMessages:@[message]];
-//}
-
-//- (void)deleteMessages:(NSArray *)messages {
-//    NSAssert([NSThread isMainThread], @"You are trying to delete messages in background thread!");
-//    
-//    NSMutableArray *itemsToDelete    = [NSMutableArray array];
-//    NSMutableArray *sectionsToDelete = [NSMutableArray array];
-//    
-//    for (QBChatMessage *message in messages) {
-//        NSIndexPath *indexPath = [self indexPathForMessage:message];
-//        if (indexPath == nil) continue;
-//        
-//        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
-//        
-//        QMChatSection *chatSection = self.chatSections[indexPath.section];
-//        [chatSection.messages removeObjectAtIndex:indexPath.item];
-//        
-//        if ([chatSection.messages count] == 0) {
-//            [sectionsToDelete addObject:@(indexPath.section)];
-//            [self.chatSections removeObjectAtIndex:indexPath.section];
-//            
-//            // no need to remove elements whose section will be removed
-//            NSArray *items = [itemsToDelete copy];
-//            for (NSIndexPath *index in items) {
-//                if (index.section == indexPath.section) {
-//                    [itemsToDelete removeObject:index];
-//                }
-//            }
-//        } else {
-//            [itemsToDelete addObject:indexPath];
-//        }
-//    }
-//    
-//    if ([sectionsToDelete count] > 0) {
-//        NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-//        for (NSNumber *number in sectionsToDelete) {
-//            [indexSet addIndex:[number integerValue]];
-//        }
-//        
-//        [self.collectionView deleteSections:indexSet];
-//    }
-//    if ([itemsToDelete count] > 0) {
-//        [self.collectionView deleteItemsAtIndexPaths:itemsToDelete];
-//    }
-//}
 
 #pragma mark - View lifecycle
 
