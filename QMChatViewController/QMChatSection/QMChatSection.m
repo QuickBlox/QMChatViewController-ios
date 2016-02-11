@@ -41,21 +41,16 @@
 
 - (NSUInteger)insertMessage:(QBChatMessage *)message {
     
-    NSUInteger index = NSNotFound;
-    
+    NSUInteger index = self.messages.count;
     NSArray *messages = self.messages.copy;
     
     for (QBChatMessage *message_t in messages) {
         
-        if ([message_t.dateSent compare:message.dateSent] == NSOrderedAscending) {
+        if ([message.dateSent compare:message_t.dateSent] == NSOrderedDescending || [message.dateSent compare:message_t.dateSent] == NSOrderedSame) {
             
             index = [messages indexOfObject:message_t];
+            break;
         }
-    }
-    
-    if (index == NSNotFound) {
-        
-        index = self.messages.count;
     }
     
     [self.messages insertObject:message atIndex:index];
