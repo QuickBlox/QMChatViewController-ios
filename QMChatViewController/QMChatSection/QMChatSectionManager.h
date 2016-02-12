@@ -59,6 +59,8 @@
  */
 @interface QMChatSectionManager : NSObject
 
+#pragma mark - Properties
+
 /**
  *  Time interval between sections.
  *  Default value: 300
@@ -87,6 +89,8 @@
  */
 @property (weak, nonatomic) id <QMChatSectionManagerDelegate> delegate;
 
+#pragma mark - Add messages
+
 /**
  *  Add message to data source.
  *
@@ -100,6 +104,8 @@
  *  @param messages array of QBChatMessage instances to add
  */
 - (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
+#pragma mark - Update messages
 
 /**
  *  Update message in data source.
@@ -115,6 +121,8 @@
  */
 - (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
+#pragma mark - Delete messages
+
 /**
  *  Delete message from data source.
  *
@@ -128,6 +136,8 @@
  *  @param messages array of QBChatMessage instances to delete
  */
 - (void)deleteMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
+#pragma mark - Helper methods
 
 /**
  *  Determines whether data source is empty.
