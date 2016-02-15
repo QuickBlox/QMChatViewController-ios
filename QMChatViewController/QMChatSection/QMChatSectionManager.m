@@ -243,7 +243,7 @@
 - (QMChatSection *)sectionThatCorrespondsToMessage:(QBChatMessage *)message {
     
     QMChatSection *firstSection = self.editableSections.firstObject;
-    BOOL firstSectionDateIsNotDescending = [firstSection.firstMessageDate compare:message.dateSent] != NSOrderedDescending;
+    BOOL firstSectionDateIsNotDescending = [firstSection.lastMessageDate compare:message.dateSent] != NSOrderedDescending;
     
     if (firstSectionDateIsNotDescending) {
         // message is older then first message of first section
