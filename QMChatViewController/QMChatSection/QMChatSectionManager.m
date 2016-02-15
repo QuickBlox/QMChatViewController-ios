@@ -163,9 +163,12 @@
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             
-            if ([self.delegate respondsToSelector:@selector(chatSectionManager:didUpdateMessagesWithIDs:atIndexPaths:)]) {
+            if (messagesIDs.count > 0) {
                 
-                [self.delegate chatSectionManager:self didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy];
+                if ([self.delegate respondsToSelector:@selector(chatSectionManager:didUpdateMessagesWithIDs:atIndexPaths:)]) {
+                    
+                    [self.delegate chatSectionManager:self didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy];
+                }
             }
         });
     });
