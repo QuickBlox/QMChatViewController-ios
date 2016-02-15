@@ -14,26 +14,32 @@
 #pragma mark - Class methods
 
 - (instancetype)init {
+    
     if (self = [super init]) {
-        self.messages = [NSMutableArray array];
+        
+        _messages = [NSMutableArray array];
     }
     
     return self;
 }
 
 - (instancetype)initWithMessage:(QBChatMessage *)message {
+    
     if (self = [super init]) {
-        self.messages = [NSMutableArray arrayWithObject:message];
+        
+        _messages = [NSMutableArray arrayWithObject:message];
     }
     
     return self;
 }
 
 + (QMChatSection *)chatSection {
+    
     return [[self alloc] init];
 }
 
 + (QMChatSection *)chatSectionWithMessage:(QBChatMessage *)message {
+    
     return [[self alloc] initWithMessage:message];
 }
 
@@ -46,7 +52,8 @@
     
     for (QBChatMessage *message_t in messages) {
         
-        if ([message.dateSent compare:message_t.dateSent] == NSOrderedDescending || [message.dateSent compare:message_t.dateSent] == NSOrderedSame) {
+        BOOL dateIsNotAscending = [message.dateSent compare:message_t.dateSent] != NSOrderedAscending;
+        if (dateIsNotAscending) {
             
             index = [messages indexOfObject:message_t];
             break;
@@ -67,13 +74,13 @@
 
 - (NSDate *)firstMessageDate {
     
-    QBChatMessage *firstMessage = [self.messages firstObject];
+    QBChatMessage *firstMessage = self.messages.firstObject;
     return firstMessage.dateSent;
 }
 
 - (NSDate *)lastMessageDate {
     
-    QBChatMessage *lastMessage = [self.messages lastObject];
+    QBChatMessage *lastMessage = self.messages.lastObject;
     return lastMessage.dateSent;
 }
 

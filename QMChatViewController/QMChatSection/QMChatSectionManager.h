@@ -63,7 +63,7 @@
 
 /**
  *  Time interval between sections.
- *  Default value: 300
+ *  Default value: 300 seconds
  *
  *  @discussion Set this value to 0 (zero) to hide all sections.
  */

@@ -181,21 +181,37 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - QMChatSectionManagerDelegate
 
-- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths {
+- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
     
     if (!self.isAppeared) {
         // view is not in didAppear state, no need to perform batch updates
         // due to collection view will perform its own reload data
         return;
     }
+    
     __weak __typeof(self)weakSelf = self;
-    [self.collectionView performBatchUpdates:^{
-        
+    dispatch_block_t performUpdate = ^{
+    
         __typeof(weakSelf)strongSelf = weakSelf;
-        if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
-        [strongSelf.collectionView insertItemsAtIndexPaths:itemsIndexPaths];
+        [strongSelf.collectionView performBatchUpdates:^{
+            
+            if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
+            [strongSelf.collectionView insertItemsAtIndexPaths:itemsIndexPaths];
+            
+        } completion:nil];
+    };
+    
+    if (animated) {
         
-    } completion:nil];
+        performUpdate();
+    }
+    else {
+        
+        [UIView performWithoutAnimation:^{
+            
+            performUpdate();
+        }];
+    }
 }
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths {
@@ -208,20 +224,37 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [self.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
 }
 
-- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths withSectionsIndexSet:(NSIndexSet *)sectionsIndexSet {
+- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths withSectionsIndexSet:(NSIndexSet *)sectionsIndexSet animated:(BOOL)animated {
     
     for (NSString *messageID in messagesIDs) {
         
         [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
     }
     
-    if (sectionsIndexSet.count > 0) {
+    __weak __typeof(self)weakSelf = self;
+    dispatch_block_t performUpdate = ^{
         
-        [self.collectionView deleteSections:sectionsIndexSet];
+        __typeof(weakSelf)strongSelf = weakSelf;
+        if (sectionsIndexSet.count > 0) {
+            
+            [strongSelf.collectionView deleteSections:sectionsIndexSet];
+        }
+        if (itemsIndexPaths.count > 0) {
+            
+            [strongSelf.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
+        }
+    };
+    
+    if (animated) {
+        
+        performUpdate();
     }
-    if (itemsIndexPaths.count > 0) {
+    else {
         
-        [self.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
+        [UIView performWithoutAnimation:^{
+            
+            performUpdate();
+        }];
     }
 }
 
