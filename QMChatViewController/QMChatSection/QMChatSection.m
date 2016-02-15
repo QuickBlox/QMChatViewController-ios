@@ -47,20 +47,29 @@
 
 - (NSUInteger)insertMessage:(QBChatMessage *)message {
     
+    NSUInteger index = [self indexThatConformsToMessage:message];
+    [self.messages insertObject:message atIndex:index];
+    
+    return index;
+}
+
+- (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
+    
     NSUInteger index = self.messages.count;
+    
+    
     NSArray *messages = self.messages.copy;
     
     for (QBChatMessage *message_t in messages) {
         
-        BOOL dateIsNotAscending = [message.dateSent compare:message_t.dateSent] != NSOrderedAscending;
+        // server date value is always int
+        BOOL dateIsNotAscending = (NSInteger)[message.dateSent timeIntervalSinceDate:message_t.dateSent] >= 0;
         if (dateIsNotAscending) {
             
             index = [messages indexOfObject:message_t];
             break;
         }
     }
-    
-    [self.messages insertObject:message atIndex:index];
     
     return index;
 }

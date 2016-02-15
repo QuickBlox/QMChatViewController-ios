@@ -42,6 +42,8 @@
 
 - (NSUInteger)insertMessage:(QBChatMessage *)message;
 
+- (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message;
+
 - (BOOL)isEmpty;
 
 @end
