@@ -413,9 +413,9 @@ static inline NSMutableArray* incrementAllSectionsForIndexPaths(NSMutableArray *
     
     for (QMChatSection *chatSection in chatSections) {
         
-        if ([chatSection.messages containsObject:message]) {
+        messageExists = [chatSection.messages containsObject:message];
+        if (messageExists) {
             
-            messageExists = YES;
             break;
         }
     }
