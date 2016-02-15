@@ -41,76 +41,40 @@ NS_ENUM(NSUInteger, QMMessageType) {
     self.senderDisplayName = @"hello";
     self.title = @"Chat";
     
-//    // Create test data source
-//    //
-//    QBChatMessage *message1 = [QBChatMessage message];
-//    message1.senderID = QMMessageTypeContactRequest;
-//    message1.senderNick = @"Andrey M. ";
-//    message1.text = @"Andrey M.\nwould like to chat with you";
-//    message1.dateSent = [NSDate dateWithTimeInterval:3.0f sinceDate:[NSDate date]];
-//    //
-//    //
-//    QBChatMessage *message2 = [QBChatMessage message];
-//    message2.senderID = self.senderID;
-//    message2.senderNick = @"Andrey I.";
-//    message2.text = @"Why Q-municate is a right choice?";
-//    message2.dateSent = [NSDate dateWithTimeInterval:6.0f sinceDate:[NSDate date]];
-//    //
-//    //
-//    QBChatMessage *message3 = [QBChatMessage message];
-//    message3.senderID = 20001;
-//    message3.senderNick = @"Andrey M.";
-//    message3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
-//    message3.dateSent = [NSDate dateWithTimeInterval:9.0f sinceDate:[NSDate date]];
-//    //
-//    //
-//    // message with an attachment
-//    //
-//    QBChatMessage *message4 = [QBChatMessage message];
-//    message4.ID = @"4";
-//    message4.senderID = 20001;
-//    message4.senderNick = @"Andrey M.";
-//    QBChatAttachment *attachment = [QBChatAttachment new];
-//    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"quickblox-image" ofType:@"png"];
-//    attachment.url = imagePath;
-//    message4.attachments = @[attachment];
-//    message4.dateSent = [NSDate dateWithTimeInterval:12.0f sinceDate:[NSDate date]];
-    
+    // Create test data source
+    //
     QBChatMessage *message1 = [QBChatMessage message];
-    message1.senderID = 20001;
-    message1.senderNick = @"Message 1";
-    message1.text = @"Message 1";
-    message1.dateSent = [NSDate dateWithTimeIntervalSince1970:5555555555];
-    
-    QBChatMessage *message11 = [QBChatMessage message];
-    message11.senderID = 20001;
-    message11.senderNick = @"Message 1-1";
-    message11.text = @"Message 1-1";
-    message11.dateSent = [NSDate dateWithTimeIntervalSince1970:5555555556];
-    
-    QBChatMessage *message12 = [QBChatMessage message];
-    message12.senderID = 20001;
-    message12.senderNick = @"Message 1-2";
-    message12.text = @"Message 1-2";
-    message12.dateSent = [NSDate dateWithTimeIntervalSince1970:5555555557];
-    
+    message1.senderID = QMMessageTypeContactRequest;
+    message1.senderNick = @"Andrey M. ";
+    message1.text = @"Andrey M.\nwould like to chat with you";
+    message1.dateSent = [NSDate dateWithTimeInterval:-12.0f sinceDate:[NSDate date]];
+    //
+    //
     QBChatMessage *message2 = [QBChatMessage message];
-    message2.senderID = 2000;
-    message2.senderNick = @"Message 4";
-    message2.text = @"Message 4";
-    message2.dateSent = [NSDate dateWithTimeIntervalSince1970:9999999999];
-    
+    message2.senderID = self.senderID;
+    message2.senderNick = @"Andrey I.";
+    message2.text = @"Why Q-municate is a right choice?";
+    message2.dateSent = [NSDate dateWithTimeInterval:-9.0f sinceDate:[NSDate date]];
+    //
+    //
     QBChatMessage *message3 = [QBChatMessage message];
-    message3.senderID = 2000;
-    message3.senderNick = @"Message 3";
-    message3.text = @"Message 3";
-    message3.dateSent = [NSDate dateWithTimeIntervalSince1970:7777777777];
-    
+    message3.senderID = 20001;
+    message3.senderNick = @"Andrey M.";
+    message3.text = @"Q-municate comes with powerful instant messaging right out of the box. Powered by the flexible XMPP protocol and Quickblox signalling technologies, with compatibility for server-side chat history, group chats, attachments and user avatars, it's pretty powerful. It also has chat bubbles and user presence (online/offline).";
+    message3.dateSent = [NSDate dateWithTimeInterval:-6.0f sinceDate:[NSDate date]];
+    //
+    //
+    // message with an attachment
+    //
     QBChatMessage *message4 = [QBChatMessage message];
+    message4.ID = @"4";
     message4.senderID = 20001;
-    message4.senderNick = @"Message 2";
-    message4.text = @"Message 2";
-    message4.dateSent = [NSDate dateWithTimeIntervalSince1970:6666666666];
+    message4.senderNick = @"Andrey M.";
+    QBChatAttachment *attachment = [QBChatAttachment new];
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"quickblox-image" ofType:@"png"];
+    attachment.url = imagePath;
+    message4.attachments = @[attachment];
+    message4.dateSent = [NSDate dateWithTimeInterval:-3.0f sinceDate:[NSDate date]];
     
 //    QBChatMessage *message5 = [QBChatMessage message];
 //    message5.senderID = 20001;
@@ -119,8 +83,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 //    
 //    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
     
-//    [self updateDataSourceWithMessages:@[message1, message2, message3, message4]];
-    [self.chatSectionManager addMessages:@[message1, message2, message3, message12, message4, message11]];
+    [self.chatSectionManager addMessages:@[message1, message2, message3, message4]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -131,16 +94,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-}
-
-#pragma mark - QMChatCellDelegate
-
-- (void)chatCellDidTapContainer:(QMChatCell *)cell {
-    
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-    QBChatMessage *message = [self.chatSectionManager messageForIndexPath:indexPath];
-    
-    [self.chatSectionManager deleteMessage:message];
 }
 
 #pragma mark Tool bar Actions
@@ -273,7 +226,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
-    [(QMChatCell *)cell setDelegate:self];
     
     if ([cell conformsToProtocol:@protocol(QMChatAttachmentCell)]) {
         QBChatMessage* message = [self.chatSectionManager messageForIndexPath:indexPath];
