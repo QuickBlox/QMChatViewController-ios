@@ -258,6 +258,50 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
 }
 
+- (void)insertMessagesToTheTopAnimated:(NSArray *)messages {
+    NSParameterAssert(messages);
+
+    [self.chatSectionManager addMessages:messages];
+}
+
+- (NSDictionary *)updateDataSourceWithMessages:(NSArray *)messages {
+    
+    [self.chatSectionManager addMessages:messages];
+    return @{};
+}
+
+- (void)insertMessageToTheBottomAnimated:(QBChatMessage *)message {
+    NSParameterAssert(message);
+    
+    [self.chatSectionManager addMessages:@[message]];
+}
+
+- (void)insertMessagesToTheBottomAnimated:(NSArray *)messages {
+	NSAssert([messages count] > 0, @"Array must contain messages!");
+	
+    [self.chatSectionManager addMessages:messages];
+}
+
+- (void)updateMessage:(QBChatMessage *)message {
+    
+    [self.chatSectionManager updateMessages:@[message]];
+}
+
+- (void)updateMessages:(NSArray *)messages {
+	
+    [self.chatSectionManager updateMessages:messages];
+}
+
+- (void)deleteMessage:(QBChatMessage *)message {
+    
+    [self.chatSectionManager deleteMessages:@[message]];
+}
+
+- (void)deleteMessages:(NSArray *)messages {
+    
+    [self.chatSectionManager deleteMessage:messages];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
@@ -963,11 +1007,25 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return [sectionsIndexSet copy];
 }
 
+- (NSUInteger)totalMessagesCount {
+    
+    return self.chatSectionManager.totalMessagesCount;
+}
+
 - (NSString *)nameForSectionWithDate:(NSDate *)date {
     
     return [QMDateUtils formattedStringFromDate:date];
 }
 
+- (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
+
+    return [self.chatSectionManager messageForIndexPath:indexPath];
+}
+
+- (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message {
+    
+    return [self.chatSectionManager indexPathForMessage:message];
+}
 - (void)addObservers {
     
     if (self.isObserving) {
