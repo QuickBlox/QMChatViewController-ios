@@ -240,11 +240,11 @@
         
         CGFloat horizontalInsetsTotal = horizontalContainerInsets + spacingBetweenAvatarAndBubble;
         
-        CGFloat maximumWidth = self.itemWidth - layoutModel.avatarSize.width - horizontalInsetsTotal;
+        CGFloat maximumWidth = self.itemWidth - layoutModel.avatarSize.width - layoutModel.maxWidthMarginSpace;
         
         CGSize dynamicSize = [self.chatCollectionView.delegate collectionView:self.chatCollectionView
                                                        dynamicSizeAtIndexPath:indexPath
-                                                                     maxWidth:maximumWidth];
+                                                                     maxWidth:maximumWidth - horizontalInsetsTotal];
         CGFloat verticalContainerInsets =
         layoutModel.containerInsets.top + layoutModel.containerInsets.bottom +
         layoutModel.topLabelHeight + layoutModel.bottomLabelHeight;
