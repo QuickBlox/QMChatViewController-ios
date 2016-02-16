@@ -241,6 +241,7 @@
         CGFloat horizontalInsetsTotal = horizontalContainerInsets + spacingBetweenAvatarAndBubble;
         
         CGFloat maximumWidth = self.itemWidth - layoutModel.avatarSize.width - layoutModel.maxWidthMarginSpace;
+        NSAssert(maximumWidth >= 0, @"Maximum width cannot be a negative nuber. Please check your maxWidthMarginSpace value.");
         
         CGSize dynamicSize = [self.chatCollectionView.delegate collectionView:self.chatCollectionView
                                                        dynamicSizeAtIndexPath:indexPath
