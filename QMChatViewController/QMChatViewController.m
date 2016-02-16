@@ -41,8 +41,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (assign, nonatomic) BOOL isObserving;
 @property (strong, nonatomic) NSTimer* timer;
 
-@property (assign, nonatomic, readonly) BOOL isAppeared;
-
 @end
 
 @implementation QMChatViewController
@@ -57,11 +55,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 + (instancetype)messagesViewController {
     
     return [[[self class] alloc] initWithNibName:NSStringFromClass([QMChatViewController class]) bundle:[NSBundle bundleForClass:[QMChatViewController class]]];
-}
-
-- (BOOL)isAppeared {
-    
-    return self.isViewLoaded && self.view.window;
 }
 
 - (void)dealloc {
@@ -183,12 +176,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
     
-    if (!self.isAppeared) {
-        // view is not in didAppear state, no need to perform batch updates
-        // due to collection view will perform its own reload data
-        return;
-    }
-    
     __weak __typeof(self)weakSelf = self;
     dispatch_block_t performUpdate = ^{
     
@@ -299,7 +286,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)deleteMessages:(NSArray *)messages {
     
-    [self.chatSectionManager deleteMessage:messages];
+    [self.chatSectionManager deleteMessages:messages];
 }
 
 #pragma mark - View lifecycle
@@ -324,7 +311,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     NSParameterAssert(self.senderID != 0);
     NSParameterAssert(self.senderDisplayName != nil);
-    NSParameterAssert(self.timeIntervalBetweenSections != 0);
     
     [super viewWillAppear:animated];
     
@@ -333,8 +319,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    
     
     [self addObservers];
     [self addActionToInteractivePopGestureRecognizer:YES];
@@ -349,8 +333,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [super viewWillDisappear:animated];
     
     [self addActionToInteractivePopGestureRecognizer:NO];
-    
-    self.chatSectionManager.delegate = nil;
     
 	[self removeObservers];
 	[self.keyboardController endListeningForKeyboard];
