@@ -1,51 +1,51 @@
 PODS:
-  - QMCVDevelopment (0.3):
-    - QMCVDevelopment/Categories (= 0.3)
-    - QMCVDevelopment/KeyboardViewController (= 0.3)
-    - QMCVDevelopment/Protocols (= 0.3)
-    - QMCVDevelopment/QMChatSection (= 0.3)
-    - QMCVDevelopment/Utils (= 0.3)
-    - QMCVDevelopment/Views (= 0.3)
+  - QMCVDevelopment (0.3.3):
+    - QMCVDevelopment/Categories (= 0.3.3)
+    - QMCVDevelopment/KeyboardViewController (= 0.3.3)
+    - QMCVDevelopment/Protocols (= 0.3.3)
+    - QMCVDevelopment/QMChatSection (= 0.3.3)
+    - QMCVDevelopment/Utils (= 0.3.3)
+    - QMCVDevelopment/Views (= 0.3.3)
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Categories (0.3):
+  - QMCVDevelopment/Categories (0.3.3):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/KeyboardViewController (0.3):
+  - QMCVDevelopment/KeyboardViewController (0.3.3):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Protocols (0.3):
+  - QMCVDevelopment/Protocols (0.3.3):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/QMChatSection (0.3):
+  - QMCVDevelopment/QMChatSection (0.3.3):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Utils (0.3):
+  - QMCVDevelopment/Utils (0.3.3):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Views (0.3):
+  - QMCVDevelopment/Views (0.3.3):
     - QMCVDevelopment/Categories
     - QMCVDevelopment/Protocols
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
   - QuickBlox (2.5)
-  - SDWebImage (3.7.3):
-    - SDWebImage/Core (= 3.7.3)
-  - SDWebImage/Core (3.7.3)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
   - QMCVDevelopment (from `../`)
-  - QuickBlox
+  - QuickBlox (= 2.5)
 
 EXTERNAL SOURCES:
   QMCVDevelopment:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMCVDevelopment: 9cc22f03f3d6e1c931a818693bc3c5db01aa422d
+  QMCVDevelopment: 3e9e615f02bf3a7cb87801729f512a484d61c9b8
   QuickBlox: 631deb7682f4425833ad45468ddbcc7c7454c028
-  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.39.0
+COCOAPODS: 0.38.2
