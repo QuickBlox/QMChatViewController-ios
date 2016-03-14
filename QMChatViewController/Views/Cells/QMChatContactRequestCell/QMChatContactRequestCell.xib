@@ -30,6 +30,11 @@
                                                 <state key="normal" title="REJECT">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="pressRejectRequestBtn:" destination="t7w-Z9-JBy" eventType="touchUpInside" id="HIr-sp-iOV"/>
                                                 </connections>
@@ -41,6 +46,11 @@
                                                 <state key="normal" title="ACCEPT">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="pressAcceptBtn:" destination="t7w-Z9-JBy" eventType="touchUpInside" id="UVY-r8-PgF"/>
                                                 </connections>
@@ -108,10 +118,8 @@
             </constraints>
             <size key="customSize" width="269" height="130"/>
             <connections>
-                <outlet property="acceptButton" destination="Hjd-BD-U0M" id="Bus-yh-pGK"/>
                 <outlet property="containerView" destination="ykU-Kn-Srx" id="CGW-yN-Oki"/>
                 <outlet property="messageContainer" destination="kyK-sN-Iga" id="LkD-QD-7Lp"/>
-                <outlet property="rejectButton" destination="bNF-b6-DLb" id="hli-Il-J3N"/>
                 <outlet property="textView" destination="xj9-MU-4a2" id="6OD-yU-gmH"/>
             </connections>
             <point key="canvasLocation" x="279" y="546"/>
