@@ -9,7 +9,24 @@
 #import "QMChatContactRequestCell.h"
 #import "QMChatCellLayoutAttributes.h"
 
+@interface QMChatContactRequestCell ()
+
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *rejectButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *acceptButton;
+
+@end
+
 @implementation QMChatContactRequestCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    self.rejectButton.layer.cornerRadius = 4;
+    self.rejectButton.clipsToBounds = YES;
+    
+    self.acceptButton.layer.cornerRadius = 4;
+    self.acceptButton.clipsToBounds = YES;
+}
 
 #pragma mark - Actions
 
