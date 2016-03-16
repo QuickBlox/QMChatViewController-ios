@@ -13,8 +13,8 @@
 + (NSString *)formattedStringFromDate:(NSDate *)date
 {
     NSString *formattedString = nil;
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
-    NSDateComponents *currentComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitWeekOfMonth | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
+    NSDateComponents *currentComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitWeekOfMonth | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
     
     NSString *sectionDate = [self formatDateForTimeRange:date];
     
@@ -26,7 +26,7 @@
         
         formattedString = [NSString stringWithFormat:@"%@ %@", [self formatDateForDayRange:date], sectionDate];
     }
-    else if (components.weekday == currentComponents.weekday && components.month == currentComponents.month && components.year == currentComponents.year) {
+    else if (components.weekOfMonth == currentComponents.weekOfMonth && components.month == currentComponents.month && components.year == currentComponents.year) {
         
         formattedString = [NSString stringWithFormat:@"%@ %@", [self formatDateForWeekRange:date], sectionDate];
     }
@@ -45,8 +45,8 @@
 + (NSString *)formattedLastSeenString:(NSDate *)date withTimePrefix:(NSString *)timePrefix
 {
     NSString *formattedString = nil;
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
-    NSDateComponents *currentComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitWeekOfMonth | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
+    NSDateComponents *currentComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitWeekOfMonth | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
     
     if (components.day == currentComponents.day && components.month == currentComponents.month && components.year == currentComponents.year) {
         
@@ -56,9 +56,9 @@
         
         formattedString = [NSString stringWithFormat:@"%@ %@ %@", [self formatDateForDayRange:date], timePrefix, [self formatDateForTimeRange:date]];
     }
-    else if (components.weekday == currentComponents.weekday && components.month == currentComponents.month && components.year == currentComponents.year) {
+    else if (components.weekOfMonth == currentComponents.weekOfMonth && components.month == currentComponents.month && components.year == currentComponents.year) {
         
-        formattedString = [NSString stringWithFormat:@"%@ %@ %@", [self formatDateForDayRange:date], timePrefix, [self formatDateForTimeRange:date]];
+        formattedString = [NSString stringWithFormat:@"%@ %@ %@", [self formatDateForWeekRange:date], timePrefix, [self formatDateForTimeRange:date]];
     }
     else {
         
