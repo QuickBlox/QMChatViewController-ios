@@ -60,11 +60,8 @@
     
     for (QBChatMessage *message_t in messages) {
         
-        // comparing messages IDs due to IDs being unique values
-        // while multiple messages can have the same dateSent value
-        // and we could not determine whether to put message
-        // at the bottom or at the top of array
-        BOOL dateIsNotAscending = [message.ID compare:message_t.ID] != NSOrderedAscending;
+        // server date value is always int
+        BOOL dateIsNotAscending = (NSInteger)[message.dateSent timeIntervalSinceDate:message_t.dateSent] >= 0;
         if (dateIsNotAscending) {
             
             index = [messages indexOfObject:message_t];
