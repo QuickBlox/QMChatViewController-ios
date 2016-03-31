@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
 
   s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
   s.license      = { :type => "BSD", :file => "LICENSE" }
-  s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
+  s.authors      = {"Anton Sokolchenko" => "anton.sokolchenko@quickblox.com", "Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com"}
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
