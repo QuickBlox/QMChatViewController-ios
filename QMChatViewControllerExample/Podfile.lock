@@ -1,51 +1,113 @@
 PODS:
-  - QMCVDevelopment (0.3.3):
-    - QMCVDevelopment/Categories (= 0.3.3)
-    - QMCVDevelopment/KeyboardViewController (= 0.3.3)
-    - QMCVDevelopment/Protocols (= 0.3.3)
-    - QMCVDevelopment/QMChatSection (= 0.3.3)
-    - QMCVDevelopment/Utils (= 0.3.3)
-    - QMCVDevelopment/Views (= 0.3.3)
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - DFImageManager (0.5.0):
+    - DFImageManager/AssetsLibrary (= 0.5.0)
+    - DFImageManager/Core (= 0.5.0)
+    - DFImageManager/NSURLSession (= 0.5.0)
+    - DFImageManager/PhotosKit (= 0.5.0)
+    - DFImageManager/UI (= 0.5.0)
+  - DFImageManager/AssetsLibrary (0.5.0):
+    - DFImageManager/Core
+  - DFImageManager/Core (0.5.0)
+  - DFImageManager/NSURLSession (0.5.0):
+    - DFImageManager/Core
+  - DFImageManager/PhotosKit (0.5.0):
+    - DFImageManager/Core
+  - DFImageManager/UI (0.5.0):
+    - DFImageManager/Core
+  - MD5Digest (1.1.0)
+  - QMCVDevelopment (0.3.5):
+    - QMCVDevelopment/Categories (= 0.3.5)
+    - QMCVDevelopment/KeyboardViewController (= 0.3.5)
+    - QMCVDevelopment/Protocols (= 0.3.5)
+    - QMCVDevelopment/QMChatSection (= 0.3.5)
+    - QMCVDevelopment/Utils (= 0.3.5)
+    - QMCVDevelopment/Views (= 0.3.5)
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Categories (0.3.3):
+  - QMCVDevelopment/Categories (0.3.5):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/KeyboardViewController (0.3.3):
+  - QMCVDevelopment/KeyboardViewController (0.3.5):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Protocols (0.3.3):
+  - QMCVDevelopment/Protocols (0.3.5):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/QMChatSection (0.3.3):
+  - QMCVDevelopment/QMChatSection (0.3.5):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Utils (0.3.3):
+  - QMCVDevelopment/Utils (0.3.5):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Views (0.3.3):
+  - QMCVDevelopment/Views (0.3.5):
     - QMCVDevelopment/Categories
     - QMCVDevelopment/Protocols
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (~> 1.13)
   - QuickBlox (2.5)
+  - RMStore (0.7.1):
+    - RMStore/Core (= 0.7.1)
+  - RMStore/Core (0.7.1)
+  - RMStore/KeychainPersistence (0.7.1):
+    - RMStore/Core
+  - RMStore/NSUserDefaultsPersistence (0.7.1):
+    - RMStore/Core
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
+  - SSKeychain (1.4.0)
+  - StickerPipe (0.2.5):
+    - AFNetworking (~> 2.0)
+    - DFImageManager (~> 0.5.0)
+    - MD5Digest (~> 1.1)
+    - RMStore (~> 0.7)
+    - RMStore/KeychainPersistence
+    - RMStore/NSUserDefaultsPersistence
+    - SDWebImage (~> 3.7)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
+  - MD5Digest (~> 1.1)
   - QMCVDevelopment (from `../`)
   - QuickBlox (= 2.5)
+  - SSKeychain (~> 1.3)
+  - StickerPipe (~> 0.2)
 
 EXTERNAL SOURCES:
   QMCVDevelopment:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMCVDevelopment: 3e9e615f02bf3a7cb87801729f512a484d61c9b8
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  DFImageManager: c69dd0063d367301f937ef8dc663e54fe7b7d994
+  MD5Digest: fea371215507cfcdc3c9633d02cffc7fd075ebc3
+  QMCVDevelopment: 0fdb8ff2cea9426977a6408384405b4572b42f61
   QuickBlox: 631deb7682f4425833ad45468ddbcc7c7454c028
+  RMStore: 64ba13a9c040e3b7572765d169f77175cd3243e5
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SSKeychain: c71293fa57216a40ab06c23f4085387583293de4
+  StickerPipe: 32d6afe5841e32d9c0841e0d639632cbb5c91573
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
