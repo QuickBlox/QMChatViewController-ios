@@ -21,13 +21,14 @@
 #import "UIImage+QM.h"
 #import "QMHeaderCollectionReusableView.h"
 #import "TTTAttributedLabel.h"
+#import "STKStickerPipe.h"
 
 static NSString *const kQMSectionsInsertKey = @"kQMSectionsInsertKey";
 static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate, STKStickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -40,6 +41,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 @property (assign, nonatomic) BOOL isObserving;
 @property (strong, nonatomic) NSTimer* timer;
+
+@property (strong, nonatomic) STKStickerController *stickerController;
 
 @end
 
@@ -151,6 +154,19 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     UINib *attachmentOutgoingNib  = [QMChatAttachmentOutgoingCell nib];
     NSString *attachmentOutgoingIdentifier = [QMChatAttachmentOutgoingCell cellReuseIdentifier];
     [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
+    /**
+     *  Register outgoing sticker cell
+     */
+    UINib *stickerOutgoingNib  = [OutgoingStickerCell nib];
+    NSString *stickerOutgoingIdentifier = [OutgoingStickerCell cellReuseIdentifier];
+    [self.collectionView registerNib:stickerOutgoingNib forCellWithReuseIdentifier:stickerOutgoingIdentifier];
+    /**
+     *  Register outgoing sticker cell
+     */
+    UINib *stickerIncomingNib  = [IncomingStickerCell nib];
+    NSString *stickerIncomingIdentifier = [IncomingStickerCell cellReuseIdentifier];
+    [self.collectionView registerNib:stickerIncomingNib forCellWithReuseIdentifier:stickerIncomingIdentifier];
+    
 }
 
 #pragma mark - Getters
@@ -162,6 +178,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         _pickerController.delegate = self;
     }
     return _pickerController;
+}
+
+- (STKStickerController *)stickerController {
+    if (!_stickerController) {
+        _stickerController = [STKStickerController new];
+        _stickerController.delegate = self;
+        _stickerController.textInputView = self.inputToolbar.contentView.textView;
+    }
+    return _stickerController;
 }
 
 #pragma mark - Setters
@@ -337,6 +362,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 	[self removeObservers];
 	[self.keyboardController endListeningForKeyboard];
 }
+
+- (void)viewDidLayoutSubviews {
+    
+    [super viewDidLayoutSubviews];
+    [self.stickerController updateFrames];
+}
+
 
 - (void)didReceiveMemoryWarning {
     
