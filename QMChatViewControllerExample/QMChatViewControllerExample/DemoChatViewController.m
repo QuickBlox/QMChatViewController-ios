@@ -122,6 +122,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
     [self.chatSectionManager addMessage:message];
     
     [self finishSendingMessageAnimated:YES];
+
+    [self.stickerController textMessageSent:text];
 }
 
 - (void)didPickAttachmentImage:(UIImage *)image {
