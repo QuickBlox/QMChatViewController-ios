@@ -15,6 +15,7 @@
 #import "QMInputToolbar.h"
 #import <Quickblox/Quickblox.h>
 #import "QMChatSectionManager.h"
+#import "STKStickerPipe.h"
 
 #import "QMChatContactRequestCell.h"
 #import "QMChatIncomingCell.h"
@@ -27,6 +28,8 @@
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
+
+@property (strong, nonatomic) STKStickerController *stickerController;
 
 @property (strong, nonatomic) QMChatSectionManager *chatSectionManager;
 
