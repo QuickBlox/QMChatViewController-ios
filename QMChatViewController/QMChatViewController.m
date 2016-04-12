@@ -21,7 +21,6 @@
 #import "UIImage+QM.h"
 #import "QMHeaderCollectionReusableView.h"
 #import "TTTAttributedLabel.h"
-#import "STKStickerPipe.h"
 
 static NSString *const kQMSectionsInsertKey = @"kQMSectionsInsertKey";
 static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
@@ -41,8 +40,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 @property (assign, nonatomic) BOOL isObserving;
 @property (strong, nonatomic) NSTimer* timer;
-
-@property (strong, nonatomic) STKStickerController *stickerController;
 
 @end
 
@@ -361,12 +358,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
 	[self removeObservers];
 	[self.keyboardController endListeningForKeyboard];
-}
-
-- (void)viewDidLayoutSubviews {
-    
-    [super viewDidLayoutSubviews];
-    [self.stickerController updateFrames];
 }
 
 

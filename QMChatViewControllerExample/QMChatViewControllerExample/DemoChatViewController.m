@@ -102,7 +102,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    [self.stickerController updateFrames];
+
 }
 
 #pragma mark Tool bar Actions
