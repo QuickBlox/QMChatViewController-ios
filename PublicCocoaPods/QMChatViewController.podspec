@@ -11,7 +11,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "QMChatViewController"
-  s.version      = "0.3.5"
+  s.version      = "0.3.6"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
@@ -26,8 +26,8 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
-  s.license      = { :type => "BSD", :file => "LICENSE" }
-  s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
+  s.license      = { :type => "BSD", :file => "../LICENSE" }
+  s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com"}
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
@@ -63,7 +63,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
   s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
-  s.dependency "QuickBlox", "~> 2.0"
+  s.dependency "QuickBlox", ">= 2.0"
   s.dependency "TTTAttributedLabel", "~> 1.13"
   s.dependency "SDWebImage", "~> 3.6"
 
