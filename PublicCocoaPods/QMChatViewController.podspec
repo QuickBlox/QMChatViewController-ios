@@ -11,7 +11,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "QMChatViewController"
-  s.version      = "0.3.6"
+  s.version      = "0.3.7"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
-  s.license      = { :type => "BSD", :file => "../LICENSE" }
+  s.license      = { :type => "BSD", :file => "LICENSE" }
   s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com"}
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
