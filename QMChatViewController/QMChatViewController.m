@@ -154,14 +154,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     /**
      *  Register outgoing sticker cell
      */
-    UINib *stickerOutgoingNib  = [OutgoingStickerCell nib];
-    NSString *stickerOutgoingIdentifier = [OutgoingStickerCell cellReuseIdentifier];
+    UINib *stickerOutgoingNib  = [QMChatOutgoingStickerCell nib];
+    NSString *stickerOutgoingIdentifier = [QMChatOutgoingStickerCell cellReuseIdentifier];
     [self.collectionView registerNib:stickerOutgoingNib forCellWithReuseIdentifier:stickerOutgoingIdentifier];
     /**
      *  Register outgoing sticker cell
      */
-    UINib *stickerIncomingNib  = [IncomingStickerCell nib];
-    NSString *stickerIncomingIdentifier = [IncomingStickerCell cellReuseIdentifier];
+    UINib *stickerIncomingNib  = [QMChatIncomingStickerCell nib];
+    NSString *stickerIncomingIdentifier = [QMChatIncomingStickerCell cellReuseIdentifier];
     [self.collectionView registerNib:stickerIncomingNib forCellWithReuseIdentifier:stickerIncomingIdentifier];
     
 }

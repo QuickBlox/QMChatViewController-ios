@@ -182,14 +182,14 @@ NS_ENUM(NSUInteger, QMMessageType) {
         
         if (item.senderID != self.senderID) {
             if ([STKStickersManager isStickerMessage:item.text]) {
-                return [IncomingStickerCell class];
+                return [QMChatIncomingStickerCell class];
             } else if ((item.attachments != nil && item.attachments.count > 0)) {
                 return [QMChatAttachmentIncomingCell class];
             } else {
                 return [QMChatIncomingCell class];
             }
         } else  if ([STKStickersManager isStickerMessage:item.text]) {
-            return [OutgoingStickerCell class];
+            return [QMChatOutgoingStickerCell class];
         } else if ((item.attachments != nil && item.attachments.count > 0)) {
             return [QMChatAttachmentOutgoingCell class];
         } else {
@@ -208,8 +208,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
     if (viewClass == [QMChatAttachmentIncomingCell class] || viewClass == [QMChatAttachmentOutgoingCell class]) {
         size = CGSizeMake(MIN(200, maxWidth), 200);
-    } else if (viewClass == [OutgoingStickerCell class] ||
-               viewClass == [IncomingStickerCell class]) {
+    } else if (viewClass == [QMChatOutgoingStickerCell class] ||
+               viewClass == [QMChatIncomingStickerCell class]) {
         NSAttributedString *attributedString = [self bottomLabelAttributedStringForItem:item];
         
         CGSize bottomLabelSize = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
@@ -265,11 +265,11 @@ NS_ENUM(NSUInteger, QMMessageType) {
         }
     } else {
         Class viewClass = [self viewClassForItem:message];
-        if (viewClass == [OutgoingStickerCell class]) {
-            [[(OutgoingStickerCell *)cell stickerImage] stk_setStickerWithMessage:message.text placeholder:nil placeholderColor:nil progress:nil completion:nil];
+        if (viewClass == [QMChatOutgoingStickerCell class]) {
+            [[(QMChatOutgoingStickerCell *)cell stickerImage] stk_setStickerWithMessage:message.text placeholder:nil placeholderColor:nil progress:nil completion:nil];
         }
-        else if (viewClass == [IncomingStickerCell class]) {
-            [[(IncomingStickerCell *)cell stickerImage] stk_setStickerWithMessage:message.text placeholder:nil placeholderColor:nil progress:nil completion:nil];
+        else if (viewClass == [QMChatIncomingStickerCell class]) {
+            [[(QMChatIncomingStickerCell *)cell stickerImage] stk_setStickerWithMessage:message.text placeholder:nil placeholderColor:nil progress:nil completion:nil];
         }
     }
     

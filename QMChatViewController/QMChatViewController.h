@@ -23,8 +23,8 @@
 #import "QMChatNotificationCell.h"
 #import "QMChatAttachmentIncomingCell.h"
 #import "QMChatAttachmentOutgoingCell.h"
-#import "IncomingStickerCell.h"
-#import "OutgoingStickerCell.h"
+#import "QMChatIncomingStickerCell.h"
+#import "QMChatOutgoingStickerCell.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
