@@ -27,7 +27,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate, STKStickerControllerDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -151,19 +151,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     UINib *attachmentOutgoingNib  = [QMChatAttachmentOutgoingCell nib];
     NSString *attachmentOutgoingIdentifier = [QMChatAttachmentOutgoingCell cellReuseIdentifier];
     [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
-    /**
-     *  Register outgoing sticker cell
-     */
-    UINib *stickerOutgoingNib  = [QMChatOutgoingStickerCell nib];
-    NSString *stickerOutgoingIdentifier = [QMChatOutgoingStickerCell cellReuseIdentifier];
-    [self.collectionView registerNib:stickerOutgoingNib forCellWithReuseIdentifier:stickerOutgoingIdentifier];
-    /**
-     *  Register outgoing sticker cell
-     */
-    UINib *stickerIncomingNib  = [QMChatIncomingStickerCell nib];
-    NSString *stickerIncomingIdentifier = [QMChatIncomingStickerCell cellReuseIdentifier];
-    [self.collectionView registerNib:stickerIncomingNib forCellWithReuseIdentifier:stickerIncomingIdentifier];
-    
 }
 
 #pragma mark - Getters
@@ -175,15 +162,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         _pickerController.delegate = self;
     }
     return _pickerController;
-}
-
-- (STKStickerController *)stickerController {
-    if (!_stickerController) {
-        _stickerController = [STKStickerController new];
-        _stickerController.delegate = self;
-        _stickerController.textInputView = self.inputToolbar.contentView.textView;
-    }
-    return _stickerController;
 }
 
 #pragma mark - Setters

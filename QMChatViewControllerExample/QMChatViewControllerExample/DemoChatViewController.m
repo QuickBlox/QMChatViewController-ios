@@ -13,6 +13,8 @@
 #import "UIImage+fixOrientation.h"
 #import "STKStickerPipe.h"
 #import "STKStickersPurchaseService.h"
+#import "QMChatOutgoingStickerCell.h"
+#import "QMChatIncomingStickerCell.h"
 
 NS_ENUM(NSUInteger, QMMessageType) {
     
@@ -30,6 +32,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
     NSString *packName;
     NSString *packPrice;
 }
+
+@property (strong, nonatomic) STKStickerController *stickerController;
 
 @end
 
@@ -93,6 +97,19 @@ NS_ENUM(NSUInteger, QMMessageType) {
     //    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
     
     [self.chatSectionManager addMessages:@[message1, message2, message3, message4]];
+    
+    /**
+     *  Register outgoing sticker cell
+     */
+    UINib *stickerOutgoingNib  = [QMChatOutgoingStickerCell nib];
+    NSString *stickerOutgoingIdentifier = [QMChatOutgoingStickerCell cellReuseIdentifier];
+    [self.collectionView registerNib:stickerOutgoingNib forCellWithReuseIdentifier:stickerOutgoingIdentifier];
+    /**
+     *  Register outgoing sticker cell
+     */
+    UINib *stickerIncomingNib  = [QMChatIncomingStickerCell nib];
+    NSString *stickerIncomingIdentifier = [QMChatIncomingStickerCell cellReuseIdentifier];
+    [self.collectionView registerNib:stickerIncomingNib forCellWithReuseIdentifier:stickerIncomingIdentifier];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -104,6 +121,15 @@ NS_ENUM(NSUInteger, QMMessageType) {
     [super viewDidAppear:animated];
     [self.stickerController updateFrames];
 
+}
+
+- (STKStickerController *)stickerController {
+    if (!_stickerController) {
+        _stickerController = [STKStickerController new];
+        _stickerController.delegate = self;
+        _stickerController.textInputView = self.inputToolbar.contentView.textView;
+    }
+    return _stickerController;
 }
 
 #pragma mark Tool bar Actions
