@@ -108,8 +108,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
                                           delegate:self];
     
     [self registerCells];
-    
-    self.chatSectionManager.animationEnabled = NO;
 }
 
 - (void)registerCells {
@@ -181,42 +179,44 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
 
     
-    BOOL lastMessageIsNotVisible = animated ? [self shouldCancelScrolling] : NO;
-    
-    self.chatSectionManager.animationEnabled = YES;
+    BOOL shouldCancelScrolling = animated ? [self shouldCancelScrollingForItemIndexPaths:itemsIndexPaths] : NO;
     
     __weak __typeof(self)weakSelf = self;
     
     dispatch_block_t performUpdate = ^{
         
+        __typeof(weakSelf)strongSelf = weakSelf;
+        
         CGFloat bottomOffset = 0.0;
         
-        if (lastMessageIsNotVisible) {
+        if (shouldCancelScrolling) {
             
-            bottomOffset = self.collectionView.contentSize.height - self.collectionView.contentOffset.y;
+            bottomOffset = strongSelf.collectionView.contentSize.height - strongSelf.collectionView.contentOffset.y;
             
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
         }
-   
-        __typeof(weakSelf)strongSelf = weakSelf;
+        
+        
         [strongSelf.collectionView performBatchUpdates:^{
             
-            if ([sectionsIndexSet count] > 0) [strongSelf.collectionView insertSections:sectionsIndexSet];
+            if ([sectionsIndexSet count] > 0) {
+                [strongSelf.collectionView insertSections:sectionsIndexSet];
+            }
+            
             [strongSelf.collectionView insertItemsAtIndexPaths:itemsIndexPaths];
             
         } completion:^(BOOL finished) {
             
-            if (lastMessageIsNotVisible) {
-                
-            strongSelf.collectionView.contentOffset = CGPointMake(0, strongSelf.collectionView.contentSize.height - bottomOffset);
-            [CATransaction commit];
+            if (shouldCancelScrolling) {
+                strongSelf.collectionView.contentOffset = CGPointMake(0, strongSelf.collectionView.contentSize.height - bottomOffset);
+                [CATransaction commit];
             }
         }];
         
     };
     
-    if (animated && ![self shouldCancelScrolling]) {
+    if (animated) {
         
         performUpdate();
     }
@@ -514,68 +514,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - UIScrollViewDelegate
 
-
-- (BOOL)shouldCancelScrolling {
-    
-    NSSet * visibleCells = [NSSet setWithArray:self.collectionView.indexPathsForVisibleItems];
-    //Index path of the first cell and the last message
-    NSIndexPath *pathToLastMessage = [NSIndexPath indexPathForRow:0 inSection:0];
-   
-    if  ([visibleCells containsObject:pathToLastMessage]) {
-        
-        return NO;
-    }
-    else {
-        if (self.scrollDirectionIsUP) {
-          
-            return NO;
-        }
-        return YES;
-    }
-}
-
-- (BOOL)checkVisibilityOfCell:(QMChatCell *)cell inScrollView:(UIScrollView *)aScrollView {
-    CGRect cellRect = [aScrollView convertRect:cell.frame toView:aScrollView.superview];
-    
-    if (CGRectContainsRect(aScrollView.frame, cellRect)) {
-        return YES;
-    }
-    return NO;
- 
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    
-        if (self.lastContentOffset > scrollView.contentOffset.y)
-            self.scrollDirectionIsUP = YES;
-        else if (self.lastContentOffset < scrollView.contentOffset.y)
-            self.scrollDirectionIsUP = NO;
-        self.lastContentOffset  = scrollView.contentOffset.y;
-    
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if (!decelerate) {
-        self.scrollDirectionIsUP = NO;
-    }
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    
-    self.lastContentOffset = scrollView.contentOffset.y;
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    
-    if (self.lastContentOffset < scrollView.contentOffset.x) {
-        self.scrollDirectionIsUP = NO;
-    } else if (self.lastContentOffset > scrollView.contentOffset.x) {
-        self.scrollDirectionIsUP = YES;
-    } else {
-        self.scrollDirectionIsUP = NO;
-    }
-}
-
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
     // disabling scrolll to bottom when tapping status bar
     return NO;
@@ -632,7 +570,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     cell.transform = self.collectionView.transform;
     
     [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
-    
+
     return cell;
 }
 
@@ -1066,6 +1004,25 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 }
 
 #pragma mark - Utilities
+
+- (BOOL)shouldCancelScrollingForItemIndexPaths:(NSArray*)indexPathes {
+    
+    NSSet * visibleInxexPathes= [NSSet setWithArray:self.collectionView.indexPathsForVisibleItems];
+    //Index path of the first cell - last message
+    NSIndexPath *pathToLastMessage = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    if  ([visibleInxexPathes containsObject:pathToLastMessage]) {
+        
+        return NO;
+    }
+    
+    NSArray* sortedIndexPaths = [visibleInxexPathes.allObjects sortedArrayUsingSelector:@selector(compare:)];
+    NSIndexPath * firstVisibleIndexPath = [sortedIndexPaths firstObject];
+    
+    NSComparisonResult result = [[indexPathes lastObject] compare:firstVisibleIndexPath];
+    
+    return result == NSOrderedAscending;
+}
 
 - (NSTimeInterval)timeIntervalBetweenSections {
     
