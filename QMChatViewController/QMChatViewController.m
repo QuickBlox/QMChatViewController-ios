@@ -729,6 +729,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [textView resignFirstResponder];
 }
 
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1 && &UIApplicationOpenSettingsURLString != NULL) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    }
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -1158,12 +1167,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         case AVAuthorizationStatusNotDetermined: {
             
             [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-                if (granted) {
-                    [self presentViewController:self.pickerController animated:YES completion:nil];
-                }
-                else {
-                    [self showAlertForCameraAccess];
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (granted) {
+                        [self presentViewController:self.pickerController animated:YES completion:nil];
+                    }
+                    else {
+                        [self showAlertForCameraAccess];
+                    }
+                });
+
             }];
             break;
         }
@@ -1188,7 +1200,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     NSString * title = NSLocalizedString(@"Camera Access Disabled", nil);
     NSString * message = NSLocalizedString(@"You can allow access to Camera in Settings", nil);
     
-    BOOL isIOS8 = [[UIDevice currentDevice].systemVersion compare:@"8.0" options:NSNumericSearch] == NSOrderedAscending;
+    NSString *reqSysVer = @"8.0";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    
+    BOOL isIOS8 =  ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
+
     NSString * otherButtonTitle = isIOS8 ? NSLocalizedString(@"Open Settings", nil) : nil;
     
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:title
