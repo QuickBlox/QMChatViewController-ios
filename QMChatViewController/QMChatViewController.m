@@ -541,7 +541,12 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     if ([cell isKindOfClass:[QMChatCell class]]) {
         
         QMChatCell *chatCell = (QMChatCell *)cell;
-        chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
+        
+        if ([cell isKindOfClass:[QMChatIncomingCell class]]
+            || [cell isKindOfClass:[QMChatOutgoingCell class]]) {
+            
+            chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
+        }
         
         QBChatMessage *messageItem = [self.chatSectionManager messageForIndexPath:indexPath];
         
