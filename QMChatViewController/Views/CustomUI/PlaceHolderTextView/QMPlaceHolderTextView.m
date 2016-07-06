@@ -333,10 +333,5 @@
     return [super becomeFirstResponder];
 }
 
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-    
-    [UIMenuController sharedMenuController].menuItems = nil;
-    return [super canPerformAction:action withSender:sender];
-}
 
 @end

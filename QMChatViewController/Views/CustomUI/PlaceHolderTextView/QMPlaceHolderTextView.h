@@ -52,11 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, QB_NONNULL) IBInspectable UIColor *placeHolderColor;
 
 /**
- *  The object that acts as the paste delegate of the text view.
- */
-@property (weak, nonatomic, nullable) id<QMPlaceHolderTextViewPasteDelegate> pasteDelegate;
-
-/**
  *  Determines whether or not the text view contains text after trimming white space
  *  from the front and back of its string.
  *
