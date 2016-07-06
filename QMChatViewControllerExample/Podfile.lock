@@ -1,37 +1,37 @@
 PODS:
-  - QMCVDevelopment (0.3.3):
-    - QMCVDevelopment/Categories (= 0.3.3)
-    - QMCVDevelopment/KeyboardViewController (= 0.3.3)
-    - QMCVDevelopment/Protocols (= 0.3.3)
-    - QMCVDevelopment/QMChatSection (= 0.3.3)
-    - QMCVDevelopment/Utils (= 0.3.3)
-    - QMCVDevelopment/Views (= 0.3.3)
+  - QMCVDevelopment (0.3.8):
+    - QMCVDevelopment/Categories (= 0.3.8)
+    - QMCVDevelopment/KeyboardViewController (= 0.3.8)
+    - QMCVDevelopment/Protocols (= 0.3.8)
+    - QMCVDevelopment/QMChatSection (= 0.3.8)
+    - QMCVDevelopment/Utils (= 0.3.8)
+    - QMCVDevelopment/Views (= 0.3.8)
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Categories (0.3.3):
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Categories (0.3.8):
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/KeyboardViewController (0.3.3):
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/KeyboardViewController (0.3.8):
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Protocols (0.3.3):
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Protocols (0.3.8):
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/QMChatSection (0.3.3):
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/QMChatSection (0.3.8):
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Utils (0.3.3):
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Utils (0.3.8):
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
-  - QMCVDevelopment/Views (0.3.3):
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Views (0.3.8):
     - QMCVDevelopment/Categories
     - QMCVDevelopment/Protocols
     - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (~> 1.13)
+    - TTTAttributedLabel (> 1.13)
   - QuickBlox (2.5)
-  - SDWebImage (3.7.5):
-    - SDWebImage/Core (= 3.7.5)
-  - SDWebImage/Core (3.7.5)
+  - SDWebImage (3.8.1):
+    - SDWebImage/Core (= 3.8.1)
+  - SDWebImage/Core (3.8.1)
   - TTTAttributedLabel (1.13.4)
 
 DEPENDENCIES:
@@ -43,9 +43,11 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMCVDevelopment: 3e9e615f02bf3a7cb87801729f512a484d61c9b8
+  QMCVDevelopment: 8db3931015dda7d773b6c8fdeedac2cc219e359a
   QuickBlox: 631deb7682f4425833ad45468ddbcc7c7454c028
-  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.38.2
+PODFILE CHECKSUM: 6a55a6e3b8c55b1867abfb823b2ae602774390b8
+
+COCOAPODS: 1.0.1
