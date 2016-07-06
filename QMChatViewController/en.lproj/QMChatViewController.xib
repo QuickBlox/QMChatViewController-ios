@@ -9,7 +9,6 @@
                 <outlet property="collectionView" destination="l9u-2b-4LK" id="bLP-6g-CkO"/>
                 <outlet property="inputToolbar" destination="BoD-Az-3DM" id="w74-g9-1qA"/>
                 <outlet property="toolbarBottomLayoutGuide" destination="rHs-6q-NX4" id="d6h-iu-VMX"/>
-                <outlet property="toolbarHeightConstraint" destination="bjh-lq-5v2" id="RvV-sB-qBn"/>
                 <outlet property="view" destination="mUa-cS-ru4" id="nki-T1-RTI"/>
             </connections>
         </placeholder>
@@ -26,9 +25,6 @@
                 </collectionView>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BoD-Az-3DM" customClass="QMInputToolbar">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="bjh-lq-5v2"/>
-                    </constraints>
                     <items/>
                 </toolbar>
             </subviews>
