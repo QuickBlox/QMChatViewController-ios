@@ -65,50 +65,6 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     self.senderDisplayName = nil;
 }
 
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad {
-    
-    [super viewDidLoad];
-    
-    [[[self class] nib] instantiateWithOwner:self options:nil];
-    
-    [self configureMessagesViewController];
-    [self registerForNotifications:YES];
-    
-    //Customize your toolbar buttons
-    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
-    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
-    
-    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    
-    NSParameterAssert(self.senderID != 0);
-    NSParameterAssert(self.senderDisplayName != nil);
-    
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    [self.view layoutIfNeeded];
-    [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-    
-    [super didReceiveMemoryWarning];
-    NSLog(@"MEMORY WARNING: %s", __PRETTY_FUNCTION__);
-}
-
 #pragma mark - Initialization
 
 - (void)configureMessagesViewController {
@@ -305,6 +261,54 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
             performUpdate();
         }];
     }
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    [[[self class] nib] instantiateWithOwner:self options:nil];
+    
+    [self configureMessagesViewController];
+    [self registerForNotifications:YES];
+    
+    //Customize your toolbar buttons
+    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
+    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
+    
+    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    NSParameterAssert(self.senderID != 0);
+    NSParameterAssert(self.senderDisplayName != nil);
+    
+    [super viewWillAppear:animated];
+    
+    self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
+    [self.view layoutIfNeeded];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self addActionToInteractivePopGestureRecognizer:YES];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self addActionToInteractivePopGestureRecognizer:NO];
+}
+
+- (void)didReceiveMemoryWarning {
+    
+    [super didReceiveMemoryWarning];
+    NSLog(@"MEMORY WARNING: %s", __PRETTY_FUNCTION__);
 }
 
 #pragma mark - Tool bar
@@ -913,6 +917,21 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     }
 }
 
+- (void)addActionToInteractivePopGestureRecognizer:(BOOL)addAction {
+    
+    if (self.navigationController.interactivePopGestureRecognizer) {
+        
+        [self.navigationController.interactivePopGestureRecognizer removeTarget:nil
+                                                                         action:@selector(handleInteractivePopGestureRecognizer:)];
+        
+        if (addAction) {
+            
+            [self.navigationController.interactivePopGestureRecognizer addTarget:self
+                                                                          action:@selector(handleInteractivePopGestureRecognizer:)];
+        }
+    }
+}
+
 - (void)checkAuthorizationStatusForCamera {
     
     AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
@@ -928,6 +947,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
                         [self showAlertForCameraAccess];
                     }
                 });
+                
             }];
             break;
         }
