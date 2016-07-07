@@ -8,6 +8,7 @@
 
 #import "QMChatViewController.h"
 #import "QMChatCollectionView.h"
+#import "QMKeyboardController.h"
 #import "QMToolbarContentView.h"
 #import "QMChatCollectionViewFlowLayout.h"
 #import "QMChatSection.h"
@@ -24,7 +25,9 @@
 static NSString *const kQMSectionsInsertKey = @"kQMSectionsInsertKey";
 static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
-@interface QMChatViewController () <QMInputToolbarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate,UIAlertViewDelegate>
+static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
+
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate,UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -32,8 +35,12 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
 
 @property (nonatomic, readonly) UIImagePickerController* pickerController;
+@property (weak, nonatomic) UIView *snapshotView;
+@property (strong, nonatomic) QMKeyboardController *keyboardController;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
-
+@property (assign, nonatomic) BOOL isObserving;
+@property (strong, nonatomic) NSTimer* timer;
+@property BOOL scrollDirectionIsUP;
 @property (nonatomic, assign) CGFloat lastContentOffset;
 
 @end
@@ -55,19 +62,30 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 - (void)dealloc {
     
     [self registerForNotifications:NO];
+    [self removeObservers];
     
     self.collectionView.dataSource = nil;
     self.collectionView.delegate = nil;
+    self.collectionView = nil;
     
     self.inputToolbar.contentView.textView.delegate = nil;
     self.inputToolbar.delegate = nil;
+    self.inputToolbar = nil;
+    
+    self.toolbarHeightConstraint = nil;
+    self.toolbarBottomLayoutGuide = nil;
     
     self.senderDisplayName = nil;
+    
+    [self.keyboardController endListeningForKeyboard];
+    self.keyboardController = nil;
 }
 
 #pragma mark - Initialization
 
 - (void)configureMessagesViewController {
+    
+    self.isObserving = NO;
     
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     
@@ -79,15 +97,17 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     
     self.inputToolbar.delegate = self;
     self.inputToolbar.contentView.textView.delegate = self;
-    
-    [self.inputToolbar removeFromSuperview];
-    
     self.automaticallyScrollsToMostRecentMessage = YES;
     self.topContentAdditionalInset = 0.0f;
+    [self updateCollectionViewInsets];
+    
+    self.keyboardController =
+    [[QMKeyboardController alloc] initWithTextView:self.inputToolbar.contentView.textView
+                                       contextView:self.view
+                              panGestureRecognizer:self.collectionView.panGestureRecognizer
+                                          delegate:self];
     
     [self registerCells];
-    
-    [self updateCollectionViewInsets];
 }
 
 - (void)registerCells {
@@ -135,16 +155,6 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
 }
 
-- (UIView *)inputAccessoryView {
-    
-    return self.inputToolbar;
-}
-
-- (BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-
 #pragma mark - Getters
 
 - (UIImagePickerController *)pickerController
@@ -167,7 +177,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 #pragma mark - QMChatSectionManagerDelegate
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
-    
+
     
     BOOL shouldCancelScrolling = animated ? [self shouldCancelScrollingForItemIndexPaths:itemsIndexPaths] : NO;
     
@@ -288,21 +298,28 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     
     [super viewWillAppear:animated];
     
-    self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    [self.view layoutIfNeeded];
+    [self updateKeyboardTriggerPoint];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self addObservers];
     [self addActionToInteractivePopGestureRecognizer:YES];
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    [self.keyboardController beginListeningForKeyboard];
+    
+    if ([[UIDevice currentDevice].systemVersion compare:@"8.0" options:NSNumericSearch] == NSOrderedAscending) {
+        [self.snapshotView removeFromSuperview];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     [self addActionToInteractivePopGestureRecognizer:NO];
+    
+    [self removeObservers];
+    [self.keyboardController endListeningForKeyboard];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -509,7 +526,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     cell.transform = self.collectionView.transform;
     
     [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
-    
+
     return cell;
 }
 
@@ -714,6 +731,13 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 #pragma mark - Notifications
 
+- (void)handleDidChangeStatusBarFrameNotification:(NSNotification *)notification {
+    
+    if (self.keyboardController.keyboardIsVisible) {
+        [self setToolbarBottomLayoutGuideConstant:CGRectGetHeight(self.keyboardController.currentKeyboardFrame)];
+    }
+}
+
 - (void)didReceiveMenuWillShowNotification:(NSNotification *)notification {
     
     if (!self.selectedIndexPathForMenu) {
@@ -752,6 +776,114 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     self.selectedIndexPathForMenu = nil;
 }
 
+#pragma mark - Key-value observing
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if (context == kChatKeyValueObservingContext) {
+        
+        if (object == self.inputToolbar.contentView.textView
+            && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))]) {
+            
+            CGSize oldContentSize = [change[NSKeyValueChangeOldKey] CGSizeValue];
+            CGSize newContentSize = [change[NSKeyValueChangeNewKey] CGSizeValue];
+            
+            CGFloat dy = newContentSize.height - oldContentSize.height;
+            
+            [self adjustInputToolbarForComposerTextViewContentSizeChange:dy];
+            [self updateCollectionViewInsets];
+            
+            if (self.automaticallyScrollsToMostRecentMessage) {
+                
+                [self scrollToBottomAnimated:NO];
+            }
+        }
+    }
+}
+
+#pragma mark - Keyboard controller delegate
+
+- (void)keyboardController:(QMKeyboardController *)keyboardController keyboardDidChangeFrame:(CGRect)keyboardFrame {
+    
+    if (![self.inputToolbar.contentView.textView isFirstResponder] && self.toolbarBottomLayoutGuide.constant == 0.0f) {
+        return;
+    }
+    
+    CGFloat heightFromBottom = CGRectGetMaxY(self.collectionView.frame) - CGRectGetMinY(keyboardFrame);
+    
+    heightFromBottom = MAX(0.0f, heightFromBottom);
+    
+    [self setToolbarBottomLayoutGuideConstant:heightFromBottom];
+}
+
+- (void)setToolbarBottomLayoutGuideConstant:(CGFloat)constant {
+    
+    if (fabs(self.toolbarBottomLayoutGuide.constant - constant) < 0.01) {
+        return;
+    }
+    
+    self.toolbarBottomLayoutGuide.constant = constant;
+    [self.view setNeedsUpdateConstraints];
+    [self.view layoutIfNeeded];
+    
+    [self updateCollectionViewInsets];
+}
+
+- (void)updateKeyboardTriggerPoint {
+    
+    self.keyboardController.keyboardTriggerPoint = CGPointMake(0.0f, CGRectGetHeight(self.inputToolbar.bounds));
+}
+
+#pragma mark - Gesture recognizers
+
+- (void)handleInteractivePopGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+    
+    BOOL ios8 = [[UIDevice currentDevice].systemVersion compare:@"8.0" options:NSNumericSearch] == NSOrderedAscending;
+    
+    switch (gestureRecognizer.state) {
+            
+        case UIGestureRecognizerStateBegan: {
+            
+            if (ios8) {
+                
+                [self.snapshotView removeFromSuperview];
+            }
+            
+            [self.keyboardController endListeningForKeyboard];
+            
+            if (ios8) {
+                
+                [self.inputToolbar.contentView.textView resignFirstResponder];
+                [UIView animateWithDuration:0.0
+                                 animations:^
+                 {
+                     [self setToolbarBottomLayoutGuideConstant:0.0f];
+                 }];
+                
+                UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:YES];
+                [self.view addSubview:snapshot];
+                self.snapshotView = snapshot;
+            }
+        }
+            break;
+        case UIGestureRecognizerStateChanged:
+            break;
+            
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateFailed:
+            [self.keyboardController beginListeningForKeyboard];
+            
+            if (ios8) {
+                [self.snapshotView removeFromSuperview];
+            }
+            
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - Input toolbar utilities
 
 - (BOOL)inputToolbarHasReachedMaximumHeight {
@@ -785,6 +917,8 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     }
     
     [self adjustInputToolbarHeightConstraintByDelta:dy];
+    
+    [self updateKeyboardTriggerPoint];
     
     if (dy < 0) {
         
@@ -825,13 +959,13 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 - (void)updateCollectionViewInsets {
     
-    [self setCollectionViewInsetsTopValue:self.topLayoutGuide.length + self.topContentAdditionalInset
-                              bottomValue:CGRectGetMaxY(self.collectionView.frame) - CGRectGetMinY(self.inputToolbar.frame)];
+    [self setCollectionViewInsetsTopValue:CGRectGetMaxY(self.collectionView.frame) - CGRectGetMinY(self.inputToolbar.frame)
+                              bottomValue:self.topLayoutGuide.length + self.topContentAdditionalInset];
 }
 
 - (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom {
     
-    UIEdgeInsets insets = UIEdgeInsetsMake(bottom, 0.0f, top , 0.0f);
+    UIEdgeInsets insets = UIEdgeInsetsMake(top, 0.0f, bottom, 0.0f);
     self.collectionView.contentInset = insets;
     self.collectionView.scrollIndicatorInsets = insets;
 }
@@ -880,6 +1014,38 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     return [QMDateUtils formattedStringFromDate:date];
 }
 
+- (void)addObservers {
+    
+    if (self.isObserving) {
+        return;
+    }
+    
+    [self.inputToolbar.contentView.textView addObserver:self
+                                             forKeyPath:NSStringFromSelector(@selector(contentSize))
+                                                options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                                                context:kChatKeyValueObservingContext];
+    
+    self.isObserving = YES;
+}
+
+- (void)removeObservers {
+    
+    if (!self.isObserving) {
+        return;
+    }
+    
+    @try {
+        [_inputToolbar.contentView.textView removeObserver:self
+                                                forKeyPath:NSStringFromSelector(@selector(contentSize))
+                                                   context:kChatKeyValueObservingContext];
+    }
+    @catch (NSException * __unused exception) {
+        
+    }
+    
+    self.isObserving = NO;
+}
+
 - (void)registerForNotifications:(BOOL)registerForNotifications {
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
@@ -887,8 +1053,8 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     if (registerForNotifications) {
         
         [defaultCenter addObserver:self
-                          selector:@selector(didReceiveKeyboardWillChangeFrameNotification:)
-                              name:UIKeyboardWillChangeFrameNotification
+                          selector:@selector(handleDidChangeStatusBarFrameNotification:)
+                              name:UIApplicationDidChangeStatusBarFrameNotification
                             object:nil];
         
         [defaultCenter addObserver:self
@@ -904,7 +1070,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     else {
         
         [defaultCenter removeObserver:self
-                                 name:UIKeyboardWillChangeFrameNotification
+                                 name:UIApplicationDidChangeStatusBarFrameNotification
                                object:nil];
         
         [defaultCenter removeObserver:self
@@ -947,7 +1113,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
                         [self showAlertForCameraAccess];
                     }
                 });
-                
+
             }];
             break;
         }
@@ -966,6 +1132,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     }
 }
 
+
 - (void)showAlertForCameraAccess {
     
     NSString * title = NSLocalizedString(@"Camera Access Disabled", nil);
@@ -975,7 +1142,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
     NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
     
     BOOL isIOS8 =  ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
-    
+
     NSString * otherButtonTitle = isIOS8 ? NSLocalizedString(@"Open Settings", nil) : nil;
     
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:title
@@ -985,32 +1152,6 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
                                            otherButtonTitles:otherButtonTitle,nil];
     
     [alert show];
-}
-
-- (void)didReceiveKeyboardWillChangeFrameNotification:(NSNotification *)notification {
-    
-    NSDictionary *userInfo = [notification userInfo];
-    
-    CGRect keyboardEndFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    if (CGRectIsNull(keyboardEndFrame)) {
-        return;
-    }
-    
-    UIViewAnimationCurve animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    NSInteger animationCurveOption = (animationCurve << 16);
-    
-    double animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    [UIView animateWithDuration:animationDuration
-                          delay:0.0
-                        options:animationCurveOption
-                     animations:^{
-                         
-                         [self setCollectionViewInsetsTopValue:self.collectionView.contentInset.bottom
-                                                   bottomValue:CGRectGetHeight(keyboardEndFrame)];
-                     }
-                     completion:nil];
 }
 
 @end
