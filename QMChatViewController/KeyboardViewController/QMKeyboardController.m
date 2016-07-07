@@ -13,7 +13,9 @@ NSString * const QMKeyboardControllerUserInfoKeyKeyboardDidChangeFrame = @"QBCha
 
 static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardControllerKeyValueObservingContext;
 
-@interface QMKeyboardController()
+typedef void (^QMAnimationCompletionBlock)(BOOL finished);
+
+@interface QMKeyboardController() <UIGestureRecognizerDelegate>
 
 @property (assign, nonatomic) BOOL isObserving;
 @property (weak, nonatomic) UIView *keyboardView;
@@ -48,7 +50,7 @@ static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardContro
 - (void)dealloc {
     
     [self removeKeyboardFrameObserver];
-    [self unregisterForNotifications];
+    [self qm_unregisterForNotifications];
     _textView = nil;
     _contextView = nil;
     _panGestureRecognizer = nil;
@@ -103,12 +105,12 @@ static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardContro
         self.textView.inputAccessoryView = [[UIView alloc] init];
     }
     
-    [self registerForNotifications];
+    [self qm_registerForNotifications];
 }
 
 - (void)endListeningForKeyboard {
     
-    [self unregisterForNotifications];
+    [self qm_unregisterForNotifications];
     
     [self setKeyboardViewHidden:NO];
     self.keyboardView = nil;
@@ -116,9 +118,9 @@ static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardContro
 
 #pragma mark - Notifications
 
-- (void)registerForNotifications {
+- (void)qm_registerForNotifications {
     
-    [self unregisterForNotifications];
+    [self qm_unregisterForNotifications];
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     
@@ -143,14 +145,31 @@ static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardContro
                         object:nil];
 }
 
-- (void)unregisterForNotifications {
+- (void)qm_unregisterForNotifications {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveKeyboardDidShowNotification:(NSNotification *)notification {
     
-    self.keyboardView = self.textView.inputAccessoryView.superview;
+    BOOL isIOS9 =  [[UIDevice currentDevice].systemVersion compare:@"9.0" options:NSNumericSearch] == NSOrderedDescending;
+    
+    UIView *keyboardViewProxy = self.textView.inputAccessoryView.superview;
+    if (isIOS9) {
+        NSPredicate *windowPredicate = [NSPredicate predicateWithFormat:@"self isMemberOfClass: %@", NSClassFromString(@"UIRemoteKeyboardWindow")];
+        UIWindow *keyboardWindow = [[UIApplication sharedApplication].windows filteredArrayUsingPredicate:windowPredicate].firstObject;
+        
+        for (UIView *subview in keyboardWindow.subviews) {
+            for (UIView *hostview in subview.subviews) {
+                if ([hostview isMemberOfClass:NSClassFromString(@"UIInputSetHostView")]) {
+                    keyboardViewProxy = hostview;
+                    break;
+                }
+            }
+        }
+        self.keyboardView = keyboardViewProxy;
+    }
+
     [self setKeyboardViewHidden:NO];
     
     __weak __typeof(self)weakSelf = self;
@@ -182,7 +201,7 @@ static void * kQMKeyboardControllerKeyValueObservingContext = &kQMKeyboardContro
     }];
 }
 
-- (void)handleKeyboardNotification:(NSNotification *)notification completion:(void(^)(BOOL success))completion {
+- (void)handleKeyboardNotification:(NSNotification *)notification completion:(QMAnimationCompletionBlock)completion {
     
     NSDictionary *userInfo = [notification userInfo];
     
