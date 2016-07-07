@@ -8,26 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class QMPlaceHolderTextView;
-
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- *  A delegate object used to notify the receiver of paste events from a `QMPlaceHolderTextView`.
- */
-@protocol QMPlaceHolderTextViewPasteDelegate <NSObject>
-
-/**
- *  Asks the delegate whether or not the `textView` should use the original implementation of `-[UITextView paste]`.
- *
- *  @discussion Use this delegate method to implement custom pasting behavior.
- *  You should return `NO` when you want to handle pasting.
- *  Return `YES` to defer functionality to the `textView`.
- */
-- (BOOL)composerTextView:(QMPlaceHolderTextView *)textView shouldPasteWithSender:(id)sender;
-
-@end
-
 /**
  *  Input field with placeholder.
  */
@@ -44,11 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) IBInspectable UIColor *placeHolderColor;
 
 /**
- *  The object that acts as the paste delegate of the text view.
- */
-@property (weak, nonatomic, nullable) id<QMPlaceHolderTextViewPasteDelegate> pasteDelegate;
-
-/**
  *  Determines whether or not the text view contains text after trimming white space
  *  from the front and back of its string.
  *
@@ -57,5 +32,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)hasText;
 
 @end
-
-NS_ASSUME_NONNULL_END
