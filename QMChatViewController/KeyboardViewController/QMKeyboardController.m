@@ -50,7 +50,8 @@ typedef void (^QMAnimationCompletionBlock)(BOOL finished);
 - (void)dealloc {
     
     [self removeKeyboardFrameObserver];
-    [self qm_unregisterForNotifications];
+    [self unregisterForNotifications];
+    
     _textView = nil;
     _contextView = nil;
     _panGestureRecognizer = nil;
@@ -105,12 +106,12 @@ typedef void (^QMAnimationCompletionBlock)(BOOL finished);
         self.textView.inputAccessoryView = [[UIView alloc] init];
     }
     
-    [self qm_registerForNotifications];
+    [self registerForNotifications];
 }
 
 - (void)endListeningForKeyboard {
     
-    [self qm_unregisterForNotifications];
+    [self unregisterForNotifications];
     
     [self setKeyboardViewHidden:NO];
     self.keyboardView = nil;
@@ -118,9 +119,9 @@ typedef void (^QMAnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Notifications
 
-- (void)qm_registerForNotifications {
+- (void)registerForNotifications {
     
-    [self qm_unregisterForNotifications];
+    [self unregisterForNotifications];
     
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     
@@ -145,7 +146,7 @@ typedef void (^QMAnimationCompletionBlock)(BOOL finished);
                         object:nil];
 }
 
-- (void)qm_unregisterForNotifications {
+- (void)unregisterForNotifications {
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
