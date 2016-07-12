@@ -123,11 +123,11 @@
                 <outlet property="attachmentImageView" destination="Fa7-ju-G0X" id="Sxm-ts-iD6"/>
                 <outlet property="avatarContainerViewHeightConstraint" destination="J2q-9c-eau" id="y0W-dP-1Lh"/>
                 <outlet property="avatarContainerViewWidthConstraint" destination="kjR-IO-Rpj" id="OZ9-vt-YNN"/>
-                <outlet property="avatarView" destination="9r3-Wm-17e" id="ZSG-47-gWm"/>
                 <outlet property="bottomLabel" destination="4Tj-AD-mYY" id="new-qI-SJh"/>
                 <outlet property="bottomLabelHeightConstraint" destination="CGF-Kf-7DA" id="g0g-gT-Csq"/>
                 <outlet property="containerView" destination="X4d-J3-f3R" id="PGD-cW-pr4"/>
                 <outlet property="containerWidthConstraint" destination="q3d-xO-tGz" id="VmK-ch-bod"/>
+                <outlet property="iconImageView" destination="9r3-Wm-17e" id="4g0-EH-BOQ"/>
                 <outlet property="messageContainer" destination="1rv-oZ-ov9" id="RQK-Dd-jIf"/>
                 <outlet property="messageContainerBottomInsetConstraint" destination="uq1-a3-hdy" id="M9y-ZL-Eba"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="JYn-ad-AzN" id="kBu-AD-ojU"/>

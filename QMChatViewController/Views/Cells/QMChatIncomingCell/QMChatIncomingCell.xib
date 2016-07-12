@@ -119,11 +119,11 @@
             <connections>
                 <outlet property="avatarContainerViewHeightConstraint" destination="k76-lq-EWW" id="KiD-XX-AP2"/>
                 <outlet property="avatarContainerViewWidthConstraint" destination="zVA-fi-2bt" id="wkW-g4-JZT"/>
-                <outlet property="avatarView" destination="L8j-KZ-jCD" id="kYF-ZE-tdV"/>
                 <outlet property="bottomLabel" destination="sp9-fQ-dGT" id="WMF-R7-pVN"/>
                 <outlet property="bottomLabelHeightConstraint" destination="cbV-gS-CjC" id="FIq-MS-I8U"/>
                 <outlet property="containerView" destination="lux-vg-6Z5" id="AK5-pz-Tza"/>
                 <outlet property="containerWidthConstraint" destination="JJF-la-T3e" id="KoJ-3a-aut"/>
+                <outlet property="iconImageView" destination="L8j-KZ-jCD" id="LUC-HD-BSd"/>
                 <outlet property="messageContainer" destination="cBa-gJ-Bzq" id="9BB-iq-0rq"/>
                 <outlet property="messageContainerBottomInsetConstraint" destination="V2F-O3-LZU" id="eUZ-8V-j3l"/>
                 <outlet property="messageContainerLeftInsetConstraint" destination="Iyk-PP-Jxf" id="6yv-bl-rMS"/>

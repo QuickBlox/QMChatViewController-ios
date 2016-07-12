@@ -11,8 +11,10 @@
 #import "TTTAttributedLabel.h"
 #import "QMImageView.h"
 
-@interface TTTAttributedLabel(PrivateAPI)
-    - (TTTAttributedLabelLink *)linkAtPoint:(CGPoint)point;
+@interface TTTAttributedLabel (PrivateAPI)
+
+- (TTTAttributedLabelLink *)linkAtPoint:(CGPoint)point;
+
 @end
 
 static NSMutableSet *_qmChatCellMenuActions = nil;
@@ -22,7 +24,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 @property (weak, nonatomic) IBOutlet QMChatContainerView *containerView;
 @property (weak, nonatomic) IBOutlet UIView *messageContainer;
 
-@property (weak, nonatomic) IBOutlet QMImageView *avatarView;
+@property (weak, nonatomic) IBOutlet QMImageView *iconImageView;
 
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *textView;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *topLabel;
@@ -77,7 +79,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    self.avatarView.delegate = self;
+    self.iconImageView.delegate = self;
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
 	
@@ -102,22 +104,18 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.textView.backgroundColor = [UIColor clearColor];
     self.bottomLabel.backgroundColor = [UIColor clearColor];
     self.containerView.backgroundColor = [UIColor clearColor];
-    self.avatarView.backgroundColor = [UIColor clearColor];
+    self.iconImageView.backgroundColor = [UIColor clearColor];
 #endif
     
-    UITapGestureRecognizer *tap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tap.delegate = self;
+    
     [self addGestureRecognizer:tap];
     self.tapGestureRecognizer = tap;
 }
 
-- (void)prepareForReuse {
-    
-    [super prepareForReuse];
-}
-
 - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
+    
     return layoutAttributes;
 }
 
@@ -129,7 +127,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     
     [self updateConstraint:self.avatarContainerViewHeightConstraint withConstant:customAttributes.avatarSize.height];
     [self updateConstraint:self.avatarContainerViewWidthConstraint withConstant:customAttributes.avatarSize.width];
-    [self.avatarView layoutIfNeeded];
+    [self.iconImageView layoutIfNeeded];
 
     [self updateConstraint:self.topLabelHeightConstraint withConstant:customAttributes.topLabelHeight];
     [self updateConstraint:self.bottomLabelHeightConstraint withConstant:customAttributes.bottomLabelHeight];
@@ -160,6 +158,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [super setBounds:bounds];
     
     if ([[UIDevice currentDevice].systemVersion compare:@"8.0" options:NSNumericSearch] == NSOrderedAscending) {
+        
 		[self layoutIfNeeded];
         self.contentView.frame = bounds;
     }
@@ -298,6 +297,13 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     };
     
     return defaultLayoutModel;
+}
+
+#pragma mark - Deprecated
+
+- (UIImage *)avatarImageView {
+    
+    return self.iconImageView;
 }
 
 @end
