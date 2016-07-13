@@ -123,18 +123,9 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
 @property (weak, nonatomic, readonly) UIImage *avatarImageView;
 
 /**
- *  Property to set an icon image.
- *
- *  @warning *Deprecated in 0.3.8:* Use 'iconImageView' instead.
+ *  Property to set avatar view
  */
-@property (weak, nonatomic, readonly) QMImageView *avatarView DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8. Use 'iconImageView' instead.");
-
-/**
- *  Property to set an icon image.
- *
- *  @discussion This image view represents avatar for message cells and icon for notification one.
- */
-@property (weak, nonatomic, readonly) QMImageView *iconImageView;
+@property (weak, nonatomic, readonly) QMImageView *avatarView;
 
 /**
  *  Returns chat message attributed label.
