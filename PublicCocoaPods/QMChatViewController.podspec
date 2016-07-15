@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
   s.subspec 'Utils' do |ss| 
-    ss.source_files = 'QMChatViewController/Utils/QMDateUtils/*.{h,m}'
+    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
   end
 
   s.subspec 'Sections' do |ss|
