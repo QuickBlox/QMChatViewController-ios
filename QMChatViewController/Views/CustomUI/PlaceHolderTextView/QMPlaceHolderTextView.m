@@ -124,6 +124,13 @@
     [self setNeedsDisplay];
 }
 
+- (void)paste:(id)sender
+{
+    if (!self.pasteDelegate || [self.pasteDelegate placeHolderTextView:self shouldPasteWithSender:sender]) {
+        [super paste:sender];
+    }
+}
+
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect {
@@ -178,6 +185,15 @@
     [self setNeedsDisplay];
 }
 
+- (BOOL)canPerformAction:(SEL)action
+              withSender:(__unused id)sender
+{
+    if  ([UIPasteboard generalPasteboard].image && action == @selector(paste:)) {
+        return YES;
+    }
+    return [super canPerformAction:action withSender:sender];
+   
+}
 #pragma mark - Utilities
 
 - (NSDictionary *)placeholderTextAttributes {

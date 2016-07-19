@@ -27,7 +27,7 @@ static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate,UIAlertViewDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate,UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -70,6 +70,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     self.collectionView = nil;
     
     self.inputToolbar.contentView.textView.delegate = nil;
+    self.inputToolbar.contentView.textView.pasteDelegate = nil;
     self.inputToolbar.delegate = nil;
     self.inputToolbar = nil;
     
@@ -97,7 +98,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     self.chatSectionManager.delegate = self;
     
     self.inputToolbar.delegate = self;
+    
     self.inputToolbar.contentView.textView.delegate = self;
+    self.inputToolbar.contentView.textView.pasteDelegate = self;
+    
     self.automaticallyScrollsToMostRecentMessage = YES;
     self.topContentAdditionalInset = 0.0f;
     [self updateCollectionViewInsets];
