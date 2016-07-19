@@ -38,6 +38,14 @@
  */
 - (BOOL)hasText;
 
+/**
+ *  Determines whether or not the text view contains image as NSTextAttachment
+ *
+ *
+ *  @return `YES` if the text view contains attachment, `NO` otherwise.
+ */
+- (BOOL)hasTextAttachment;
+
 @end
 
 @protocol QMPlaceHolderTextViewPasteDelegate <NSObject>

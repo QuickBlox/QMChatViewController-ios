@@ -76,6 +76,37 @@
     return ([[self.text stringByTrimingWhitespace] length] > 0);
 }
 
+- (BOOL)hasTextAttachment {
+    
+    BOOL __block hasTextAttachment = false;
+    
+    if (self.attributedText.length) {
+        
+        [self.attributedText enumerateAttribute:NSAttachmentAttributeName
+                                        inRange:NSMakeRange(0, [self.attributedText length])
+                                        options:0
+                                     usingBlock:^(id value, NSRange range, BOOL *stop)
+         {
+             if ([value isKindOfClass:[NSTextAttachment class]])
+             {
+                 NSTextAttachment *attachment = (NSTextAttachment *)value;
+                 UIImage *image = nil;
+                 if ([attachment image])
+                     image = [attachment image];
+                 else
+                     image = [attachment imageForBounds:[attachment bounds]
+                                          textContainer:nil
+                                         characterIndex:range.location];
+                 
+                 if (image)
+                     hasTextAttachment = true;
+                 *stop = true;
+             }
+         }];
+    }
+    return hasTextAttachment;
+}
+
 #pragma mark - Setters
 
 - (void)setPlaceHolder:(NSString *)placeHolder {
