@@ -46,6 +46,9 @@
  */
 - (BOOL)hasTextAttachment;
 
+
+- (void)setDefaultSettings;
+
 @end
 
 @protocol QMPlaceHolderTextViewPasteDelegate <NSObject>

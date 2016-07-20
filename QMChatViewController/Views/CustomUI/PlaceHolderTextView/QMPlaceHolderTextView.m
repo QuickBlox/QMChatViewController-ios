@@ -33,11 +33,10 @@
     self.scrollsToTop = NO;
     self.userInteractionEnabled = YES;
     
-    self.font = [UIFont systemFontOfSize:16.0f];
-    self.textColor = [UIColor blackColor];
-    self.textAlignment = NSTextAlignmentNatural;
-    self.placeHolderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3f];
+    [self setDefaultSettings];
     
+    self.placeHolderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3f];
+    self.selectable = true;
     self.contentMode = UIViewContentModeRedraw;
     self.dataDetectorTypes = UIDataDetectorTypeNone;
     self.keyboardAppearance = UIKeyboardAppearanceDefault;
@@ -47,6 +46,13 @@
     self.text = nil;
     
     [self addTextViewNotificationObservers];
+}
+
+- (void)setDefaultSettings {
+    
+    self.font = [UIFont systemFontOfSize:16.0f];
+    self.textColor = [UIColor blackColor];
+    self.textAlignment = NSTextAlignmentNatural;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer {
@@ -87,20 +93,23 @@
                                         options:0
                                      usingBlock:^(id value, NSRange range, BOOL *stop)
          {
-             if ([value isKindOfClass:[NSTextAttachment class]])
-             {
+             if ([value isKindOfClass:[NSTextAttachment class]]) {
                  NSTextAttachment *attachment = (NSTextAttachment *)value;
                  UIImage *image = nil;
-                 if ([attachment image])
+                 if ([attachment image]) {
                      image = [attachment image];
-                 else
+                 }
+                 else {
                      image = [attachment imageForBounds:[attachment bounds]
                                           textContainer:nil
                                          characterIndex:range.location];
+                 }
                  
-                 if (image)
+                 if (image) {
                      hasTextAttachment = true;
-                 *stop = true;
+                     *stop = true;
+                 }
+                 
              }
          }];
     }
@@ -168,7 +177,7 @@
     
     [super drawRect:rect];
     
-    if ([self.text length] == 0 && self.placeHolder) {
+    if ([self.text length] == 0 && self.placeHolder && ![self hasTextAttachment]) {
         [self.placeHolderColor set];
         
         [self.placeHolder drawInRect:CGRectInset(rect, 7.0f, 5.0f)
