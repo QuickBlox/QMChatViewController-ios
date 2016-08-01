@@ -2,3 +2,6 @@ platform :ios, '7.0'
 
 pod 'QuickBlox', '2.5'
 pod 'QMCVDevelopment', :path => '../'
+pod 'StickerPipe', '~> 0.2'
+pod 'MD5Digest', '~> 1.1'
+pod 'SSKeychain', '~> 1.3'

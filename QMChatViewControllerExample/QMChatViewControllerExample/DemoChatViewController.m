@@ -11,9 +11,13 @@
 #import "UIColor+QM.h"
 #import "UIImage+QM.h"
 #import "UIImage+fixOrientation.h"
+#import "STKStickerPipe.h"
+#import "STKStickersPurchaseService.h"
+#import "QMChatOutgoingStickerCell.h"
+#import "QMChatIncomingStickerCell.h"
 
 NS_ENUM(NSUInteger, QMMessageType) {
-
+    
     QMMessageTypeText = 0,
     QMMessageTypeCreateGroupDialog = 1,
     QMMessageTypeUpdateGroupDialog = 2,
@@ -23,6 +27,15 @@ NS_ENUM(NSUInteger, QMMessageType) {
     QMMessageTypeRejectContactRequest,
     QMMessageTypeDeleteContactRequest
 };
+
+@interface DemoChatViewController() <STKStickerControllerDelegate> {
+    NSString *packName;
+    NSString *packPrice;
+}
+
+@property (strong, nonatomic) STKStickerController *stickerController;
+
+@end
 
 @implementation DemoChatViewController
 
@@ -76,14 +89,27 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message4.attachments = @[attachment];
     message4.dateSent = [NSDate dateWithTimeInterval:-3.0f sinceDate:[NSDate date]];
     
-//    QBChatMessage *message5 = [QBChatMessage message];
-//    message5.senderID = 20001;
-//    message5.senderNick = @"Andrey M.";
-//    message5.text = @"🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭";
-//    
-//    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
+    //    QBChatMessage *message5 = [QBChatMessage message];
+    //    message5.senderID = 20001;
+    //    message5.senderNick = @"Andrey M.";
+    //    message5.text = @"🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭🐭";
+    //
+    //    message5.dateSent = [NSDate dateWithTimeInterval:15.0f sinceDate:[NSDate date]];
     
     [self.chatSectionManager addMessages:@[message1, message2, message3, message4]];
+    
+    /**
+     *  Register outgoing sticker cell
+     */
+    UINib *stickerOutgoingNib  = [QMChatOutgoingStickerCell nib];
+    NSString *stickerOutgoingIdentifier = [QMChatOutgoingStickerCell cellReuseIdentifier];
+    [self.collectionView registerNib:stickerOutgoingNib forCellWithReuseIdentifier:stickerOutgoingIdentifier];
+    /**
+     *  Register outgoing sticker cell
+     */
+    UINib *stickerIncomingNib  = [QMChatIncomingStickerCell nib];
+    NSString *stickerIncomingIdentifier = [QMChatIncomingStickerCell cellReuseIdentifier];
+    [self.collectionView registerNib:stickerIncomingNib forCellWithReuseIdentifier:stickerIncomingIdentifier];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,7 +119,17 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    [self.stickerController updateFrames];
+
+}
+
+- (STKStickerController *)stickerController {
+    if (!_stickerController) {
+        _stickerController = [STKStickerController new];
+        _stickerController.delegate = self;
+        _stickerController.textInputView = self.inputToolbar.contentView.textView;
+    }
+    return _stickerController;
 }
 
 #pragma mark Tool bar Actions
@@ -112,12 +148,14 @@ NS_ENUM(NSUInteger, QMMessageType) {
     [self.chatSectionManager addMessage:message];
     
     [self finishSendingMessageAnimated:YES];
+
+    [self.stickerController textMessageSent:text];
 }
 
 - (void)didPickAttachmentImage:(UIImage *)image {
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
+        
         UIImage *resizedImage = [self resizedImageFromImage:[image fixOrientation]];
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
@@ -169,17 +207,19 @@ NS_ENUM(NSUInteger, QMMessageType) {
     else {
         
         if (item.senderID != self.senderID) {
-            if ((item.attachments != nil && item.attachments.count > 0)) {
+            if ([STKStickersManager isStickerMessage:item.text]) {
+                return [QMChatIncomingStickerCell class];
+            } else if ((item.attachments != nil && item.attachments.count > 0)) {
                 return [QMChatAttachmentIncomingCell class];
             } else {
                 return [QMChatIncomingCell class];
             }
+        } else  if ([STKStickersManager isStickerMessage:item.text]) {
+            return [QMChatOutgoingStickerCell class];
+        } else if ((item.attachments != nil && item.attachments.count > 0)) {
+            return [QMChatAttachmentOutgoingCell class];
         } else {
-            if ((item.attachments != nil && item.attachments.count > 0)) {
-                return [QMChatAttachmentOutgoingCell class];
-            } else {
-                return [QMChatOutgoingCell class];
-            }
+            return [QMChatOutgoingCell class];
         }
     }
     
@@ -194,7 +234,18 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
     if (viewClass == [QMChatAttachmentIncomingCell class] || viewClass == [QMChatAttachmentOutgoingCell class]) {
         size = CGSizeMake(MIN(200, maxWidth), 200);
-    } else {
+    } else if (viewClass == [QMChatOutgoingStickerCell class] ||
+               viewClass == [QMChatIncomingStickerCell class]) {
+        NSAttributedString *attributedString = [self bottomLabelAttributedStringForItem:item];
+        
+        CGSize bottomLabelSize = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
+                                                                  withConstraints:CGSizeMake(MIN(200, maxWidth), CGFLOAT_MAX)
+                                                           limitedToNumberOfLines:0];
+        size = CGSizeMake(MIN(160, maxWidth), 160 + ceilf(bottomLabelSize.height));
+    }
+    
+    
+    else {
         NSAttributedString *attributedString = [self attributedStringForItem:item];
         
         size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
@@ -217,8 +268,8 @@ NS_ENUM(NSUInteger, QMMessageType) {
         [item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
         
         size = [TTTAttributedLabel sizeThatFitsAttributedString:attributedString
-                                                       withConstraints:CGSizeMake(1000, 10000)
-                                                limitedToNumberOfLines:1];
+                                                withConstraints:CGSizeMake(1000, 10000)
+                                         limitedToNumberOfLines:1];
     }
     
     return size.width;
@@ -227,8 +278,9 @@ NS_ENUM(NSUInteger, QMMessageType) {
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     
+    QBChatMessage* message = [self.chatSectionManager messageForIndexPath:indexPath];
+    
     if ([cell conformsToProtocol:@protocol(QMChatAttachmentCell)]) {
-        QBChatMessage* message = [self.chatSectionManager messageForIndexPath:indexPath];
         
         if (message.attachments != nil) {
             QBChatAttachment* attachment = message.attachments.firstObject;
@@ -237,7 +289,16 @@ NS_ENUM(NSUInteger, QMMessageType) {
             
             [cell updateConstraints];
         }
+    } else {
+        Class viewClass = [self viewClassForItem:message];
+        if (viewClass == [QMChatOutgoingStickerCell class]) {
+            [[(QMChatOutgoingStickerCell *)cell stickerImage] stk_setStickerWithMessage:message.text placeholder:nil placeholderColor:nil progress:nil completion:nil];
+        }
+        else if (viewClass == [QMChatIncomingStickerCell class]) {
+            [[(QMChatIncomingStickerCell *)cell stickerImage] stk_setStickerWithMessage:message.text placeholder:nil placeholderColor:nil progress:nil completion:nil];
+        }
     }
+    
     
     [super collectionView:collectionView configureCell:cell forIndexPath:indexPath];
 }
@@ -268,7 +329,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName : textColor,
                                  NSFontAttributeName : font};
-
+    
     NSMutableAttributedString *attrStr;
     
     if ([messageItem.text length] > 0) {
@@ -336,6 +397,53 @@ NS_ENUM(NSUInteger, QMMessageType) {
     UIGraphicsEndImageContext();
     
     return resizedImage;
+}
+
+#pragma mark - STKSTickerController delegate
+
+- (UIViewController *)stickerControllerViewControllerForPresentingModalView {
+    return self;
+}
+
+- (void)stickerController:(STKStickerController *)stickerController didSelectStickerWithMessage:(NSString *)message {
+    
+    QBChatMessage* stickerMessage = [QBChatMessage new];
+    stickerMessage.senderID = self.senderID;
+    stickerMessage.dateSent = [NSDate date];
+    stickerMessage.text = message;
+    
+    [self.chatSectionManager addMessage:stickerMessage];
+    
+    [self finishSendingMessageAnimated:YES];
+}
+
+- (void)purchasePack:(NSNotification *)notification {
+    
+    packName = notification.userInfo[@"packName"];
+    packPrice = notification.userInfo[@"packPrice"];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Purchase this stickers pack?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    alertView.delegate = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [alertView show];
+    });
+}
+
+#pragma mark - Alert controller delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 0:
+            [[STKStickersPurchaseService sharedInstance] purchaseFailedError:nil];
+            break;
+        case 1:[[STKStickersPurchaseService sharedInstance] purchasInternalPackName:packName andPackPrice:packPrice];
+            
+        default:
+            break;
+    }
+    
 }
 
 @end

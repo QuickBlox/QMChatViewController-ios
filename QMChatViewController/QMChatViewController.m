@@ -340,6 +340,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [self removeObservers];
 }
 
+
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
