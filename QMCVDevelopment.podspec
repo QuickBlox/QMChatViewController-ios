@@ -44,6 +44,10 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
+s.subspec 'QMChatDataSource' do |ss|
+ss.source_files = 'QMChatViewController/QMChatDataSource/*.{h,m}'
+end
+
   s.subspec 'Protocols' do |ss|
     ss.source_files = 'QMChatViewController/Protocols/*.{h}'
   end
