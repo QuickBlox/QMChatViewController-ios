@@ -28,11 +28,66 @@
     
     return self;
 }
+- (void)deleteMessage:(QBChatMessage *)message  {
+    [self deleteMessages:@[message]];
+}
 
+- (void)deleteMessages:(NSArray<QBChatMessage *> *)messages {
+    NSUInteger numberOfMessages = messages.count;
+    
+    NSMutableArray *messagesIDs = [NSMutableArray arrayWithCapacity:numberOfMessages];
+    NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:numberOfMessages];
+    
+    for (QBChatMessage *message in messages) {
+        NSIndexPath *indexPath = [self indexPathForMessage:message];
+        if (indexPath == nil) continue;
+        [self.messages removeObjectAtIndex:indexPath.item];
+        [itemsIndexPaths addObject:indexPath];
+        [messagesIDs addObject:message.ID];
+    }
+    if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didDeleteMessagesWithIDs:atIndexPaths:animated:)]) {
+        [self.delegate chatDataSource:self didDeleteMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy animated:NO];
+    }
+}
 
 - (NSInteger)messagesCount {
     
     return self.messages.count;
+}
+
+- (void)updateMessage:(QBChatMessage *)message {
+    [self updateMessages:@[message]];
+}
+
+- (void)updateMessages:(NSArray<QBChatMessage *> *)messages {
+    NSUInteger numberOfMessages = messages.count;
+    
+    NSMutableArray *messagesIDs = [NSMutableArray arrayWithCapacity:numberOfMessages];
+    NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:numberOfMessages];
+    
+    for (QBChatMessage *message in messages) {
+        NSIndexPath *indexPath = [self indexPathForMessage:message];
+        if (indexPath == nil) continue; // message doesn't exists
+        
+        NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
+        if (updatedMessageIndex != indexPath.item) {
+            
+            // message will have new indexPath due to date changes
+            [self deleteMessages:@[message]];
+            [self addMessages:@[message]];
+        }
+        else {
+            
+            [itemsIndexPaths addObject:indexPath];
+            [messagesIDs addObject:message.ID];
+            [self.messages replaceObjectAtIndex:indexPath.item withObject:message];
+        }
+    }
+    
+    if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didUpdateMessagesWithIDs:atIndexPaths:)]) {
+        [self.delegate chatDataSource:self didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy];
+    }
+
 }
 
 - (void)addMessage:(QBChatMessage *)message {
