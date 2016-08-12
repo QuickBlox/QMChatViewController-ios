@@ -57,36 +57,37 @@
  */
 - (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message;
 
+- (BOOL)messageExists:(QBChatMessage *)message;
+
 @end
 
 @protocol QMChatDataSourceDelegate <NSObject>
+
 @optional
 /**
- *  QMChatSectionManager delegate method about sections and/or items that were inserted to data source.
+ *  QMChatDataSource delegate method about items that were inserted to data source.
  *
- *  @param chatSectionManager QMChatSectionManager current instance
- *  @param sectionsIndexSet   index set of sections
+ *  @param chatDataSource     QMChatDataSource current instance
  *  @param itemsIndexPaths    array of items index paths
  *  @param animated           determines whether perform animated view update or not
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated;
 
 /**
- *  QMChatSectionManager delegate method about items were updated in data source.
+ *  QMChatDataSource delegate method about items were updated in data source.
  *
- *  @param chatSectionManager QMChatSectionManager current instance
+ *  @param chatDataSource     QMChatDataSource current instance
  *  @param messagesIDs        ids of updated messages
  *  @param itemsIndexPaths    array of items index paths
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths;
 
 /**
- *  QMChatSectionManager delegate method about sections and/or items were deleted from data source.
+ *  QMChatDataSource delegate method about items were deleted from data source.
  *
- *  @param chatSectionManager QMChatSectionManager current instance
+ *  @param chatDataSource     QMChatDataSource current instance
  *  @param messagesIDs        ids of deleted messages
  *  @param itemsIndexPaths    array of items index paths
- *  @param sectionsIndexSet   index set of sections
  *  @param animated           determines whether perform animated view update or not
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths animated:(BOOL)animated;
