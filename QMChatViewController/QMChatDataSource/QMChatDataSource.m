@@ -7,7 +7,7 @@
 //
 
 #import "QMChatDataSource.h"
-#import "QBChatMessage+QMCustomParameters.h"
+
 
 @interface QMChatDataSource()
 
@@ -132,7 +132,6 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         NSAssert(message.dateSent != nil, @"Message must have dateSent!");
         
         if ([self messageExists:message]) {
-            [self updateMessage:message];
             continue;
         }
         
@@ -185,7 +184,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
                                        usingComparator:messageComparator];
     
     
-    NSLog(@"text:%@ ___index %d",message.text,newIndex);
+    //NSLog(@"text:%@ ___index %d",message.text,newIndex);
     
     return newIndex;
 }
@@ -245,7 +244,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         if (![self.dividers containsObject:date]) {
             
             QBChatMessage * message = [QBChatMessage new];
-            message.messageType = QMMessageTypeContactRequest;
+    
             message.text = [dateFormatter stringFromDate:date];
             message.dateSent = date;
             [self.dividers addObject:date];
