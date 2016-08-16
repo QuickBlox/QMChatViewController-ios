@@ -27,6 +27,7 @@
 
 @property(nonatomic, weak) id <QMChatDataSourceDelegate> delegate;
 
+- (void)setDataSourceMessages:(NSArray*)messages;
 
 - (void)addMessage:(QBChatMessage *)message;
 - (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
@@ -64,6 +65,14 @@
 @protocol QMChatDataSourceDelegate <NSObject>
 
 @optional
+/**
+ *  QMChatDataSource delegate method about items that were set to data source.
+ *
+ *  @param chatDataSource QMChatDataSource current instance
+ *  @param messagesIDs    ids of set messages
+ */
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesWithIDs:(NSArray *)messagesIDs;
+
 /**
  *  QMChatDataSource delegate method about items that were inserted to data source.
  *

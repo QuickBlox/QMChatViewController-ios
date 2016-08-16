@@ -48,6 +48,31 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     
     return self;
 }
+- (void)setDataSourceMessages:(NSArray*)messages {
+    NSUInteger numberOfMessages = messages.count;
+    
+    NSMutableArray *messagesIDs = [NSMutableArray arrayWithCapacity:numberOfMessages];
+    for (QBChatMessage *message in messages) {
+        
+        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
+        
+        if ([self messageExists:message]) {
+            continue;
+        }
+        
+        NSInteger messageIndex = NSNotFound;
+        messageIndex = [self insertMessage:message];
+        
+        if (messageIndex != NSNotFound) {
+            [messagesIDs addObject:message.ID];
+        }
+    }
+    
+    if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didSetMessagesWithIDs:)]) {
+        [self.delegate chatDataSource:self didSetMessagesWithIDs:messagesIDs];
+    }
+
+}
 
 - (void)deleteMessage:(QBChatMessage *)message  {
     [self deleteMessages:@[message]];
@@ -247,6 +272,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     
             message.text = [dateFormatter stringFromDate:date];
             message.dateSent = date;
+            customParameters//            message.mess
             [self.dividers addObject:date];
             [self addMessage:message];
         }

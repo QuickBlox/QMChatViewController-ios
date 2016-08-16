@@ -201,6 +201,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
 
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesWithIDs:(NSArray *)messagesIDs {
+    [self.collectionView reloadData];
+}
+
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
     [self chatSectionManager:nil didInsertSections:nil andItems:itemsIndexPaths animated:YES];
 }
