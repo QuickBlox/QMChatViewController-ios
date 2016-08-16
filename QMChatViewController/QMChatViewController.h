@@ -24,12 +24,13 @@
 #import "QMChatAttachmentOutgoingCell.h"
 #import "QMChatLocationIncomingCell.h"
 #import "QMChatLocationOutgoingCell.h"
+#import "QMChatDataSource.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
 
-@property (strong, nonatomic) QMChatSectionManager *chatSectionManager;
-
+//@property (strong, nonatomic) QMChatSectionManager *chatSectionManager;
+@property (strong, nonatomic) QMChatDataSource * chatDataSource;
 /**
  *  Cell's contact request delegate.
  */
