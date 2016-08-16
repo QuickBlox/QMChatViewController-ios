@@ -71,6 +71,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didSetMessagesWithIDs:)]) {
         [self.delegate chatDataSource:self didSetMessagesWithIDs:messagesIDs];
     }
+     [self setupDataSource];
 
 }
 
@@ -230,7 +231,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 #pragma mark - Helpers
 
 - (void)setupDataSource {
-    return;
+//TODO: simplify AMAP
     NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
     
     NSCalendar* calendar = [NSCalendar currentCalendar];
@@ -269,10 +270,12 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         if (![self.dividers containsObject:date]) {
             
             QBChatMessage * message = [QBChatMessage new];
-    
+
             message.text = [dateFormatter stringFromDate:date];
             message.dateSent = date;
-            customParameters//            message.mess
+            
+            message.isDateDividerMessage = YES;
+            
             [self.dividers addObject:date];
             [self addMessage:message];
         }

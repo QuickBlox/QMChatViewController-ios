@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <Quickblox/Quickblox.h>
 
+#import "QBChatMessage+QBDateDivider.h"
+
 @class QBChatMessage;
 
 @protocol QMChatDataSourceDelegate;
