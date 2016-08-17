@@ -79,7 +79,7 @@
  *  @param chatDataSource QMChatDataSource current instance
  *  @param messagesIDs    ids of set messages
  */
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesWithIDs:(NSArray *)messagesIDs;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
 /**
  *  QMChatDataSource delegate method about items that were inserted to data source.
@@ -88,7 +88,7 @@
  *  @param itemsIndexPaths    array of items index paths
  *  @param animated           determines whether perform animated view update or not
  */
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
 /**
  *  QMChatDataSource delegate method about items were updated in data source.
@@ -97,7 +97,7 @@
  *  @param messagesIDs        ids of updated messages
  *  @param itemsIndexPaths    array of items index paths
  */
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
 /**
  *  QMChatDataSource delegate method about items were deleted from data source.
@@ -107,6 +107,6 @@
  *  @param itemsIndexPaths    array of items index paths
  *  @param animated           determines whether perform animated view update or not
  */
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths animated:(BOOL)animated;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteAtIndexPaths:(NSArray *)itemsIndexPaths;
 
 @end
