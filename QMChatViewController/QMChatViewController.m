@@ -23,8 +23,6 @@
 #import "QMHeaderCollectionReusableView.h"
 #import "TTTAttributedLabel.h"
 
-static NSString *const kQMSectionsInsertKey = @"kQMSectionsInsertKey";
-static NSString *const kQMItemsInsertKey    = @"kQMItemsInsertKey";
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
