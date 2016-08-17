@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 
 @property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableSet *dateDividers;
+@property (nonatomic) dispatch_queue_t serialQueue;
 
 @end
 
@@ -58,6 +59,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         
         _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
+        _serialQueue = dispatch_queue_create("com.qmchatvc.datasource.queue", DISPATCH_QUEUE_SERIAL);
     }
     
     return self;
@@ -171,55 +173,59 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 
 - (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceUpdateType)updateType {
     
-    NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
-    
-    for (QBChatMessage *message in messages) {
+    dispatch_async(_serialQueue, ^{
+        NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
         
-        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
-        
-        if ([self shouldSkipMessage:message forDataSourceUpdateType:updateType]) {
-            continue;
-        }
-        
-        NSIndexPath *indexPath = [self indexPathForMessage:message];
-        
-        if (updateType == QMDataSourceUpdateTypeAdd
-            || updateType == QMDataSourceUpdateTypeSet) {
+        for (QBChatMessage *message in messages) {
             
-            NSUInteger messageIndex = [self insertMessage:message];
-            indexPath = [NSIndexPath indexPathForItem:messageIndex inSection:0];
-        }
-        
-        else if (updateType == QMDataSourceUpdateTypeUpdate) {
+            NSAssert(message.dateSent != nil, @"Message must have dateSent!");
             
-            NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
-            
-            if (updatedMessageIndex != indexPath.item) {
-                // message will have new indexPath due to date changes
-                [self deleteMessages:@[message]];
-                [self addMessages:@[message]];
-            }
-            else {
-                [self.messages replaceObjectAtIndex:indexPath.item withObject:message];
+            if ([self shouldSkipMessage:message forDataSourceUpdateType:updateType]) {
+                continue;
             }
             
-        }
-        else if (updateType ==  QMDataSourceUpdateTypeRemove) {
-            [self.messages removeObjectAtIndex:indexPath.item];
+            NSIndexPath *indexPath = [self indexPathForMessage:message];
+            
+            if (updateType == QMDataSourceUpdateTypeAdd
+                || updateType == QMDataSourceUpdateTypeSet) {
+                
+                NSUInteger messageIndex = [self insertMessage:message];
+                indexPath = [NSIndexPath indexPathForItem:messageIndex inSection:0];
+            }
+            
+            else if (updateType == QMDataSourceUpdateTypeUpdate) {
+                
+                NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
+                
+                if (updatedMessageIndex != indexPath.item) {
+                    // message will have new indexPath due to date changes
+                    [self deleteMessages:@[message]];
+                    [self addMessages:@[message]];
+                }
+                else {
+                    [self.messages replaceObjectAtIndex:indexPath.item withObject:message];
+                }
+                
+            }
+            else if (updateType ==  QMDataSourceUpdateTypeRemove) {
+                [self.messages removeObjectAtIndex:indexPath.item];
+            }
+            
+            if (indexPath != nil) {
+                [itemsIndexPaths addObject:indexPath];
+            }
+            
         }
         
-        if (indexPath != nil) {
-            [itemsIndexPaths addObject:indexPath];
-        }
-        
-    }
-    
-    if (itemsIndexPaths.count) {
-        SEL selector = [self selectorForUpdateType:updateType];
-        if ([self.delegate respondsToSelector:selector]) {
-            [self.delegate performSelector:selector withObject:itemsIndexPaths.copy];
-        }
-    }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (itemsIndexPaths.count) {
+                SEL selector = [self selectorForUpdateType:updateType];
+                if ([self.delegate respondsToSelector:selector]) {
+                    [self.delegate performSelector:selector withObject:itemsIndexPaths.copy];
+                }
+            }
+        });
+    });
 }
 
 - (BOOL)shouldSkipMessage:(QBChatMessage*)message forDataSourceUpdateType:(QMDataSourceUpdateType)updateType {
@@ -241,9 +247,9 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 
 
 - (SEL)selectorForUpdateType:(QMDataSourceUpdateType)updateType {
-    //TODO: check 
+    
     SEL selector = nil;
-
+    
     switch (updateType) {
         case QMDataSourceUpdateTypeAdd: {
             selector = @selector(chatDataSource:didInsertMessagesAtIndexPaths:);
