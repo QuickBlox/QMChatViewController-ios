@@ -8,11 +8,17 @@
 
 #import "QMChatDataSource.h"
 
+typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
+    QMDataSourceUpdateTypeAdd = 0,
+    QMDataSourceUpdateTypeRemove,
+    QMDataSourceUpdateTypeUpdate
+};
 
 @interface QMChatDataSource()
 
-@property (strong, nonatomic, readwrite) NSMutableArray *messages;
-@property (strong, nonatomic) NSMutableArray * dividers;
+@property (strong, nonatomic) NSMutableArray *messages;
+@property (strong, nonatomic) NSMutableSet *dateDividers;
+
 @end
 
 static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * obj2) {
@@ -34,24 +40,38 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     }
 };
 
+
 @implementation QMChatDataSource
+
+#pragma mark -
+#pragma mark Initialization
 
 - (instancetype)init {
     
     self = [super init];
     
     if (self) {
-        _dividers = [NSMutableArray array];
+        
+        _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
-        _timeIntervalBetweenMessages = 300.0f; // default time interval
     }
     
     return self;
 }
+
+- (NSString *)description{
+    return [NSString stringWithFormat:@"\n[QMDataSource] \n\t messages: %@", self.messages.copy];
+}
+
+#pragma mark -
+#pragma mark Setting
+
 - (void)setDataSourceMessages:(NSArray*)messages {
+    
     NSUInteger numberOfMessages = messages.count;
     
     NSMutableArray *messagesIDs = [NSMutableArray arrayWithCapacity:numberOfMessages];
+    
     for (QBChatMessage *message in messages) {
         
         NSAssert(message.dateSent != nil, @"Message must have dateSent!");
@@ -64,22 +84,70 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         messageIndex = [self insertMessage:message];
         
         if (messageIndex != NSNotFound) {
+            
             [messagesIDs addObject:message.ID];
+            
+            [self handleMessage:message forUpdateType:QMDataSourceUpdateTypeAdd];
+            
         }
+        
     }
     
     if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didSetMessagesWithIDs:)]) {
         [self.delegate chatDataSource:self didSetMessagesWithIDs:messagesIDs];
     }
-     [self setupDataSource];
-
+    
 }
+
+#pragma mark -
+#pragma mark Adding
+
+- (void)addMessage:(QBChatMessage *)message {
+    [self addMessages:@[message]];
+}
+
+- (void)addMessages:(NSArray<QBChatMessage *> *)messages {
+    
+    NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
+    
+    for (QBChatMessage *message in messages) {
+        
+        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
+        
+        if ([self messageExists:message]) {
+            continue;
+        }
+        
+        NSInteger messageIndex = NSNotFound;
+        messageIndex = [self insertMessage:message];
+        
+        if (messageIndex != NSNotFound) {
+            
+            [itemsIndexPaths addObject:[NSIndexPath indexPathForItem:messageIndex
+                                                           inSection:0]];
+            NSInteger divideMessageIndex = [self handleMessage:message forUpdateType:QMDataSourceUpdateTypeAdd];
+            
+            if (divideMessageIndex != NSNotFound) {
+                [itemsIndexPaths addObject:[NSIndexPath indexPathForItem:divideMessageIndex
+                                                               inSection:0]];
+            }
+        }
+    }
+    
+    if (itemsIndexPaths.count && [self.delegate respondsToSelector:@selector(chatDataSource:didInsertItems:animated:)]) {
+        [self.delegate chatDataSource:self didInsertItems:itemsIndexPaths animated:YES];
+    }
+}
+
+#pragma mark -
+#pragma mark Removing
 
 - (void)deleteMessage:(QBChatMessage *)message  {
     [self deleteMessages:@[message]];
 }
 
 - (void)deleteMessages:(NSArray<QBChatMessage *> *)messages {
+    
     NSUInteger numberOfMessages = messages.count;
     
     NSMutableArray *messagesIDs = [NSMutableArray arrayWithCapacity:numberOfMessages];
@@ -92,6 +160,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
             continue;
         }
         
+        
         [self.messages removeObjectAtIndex:indexPath.item];
         [itemsIndexPaths addObject:indexPath];
         [messagesIDs addObject:message.ID];
@@ -100,12 +169,6 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didDeleteMessagesWithIDs:atIndexPaths:animated:)]) {
         [self.delegate chatDataSource:self didDeleteMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy animated:YES];
     }
-    [self setupDataSource];
-}
-
-- (NSInteger)messagesCount {
-    
-    return self.messages.count;
 }
 
 - (void)updateMessage:(QBChatMessage *)message {
@@ -113,24 +176,28 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 }
 
 - (void)updateMessages:(NSArray<QBChatMessage *> *)messages {
+    
     NSUInteger numberOfMessages = messages.count;
     
     NSMutableArray *messagesIDs = [NSMutableArray arrayWithCapacity:numberOfMessages];
     NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:numberOfMessages];
     
     for (QBChatMessage *message in messages) {
+        
         NSIndexPath *indexPath = [self indexPathForMessage:message];
-        if (indexPath == nil) continue; // message doesn't exists
+        if (indexPath == nil) {
+            // message doesn't exists
+            continue;
+        }
         
         NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
+        
         if (updatedMessageIndex != indexPath.item) {
-            
             // message will have new indexPath due to date changes
             [self deleteMessages:@[message]];
             [self addMessages:@[message]];
         }
         else {
-        
             [itemsIndexPaths addObject:indexPath];
             [messagesIDs addObject:message.ID];
             [self.messages replaceObjectAtIndex:indexPath.item withObject:message];
@@ -140,41 +207,18 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     if (messagesIDs.count && [self.delegate respondsToSelector:@selector(chatDataSource:didUpdateMessagesWithIDs:atIndexPaths:)]) {
         [self.delegate chatDataSource:self didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths.copy];
     }
-    
-    [self setupDataSource];
 }
 
-- (void)addMessage:(QBChatMessage *)message {
-    [self addMessages:@[message]];
+#pragma mark -
+#pragma mark - Helpers
+
+- (NSArray *)allMessages {
+    return [self.messages copy];
 }
 
-- (void)addMessages:(NSArray<QBChatMessage *> *)messages {
+- (NSInteger)messagesCount {
     
-    NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
-   
-    
-    for (QBChatMessage *message in messages) {
-        
-        NSAssert(message.dateSent != nil, @"Message must have dateSent!");
-        
-        if ([self messageExists:message]) {
-            continue;
-        }
-        
-        NSInteger messageIndex = NSNotFound;
-        messageIndex = [self insertMessage:message];
-        
-        if (messageIndex != NSNotFound) {
-            [itemsIndexPaths addObject:[NSIndexPath indexPathForItem:messageIndex
-                                                           inSection:0]];
-        }
-    }
-    
-    if (itemsIndexPaths.count && [self.delegate respondsToSelector:@selector(chatDataSource:didInsertItems:animated:)]) {
-        [self.delegate chatDataSource:self didInsertItems:itemsIndexPaths animated:YES];
-    }
-    
-    [self setupDataSource];
+    return self.messages.count;
 }
 
 - (NSUInteger)insertMessage:(QBChatMessage *)message {
@@ -190,7 +234,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     if (indexPath.item == NSNotFound) {
         return nil;
     }
-
+    
     return self.messages[indexPath.item];
 }
 
@@ -209,9 +253,6 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
                                                options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
                                        usingComparator:messageComparator];
     
-    
-    //NSLog(@"text:%@ ___index %d",message.text,newIndex);
-    
     return newIndex;
 }
 
@@ -228,57 +269,57 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 }
 
 #pragma mark -
-#pragma mark - Helpers
+#pragma mark - Date Dividers
 
-- (void)setupDataSource {
-//TODO: simplify AMAP
-    NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
-    
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-
-    NSMutableArray * dividerDates = [NSMutableArray arrayWithCapacity:0];
-    
-    NSUInteger dateComponents = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-    NSInteger previousYear = -1;
-    NSInteger previousDay = -1;
-    NSInteger previousMonth = -1;
-
-    for (NSDate * dateSent in uniqueDateTimes)
-    {
-        NSDateComponents* components = [calendar components:dateComponents fromDate:dateSent];
-        
-        NSInteger year = [components year];
-        NSInteger month = [components month];
-        NSInteger day = [components day];
-        
-        if (year != previousYear || month != previousMonth || day != previousDay)
-        {
-            previousYear = year;
-            previousMonth = month;
-            previousDay = day;
-            [dividerDates addObject:[calendar startOfDayForDate:dateSent]];
+- (NSInteger)handleMessage:(QBChatMessage*)message forUpdateType:(QMDataSourceUpdateType)updateType {
+    NSInteger divideMessageIndex = NSNotFound;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    switch (updateType) {
+        case QMDataSourceUpdateTypeAdd: {
+            
+            NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
+            
+            if (![self.dateDividers containsObject:dateToAdd]) {
+                
+                QBChatMessage * message = [QBChatMessage new];
+                
+                message.text = [self qm_stringFromDate:dateToAdd];
+                message.dateSent = dateToAdd;
+                
+                message.isDateDividerMessage = YES;
+                
+                [self.dateDividers addObject:dateToAdd];
+                
+                divideMessageIndex = [self insertMessage:message];
+            }
+            
+            break;
         }
+            
+        case QMDataSourceUpdateTypeRemove:
+            break;
+            
+        case QMDataSourceUpdateTypeUpdate:
+            break;
+            
+        default:
+            NSAssert(YES, @"undefined QMDataSourceUpdateType");
+            break;
     }
     
+    return divideMessageIndex;
+}
+
+- (NSString*)qm_stringFromDate:(NSDate*)date {
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.locale = [NSLocale currentLocale];
     dateFormatter.timeZone = calendar.timeZone;
     [dateFormatter setDateFormat:@"d MMMM YYYY"];
     
-    for (NSDate * date in dividerDates) {
-        
-        if (![self.dividers containsObject:date]) {
-            
-            QBChatMessage * message = [QBChatMessage new];
-
-            message.text = [dateFormatter stringFromDate:date];
-            message.dateSent = date;
-            
-            message.isDateDividerMessage = YES;
-            
-            [self.dividers addObject:date];
-            [self addMessage:message];
-        }
-    }
+    return [dateFormatter stringFromDate:date];
 }
+
+
 @end

@@ -15,19 +15,12 @@
 
 @protocol QMChatDataSourceDelegate;
 
+
 @interface QMChatDataSource : NSObject
 
-@property (strong, nonatomic, readonly) NSMutableArray *messages;
-
-/**
- *  Time interval between messages.
- *  Default value: 300 seconds
- *
- *  @discussion Set this value to 0 (zero) to hide all separators.
- */
-@property (assign, nonatomic) NSTimeInterval timeIntervalBetweenMessages;
-
 @property(nonatomic, weak) id <QMChatDataSourceDelegate> delegate;
+
+- (NSArray *)allMessages;
 
 - (void)setDataSourceMessages:(NSArray*)messages;
 
@@ -40,6 +33,12 @@
 - (void)updateMessage:(QBChatMessage *)message;
 - (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
+
+/**
+ *  Count 
+ *
+ *  @return The number of messages in the data source
+ */
 - (NSInteger)messagesCount;
 
 /**
@@ -60,6 +59,13 @@
  */
 - (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message;
 
+/**
+ *  <#Description#>
+ *
+ *  @param message message to exists
+ *
+ *  @return <#return value description#>
+ */
 - (BOOL)messageExists:(QBChatMessage *)message;
 
 @end
