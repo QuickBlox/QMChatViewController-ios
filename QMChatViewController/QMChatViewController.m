@@ -199,22 +199,41 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
 
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesWithIDs:(NSArray *)messagesIDs {
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     [self.collectionView reloadData];
 }
 
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
+
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
+    
     [self chatSectionManager:nil didInsertSections:nil andItems:itemsIndexPaths animated:YES];
 }
 
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths {
-    [self chatSectionManager:nil didUpdateMessagesWithIDs:messagesIDs atIndexPaths:itemsIndexPaths];
+
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
+    
+    NSMutableArray * messagesIDs = [NSMutableArray array];
+    
+    for (NSIndexPath  * indexPath in itemsIndexPaths) {
+        QBChatMessage * msg = [self.chatDataSource messageForIndexPath:indexPath];
+        [messagesIDs addObject:msg.ID];
+    }
+    
+    [self chatSectionManager:nil didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths];
 }
 
-
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteAtIndexPaths:(NSArray *)itemsIndexPaths {
+    
+    NSMutableArray * messagesIDs = [NSMutableArray array];
+    
+    for (NSIndexPath  * indexPath in itemsIndexPaths) {
+        QBChatMessage * msg = [self.chatDataSource messageForIndexPath:indexPath];
+        [messagesIDs addObject:msg.ID];
+    }
+    
     [self chatSectionManager:nil didDeleteMessagesWithIDs:messagesIDs atIndexPaths:itemsIndexPaths withSectionsIndexSet:nil animated:YES];
 }
+
 #pragma mark - QMChatSectionManagerDelegate
 
 - (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
