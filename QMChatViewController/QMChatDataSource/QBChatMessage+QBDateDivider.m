@@ -8,7 +8,7 @@
 
 #import "QBChatMessage+QBDateDivider.h"
 
-NSString const *kQBDateDividerCustomParameterKey = @"kQMDividerDateCustomParametrKey";
+NSString const *kQBDateDividerCustomParameterKey = @"kQBDateDividerCustomParameterKey";
 
 @interface QBChatMessage ()
 
