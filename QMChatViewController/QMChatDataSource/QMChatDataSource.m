@@ -287,26 +287,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     NSCalendar *calendar = [NSCalendar currentCalendar];
     
     switch (updateType) {
-        case QMDataSourceUpdateTypeAdd: {
-            
-            NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
-            
-            if (![self.dateDividers containsObject:dateToAdd]) {
-                
-                QBChatMessage * message = [QBChatMessage new];
-                
-                message.text = [self qm_stringFromDate:dateToAdd];
-                message.dateSent = dateToAdd;
-                
-                message.isDateDividerMessage = YES;
-                
-                [self.dateDividers addObject:dateToAdd];
-                
-                divideMessageIndex = [self insertMessage:message];
-            }
-            
-            break;
-        }
+        case QMDataSourceUpdateTypeAdd:
         case QMDataSourceUpdateTypeSet: {
             
             NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
@@ -351,6 +332,5 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     
     return [dateFormatter stringFromDate:date];
 }
-
 
 @end
