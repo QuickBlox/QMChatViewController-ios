@@ -174,6 +174,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 - (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceUpdateType)updateType {
     
     dispatch_async(_serialQueue, ^{
+        
         NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
         
         for (QBChatMessage *message in messages) {
@@ -215,6 +216,13 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
                 [itemsIndexPaths addObject:indexPath];
             }
             
+            
+           NSInteger divideMessageIndex = [self handleMessage:message forUpdateType:updateType];
+            if (divideMessageIndex != NSNotFound) {
+                [itemsIndexPaths addObject:[NSIndexPath indexPathForItem:divideMessageIndex
+                                                               inSection:0]];
+
+            }
         }
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -299,7 +307,26 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
             
             break;
         }
+        case QMDataSourceUpdateTypeSet: {
             
+            NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
+            
+            if (![self.dateDividers containsObject:dateToAdd]) {
+                
+                QBChatMessage * message = [QBChatMessage new];
+                
+                message.text = [self qm_stringFromDate:dateToAdd];
+                message.dateSent = dateToAdd;
+                
+                message.isDateDividerMessage = YES;
+                
+                [self.dateDividers addObject:dateToAdd];
+                
+                divideMessageIndex = [self insertMessage:message];
+            }
+            
+            break;
+        }
         case QMDataSourceUpdateTypeRemove:
             break;
             
