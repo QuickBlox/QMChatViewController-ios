@@ -107,6 +107,6 @@
  *  @param itemsIndexPaths    array of items index paths
  *  @param animated           determines whether perform animated view update or not
  */
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteAtIndexPaths:(NSArray *)itemsIndexPaths;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
 @end

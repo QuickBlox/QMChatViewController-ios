@@ -166,6 +166,28 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     return indexPath;
 }
 
+- (BOOL)hasMessagesForDate:(NSDate*)messageDate {
+    
+    NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
+    
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    dateComponents.day = 1;
+    dateComponents.second = -1;
+    
+    NSDate * startDate = [calendar startOfDayForDate:messageDate];
+    NSDate * endDate =  [calendar dateByAddingComponents:dateComponents
+                                                  toDate:startDate
+                                                 options:NSCalendarWrapComponents];
+    
+    NSPredicate *subPredToday = [NSPredicate predicateWithFormat:@"(self.dateSent >= %@) AND (self.dateSent <= %@)", startDate, endDate];
+    
+    NSArray * messages = [self.messages filteredArrayUsingPredicate:subPredToday];
+    
+    return messages.count > 0;
+    
+}
 
 #pragma mark -
 #pragma mark - Date Dividers
@@ -240,8 +262,6 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     
     BOOL messageExists = [self messageExists:message];
     
-    NSIndexPath * indexPath = [self indexPathForMessage:message];
-    
     if (updateType == QMDataSourceUpdateTypeAdd
         || updateType == QMDataSourceUpdateTypeSet) {
         
@@ -272,7 +292,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
             break;
         }
         case QMDataSourceUpdateTypeRemove: {
-            selector = @selector(chatDataSource:didDeleteAtIndexPaths:);
+            selector = @selector(chatDataSource:didDeleteMessagesAtIndexPaths:);
             break;
         }
     }
@@ -285,12 +305,11 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     NSInteger divideMessageIndex = NSNotFound;
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
     
     switch (updateType) {
         case QMDataSourceUpdateTypeAdd:
         case QMDataSourceUpdateTypeSet: {
-            
-            NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
             
             if (![self.dateDividers containsObject:dateToAdd]) {
                 
@@ -308,8 +327,14 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
             
             break;
         }
-        case QMDataSourceUpdateTypeRemove:
+        case QMDataSourceUpdateTypeRemove: {
+            BOOL hasMessages = [self hasMessagesForDate:message.dateSent];
+            if (!hasMessages) {
+                [self.dateDividers removeObject:dateToAdd];
+        
+            }
             break;
+        }
             
         case QMDataSourceUpdateTypeUpdate:
             break;
@@ -325,11 +350,16 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 - (NSString*)qm_stringFromDate:(NSDate*)date {
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.locale = [NSLocale currentLocale];
-    dateFormatter.timeZone = calendar.timeZone;
-    [dateFormatter setDateFormat:@"d MMMM YYYY"];
     
+    static NSDateFormatter* dateFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = [NSLocale currentLocale];
+        dateFormatter.timeZone = calendar.timeZone;
+        [dateFormatter setDateFormat:@"d MMMM YYYY"];
+    });
+
     return [dateFormatter stringFromDate:date];
 }
 
