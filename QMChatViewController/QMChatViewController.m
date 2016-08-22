@@ -630,7 +630,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     cell.transform = self.collectionView.transform;
     
     [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
-
+    
+    cell.layer.shouldRasterize = YES;
+    cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    
     return cell;
 }
 
