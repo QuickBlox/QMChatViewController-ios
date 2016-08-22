@@ -222,7 +222,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [self chatSectionManager:nil didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths];
 }
 
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteAtIndexPaths:(NSArray *)itemsIndexPaths {
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
     NSMutableArray * messagesIDs = [NSMutableArray array];
     
@@ -574,13 +574,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - Collection view data source
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    return CGSizeMake(0.0f, self.heightForSectionHeader);
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+//    return CGSizeMake(0.0f, self.heightForSectionHeader);
+//}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSUInteger numberOfiTems = [self.chatDataSource messagesCount];
-    NSLog(@"numberOfiTems = %d",numberOfiTems);
+//    NSLog(@"numberOfiTems = %d",numberOfiTems);
     return numberOfiTems;
 }
 
@@ -591,7 +591,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 //    if ([self.chatDataSource messagesCount] == 0) {
 //        numberOfSections = 0;
 //    }
-    NSLog(@"numberOfSections = %d",numberOfSections);
+//    NSLog(@"numberOfSections = %d",numberOfSections);
     return numberOfSections;
 }
 
