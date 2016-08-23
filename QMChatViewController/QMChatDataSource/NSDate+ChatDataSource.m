@@ -7,14 +7,16 @@
 //
 
 #import "NSDate+ChatDataSource.h"
+
 static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond);
 
 @implementation NSDate (ChatDataSource)
 
-+ (NSCalendar *) currentCalendar
+- (NSCalendar *)calendar
 {
     static NSCalendar *sharedCalendar = nil;
     static dispatch_once_t onceToken;
+    
     dispatch_once(&onceToken, ^{
         sharedCalendar = [NSCalendar autoupdatingCurrentCalendar];
     });
@@ -24,16 +26,16 @@ static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth 
 
 - (NSComparisonResult)compareWithDate:(NSDate*)dateToCompareWith {
 
-    NSDateComponents *date1Components = [[NSDate currentCalendar] components:componentFlags fromDate:self];
-    NSDateComponents *date2Components = [[NSDate currentCalendar] components:componentFlags fromDate:dateToCompareWith];
+    NSDateComponents *date1Components = [[self calendar] components:componentFlags fromDate:self];
+    NSDateComponents *date2Components = [[self calendar] components:componentFlags fromDate:dateToCompareWith];
     
-    NSComparisonResult comparison = [[[NSDate currentCalendar] dateFromComponents:date1Components] compare:[[NSDate currentCalendar] dateFromComponents:date2Components]];
+    NSComparisonResult comparison = [[[self calendar] dateFromComponents:date1Components] compare:[[self calendar] dateFromComponents:date2Components]];
     
     return comparison;
 }
 
 - (NSDate *)dateAtStartOfDay {
-    return [[NSDate currentCalendar] startOfDayForDate:self];
+    return [[self calendar] startOfDayForDate:self];
 }
 
 - (NSDate *)dateAtEndOfDay {
@@ -43,7 +45,7 @@ static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth 
     dateComponents.second = -1;
     
  
-    NSDate * endDate =  [[NSDate currentCalendar] dateByAddingComponents:dateComponents
+    NSDate *endDate =  [[self calendar] dateByAddingComponents:dateComponents
                                                   toDate:[self dateAtStartOfDay]
                                                  options:NSCalendarWrapComponents];
     return endDate;
@@ -60,12 +62,14 @@ static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth 
 }
 
 - (NSString*)stringDateWithFormat:(NSString*)dateFormat {
-    static NSDateFormatter* dateFormatter;
+    
+    static NSDateFormatter *dateFormatter;
     static dispatch_once_t onceToken;
+    
     dispatch_once(&onceToken, ^{
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.locale = [NSLocale currentLocale];
-        dateFormatter.timeZone = [NSDate currentCalendar].timeZone;
+        dateFormatter.timeZone = [self calendar].timeZone;
         [dateFormatter setDateFormat:@"d MMMM YYYY"];
     });
     
