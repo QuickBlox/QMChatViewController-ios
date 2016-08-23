@@ -231,7 +231,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         } completion:^(BOOL finished) {
             
             if (shouldCancelScrolling) {
-                //        strongSelf.collectionView.contentOffset = CGPointMake(0, strongSelf.collectionView.contentSize.height - bottomOffset);
                 [CATransaction commit];
             }
         }];
@@ -255,7 +254,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
-    for (NSIndexPath  *indexPath in itemsIndexPaths) {
+    for (NSIndexPath *indexPath in itemsIndexPaths) {
         
         QBChatMessage *msg = [self.chatDataSource messageForIndexPath:indexPath];
         [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:msg.ID];
@@ -267,9 +266,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
         __typeof(weakSelf)strongSelf = weakSelf;
         [strongSelf.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
+        
     } completion:nil];
-
-
 }
 
 
@@ -283,15 +281,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     }
     
     __weak __typeof(self)weakSelf = self;
+    
     dispatch_block_t performUpdate = ^{
         
         __typeof(weakSelf)strongSelf = weakSelf;
         
-        if (itemsIndexPaths.count > 0) {
-            [self.collectionView performBatchUpdates:^{
-                [strongSelf.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
-            } completion:nil];
-        }
+        [strongSelf.collectionView performBatchUpdates:^{
+            [strongSelf.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
+        } completion:nil];
+        
     };
     
     if (animated) {
@@ -305,7 +303,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             performUpdate();
         }];
     }
-
+    
 }
 
 

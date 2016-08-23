@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 
 @end
 
-static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * obj2) {
+static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
     if ([obj1 isEqual:obj2]) {
         return (NSComparisonResult)NSOrderedSame;
     }
@@ -66,7 +66,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 #pragma mark -
 #pragma mark Setting
 
-- (void)setDataSourceMessages:(NSArray*)messages {
+- (void)setDataSourceMessages:(NSArray *)messages {
     [self changeDataSourceWithMessages:messages forUpdateType:QMDataSourceUpdateTypeSet];
 }
 
@@ -84,7 +84,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 #pragma mark -
 #pragma mark Removing
 
-- (void)deleteMessage:(QBChatMessage *)message  {
+- (void)deleteMessage:(QBChatMessage *)message {
     [self deleteMessages:@[message]];
 }
 
@@ -160,7 +160,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     });
 }
 
-- (BOOL)shouldSkipMessage:(QBChatMessage*)message forDataSourceUpdateType:(QMDataSourceUpdateType)updateType {
+- (BOOL)shouldSkipMessage:(QBChatMessage *)message forDataSourceUpdateType:(QMDataSourceUpdateType)updateType {
     
     BOOL messageExists = [self messageExists:message];
     
@@ -176,7 +176,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 }
 
 
-- (void)calDelegateMethodForIndexPaths:(NSArray*)indexPaths withUpdateType:(QMDataSourceUpdateType)updateType {
+- (void)calDelegateMethodForIndexPaths:(NSArray *)indexPaths withUpdateType:(QMDataSourceUpdateType)updateType {
     
     switch (updateType) {
             
@@ -267,8 +267,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     NSDate *endDate = [messageDate dateAtEndOfDay];
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return !message.isDateDividerMessage && [message.dateSent isBetweenStartDate:startDate andEndDate:endDate];
-        
+        return !message.isDateDividerMessage && [message.dateSent isBetweenStartDate:startDate andEndDate:endDate]; 
     }];
     
     NSArray *messages = [self.messages filteredArrayUsingPredicate:predicate];
