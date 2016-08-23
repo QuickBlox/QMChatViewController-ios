@@ -181,7 +181,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
                                                   toDate:startDate
                                                  options:NSCalendarWrapComponents];
     
-    NSPredicate *subPredToday = [NSPredicate predicateWithFormat:@"(self.dateSent >= %@) AND (self.dateSent <= %@)", startDate, endDate];
+    NSPredicate *subPredToday = [NSPredicate predicateWithFormat:@"(self.dateSent >= %@) AND (self.dateSent <= %@) AND (self.isDateDividerMessage == NO)", startDate, endDate];
     
     NSArray * messages = [self.messages filteredArrayUsingPredicate:subPredToday];
     
@@ -238,18 +238,15 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
                 [itemsIndexPaths addObject:indexPath];
             }
             
-            
-           NSInteger divideMessageIndex = [self handleMessage:message forUpdateType:updateType];
-            if (divideMessageIndex != NSNotFound) {
-                [itemsIndexPaths addObject:[NSIndexPath indexPathForItem:divideMessageIndex
-                                                               inSection:0]];
-
-            }
+            [self handleMessage:message forUpdateType:updateType];
         }
         
         dispatch_sync(dispatch_get_main_queue(), ^{
+            
             if (itemsIndexPaths.count) {
+                
                 SEL selector = [self selectorForUpdateType:updateType];
+                
                 if ([self.delegate respondsToSelector:selector]) {
                     [self.delegate performSelector:selector withObject:itemsIndexPaths.copy];
                 }
@@ -279,6 +276,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     SEL selector = nil;
     
     switch (updateType) {
+            
         case QMDataSourceUpdateTypeAdd: {
             selector = @selector(chatDataSource:didInsertMessagesAtIndexPaths:);
             break;
@@ -300,51 +298,50 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     return selector;
 }
 
-- (NSInteger)handleMessage:(QBChatMessage*)message forUpdateType:(QMDataSourceUpdateType)updateType {
+
+- (void)handleMessage:(QBChatMessage*)message forUpdateType:(QMDataSourceUpdateType)updateType {
     
-    NSInteger divideMessageIndex = NSNotFound;
+    if (message.isDateDividerMessage) {
+        return;
+    }
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
     
-    switch (updateType) {
-        case QMDataSourceUpdateTypeAdd:
-        case QMDataSourceUpdateTypeSet: {
-            
-            if (![self.dateDividers containsObject:dateToAdd]) {
-                
-                QBChatMessage * message = [QBChatMessage new];
-                
-                message.text = [self qm_stringFromDate:dateToAdd];
-                message.dateSent = dateToAdd;
-                
-                message.isDateDividerMessage = YES;
-                
-                [self.dateDividers addObject:dateToAdd];
-                
-                divideMessageIndex = [self insertMessage:message];
-            }
-            
-            break;
-        }
-        case QMDataSourceUpdateTypeRemove: {
-            BOOL hasMessages = [self hasMessagesForDate:message.dateSent];
-            if (!hasMessages) {
-                [self.dateDividers removeObject:dateToAdd];
+    if (updateType == QMDataSourceUpdateTypeAdd
+        || updateType == QMDataSourceUpdateTypeSet) {
         
-            }
-            break;
+        if ([self.dateDividers containsObject:dateToAdd]) {
+            return;
         }
-            
-        case QMDataSourceUpdateTypeUpdate:
-            break;
-            
-        default:
-            NSAssert(YES, @"undefined QMDataSourceUpdateType");
-            break;
+        
+        QBChatMessage * divideMessage = [QBChatMessage new];
+        
+        divideMessage.text = [self qm_stringFromDate:dateToAdd];
+        divideMessage.dateSent = dateToAdd;
+        
+        divideMessage.isDateDividerMessage = YES;
+        
+        [self.dateDividers addObject:dateToAdd];
+        
+        [self changeDataSourceWithMessages:@[divideMessage] forUpdateType:updateType];
+    }
+    else {
+        
+        BOOL hasMessages = [self hasMessagesForDate:message.dateSent];
+        
+        if (hasMessages) {
+            return;
+        }
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(self.isDateDividerMessage == YES) AND (self.dateSent == %@)",dateToAdd];
+        
+        QBChatMessage * msg = [[self.messages filteredArrayUsingPredicate:predicate] firstObject];
+        [self deleteMessage:msg];
+        [self.dateDividers removeObject:dateToAdd];
+        
     }
     
-    return divideMessageIndex;
 }
 
 - (NSString*)qm_stringFromDate:(NSDate*)date {
