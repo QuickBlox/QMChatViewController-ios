@@ -35,7 +35,7 @@
 
 
 /**
- *  Count 
+ *  Messages count.
  *
  *  @return The number of messages in the data source
  */
@@ -60,11 +60,11 @@
 - (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message;
 
 /**
- *  <#Description#>
+ *  Returns a Boolean value that indicates whether a message is present in the data source.
  *
- *  @param message message to exists
+ *  @param message message to check
  *
- *  @return <#return value description#>
+ *  @return YES if message is present in the data source, otherwise NO.
  */
 - (BOOL)messageExists:(QBChatMessage *)message;
 
@@ -85,7 +85,6 @@
  *
  *  @param chatDataSource     QMChatDataSource current instance
  *  @param itemsIndexPaths    array of items index paths
- *  @param animated           determines whether perform animated view update or not
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
@@ -104,7 +103,6 @@
  *  @param chatDataSource     QMChatDataSource current instance
  *  @param messagesIDs        ids of deleted messages
  *  @param itemsIndexPaths    array of items index paths
- *  @param animated           determines whether perform animated view update or not
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
