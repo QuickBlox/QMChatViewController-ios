@@ -107,91 +107,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 }
 
 #pragma mark -
-#pragma mark - Helpers
-
-- (NSArray *)allMessages {
-    
-    return [self.messages copy];
-}
-
-- (NSInteger)messagesCount {
-    
-    return self.messages.count;
-}
-
-- (NSUInteger)insertMessage:(QBChatMessage *)message {
-    
-    NSUInteger index = [self indexThatConformsToMessage:message];
-    [self.messages insertObject:message atIndex:index];
-    
-    return index;
-}
-
-- (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
-    
-    if (indexPath.item == NSNotFound) {
-        return nil;
-    }
-    
-    return self.messages[indexPath.item];
-}
-
-
-- (BOOL)messageExists:(QBChatMessage *)message {
-    
-    return [self.messages containsObject:message];
-}
-
-- (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
-    
-    NSArray * messagesArray = self.messages.copy;
-    
-    NSUInteger newIndex = [messagesArray indexOfObject:message
-                                         inSortedRange:(NSRange){0,[messagesArray count]}
-                                               options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
-                                       usingComparator:messageComparator];
-    
-    return newIndex;
-}
-
-- (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message {
-    
-    NSIndexPath *indexPath = nil;
-    
-    if ([self.messages containsObject:message]) {
-        
-        indexPath = [NSIndexPath indexPathForItem:[self.messages indexOfObject:message] inSection:0];
-        
-    }
-    return indexPath;
-}
-
-- (BOOL)hasMessagesForDate:(NSDate*)messageDate {
-    
-    NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
-    
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *dateComponents = [NSDateComponents new];
-    dateComponents.day = 1;
-    dateComponents.second = -1;
-    
-    NSDate * startDate = [calendar startOfDayForDate:messageDate];
-    NSDate * endDate =  [calendar dateByAddingComponents:dateComponents
-                                                  toDate:startDate
-                                                 options:NSCalendarWrapComponents];
-    
-    NSPredicate *subPredToday = [NSPredicate predicateWithFormat:@"(self.dateSent >= %@) AND (self.dateSent <= %@) AND (self.isDateDividerMessage == NO)", startDate, endDate];
-    
-    NSArray * messages = [self.messages filteredArrayUsingPredicate:subPredToday];
-    
-    return messages.count > 0;
-    
-}
-
-#pragma mark -
-#pragma mark - Date Dividers
-
+#pragma mark - Data Source
 
 - (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceUpdateType)updateType {
     
@@ -298,6 +214,95 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     return selector;
 }
 
+#pragma mark -
+#pragma mark - Helpers
+
+- (NSArray *)allMessages {
+    
+    return [self.messages copy];
+}
+
+- (NSInteger)messagesCount {
+    
+    return self.messages.count;
+}
+
+- (NSUInteger)insertMessage:(QBChatMessage *)message {
+    
+    NSUInteger index = [self indexThatConformsToMessage:message];
+    [self.messages insertObject:message atIndex:index];
+    
+    return index;
+}
+
+- (QBChatMessage *)messageForIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.item == NSNotFound) {
+        return nil;
+    }
+    
+    return self.messages[indexPath.item];
+}
+
+
+- (BOOL)messageExists:(QBChatMessage *)message {
+    
+    return [self.messages containsObject:message];
+}
+
+- (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
+    
+    NSArray * messagesArray = self.messages.copy;
+    
+    NSUInteger newIndex = [messagesArray indexOfObject:message
+                                         inSortedRange:(NSRange){0,[messagesArray count]}
+                                               options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
+                                       usingComparator:messageComparator];
+    
+    return newIndex;
+}
+
+- (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message {
+    
+    NSIndexPath *indexPath = nil;
+    
+    if ([self.messages containsObject:message]) {
+        
+        indexPath = [NSIndexPath indexPathForItem:[self.messages indexOfObject:message] inSection:0];
+        
+    }
+    return indexPath;
+}
+
+- (BOOL)hasMessagesForDate:(NSDate*)messageDate {
+    
+    NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
+    
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    
+    NSDateComponents *dateComponents = [NSDateComponents new];
+    dateComponents.day = 1;
+    dateComponents.second = -1;
+    
+    NSDate * startDate = [calendar startOfDayForDate:messageDate];
+    NSDate * endDate =  [calendar dateByAddingComponents:dateComponents
+                                                  toDate:startDate
+                                                 options:NSCalendarWrapComponents];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return !message.isDateDividerMessage &&
+        [message.dateSent compare:startDate] == NSOrderedDescending &&
+        [message.dateSent compare:endDate]  == NSOrderedAscending;
+    }];
+    
+    NSArray * messages = [self.messages filteredArrayUsingPredicate:predicate];
+    
+    return messages.count > 0;
+    
+}
+
+#pragma mark -
+#pragma mark - Date Dividers
 
 - (void)handleMessage:(QBChatMessage*)message forUpdateType:(QMDataSourceUpdateType)updateType {
     
@@ -334,14 +339,15 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
             return;
         }
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(self.isDateDividerMessage == YES) AND (self.dateSent == %@)",dateToAdd];
-        
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return message.isDateDividerMessage && [message.dateSent isEqualToDate:dateToAdd];
+        }];
+      
         QBChatMessage * msg = [[self.messages filteredArrayUsingPredicate:predicate] firstObject];
         [self deleteMessage:msg];
         [self.dateDividers removeObject:dateToAdd];
-        
+
     }
-    
 }
 
 - (NSString*)qm_stringFromDate:(NSDate*)date {
