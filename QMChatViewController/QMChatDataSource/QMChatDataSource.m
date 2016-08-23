@@ -261,8 +261,6 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 
 - (BOOL)hasMessagesForDate:(NSDate*)messageDate {
     
-    NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
-    
     NSDate *startDate = [messageDate dateAtStartOfDay];
     NSDate *endDate = [messageDate dateAtEndOfDay];
     
@@ -279,13 +277,13 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 #pragma mark -
 #pragma mark - Date Dividers
 
-- (void)handleMessage:(QBChatMessage*)message forUpdateType:(QMDataSourceUpdateType)updateType {
+- (void)handleMessage:(QBChatMessage *)message forUpdateType:(QMDataSourceUpdateType)updateType {
     
     if (message.isDateDividerMessage) {
         return;
     }
     
-    NSDate * dateToAdd = [message.dateSent dateAtStartOfDay];
+    NSDate *dateToAdd = [message.dateSent dateAtStartOfDay];
     
     if (updateType == QMDataSourceUpdateTypeAdd
         || updateType == QMDataSourceUpdateTypeSet) {
