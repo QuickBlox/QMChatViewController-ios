@@ -72,7 +72,6 @@
 
 @protocol QMChatDataSourceDelegate <NSObject>
 
-@optional
 /**
  *  QMChatDataSource delegate method about items that were set to data source.
  *
