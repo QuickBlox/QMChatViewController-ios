@@ -24,7 +24,7 @@ static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth 
     return sharedCalendar;
 }
 
-- (NSComparisonResult)compareWithDate:(NSDate*)dateToCompareWith {
+- (NSComparisonResult)compareWithDate:(NSDate *)dateToCompareWith {
 
     NSDateComponents *date1Components = [[self calendar] components:componentFlags fromDate:self];
     NSDateComponents *date2Components = [[self calendar] components:componentFlags fromDate:dateToCompareWith];
@@ -51,17 +51,17 @@ static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth 
     return endDate;
 }
 
-- (NSString*)stringDate {
+- (NSString *)stringDate {
     
     return [self stringDateWithFormat:nil];
 }
 
-- (BOOL)isBetweenStartDate:(NSDate*)startDate andEndDate:(NSDate*)endDate {
+- (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate {
     return ([self compare:startDate] == NSOrderedDescending &&
             [self compare:endDate]  == NSOrderedAscending);
 }
 
-- (NSString*)stringDateWithFormat:(NSString*)dateFormat {
+- (NSString *)stringDateWithFormat:(NSString *)dateFormat {
     
     static NSDateFormatter *dateFormatter;
     static dispatch_once_t onceToken;
