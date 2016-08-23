@@ -7,6 +7,7 @@
 //
 
 #import "QMChatDataSource.h"
+#import "NSDate+ChatDataSource.h"
 
 typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
     QMDataSourceUpdateTypeAdd = 0,
@@ -28,14 +29,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         return (NSComparisonResult)NSOrderedSame;
     }
     else {
-        NSCalendar *cal = [NSCalendar currentCalendar];
-        
-        NSCalendarUnit components = NSEraCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSCalendarUnitHour|  NSCalendarUnitMinute;
-        
-        NSDateComponents *date1Components = [cal components:components fromDate:obj1.dateSent];
-        NSDateComponents *date2Components = [cal components:components fromDate:obj2.dateSent];
-        
-        NSComparisonResult comparison = [[cal dateFromComponents:date2Components] compare:[cal dateFromComponents:date1Components]];
+        NSComparisonResult comparison = [obj2.dateSent compareWithDate:obj1.dateSent];
         if (comparison == NSOrderedSame) {
             return [obj2.ID compare:obj1.ID];
         }
@@ -278,21 +272,12 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     
     NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
     
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *dateComponents = [NSDateComponents new];
-    dateComponents.day = 1;
-    dateComponents.second = -1;
-    
-    NSDate * startDate = [calendar startOfDayForDate:messageDate];
-    NSDate * endDate =  [calendar dateByAddingComponents:dateComponents
-                                                  toDate:startDate
-                                                 options:NSCalendarWrapComponents];
+    NSDate * startDate = [messageDate dateAtStartOfDay];
+    NSDate * endDate = [messageDate dateAtEndOfDay];
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return !message.isDateDividerMessage &&
-        [message.dateSent compare:startDate] == NSOrderedDescending &&
-        [message.dateSent compare:endDate]  == NSOrderedAscending;
+        return !message.isDateDividerMessage && [message.dateSent isBetweenStartDate:startDate andEndDate:endDate];
+
     }];
     
     NSArray * messages = [self.messages filteredArrayUsingPredicate:predicate];
@@ -309,9 +294,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     if (message.isDateDividerMessage) {
         return;
     }
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDate * dateToAdd = [calendar startOfDayForDate:message.dateSent];
+    NSDate * dateToAdd = [message.dateSent dateAtStartOfDay];
     
     if (updateType == QMDataSourceUpdateTypeAdd
         || updateType == QMDataSourceUpdateTypeSet) {
@@ -322,7 +305,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         
         QBChatMessage * divideMessage = [QBChatMessage new];
         
-        divideMessage.text = [self qm_stringFromDate:dateToAdd];
+        divideMessage.text = dateToAdd.stringDate;
         divideMessage.dateSent = dateToAdd;
         
         divideMessage.isDateDividerMessage = YES;
@@ -350,20 +333,5 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     }
 }
 
-- (NSString*)qm_stringFromDate:(NSDate*)date {
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    static NSDateFormatter* dateFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.locale = [NSLocale currentLocale];
-        dateFormatter.timeZone = calendar.timeZone;
-        [dateFormatter setDateFormat:@"d MMMM YYYY"];
-    });
-
-    return [dateFormatter stringFromDate:date];
-}
 
 @end
