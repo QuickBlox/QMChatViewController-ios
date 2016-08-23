@@ -26,7 +26,7 @@
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, QMChatSectionManagerDelegate,UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate>
+@interface QMChatViewController () <QMInputToolbarDelegate, QMKeyboardControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -92,9 +92,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    
-//    self.chatSectionManager = [[QMChatSectionManager alloc] init];
-//    self.chatSectionManager.delegate = self;
     
     self.chatDataSource = [[QMChatDataSource alloc] init];
     self.chatDataSource.delegate = self;
@@ -200,44 +197,14 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 #pragma mark QMChatDataSourceDelegate
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
+    
     [self.collectionView reloadData];
 }
 
-
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
-    [self chatSectionManager:nil didInsertSections:nil andItems:itemsIndexPaths animated:YES];
-}
-
-
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
+    BOOL animated = YES;
     
-    NSMutableArray * messagesIDs = [NSMutableArray array];
-    
-    for (NSIndexPath  * indexPath in itemsIndexPaths) {
-        QBChatMessage * msg = [self.chatDataSource messageForIndexPath:indexPath];
-        [messagesIDs addObject:msg.ID];
-    }
-    
-    [self chatSectionManager:nil didUpdateMessagesWithIDs:messagesIDs.copy atIndexPaths:itemsIndexPaths];
-}
-
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
-    
-    NSMutableArray * messagesIDs = [NSMutableArray array];
-    
-    for (NSIndexPath  * indexPath in itemsIndexPaths) {
-        QBChatMessage * msg = [self.chatDataSource messageForIndexPath:indexPath];
-        [messagesIDs addObject:msg.ID];
-    }
-    
-    [self chatSectionManager:nil didDeleteMessagesWithIDs:messagesIDs atIndexPaths:itemsIndexPaths withSectionsIndexSet:nil animated:YES];
-}
-
-#pragma mark - QMChatSectionManagerDelegate
-
-- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didInsertSections:(NSIndexSet *)sectionsIndexSet andItems:(NSArray *)itemsIndexPaths animated:(BOOL)animated {
-
     BOOL shouldCancelScrolling = animated ? [self shouldCancelScrollingForItemIndexPaths:itemsIndexPaths] : NO;
     
     __weak __typeof(self)weakSelf = self;
@@ -258,17 +225,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         
         
         [strongSelf.collectionView performBatchUpdates:^{
-            NSLog(@"inside performBatchUpdates");
-            if ([sectionsIndexSet count] > 0) {
-                [strongSelf.collectionView insertSections:sectionsIndexSet];
-            }
             
             [strongSelf.collectionView insertItemsAtIndexPaths:itemsIndexPaths];
             
         } completion:^(BOOL finished) {
             
             if (shouldCancelScrolling) {
-        //        strongSelf.collectionView.contentOffset = CGPointMake(0, strongSelf.collectionView.contentSize.height - bottomOffset);
+                //        strongSelf.collectionView.contentOffset = CGPointMake(0, strongSelf.collectionView.contentSize.height - bottomOffset);
                 [CATransaction commit];
             }
         }];
@@ -286,37 +249,47 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             performUpdate();
         }];
     }
+
 }
 
-- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didUpdateMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths {
+
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
-    for (NSString *messageID in messagesIDs) {
+    for (NSIndexPath  *indexPath in itemsIndexPaths) {
         
-        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
+        QBChatMessage *msg = [self.chatDataSource messageForIndexPath:indexPath];
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:msg.ID];
     }
+    
+    __weak __typeof(self)weakSelf = self;
+    
     [self.collectionView performBatchUpdates:^{
-    [self.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
+        
+        __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
     } completion:nil];
+
+
 }
 
-- (void)chatSectionManager:(QMChatSectionManager *)chatSectionManager didDeleteMessagesWithIDs:(NSArray *)messagesIDs atIndexPaths:(NSArray *)itemsIndexPaths withSectionsIndexSet:(NSIndexSet *)sectionsIndexSet animated:(BOOL)animated {
+
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
-    for (NSString *messageID in messagesIDs) {
-        
-        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
+    BOOL animated = YES;
+    
+    for (NSIndexPath  *indexPath in itemsIndexPaths) {
+        QBChatMessage *msg = [self.chatDataSource messageForIndexPath:indexPath];
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:msg.ID];
     }
     
     __weak __typeof(self)weakSelf = self;
     dispatch_block_t performUpdate = ^{
         
         __typeof(weakSelf)strongSelf = weakSelf;
-        if (sectionsIndexSet.count > 0) {
-            
-            [strongSelf.collectionView deleteSections:sectionsIndexSet];
-        }
+        
         if (itemsIndexPaths.count > 0) {
             [self.collectionView performBatchUpdates:^{
-            [strongSelf.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
+                [strongSelf.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
             } completion:nil];
         }
     };
@@ -332,7 +305,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             performUpdate();
         }];
     }
+
 }
+
 
 #pragma mark - View lifecycle
 
@@ -574,50 +549,11 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark - Collection view data source
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-//    return CGSizeMake(0.0f, self.heightForSectionHeader);
-//}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSUInteger numberOfiTems = [self.chatDataSource messagesCount];
-//    NSLog(@"numberOfiTems = %d",numberOfiTems);
-    return numberOfiTems;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     
-    NSUInteger numberOfSections = 1;
-    
-//    if ([self.chatDataSource messagesCount] == 0) {
-//        numberOfSections = 0;
-//    }
-//    NSLog(@"numberOfSections = %d",numberOfSections);
-    return numberOfSections;
+    return [self.chatDataSource messagesCount];
 }
-
-//- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-//                    sectionHeaderAtIndexPath:(NSIndexPath *)indexPath {
-//    QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-//                                                                                    withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
-//    
-//    QMChatSection *chatSection = [self.chatSectionManager chatSectionAtIndex:indexPath.section];
-//    headerView.headerLabel.text = [self nameForSectionWithDate:[chatSection lastMessageDate]];
-//    headerView.transform = self.collectionView.transform;
-//    
-//    return headerView;
-//}
-//
-//- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-//           viewForSupplementaryElementOfKind:(NSString *)kind
-//                                 atIndexPath:(NSIndexPath *)indexPath {
-//    
-//    if (kind == UICollectionElementKindSectionFooter) {
-//        // due to collection view being reversed, section header is actually footer
-//        return [self collectionView:collectionView sectionHeaderAtIndexPath:indexPath];
-//    }
-//    
-//    return nil;
-//}
 
 - (UICollectionViewCell *)collectionView:(QMChatCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     

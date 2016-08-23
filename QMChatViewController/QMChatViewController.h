@@ -28,9 +28,12 @@
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
+/**
+ *  @warning *Deprecated in 0.4.0:* Use 'chatDataSource:' instead.
+ */
+@property (strong, nonatomic) QMChatSectionManager *chatSectionManager DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.0. Use 'chatDataSource:' instead");
 
-//@property (strong, nonatomic) QMChatSectionManager *chatSectionManager;
-@property (strong, nonatomic) QMChatDataSource * chatDataSource;
+@property (strong, nonatomic) QMChatDataSource *chatDataSource;
 /**
  *  Cell's contact request delegate.
  */
@@ -262,16 +265,5 @@
  *  @param animated Pass `YES` if you want to animate scrolling, `NO` if it should be immediate.
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
-
-#pragma mark - Helpers
-
-/**
- *  Generating name for section with date.
- *
- *  @param date Date of section
- *
- *  @discussion override this method if you want to generate custom name for section with it's date.
- */
-- (NSString *)nameForSectionWithDate:(NSDate *)date;
 
 @end
