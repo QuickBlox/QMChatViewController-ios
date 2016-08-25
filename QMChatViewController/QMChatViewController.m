@@ -33,12 +33,12 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
 
-@property (nonatomic, readonly) UIImagePickerController* pickerController;
+@property (nonatomic, readonly) UIImagePickerController *pickerController;
 @property (weak, nonatomic) UIView *snapshotView;
 @property (strong, nonatomic) QMKeyboardController *keyboardController;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 @property (assign, nonatomic) BOOL isObserving;
-@property (strong, nonatomic) NSTimer* timer;
+@property (strong, nonatomic) NSTimer *timer;
 
 @property BOOL isScrollingToBottom;
 @property (nonatomic, assign) BOOL isLastCellVisible;
@@ -235,7 +235,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
                 [CATransaction commit];
             }
         }];
-        
     };
     
     if (animated) {

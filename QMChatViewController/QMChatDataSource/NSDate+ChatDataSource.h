@@ -1,6 +1,6 @@
 //
 //  NSDate+ChatDataSource.h
-//  sample-chat
+//  QMChatViewController
 //
 //  Created by Vitaliy Gurkovsky on 8/23/16.
 //  Copyright © 2016 Quickblox. All rights reserved.

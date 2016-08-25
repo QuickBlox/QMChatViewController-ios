@@ -1,9 +1,9 @@
 //
 //  QMChatDataSource.m
-//  Pods
+//  QMChatViewController
 //
 //  Created by Vitaliy Gurkovsky on 8/10/16.
-//
+//  Copyright © 2016 Quickblox. All rights reserved.
 //
 
 #import "QMChatDataSource.h"

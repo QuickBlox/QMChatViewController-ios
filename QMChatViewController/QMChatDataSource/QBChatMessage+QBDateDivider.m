@@ -1,6 +1,6 @@
 //
 //  QBChatMessage+QBDateDivider.m
-//  sample-chat
+//  QMChatViewController
 //
 //  Created by Vitaliy Gurkovsky on 8/16/16.
 //  Copyright © 2016 Quickblox. All rights reserved.
