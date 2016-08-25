@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 
 @end
 
-static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * obj2) {
+static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
     if ([obj1 isEqual:obj2]) {
         return (NSComparisonResult)NSOrderedSame;
     }
@@ -60,13 +60,13 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 }
 
 - (NSString *)description{
-    return [NSString stringWithFormat:@"\n[QMDataSource] \n\t messages: %@", self.messages.copy];
+    return [NSString stringWithFormat:@"\n[QMDataSource] \n\t messages: %@", self.allMessages];
 }
 
 #pragma mark -
 #pragma mark Setting
 
-- (void)setDataSourceMessages:(NSArray*)messages {
+- (void)setDataSourceMessages:(NSArray *)messages {
     [self changeDataSourceWithMessages:messages forUpdateType:QMDataSourceUpdateTypeSet];
 }
 
@@ -84,7 +84,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 #pragma mark -
 #pragma mark Removing
 
-- (void)deleteMessage:(QBChatMessage *)message  {
+- (void)deleteMessage:(QBChatMessage *)message {
     [self deleteMessages:@[message]];
 }
 
@@ -160,7 +160,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     });
 }
 
-- (BOOL)shouldSkipMessage:(QBChatMessage*)message forDataSourceUpdateType:(QMDataSourceUpdateType)updateType {
+- (BOOL)shouldSkipMessage:(QBChatMessage *)message forDataSourceUpdateType:(QMDataSourceUpdateType)updateType {
     
     BOOL messageExists = [self messageExists:message];
     
@@ -176,7 +176,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 }
 
 
-- (void)calDelegateMethodForIndexPaths:(NSArray*)indexPaths withUpdateType:(QMDataSourceUpdateType)updateType {
+- (void)calDelegateMethodForIndexPaths:(NSArray *)indexPaths withUpdateType:(QMDataSourceUpdateType)updateType {
     
     switch (updateType) {
             
@@ -209,7 +209,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 
 - (NSInteger)messagesCount {
     
-    return self.messages.count;
+    return self.allMessages.count;
 }
 
 - (NSUInteger)insertMessage:(QBChatMessage *)message {
@@ -226,23 +226,21 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
         return nil;
     }
     
-    return self.messages[indexPath.item];
+    return self.allMessages[indexPath.item];
 }
 
 
 - (BOOL)messageExists:(QBChatMessage *)message {
     
-    return [self.messages containsObject:message];
+    return [self.allMessages containsObject:message];
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
-    
-    NSArray *messagesArray = self.messages.copy;
-    
-    NSUInteger newIndex = [messagesArray indexOfObject:message
-                                         inSortedRange:(NSRange){0, [messagesArray count]}
-                                               options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
-                                       usingComparator:messageComparator];
+    NSArray * messages = self.messages.copy;
+    NSUInteger newIndex = [messages indexOfObject:message
+                                    inSortedRange:(NSRange){0, [messages count]}
+                                          options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
+                                  usingComparator:messageComparator];
     
     return newIndex;
 }
@@ -251,9 +249,9 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
     
     NSIndexPath *indexPath = nil;
     
-    if ([self.messages containsObject:message]) {
+    if ([self.allMessages containsObject:message]) {
         
-        indexPath = [NSIndexPath indexPathForItem:[self.messages indexOfObject:message] inSection:0];
+        indexPath = [NSIndexPath indexPathForItem:[self.allMessages indexOfObject:message] inSection:0];
         
     }
     return indexPath;
@@ -261,17 +259,14 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 
 - (BOOL)hasMessagesForDate:(NSDate*)messageDate {
     
-    NSArray *uniqueDateTimes = [self.messages valueForKeyPath:@"@distinctUnionOfObjects.dateSent"];
-    
     NSDate *startDate = [messageDate dateAtStartOfDay];
     NSDate *endDate = [messageDate dateAtEndOfDay];
     
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
         return !message.isDateDividerMessage && [message.dateSent isBetweenStartDate:startDate andEndDate:endDate];
-        
     }];
     
-    NSArray *messages = [self.messages filteredArrayUsingPredicate:predicate];
+    NSArray *messages = [self.allMessages filteredArrayUsingPredicate:predicate];
     
     return messages.count > 0;
     
@@ -280,13 +275,13 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
 #pragma mark -
 #pragma mark - Date Dividers
 
-- (void)handleMessage:(QBChatMessage*)message forUpdateType:(QMDataSourceUpdateType)updateType {
+- (void)handleMessage:(QBChatMessage *)message forUpdateType:(QMDataSourceUpdateType)updateType {
     
     if (message.isDateDividerMessage) {
         return;
     }
     
-    NSDate * dateToAdd = [message.dateSent dateAtStartOfDay];
+    NSDate *dateToAdd = [message.dateSent dateAtStartOfDay];
     
     if (updateType == QMDataSourceUpdateTypeAdd
         || updateType == QMDataSourceUpdateTypeSet) {
@@ -318,7 +313,7 @@ static NSComparator messageComparator = ^(QBChatMessage* obj1, QBChatMessage * o
             return message.isDateDividerMessage && [message.dateSent isEqualToDate:dateToAdd];
         }];
         
-        QBChatMessage *msg = [[self.messages filteredArrayUsingPredicate:predicate] firstObject];
+        QBChatMessage *msg = [[self.allMessages filteredArrayUsingPredicate:predicate] firstObject];
         [self.dateDividers removeObject:dateToAdd];
         [self deleteMessage:msg];
     }
