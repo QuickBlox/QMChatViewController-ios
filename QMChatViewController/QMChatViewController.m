@@ -259,14 +259,8 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:msg.ID];
     }
     
-    __weak __typeof(self)weakSelf = self;
-    
-    [self.collectionView performBatchUpdates:^{
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
-        
-    } completion:nil];
+   [self.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
+
 }
 
 
