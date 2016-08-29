@@ -402,11 +402,6 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     return sendButton;
 }
 
-
-#pragma mark - View rotation
-
-
-
 #pragma mark - Messages view controller
 - (void)didPressSendButton:(UIButton *)button {
     
