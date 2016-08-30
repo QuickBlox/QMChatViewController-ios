@@ -44,6 +44,11 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
  */
 - (UIImage *)originalImage;
 
+/**
+ *  Removing image from cache and display.
+ */
+- (void)removeImage;
+
 @end
 
 @protocol QMImageViewDelegate <NSObject>

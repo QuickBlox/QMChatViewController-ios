@@ -209,6 +209,15 @@ static NSString * const kQMImageViewTransformedKey = @"%@/original";
     return [self.webManager.imageCache imageFromDiskCacheForKey:[NSString stringWithFormat:kQMImageViewTransformedKey, self.url.absoluteString]];
 }
 
+- (void)removeImage {
+    
+    NSString *urlStr = self.url.absoluteString;
+    [self.webManager.imageCache removeImageForKey:urlStr];
+    [self.webManager.imageCache removeImageForKey:[NSString stringWithFormat:kQMImageViewTransformedKey, urlStr]];
+    self.image = nil;
+    self.url = nil;
+}
+
 - (void)setImage:(UIImage *)image withKey:(NSString *)key {
     
     UIImage *cachedImage = [[self.webManager imageCache] imageFromDiskCacheForKey:key];
