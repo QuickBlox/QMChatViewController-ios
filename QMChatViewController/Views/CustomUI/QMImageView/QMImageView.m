@@ -246,6 +246,13 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
     }
     else if (self.imageViewType == QMImageViewTypeCircle) {
         
+        if (image.size.height > image.size.width
+            || image.size.width > image.size.height) {
+            // if image is not square it will be disorted
+            // making it a square-image first
+            image = [image imageByScaleAndCrop:self.frame.size];
+        }
+        
         return [image imageByCircularScaleAndCrop:self.frame.size];
     }
     else {
