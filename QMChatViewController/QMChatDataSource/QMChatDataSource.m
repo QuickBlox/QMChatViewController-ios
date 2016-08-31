@@ -276,7 +276,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 #pragma mark - Date Dividers
 
 - (void)handleMessage:(QBChatMessage *)message forUpdateType:(QMDataSourceUpdateType)updateType {
-    
+    return;
     if (message.isDateDividerMessage) {
         return;
     }
