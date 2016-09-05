@@ -25,18 +25,19 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 @end
 
 static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
-    if ([obj1 isEqual:obj2]) {
-        return (NSComparisonResult)NSOrderedSame;
+    
+    NSSortDescriptor *desc1 = [NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:NO];
+    NSSortDescriptor *desc2 = [NSSortDescriptor sortDescriptorWithKey:@"ID" ascending:NO];
+    
+    NSComparisonResult result = [desc1 compareObject:obj1 toObject:obj2];
+    
+    if (result != NSOrderedSame) {
+        return result;
     }
     else {
-        NSComparisonResult comparison = [obj2.dateSent compareWithDate:obj1.dateSent];
-        if (comparison == NSOrderedSame) {
-            return [obj2.ID compare:obj1.ID];
-        }
-        else {
-            return comparison;
-        }
+        return [desc2 compareObject:obj1 toObject:obj2];
     }
+    
 };
 
 
@@ -108,6 +109,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     dispatch_async(_serialQueue, ^{
         
         NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
+        NSMutableArray *messageIDs = [NSMutableArray arrayWithCapacity:messages.count];
         
         for (QBChatMessage *message in messages) {
             
@@ -129,8 +131,8 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
             else if (updateType == QMDataSourceUpdateTypeUpdate) {
                 
                 NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
-                
-                if (updatedMessageIndex != indexPath.item) {
+
+                if (updatedMessageIndex != indexPath.item && updatedMessageIndex!= NSNotFound) {
                     // message will have new indexPath due to date changes
                     [self deleteMessages:@[message]];
                     [self addMessages:@[message]];
@@ -149,11 +151,17 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
             }
             
             [self handleMessage:message forUpdateType:updateType];
+            [messageIDs addObject:message];
         }
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             
+            if (messageIDs.count) {
+                
+                [self.delegate chatDataSource:self willChangedWithMessages:messageIDs];
+            }
             if (itemsIndexPaths.count) {
+                
                 [self calDelegateMethodForIndexPaths:itemsIndexPaths.copy withUpdateType:updateType];
             }
         });
@@ -204,7 +212,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 
 - (NSArray *)allMessages {
     
-    return [self.messages copy];
+    return [NSArray arrayWithArray:_messages];
 }
 
 - (NSInteger)messagesCount {
@@ -236,13 +244,18 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
-    NSArray * messages = self.messages.copy;
-    NSUInteger newIndex = [messages indexOfObject:message
-                                    inSortedRange:(NSRange){0, [messages count]}
-                                          options:(NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex)
-                                  usingComparator:messageComparator];
     
-    return newIndex;
+
+    NSArray * messages = self.allMessages;
+        NSBinarySearchingOptions options = [self.messages containsObject:message] ? NSBinarySearchingFirstEqual  : NSBinarySearchingInsertionIndex;
+         NSUInteger index  = [messages indexOfObject:message
+                                        inSortedRange:(NSRange){0, [messages count]}
+                                              options:options
+                                      usingComparator:messageComparator];
+    
+
+    
+    return index;
 }
 
 - (NSIndexPath *)indexPathForMessage:(QBChatMessage *)message {
@@ -319,5 +332,10 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     }
 }
 
+#pragma mark - NSFastEnumeration
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(__unsafe_unretained id [])buffer count:(NSUInteger)len {
+    return [_messages countByEnumeratingWithState:state objects:buffer count:len];
+}
 
 @end

@@ -195,9 +195,15 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource willChangedWithMessages:(NSArray *)messagesIDs {
+    
+    for (QBChatMessage *message in messagesIDs) {
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
+    }
+}
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
-    
+
     [self.collectionView reloadData];
 }
 
@@ -218,7 +224,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         if (shouldCancelScrolling) {
             
             bottomOffset = strongSelf.collectionView.contentSize.height - strongSelf.collectionView.contentOffset.y;
-            
+           // if [CATransaction valueForKey:kCATransactionDisableActions])
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
         }
@@ -253,26 +259,13 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
-    for (NSIndexPath *indexPath in itemsIndexPaths) {
-        
-        QBChatMessage *msg = [self.chatDataSource messageForIndexPath:indexPath];
-        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:msg.ID];
-    }
-    
    [self.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
-
 }
 
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
     
     BOOL animated = YES;
-    
-    for (NSIndexPath  *indexPath in itemsIndexPaths) {
-        
-        QBChatMessage *msg = [self.chatDataSource messageForIndexPath:indexPath];
-        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:msg.ID];
-    }
     
     __weak __typeof(self)weakSelf = self;
     

@@ -16,7 +16,7 @@
 @protocol QMChatDataSourceDelegate;
 
 
-@interface QMChatDataSource : NSObject
+@interface QMChatDataSource : NSObject <NSFastEnumeration>
 
 @property(nonatomic, weak) id <QMChatDataSourceDelegate> delegate;
 
@@ -71,6 +71,8 @@
 @end
 
 @protocol QMChatDataSourceDelegate <NSObject>
+
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource willChangedWithMessages:(NSArray *)messagesIDs;
 
 /**
  *  QMChatDataSource delegate method about items that were set to data source.
