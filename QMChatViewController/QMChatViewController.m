@@ -193,17 +193,19 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     [self updateCollectionViewInsets];
 }
 
+
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource willChangedWithMessages:(NSArray *)messagesIDs {
+
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
     
-    for (QBChatMessage *message in messagesIDs) {
-        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:message.ID];
+    for (NSString *messageID in messagesIDs) {
+        [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
     }
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
-
+   
     [self.collectionView reloadData];
 }
 
@@ -258,13 +260,12 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didUpdateMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
-    
+
    [self.collectionView reloadItemsAtIndexPaths:itemsIndexPaths];
 }
 
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
-    
     BOOL animated = YES;
     
     __weak __typeof(self)weakSelf = self;
@@ -274,6 +275,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
         __typeof(weakSelf)strongSelf = weakSelf;
         
         [strongSelf.collectionView performBatchUpdates:^{
+            
             [strongSelf.collectionView deleteItemsAtIndexPaths:itemsIndexPaths];
         } completion:nil];
         

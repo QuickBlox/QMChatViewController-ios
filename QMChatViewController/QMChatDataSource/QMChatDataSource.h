@@ -11,6 +11,13 @@
 
 #import "QBChatMessage+QBDateDivider.h"
 
+typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
+    QMDataSourceUpdateTypeAdd = 0,
+    QMDataSourceUpdateTypeSet,
+    QMDataSourceUpdateTypeUpdate,
+    QMDataSourceUpdateTypeRemove
+};
+
 @class QBChatMessage;
 
 @protocol QMChatDataSourceDelegate;
@@ -33,6 +40,7 @@
 - (void)updateMessage:(QBChatMessage *)message;
 - (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
+- (void)changeDataSourceWithIndexPath:(NSArray *)indexPathes forUpdateType:(QMDataSourceUpdateType)updateType;
 
 /**
  *  Messages count.
@@ -72,7 +80,7 @@
 
 @protocol QMChatDataSourceDelegate <NSObject>
 
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource willChangedWithMessages:(NSArray *)messagesIDs;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs;
 
 /**
  *  QMChatDataSource delegate method about items that were set to data source.

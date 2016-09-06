@@ -9,13 +9,6 @@
 #import "QMChatDataSource.h"
 #import "NSDate+ChatDataSource.h"
 
-typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
-    QMDataSourceUpdateTypeAdd = 0,
-    QMDataSourceUpdateTypeSet,
-    QMDataSourceUpdateTypeUpdate,
-    QMDataSourceUpdateTypeRemove
-};
-
 @interface QMChatDataSource()
 
 @property (strong, nonatomic) NSMutableArray *messages;
@@ -26,16 +19,15 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 
 static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
     
-    NSSortDescriptor *desc1 = [NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:NO];
-    NSSortDescriptor *desc2 = [NSSortDescriptor sortDescriptorWithKey:@"ID" ascending:NO];
+    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"ID" ascending:NO];
     
-    NSComparisonResult result = [desc1 compareObject:obj1 toObject:obj2];
+    NSComparisonResult result = [obj2.dateSent compareWithDate:obj1.dateSent];
     
     if (result != NSOrderedSame) {
         return result;
     }
     else {
-        return [desc2 compareObject:obj1 toObject:obj2];
+        return [desc compareObject:obj1 toObject:obj2];
     }
     
 };
@@ -158,8 +150,9 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
             
             if (messageIDs.count) {
                 
-                [self.delegate chatDataSource:self willChangedWithMessages:messageIDs];
+                [self.delegate chatDataSource:self willBeChangedWithMessageIDs:messageIDs];
             }
+            
             if (itemsIndexPaths.count) {
                 
                 [self calDelegateMethodForIndexPaths:itemsIndexPaths.copy withUpdateType:updateType];
