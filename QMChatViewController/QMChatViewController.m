@@ -196,6 +196,64 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
+- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType withUpdateBlock:(dispatch_block_t)updateBlock {
+    
+    if (messages.count) {
+        return;
+    }
+    if (updateType == QMDataSourceUpdateTypeSet) {
+        if (updateBlock) {
+            updateBlock();
+            [self.collectionView reloadData];
+        }
+    }
+    
+    [self.collectionView performBatchUpdates:^{
+     
+        
+        switch (updateType) {
+            case QMDataSourceUpdateTypeAdd: {
+                if (updateBlock) {
+                    updateBlock();
+                
+                NSMutableArray * indexPathes = [NSMutableArray array];
+                for (QBChatMessage * message in messages) {
+                    [indexPathes addObject:[self.chatDataSource indexPathForMessage:message]];
+                }
+                [self.collectionView insertItemsAtIndexPaths:indexPathes];
+                }
+                break;
+            }
+    
+            case QMDataSourceUpdateTypeUpdate: {
+                if (updateBlock) {
+                NSMutableArray * indexPathes = [NSMutableArray array];
+                for (QBChatMessage * message in messages) {
+                    [indexPathes addObject:[self.chatDataSource indexPathForMessage:message]];
+                }
+                updateBlock();
+                [self.collectionView reloadItemsAtIndexPaths:indexPathes];
+                }
+                break;
+            }
+            case QMDataSourceUpdateTypeRemove: {
+                if (updateBlock) {
+                NSMutableArray * indexPathes = [NSMutableArray array];
+                for (QBChatMessage * message in messages) {
+                    [indexPathes addObject:[self.chatDataSource indexPathForMessage:message]];
+                }
+                updateBlock();
+                [self.collectionView deleteItemsAtIndexPaths:indexPathes];
+                }
+                break;
+            }
+        }
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+
+}
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
     

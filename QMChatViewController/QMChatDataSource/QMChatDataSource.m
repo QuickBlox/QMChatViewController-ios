@@ -102,6 +102,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
         
         NSMutableArray *itemsIndexPaths = [NSMutableArray arrayWithCapacity:messages.count];
         NSMutableArray *messageIDs = [NSMutableArray arrayWithCapacity:messages.count];
+        NSMutableArray * messagesArray = [NSMutableArray arrayWithCapacity:messages.count];
         
         for (QBChatMessage *message in messages) {
             
@@ -111,41 +112,32 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
                 continue;
             }
             
-            NSIndexPath *indexPath = [self indexPathForMessage:message];
             
-            if (updateType == QMDataSourceUpdateTypeAdd
-                || updateType == QMDataSourceUpdateTypeSet) {
-                
-                NSUInteger messageIndex = [self insertMessage:message];
-                indexPath = [NSIndexPath indexPathForItem:messageIndex inSection:0];
-            }
             
-            else if (updateType == QMDataSourceUpdateTypeUpdate) {
+            if (updateType == QMDataSourceUpdateTypeUpdate) {
                 
+                NSIndexPath *indexPath = [self indexPathForMessage:message];
                 NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
-
+                
                 if (updatedMessageIndex != indexPath.item && updatedMessageIndex!= NSNotFound) {
                     // message will have new indexPath due to date changes
                     [self deleteMessages:@[message]];
                     [self addMessages:@[message]];
                 }
                 else {
-                    [self.messages replaceObjectAtIndex:indexPath.item withObject:message];
+                    [messagesArray addObject:message];
                 }
                 
             }
-            else if (updateType ==  QMDataSourceUpdateTypeRemove) {
-                [self.messages removeObjectAtIndex:indexPath.item];
+            else {
+                [messagesArray addObject:message];
+                
             }
             
-            if (indexPath != nil) {
-                [itemsIndexPaths addObject:indexPath];
-            }
             
-            [self handleMessage:message forUpdateType:updateType];
-            [messageIDs addObject:message];
+            [messageIDs addObject:message.ID];
         }
-        
+
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             if (messageIDs.count) {
@@ -153,10 +145,41 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
                 [self.delegate chatDataSource:self willBeChangedWithMessageIDs:messageIDs];
             }
             
-            if (itemsIndexPaths.count) {
-                
-                [self calDelegateMethodForIndexPaths:itemsIndexPaths.copy withUpdateType:updateType];
-            }
+                [self.delegate changeDataSource:self withMessages:messagesArray updateType:updateType withUpdateBlock:^{
+                    
+                    switch (updateType) {
+                        case QMDataSourceUpdateTypeAdd: {
+                            for (QBChatMessage * msg in messagesArray) {
+                                [self insertMessage:msg];
+                                [self handleMessage:msg forUpdateType:updateType];
+                            }
+                            break;
+                        }
+                        case QMDataSourceUpdateTypeSet: {
+                            for (QBChatMessage * msg in messagesArray) {
+                                [self insertMessage:msg];
+                                [self handleMessage:msg forUpdateType:updateType];
+                            }
+                            break;
+                        }
+                        case QMDataSourceUpdateTypeUpdate: {
+                            for (QBChatMessage * msg in messagesArray) {
+                                NSIndexPath * indexPath = [self indexPathForMessage:msg];
+                                [self.messages replaceObjectAtIndex:indexPath.item withObject:msg];
+                            }
+                            break;
+                        }
+                        case QMDataSourceUpdateTypeRemove: {
+                            for (QBChatMessage * msg in messagesArray) {
+                                NSIndexPath * indexPath = [self indexPathForMessage:msg];
+                                [self.messages removeObjectAtIndex:indexPath.item];
+                                [self handleMessage:msg forUpdateType:updateType];
+                            }
+                            break;
+                        }
+                    }
+                    
+                }];
         });
     });
 }

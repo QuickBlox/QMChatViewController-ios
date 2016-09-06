@@ -116,4 +116,5 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
+- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType withUpdateBlock:(dispatch_block_t)updateBlock;
 @end
