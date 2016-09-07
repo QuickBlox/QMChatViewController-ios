@@ -39,6 +39,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 @property (assign, nonatomic) BOOL isObserving;
 @property (strong, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) BOOL isViewAppeared;
 
 @property BOOL isScrollingToBottom;
 @property (nonatomic, assign) BOOL isLastCellVisible;
@@ -196,63 +197,41 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
-- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType withUpdateBlock:(dispatch_block_t)updateBlock {
+- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType {
     
-    if (messages.count) {
+    if (messages.count == 0) {
         return;
     }
-    if (updateType == QMDataSourceUpdateTypeSet) {
-        if (updateBlock) {
-            updateBlock();
-            [self.collectionView reloadData];
+    
+    if (self.isViewAppeared) {
+        
+        [self.collectionView performBatchUpdates:^{
+            
+            NSArray *indexPathes = [self.chatDataSource performChangesWithMessages:messages updateType:updateType];
+            
+            switch (updateType) {
+                    
+                case QMDataSourceUpdateTypeAdd:
+                    [self.collectionView insertItemsAtIndexPaths:indexPathes];
+                    break;
+                    
+                case QMDataSourceUpdateTypeUpdate:
+                    [self.collectionView reloadItemsAtIndexPaths:indexPathes];
+                    break;
+                    
+                case QMDataSourceUpdateTypeRemove:
+                    [self.collectionView deleteItemsAtIndexPaths:indexPathes];
+                    break;
+                    
+            }
         }
+                                      completion:nil];
     }
-    
-    [self.collectionView performBatchUpdates:^{
-     
+    else {
         
-        switch (updateType) {
-            case QMDataSourceUpdateTypeAdd: {
-                if (updateBlock) {
-                    updateBlock();
-                
-                NSMutableArray * indexPathes = [NSMutableArray array];
-                for (QBChatMessage * message in messages) {
-                    [indexPathes addObject:[self.chatDataSource indexPathForMessage:message]];
-                }
-                [self.collectionView insertItemsAtIndexPaths:indexPathes];
-                }
-                break;
-            }
-    
-            case QMDataSourceUpdateTypeUpdate: {
-                if (updateBlock) {
-                NSMutableArray * indexPathes = [NSMutableArray array];
-                for (QBChatMessage * message in messages) {
-                    [indexPathes addObject:[self.chatDataSource indexPathForMessage:message]];
-                }
-                updateBlock();
-                [self.collectionView reloadItemsAtIndexPaths:indexPathes];
-                }
-                break;
-            }
-            case QMDataSourceUpdateTypeRemove: {
-                if (updateBlock) {
-                NSMutableArray * indexPathes = [NSMutableArray array];
-                for (QBChatMessage * message in messages) {
-                    [indexPathes addObject:[self.chatDataSource indexPathForMessage:message]];
-                }
-                updateBlock();
-                [self.collectionView deleteItemsAtIndexPaths:indexPathes];
-                }
-                break;
-            }
-        }
-        
-    } completion:^(BOOL finished) {
-        
-    }];
-
+        [self.chatDataSource performChangesWithMessages:messages updateType:updateType];
+        [self.collectionView reloadData];
+    }
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
@@ -369,6 +348,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+    self.isViewAppeared = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -383,7 +363,7 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    self.isViewAppeared = YES;
     [self addObservers];
     [self addActionToInteractivePopGestureRecognizer:YES];
     [self.keyboardController beginListeningForKeyboard];

@@ -13,7 +13,6 @@
 
 typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
     QMDataSourceUpdateTypeAdd = 0,
-    QMDataSourceUpdateTypeSet,
     QMDataSourceUpdateTypeUpdate,
     QMDataSourceUpdateTypeRemove
 };
@@ -29,8 +28,6 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 
 - (NSArray *)allMessages;
 
-- (void)setDataSourceMessages:(NSArray*)messages;
-
 - (void)addMessage:(QBChatMessage *)message;
 - (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
@@ -40,7 +37,7 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 - (void)updateMessage:(QBChatMessage *)message;
 - (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
-- (void)changeDataSourceWithIndexPath:(NSArray *)indexPathes forUpdateType:(QMDataSourceUpdateType)updateType;
+- (NSArray *)performChangesWithMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType;
 
 /**
  *  Messages count.
@@ -83,14 +80,6 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs;
 
 /**
- *  QMChatDataSource delegate method about items that were set to data source.
- *
- *  @param chatDataSource QMChatDataSource current instance
- *  @param messagesIDs    ids of set messages
- */
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource didSetMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
-
-/**
  *  QMChatDataSource delegate method about items that were inserted to data source.
  *
  *  @param chatDataSource     QMChatDataSource current instance
@@ -116,5 +105,6 @@ typedef NS_ENUM(NSInteger, QMDataSourceUpdateType) {
  */
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didDeleteMessagesAtIndexPaths:(NSArray *)itemsIndexPaths;
 
-- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType withUpdateBlock:(dispatch_block_t)updateBlock;
+- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceUpdateType)updateType;
+
 @end
