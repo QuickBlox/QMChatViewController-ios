@@ -201,16 +201,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 - (BOOL)shouldSkipMessage:(QBChatMessage *)message forDataSourceUpdateType:(QMDataSourceActionType)updateType {
     
     BOOL messageExists = [self messageExists:message];
-
-#pragma warning ?
-
-    if (updateType == QMDataSourceActionTypeAdd) {
-
-        return messageExists;
-    }
-    else {
-        return !messageExists;
-    }
+    return (updateType == QMDataSourceActionTypeAdd ? messageExists : !messageExists);
 }
 
 #pragma mark -
@@ -246,16 +237,24 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 
 - (BOOL)messageExists:(QBChatMessage *)message {
     
-    return [self.allMessages containsObject:message];
+    NSUInteger index = [self indexThatConformsToMessage:message options:NSBinarySearchingFirstEqual];
+    return index != NSNotFound;
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
     
-    NSArray *messages = self.allMessages;
+    NSUInteger index = [self indexThatConformsToMessage:message
+                                                options:NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex];
     
+    return index;
+}
+
+- (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message withOptions:(NSBinarySearchingOptions)options {
+    
+    NSArray *messages = self.allMessages;
     NSUInteger index = [messages indexOfObject:message
                                  inSortedRange:(NSRange){0, [messages count]}
-                                       options:NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex
+                                       options:options
                                usingComparator:messageComparator];
     
     return index;
