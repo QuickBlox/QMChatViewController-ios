@@ -1,4 +1,8 @@
-platform :ios, '7.0'
 
-pod 'QuickBlox', '2.5'
-pod 'QMCVDevelopment', :path => '../'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+
+target 'QMChatViewControllerExample' do
+  pod 'QuickBlox', '~> 2.7.6'
+  pod 'QMCVDevelopment', :path => '../'
+end

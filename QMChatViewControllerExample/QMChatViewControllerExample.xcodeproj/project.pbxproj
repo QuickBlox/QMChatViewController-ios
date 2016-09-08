@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36BD5932AC6D835CE8B3330D /* libPods-QMChatViewControllerExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10D615FA10254D7AEA18709A /* libPods-QMChatViewControllerExample.a */; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
 		5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED01AE6742F005AA288 /* MobileCoreServices.framework */; };
@@ -14,7 +15,6 @@
 		5519EED51AE67448005AA288 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED41AE67448005AA288 /* libresolv.dylib */; };
 		5519EED71AE67456005AA288 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED61AE67456005AA288 /* libz.dylib */; };
 		5519EED91AE67462005AA288 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED81AE67462005AA288 /* SystemConfiguration.framework */; };
-		5ED085F0F7DC5435935952A9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAEFEA0B1BD3D49332EE268 /* libPods.a */; };
 		BF53312A1B6F9036000B5409 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BF53311D1B6F9036000B5409 /* AppDelegate.m */; };
 		BF53312B1B6F9036000B5409 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF53311E1B6F9036000B5409 /* LaunchScreen.xib */; };
 		BF53312C1B6F9036000B5409 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF5331201B6F9036000B5409 /* Main.storyboard */; };
@@ -27,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		10D615FA10254D7AEA18709A /* libPods-QMChatViewControllerExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMChatViewControllerExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		134208D0546FB610AF3719D7 /* Pods-QMChatViewControllerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMChatViewControllerExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-QMChatViewControllerExample/Pods-QMChatViewControllerExample.release.xcconfig"; sourceTree = "<group>"; };
 		5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChatViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5519EECE1AE67424005AA288 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -35,8 +37,7 @@
 		5519EED41AE67448005AA288 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
 		5519EED61AE67456005AA288 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5519EED81AE67462005AA288 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		8C1EDE9B0A2856F9ACF5A244 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		9AA93D1F9A7A4DE000CBEC30 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		6943465ED7A382057BB54F56 /* Pods-QMChatViewControllerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMChatViewControllerExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QMChatViewControllerExample/Pods-QMChatViewControllerExample.debug.xcconfig"; sourceTree = "<group>"; };
 		BBAEFEA0B1BD3D49332EE268 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF53311C1B6F9036000B5409 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BF53311D1B6F9036000B5409 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -64,7 +65,7 @@
 				5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */,
 				5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */,
 				5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */,
-				5ED085F0F7DC5435935952A9 /* libPods.a in Frameworks */,
+				36BD5932AC6D835CE8B3330D /* libPods-QMChatViewControllerExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +101,7 @@
 				5519EED21AE6743B005AA288 /* CFNetwork.framework */,
 				5519EED01AE6742F005AA288 /* MobileCoreServices.framework */,
 				BBAEFEA0B1BD3D49332EE268 /* libPods.a */,
+				10D615FA10254D7AEA18709A /* libPods-QMChatViewControllerExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -107,8 +109,8 @@
 		5BFB38554CE0E135BF8F05D1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8C1EDE9B0A2856F9ACF5A244 /* Pods.debug.xcconfig */,
-				9AA93D1F9A7A4DE000CBEC30 /* Pods.release.xcconfig */,
+				6943465ED7A382057BB54F56 /* Pods-QMChatViewControllerExample.debug.xcconfig */,
+				134208D0546FB610AF3719D7 /* Pods-QMChatViewControllerExample.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -139,11 +141,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5501A7A31AD2DA9000D0AE0D /* Build configuration list for PBXNativeTarget "QMChatViewControllerExample" */;
 			buildPhases = (
-				160F28A3ADF7E411E5BC2B8B /* Check Pods Manifest.lock */,
+				160F28A3ADF7E411E5BC2B8B /* [CP] Check Pods Manifest.lock */,
 				5501A7791AD2DA8F00D0AE0D /* Sources */,
 				5501A77A1AD2DA8F00D0AE0D /* Frameworks */,
 				5501A77B1AD2DA8F00D0AE0D /* Resources */,
-				799015A3E649FE9ABFA7CA9B /* Copy Pods Resources */,
+				799015A3E649FE9ABFA7CA9B /* [CP] Copy Pods Resources */,
+				B394BDD1C68AA86C187E94D9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -202,14 +205,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		160F28A3ADF7E411E5BC2B8B /* Check Pods Manifest.lock */ = {
+		160F28A3ADF7E411E5BC2B8B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,19 +220,34 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		799015A3E649FE9ABFA7CA9B /* Copy Pods Resources */ = {
+		799015A3E649FE9ABFA7CA9B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QMChatViewControllerExample/Pods-QMChatViewControllerExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B394BDD1C68AA86C187E94D9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QMChatViewControllerExample/Pods-QMChatViewControllerExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -346,7 +364,7 @@
 		};
 		5501A7A41AD2DA9000D0AE0D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C1EDE9B0A2856F9ACF5A244 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 6943465ED7A382057BB54F56 /* Pods-QMChatViewControllerExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -357,7 +375,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = QMChatViewControllerExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = QMChatViewControllerExample;
 			};
@@ -365,7 +383,7 @@
 		};
 		5501A7A51AD2DA9000D0AE0D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AA93D1F9A7A4DE000CBEC30 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 134208D0546FB610AF3719D7 /* Pods-QMChatViewControllerExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -376,7 +394,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = QMChatViewControllerExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = QMChatViewControllerExample;
 			};

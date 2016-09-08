@@ -8,7 +8,7 @@
 
 #import "NSDate+ChatDataSource.h"
 
-static const unsigned componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond);
+const NSCalendarUnit componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond);
 
 @implementation NSDate (ChatDataSource)
 
