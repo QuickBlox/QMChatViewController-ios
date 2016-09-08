@@ -543,9 +543,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
 
-        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
-        chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
-        chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
+        chatCell.textView.text = [self attributedStringForItem:messageItem];
+        chatCell.topLabel.text = [self topLabelAttributedStringForItem:messageItem];
+        chatCell.bottomLabel.text = [self bottomLabelAttributedStringForItem:messageItem];
     }
 }
 

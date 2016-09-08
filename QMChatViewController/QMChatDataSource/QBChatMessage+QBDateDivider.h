@@ -6,7 +6,7 @@
 //  Copyright © 2016 Quickblox. All rights reserved.
 //
 
-#import "Quickblox/Quickblox.h"
+#import <Quickblox/Quickblox.h>
 
 @interface QBChatMessage (QBDateDivider)
 
