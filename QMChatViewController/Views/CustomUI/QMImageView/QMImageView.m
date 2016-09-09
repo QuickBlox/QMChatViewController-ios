@@ -108,9 +108,10 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
     self.webManager = [[SDWebImageManager alloc] init];
     self.webManager.delegate = self;
     
+    __weak __typeof(self)weakSelf = self;
     [self.webManager setCacheKeyFilter:^(NSURL *url) {
-        
-        return [NSString stringWithFormat:kQMImageViewScaleKey, url.absoluteString, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds)];
+        // weak reference to self due to web manager is strongly captured by current class
+        return [NSString stringWithFormat:kQMImageViewScaleKey, url.absoluteString, CGRectGetWidth(weakSelf.bounds), CGRectGetHeight(weakSelf.bounds)];
     }];
 }
 
