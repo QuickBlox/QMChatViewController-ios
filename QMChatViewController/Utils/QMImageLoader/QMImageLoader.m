@@ -32,6 +32,8 @@ static NSString * const kQMImageViewTransformedKey = @"%@/original";
             
             completedBlock(nil, error, SDImageCacheTypeNone, url);
         }
+        
+        return nil;
     }
     
     BOOL hasFrame = !CGRectIsEmpty(frame);
