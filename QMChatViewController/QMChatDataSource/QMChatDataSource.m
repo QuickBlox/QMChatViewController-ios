@@ -29,7 +29,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     else {
         return [desc compareObject:obj1 toObject:obj2];
     }
-    
+
 };
 
 
@@ -108,8 +108,8 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
                 
                 NSIndexPath *indexPath = [self indexPathForMessage:message];
                 NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
-                
-                if (updatedMessageIndex != indexPath.item && updatedMessageIndex!= NSNotFound) {
+                NSLog(@"indexpathItem %d, updatedMessageIndex %d", indexPath.item, updatedMessageIndex);
+                if (updatedMessageIndex != indexPath.item) {
                     // message will have new indexPath due to date changes
                     [self deleteMessages:@[message]];
                     [self addMessages:@[message]];
@@ -135,7 +135,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             
-            if (messageIDs.count) {
+            if (messageIDs.count && updateType != QMDataSourceActionTypeAdd) {
                 
                 [self.delegate chatDataSource:self willBeChangedWithMessageIDs:messageIDs];
             }
@@ -237,21 +237,21 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 
 - (BOOL)messageExists:(QBChatMessage *)message {
     
-    NSUInteger index = [self indexThatConformsToMessage:message options:NSBinarySearchingFirstEqual];
+    NSUInteger index = [self indexThatConformsToMessage:message
+                                            withOptions:NSBinarySearchingFirstEqual];
     return index != NSNotFound;
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
-    
     NSUInteger index = [self indexThatConformsToMessage:message
-                                                options:NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex];
+                                                withOptions:NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex];
     
     return index;
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message withOptions:(NSBinarySearchingOptions)options {
     
-    NSArray *messages = self.allMessages;
+    NSArray *messages = [self.allMessages sortedArrayWithOptions:NSSortConcurrent usingComparator:messageComparator];
     NSUInteger index = [messages indexOfObject:message
                                  inSortedRange:(NSRange){0, [messages count]}
                                        options:options
@@ -264,9 +264,15 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     
     NSIndexPath *indexPath = nil;
     
-    if ([self.allMessages containsObject:message]) {
-        
-        indexPath = [NSIndexPath indexPathForItem:[self.allMessages indexOfObject:message] inSection:0];
+    NSUInteger equalIndex = [self indexThatConformsToMessage:message
+                                            withOptions:NSBinarySearchingFirstEqual];
+    if (equalIndex != NSNotFound) {
+
+        NSUInteger indexOfObject = [self.allMessages indexOfObject:message];
+        indexPath = [NSIndexPath indexPathForItem:indexOfObject inSection:0];
+    }
+    else {
+        NSLog(@"No indexPath for message :%@, :%@",message.text, message.ID);
     }
     
     return indexPath;

@@ -1188,25 +1188,25 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [alert show];
 }
 
-#pragma mark - UIScrollView delegate methods
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self setIsLastCellVisible];
-    self.isScrollingToBottom = false;
-}
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    [self setIsLastCellVisible];
-    self.isScrollingToBottom = false;
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        [self setIsLastCellVisible];
-        self.isScrollingToBottom = false;
-        
-    }
-}
+//#pragma mark - UIScrollView delegate methods
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    [self setIsLastCellVisible];
+//    self.isScrollingToBottom = false;
+//}
+//
+//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+//    [self setIsLastCellVisible];
+//    self.isScrollingToBottom = false;
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+//    if (!decelerate) {
+//        [self setIsLastCellVisible];
+//        self.isScrollingToBottom = false;
+//        
+//    }
+//}
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
