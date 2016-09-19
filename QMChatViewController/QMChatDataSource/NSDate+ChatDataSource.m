@@ -26,12 +26,24 @@ const NSCalendarUnit componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth |
 
 - (NSComparisonResult)compareWithDate:(NSDate *)dateToCompareWith {
 
-    NSDateComponents *date1Components = [[self calendar] components:componentFlags fromDate:self];
-    NSDateComponents *date2Components = [[self calendar] components:componentFlags fromDate:dateToCompareWith];
+    NSUInteger date1 = (NSUInteger)[self timeIntervalSince1970];
+    NSUInteger date2 = (NSUInteger)[dateToCompareWith timeIntervalSince1970];
     
-    NSComparisonResult comparison = [[[self calendar] dateFromComponents:date1Components] compare:[[self calendar] dateFromComponents:date2Components]];
+    if (date1 > date2) {
+        return NSOrderedDescending;
+    }
+    else if (date2 > date1) {
+        return NSOrderedAscending;
+    }
+    else {
+        return NSOrderedSame;
+    }
+//    NSDateComponents *date1Components = [[self calendar] components:componentFlags fromDate:self];
+//    NSDateComponents *date2Components = [[self calendar] components:componentFlags fromDate:dateToCompareWith];
     
-    return comparison;
+    
+    
+  //  return comparison;
 }
 
 - (NSDate *)dateAtStartOfDay {
