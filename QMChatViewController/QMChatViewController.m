@@ -182,22 +182,28 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     if (self.isViewAppeared) {
         
+        __weak typeof(self) weakSelf = self;
+        
         [self.collectionView performBatchUpdates:^{
             
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
             NSArray *indexPaths = [self.chatDataSource performChangesWithMessages:messages updateType:updateType];
             
             switch (updateType) {
                     
                 case QMDataSourceActionTypeAdd:
-                    [self.collectionView insertItemsAtIndexPaths:indexPaths];
+                    [strongSelf.collectionView insertItemsAtIndexPaths:indexPaths];
                     break;
                     
                 case QMDataSourceActionTypeUpdate:
-                    [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+                    [strongSelf.collectionView reloadItemsAtIndexPaths:indexPaths];
                     break;
                     
                 case QMDataSourceActionTypeRemove:
-                    [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+                    [strongSelf.collectionView deleteItemsAtIndexPaths:indexPaths];
                     break;
                     
             }
@@ -216,11 +222,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     for (NSString *messageID in messagesIDs) {
         [self.collectionView.collectionViewLayout removeSizeFromCacheForItemID:messageID];
     }
-}
-
-- (void)chatDataSource:(QMChatDataSource *)__unused chatDataSource didSetMessagesAtIndexPaths:(NSArray *)__unused itemsIndexPaths {
-    
-    [self.collectionView reloadData];
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource didInsertMessagesAtIndexPaths:(NSArray *)itemsIndexPaths {
@@ -1142,7 +1143,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         return;
     }
     
-    NSSet * visibleInxexPathes= [NSSet setWithArray:self.collectionView.indexPathsForVisibleItems];
+    NSSet *visibleInxexPathes= [NSSet setWithArray:self.collectionView.indexPathsForVisibleItems];
     
     //Index path of the first cell - last message
     NSIndexPath *pathToLastMessage = [NSIndexPath indexPathForRow:0 inSection:0];
