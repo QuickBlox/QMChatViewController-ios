@@ -63,9 +63,9 @@ Pod::Spec.new do |s|
 
   s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
   s.requires_arc = true
-  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" "$(PODS_ROOT)/QuickBlox/" }
+  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"
   s.dependency "SDWebImage", "~> 3.6"
-  s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
+
 
 end
