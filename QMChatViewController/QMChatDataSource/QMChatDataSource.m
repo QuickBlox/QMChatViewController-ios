@@ -13,28 +13,35 @@
 
 @property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableSet *dateDividers;
-@property (strong, nonatomic) dispatch_queue_t serialQueue;
 
 @end
 
-static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
-    
-    NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"ID" ascending:NO];
-    
-    NSComparisonResult result = [obj2.dateSent compareWithDate:obj1.dateSent];
-    
-    if (result != NSOrderedSame) {
-        return result;
-    }
-    else {
-        return [desc compareObject:obj1 toObject:obj2];
-    }
-
-};
-
-
 @implementation QMChatDataSource
 
+NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
+    
+    NSComparisonResult result = [obj2.dateSent compareWithDate:obj1.dateSent];
+    return result;
+        if (result != NSOrderedSame) {
+            return result;
+        }
+        else {
+    
+             NSSortDescriptor *desc = [NSSortDescriptor sortDescriptorWithKey:@"ID" ascending:NO];
+            NSComparisonResult idResult =  [desc compareObject:obj1 toObject:obj2];
+            return idResult;
+        }
+    //        if (idResult == NSOrderedSame) {
+    //
+    //        }
+    //        else {
+    //
+    //        }
+    //        return idResult;
+    //    }
+    
+};
+static dispatch_queue_t _serialQueue = nil;
 #pragma mark -
 #pragma mark Initialization
 
@@ -44,9 +51,13 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     
     if (self) {
         
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            _serialQueue = dispatch_queue_create("com.qmchatvc.datasource.queue", DISPATCH_QUEUE_SERIAL);
+        });
         _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
-        _serialQueue = dispatch_queue_create("com.qmchatvc.datasource.queue", DISPATCH_QUEUE_SERIAL);
+
     }
     
     return self;
@@ -102,17 +113,19 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
             
             if ([self shouldSkipMessage:message forDataSourceUpdateType:updateType]) {
                 continue;
+                NSAssert(true, nil);
             }
             
             if (updateType == QMDataSourceActionTypeUpdate) {
                 
                 NSIndexPath *indexPath = [self indexPathForMessage:message];
                 NSUInteger updatedMessageIndex = [self indexThatConformsToMessage:message];
-                NSLog(@"indexpathItem %d, updatedMessageIndex %d", indexPath.item, updatedMessageIndex);
+                
                 if (updatedMessageIndex != indexPath.item) {
-                    // message will have new indexPath due to date changes
-                    [self deleteMessages:@[message]];
-                    [self addMessages:@[message]];
+                    
+                NSLog(@"indexpathItem %d, updatedMessageIndex %d forMessage %@", indexPath.item, updatedMessageIndex,message);
+                    [self deleteMessage:message];
+                    [self addMessage:message];
                 }
                 else {
                     [messagesArray addObject:message];
@@ -201,6 +214,15 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 - (BOOL)shouldSkipMessage:(QBChatMessage *)message forDataSourceUpdateType:(QMDataSourceActionType)updateType {
     
     BOOL messageExists = [self messageExists:message];
+//    BOOL messageContains = [self.allMessages containsObject:message];
+    
+//    if (messageContains == YES && messageExists == NO) {
+//        NSLog(@"messageExists != messageContains for message: %@",message.text);
+//        BOOL messageExists2 = [self messageExists:message];
+//        BOOL messageContains2 = [self.allMessages containsObject:message];
+//        
+//    }
+    
     return (updateType == QMDataSourceActionTypeAdd ? messageExists : !messageExists);
 }
 
@@ -209,7 +231,7 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
 
 - (NSArray *)allMessages {
     
-    return [NSArray arrayWithArray:_messages];
+    return _messages;
 }
 
 - (NSInteger)messagesCount {
@@ -239,23 +261,32 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     
     NSUInteger index = [self indexThatConformsToMessage:message
                                             withOptions:NSBinarySearchingFirstEqual];
-    return index != NSNotFound;
+    
+    
+    return index != NSNotFound && index != (NSUInteger)-1;
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
     NSUInteger index = [self indexThatConformsToMessage:message
-                                                withOptions:NSBinarySearchingFirstEqual | NSBinarySearchingInsertionIndex];
+                                            withOptions:NSBinarySearchingInsertionIndex];
     
     return index;
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message withOptions:(NSBinarySearchingOptions)options {
     
-    NSArray *messages = [self.allMessages sortedArrayWithOptions:NSSortConcurrent usingComparator:messageComparator];
+    NSArray *messages = [self.allMessages sortedArrayUsingComparator:messageComparator];
     NSUInteger index = [messages indexOfObject:message
                                  inSortedRange:(NSRange){0, [messages count]}
                                        options:options
                                usingComparator:messageComparator];
+    
+    if (options & NSBinarySearchingFirstEqual) {
+    NSLog(@"index of message = %d %@",index,[self.allMessages containsObject:message]?@"YES":@"NO");
+        if (![self.allMessages containsObject:message]) {
+            
+        }
+    }
     
     return index;
 }
@@ -269,8 +300,12 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
     if (equalIndex != NSNotFound) {
 
         NSUInteger indexOfObject = [self.allMessages indexOfObject:message];
+        if (indexOfObject == NSNotFound) {
+            NSLog(@"NotFound");
+        } else {
         indexPath = [NSIndexPath indexPathForItem:indexOfObject inSection:0];
-    }
+        }
+        }
     else {
         NSLog(@"No indexPath for message :%@, :%@",message.text, message.ID);
     }
@@ -344,11 +379,12 @@ static NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *ob
         }];
         
         QBChatMessage *msg = [[self.allMessages filteredArrayUsingPredicate:predicate] firstObject];
+        
         [self.dateDividers removeObject:dateToAdd];
         
         if (updateType == QMDataSourceActionTypeUpdate) {
             
-            [self deleteMessage:msg];
+         //   [self deleteMessage:msg];
             return nil;
         }
         else {
