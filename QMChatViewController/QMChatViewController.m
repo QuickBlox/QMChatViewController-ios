@@ -30,7 +30,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
 
-@property (strong, readonly) UIImagePickerController *pickerController;
+@property (strong, nonatomic, readonly) UIImagePickerController *pickerController;
 @property (weak, nonatomic) UIView *snapshotView;
 @property (strong, nonatomic) QMKeyboardController *keyboardController;
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
