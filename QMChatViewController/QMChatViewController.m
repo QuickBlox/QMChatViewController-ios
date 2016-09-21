@@ -190,7 +190,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
             if (!strongSelf) {
                 return;
             }
-            NSArray *indexPaths = [self.chatDataSource performChangesWithMessages:messages updateType:updateType];
+            NSArray *indexPaths = [strongSelf.chatDataSource performChangesWithMessages:messages updateType:updateType];
             
             switch (updateType) {
                     
