@@ -1188,7 +1188,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     [alert show];
 }
-
+//TODO: handle scroll view to disable dragging on receiving new messages
 //#pragma mark - UIScrollView delegate methods
 //
 //- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
