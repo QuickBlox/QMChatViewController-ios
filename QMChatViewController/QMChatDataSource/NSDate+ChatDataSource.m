@@ -38,12 +38,6 @@ const NSCalendarUnit componentFlags = (NSCalendarUnitYear| NSCalendarUnitMonth |
     else {
         return NSOrderedSame;
     }
-//    NSDateComponents *date1Components = [[self calendar] components:componentFlags fromDate:self];
-//    NSDateComponents *date2Components = [[self calendar] components:componentFlags fromDate:dateToCompareWith];
-    
-    
-    
-  //  return comparison;
 }
 
 - (NSDate *)dateAtStartOfDay {
