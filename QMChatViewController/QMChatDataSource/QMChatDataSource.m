@@ -51,13 +51,13 @@ static dispatch_queue_t _serialQueue = nil;
         
         _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
-
+        
     }
     
     return self;
 }
 
-- (NSString *)description{
+- (NSString *)description {
     return [NSString stringWithFormat:@"\n[QMDataSource] \n\t messages: %@", self.allMessages];
 }
 
@@ -100,7 +100,7 @@ static dispatch_queue_t _serialQueue = nil;
 - (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceActionType)updateType {
     
     dispatch_async(_serialQueue, ^{
-
+        
         NSMutableArray *messageIDs = [NSMutableArray arrayWithCapacity:messages.count];
         NSMutableArray *messagesArray = [NSMutableArray arrayWithCapacity:messages.count];
         
@@ -119,7 +119,6 @@ static dispatch_queue_t _serialQueue = nil;
                 
                 if (updatedMessageIndex != indexPath.item) {
                     
-                NSLog(@"indexpathItem %d, updatedMessageIndex %d forMessage %@", indexPath.item, updatedMessageIndex,message);
                     [self deleteMessage:message];
                     [self addMessage:message];
                     return ;
@@ -164,14 +163,14 @@ static dispatch_queue_t _serialQueue = nil;
     NSArray *indexPaths = [NSMutableArray arrayWithCapacity:messages.count];
     
     if (updateType == QMDataSourceActionTypeRemove) {
-
+        
         indexPaths = [self indexPathsForMessages:messages];
     }
     
     for (QBChatMessage *msg in messages) {
         
         if (updateType == QMDataSourceActionTypeAdd) {
-
+            
             [self insertMessage:msg];
         }
         else if (updateType == QMDataSourceActionTypeUpdate) {
@@ -186,10 +185,10 @@ static dispatch_queue_t _serialQueue = nil;
     }
     
     if (updateType == QMDataSourceActionTypeAdd || updateType == QMDataSourceActionTypeUpdate) {
-
+        
         indexPaths = [self indexPathsForMessages:messages];
     }
-
+    
     return indexPaths;
 }
 
@@ -282,7 +281,7 @@ static dispatch_queue_t _serialQueue = nil;
 }
 
 - (BOOL)hasMessages:(QBChatMessage *)messageToUpdate forUpdateType:(QMDataSourceActionType)updateType {
-
+    
     NSDate *startDate = [messageToUpdate.dateSent dateAtStartOfDay];
     NSDate *endDate = [messageToUpdate.dateSent dateAtEndOfDay];
     
@@ -292,8 +291,8 @@ static dispatch_queue_t _serialQueue = nil;
         predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
             return !message.isDateDividerMessage && [message.dateSent isBetweenStartDate:startDate andEndDate:endDate] && message.ID != messageToUpdate.ID;
         }];
-
-       }
+        
+    }
     else {
         predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage*  _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
             return !message.isDateDividerMessage && [message.dateSent isBetweenStartDate:startDate andEndDate:endDate];
