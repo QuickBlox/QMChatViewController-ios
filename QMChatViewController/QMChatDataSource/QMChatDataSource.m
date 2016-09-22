@@ -120,7 +120,7 @@ static dispatch_queue_t _serialQueue = nil;
                     
                     [self deleteMessage:message];
                     [self addMessage:message];
-                    return ;
+                    return;
                 }
                 else {
                     [messagesArray addObject:message];
