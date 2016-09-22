@@ -94,6 +94,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.chatDataSource = [[QMChatDataSource alloc] init];
     self.chatDataSource.delegate = self;
     
+    self.chatSectionManager = [[QMChatSectionManager alloc] initWithChatDataSource:self.chatDataSource];
+    
     self.inputToolbar.delegate = self;
     
     self.inputToolbar.contentView.textView.delegate = self;
@@ -1226,8 +1228,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [self.collectionView.collectionViewLayout invalidateLayoutWithContext:context];
 }
 
-#pragma warning Please Deprecate this mehtods
-
 - (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
                     sectionHeaderAtIndexPath:(NSIndexPath *)indexPath {
     //    QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
@@ -1238,19 +1238,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     //    headerView.transform = self.collectionView.transform;
     //
     //    return headerView;
-    return nil;
-}
-
-- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-           viewForSupplementaryElementOfKind:(NSString *)kind
-                                 atIndexPath:(NSIndexPath *)indexPath {
-    
-    //    if (kind == UICollectionElementKindSectionFooter) {
-    //        // due to collection view being reversed, section header is actually footer
-    //        return [self collectionView:collectionView sectionHeaderAtIndexPath:indexPath];
-    //    }
-    //
-    //    return nil;
     return nil;
 }
 
