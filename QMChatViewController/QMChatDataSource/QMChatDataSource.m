@@ -51,7 +51,6 @@ static dispatch_queue_t _serialQueue = nil;
         
         _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
-        
     }
     
     return self;
