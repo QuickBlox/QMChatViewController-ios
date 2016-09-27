@@ -118,11 +118,12 @@
 }
 
 - (void)layoutSubviews {
-    
     [super layoutSubviews];
     
     // calculate size needed for the text to be visible without scrolling
-    CGSize sizeThatFits = [self sizeThatFits:self.frame.size];
+    CGSize sizeThatFits = [self.layoutManager usedRectForTextContainer:self.textContainer].size;
+    sizeThatFits.height += self.textContainerInset.top + self.textContainerInset.bottom;
+    
     float newHeight = sizeThatFits.height;
     
     // if there is any minimal height constraint set, make sure we consider that
