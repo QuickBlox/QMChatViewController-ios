@@ -230,7 +230,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
     [self configureMessagesViewController];
-    [self registerForNotifications:YES];
+    
     
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
@@ -243,6 +243,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     NSParameterAssert(self.senderID != 0);
     NSParameterAssert(self.senderDisplayName != nil);
+    
+    [self registerForNotifications:YES];
     
     [super viewWillAppear:animated];
     
