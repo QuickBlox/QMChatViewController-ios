@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You should return `NO` when you want to handle pasting.
  *  Return `YES` to defer functionality to the `textView`.
  */
-- (BOOL)composerTextView:(QMPlaceHolderTextView *)textView shouldPasteWithSender:(id)sender;
+- (BOOL)placeHolderTextView:(QMPlaceHolderTextView *)textView shouldPasteWithSender:(id)sender;
 
 @end
 
