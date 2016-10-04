@@ -277,7 +277,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 - (UIButton *)accessoryButtonItem {
     
-    UIImage *accessoryImage = [UIImage imageNamed:@"attachment_ic"];
+    UIImage *accessoryImage = [QMChatResources imageNamed:@"attachment_ic"];
     
     UIImage *normalImage = [accessoryImage imageMaskedWithColor:[UIColor lightGrayColor]];
     UIImage *highlightedImage = [accessoryImage imageMaskedWithColor:[UIColor darkGrayColor]];
