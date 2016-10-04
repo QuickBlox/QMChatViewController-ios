@@ -19,7 +19,7 @@
 #import "UIImage+QM.h"
 #import "QMHeaderCollectionReusableView.h"
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
-
+#import <Photos/Photos.h>
 
 @interface QMChatViewController () <QMInputToolbarDelegate, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate,
@@ -366,15 +366,61 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
 }
 
-- (void)didPressAccessoryButton:(UIButton *)__unused sender {
+- (void)didPressAccessoryButton:(UIButton *)sender {
     
-    [self.inputToolbar.contentView.textView resignFirstResponder];
+    if (self.inputToolbar.contentView.textView.isFirstResponder) {
+        [self.inputToolbar.contentView.textView resignFirstResponder];
+    }
     
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:nil otherButtonTitles:@"Camera", @"Photo Library", nil];
-    [actionSheet showInView:self.view];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    dispatch_block_t handler = ^{
+        
+        __weak typeof(self) weakSelf = self;
+        [self checkAuthorizationStatusWithCompletion:^(BOOL granted) {
+
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            
+            if (granted) {
+                [strongSelf presentViewController:self.pickerController animated:YES completion:nil];
+            }
+            else {
+                [strongSelf showAlertForAccess];
+            }
+        }];
+        
+    };
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Camera", nil)
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull __unused action) {
+                                                          
+                                                          self.pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                                                          handler();
+                                                      }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Photo Library", nil)
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull __unused action) {
+                                                          
+                                                          self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                                                          handler();
+                                                      }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SA_STR_CANCEL", nil)
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:nil]];
+    
+    if (alertController.popoverPresentationController) {
+        // iPad support
+        alertController.popoverPresentationController.sourceView = sender;
+        alertController.popoverPresentationController.sourceRect = sender.bounds;
+    }
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)didPickAttachmentImage:(UIImage *)image {
@@ -657,20 +703,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     }
 }
 
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        self.pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        [self checkAuthorizationStatusForCamera];
-        
-    } else if (buttonIndex == 1 && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        self.pickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        [self presentViewController:self.pickerController animated:YES completion:nil];
-    }
-}
-
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -925,60 +957,96 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     }
 }
 
-- (void)checkAuthorizationStatusForCamera {
+- (void)checkAuthorizationStatusWithCompletion:(void (^)(BOOL granted))completion {
     
-    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    switch (status) {
-        case AVAuthorizationStatusNotDetermined: {
-            
-            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (granted) {
-                        [self presentViewController:self.pickerController animated:YES completion:nil];
-                    }
-                    else {
-                        [self showAlertForCameraAccess];
-                    }
-                });
+    if (self.pickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        switch (status) {
+            case AVAuthorizationStatusNotDetermined: {
                 
-            }];
-            break;
+                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (completion) {
+                            completion(granted);
+                        }
+                    });
+                }];
+                break;
+            }
+            case AVAuthorizationStatusRestricted: {
+                if (completion) {
+                    completion(NO);
+                }
+                break;
+            }
+            case AVAuthorizationStatusDenied: {
+                if (completion) {
+                    completion(NO);
+                }
+                break;
+            }
+            case AVAuthorizationStatusAuthorized: {
+                if (completion) {
+                    completion(YES);
+                }
+                break;
+            }
         }
-        case AVAuthorizationStatusRestricted: {
-            [self showAlertForCameraAccess];
-            break;
-        }
-        case AVAuthorizationStatusDenied: {
-            [self showAlertForCameraAccess];
-            break;
-        }
-        case AVAuthorizationStatusAuthorized: {
-            [self presentViewController:self.pickerController animated:YES completion:nil];
-            break;
+    }
+    else if (self.pickerController.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+        
+        switch (status)
+        {
+            case PHAuthorizationStatusAuthorized:
+                if (completion) {
+                    completion(YES);
+                }
+                break;
+            case PHAuthorizationStatusNotDetermined:
+            {
+                [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus authorizationStatus)
+                 {
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         if (completion) {
+                             completion(authorizationStatus == PHAuthorizationStatusAuthorized);
+                         }
+                     });
+                 }];
+                break;
+            }
+            default:
+                if (completion) {
+                    completion(NO);
+                }
+                break;
         }
     }
 }
 
-- (void)showAlertForCameraAccess {
+- (void)showAlertForAccess {
     
-    NSString *title = NSLocalizedString(@"Camera Access Disabled", nil);
-    NSString *message = NSLocalizedString(@"You can allow access to Camera in Settings", nil);
+    NSString *title;
+    NSString *message;
     
-    NSString *reqSysVer = @"8.0";
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    
-    BOOL isIOS8 =  ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
-    
-    NSString *otherButtonTitle = isIOS8 ? NSLocalizedString(@"Open Settings", nil) : nil;
-    
+    if (self.pickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        title = NSLocalizedString(@"Camera Access Disabled", nil);
+        message = NSLocalizedString(@"You can allow access to Camera in Settings", nil);
+    }
+    else if (self.pickerController.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
+        title = NSLocalizedString(@"Photos Access Disabled", nil);
+        message = NSLocalizedString(@"You can allow access to Photos in Settings", nil);
+    }
+
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"SA_STR_CANCEL", nil)
-                                          otherButtonTitles:otherButtonTitle,nil];
+                                          otherButtonTitles:NSLocalizedString(@"Open Settings", nil),nil];
     
     [alert show];
 }
+
 //TODO: handle scroll view to disable dragging on receiving new messages
 //#pragma mark - UIScrollView delegate methods
 //
