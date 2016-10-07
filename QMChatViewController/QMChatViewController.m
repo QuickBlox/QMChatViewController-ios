@@ -27,6 +27,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
 
@@ -35,12 +36,12 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 
-@property (assign, nonatomic) BOOL isViewAppeared;
-
-
 @property (nonatomic, assign) CGFloat lastContentOffset;
-@property (nonatomic, assign) BOOL isLastCellVisible;
-@property BOOL isScrollingToBottom;
+
+@property (assign, nonatomic) BOOL isViewAppeared;
+@property (assign, nonatomic) BOOL isLastCellVisible;
+@property (assign, nonatomic) BOOL isScrollingToBottom;
+@property (assign, nonatomic) BOOL isPerformingAppereanceTransition;
 
 @end
 
@@ -234,8 +235,30 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
+    
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+    
     self.isViewAppeared = NO;
+    
+    __weak typeof(self)weakSelf = self;
+    
+    [self.inputToolbar setInputToolbarFrameChangedBlock:^(CGRect rect) {
+        
+        typeof(weakSelf) strongSelf = weakSelf;
+        if (strongSelf.isPerformingAppereanceTransition) {
+            return;
+        }
+        CGRect convertedRect = [strongSelf.view convertRect:rect fromView:nil];
+        CGFloat value = CGRectGetHeight(strongSelf.view.frame) - CGRectGetMinY(convertedRect);
+        
+        if (value < strongSelf.inputToolbar.preferredDefaultHeight) {
+            value =  strongSelf.inputToolbar.preferredDefaultHeight;
+        }
+        
+        [strongSelf setCollectionViewInsetsTopValue:strongSelf.collectionView.contentInset.bottom
+                                        bottomValue:value];
+    }];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -249,33 +272,24 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     [self.view layoutIfNeeded];
-    
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    self.isViewAppeared = YES;
-    [self.collectionView.collectionViewLayout invalidateLayout];
-    
-    __weak typeof(self)weakSelf = self;
-    [self.inputToolbar setInputToolbarFrameChangedBlock:^(CGRect rect) {
-        
-        CGRect convertedRect = [self.view convertRect:rect fromView:nil];
-        CGFloat value = CGRectGetHeight(weakSelf.view.frame) - CGRectGetMinY(convertedRect);
-        if (self.inputToolbar.preferredDefaultHeight > value) {
-            value =  self.inputToolbar.preferredDefaultHeight;
-        }
-        
-        [self setCollectionViewInsetsTopValue:self.collectionView.contentInset.bottom
-                                  bottomValue:value];
-    }];
 
+    self.isViewAppeared = YES;
+    
+    self.isPerformingAppereanceTransition = NO;
+    
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.inputToolbar setInputToolbarFrameChangedBlock:nil];
+
+    self.isPerformingAppereanceTransition = NO;
+    [self updateCollectionViewInsets];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -381,7 +395,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     [self becomeFirstResponder];
     [self.inputToolbar.contentView.textView resignFirstResponder];
-  
+    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     __weak __typeof(self) weakSelf = self;
@@ -392,7 +406,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         [self checkAuthorizationStatusWithCompletion:^(BOOL granted) {
             
             typeof(weakSelf) strongSelf = weakSelf;
-
+            
             if (granted) {
                 [strongSelf presentViewController:self.pickerController animated:YES completion:nil];
             }
@@ -847,8 +861,13 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom {
-
+    
     UIEdgeInsets insets = UIEdgeInsetsMake(bottom, 0.0f, top , 0.0f);
+    
+    if (UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, insets)) {
+        return;
+    }
+    
     self.collectionView.contentInset = insets;
     self.collectionView.scrollIndicatorInsets = insets;
 
@@ -993,7 +1012,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         title = NSLocalizedString(@"Photos Access Disabled", nil);
         message = NSLocalizedString(@"You can allow access to Photos in Settings", nil);
     }
-
+    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:self
@@ -1044,7 +1063,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     CGRect intersect = CGRectIntersection(visibleRect, cellFrameInSuperview);
     float visibleHeight = CGRectGetHeight(intersect);
-
+    
     _isLastCellVisible = (visibleHeight > 0);
 }
 
@@ -1113,6 +1132,13 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         UICollectionViewCell *cell = visibleCells[i];
         [self checkVisibilityOfCell:cell inScrollView:scrollView];
     }
+}
+
+- (void)beginAppearanceTransition:(BOOL)isAppearing animated:(BOOL)animated {
+    
+    [super beginAppearanceTransition:isAppearing animated:animated];
+    
+    self.isPerformingAppereanceTransition = YES;
 }
 
 
