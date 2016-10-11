@@ -100,6 +100,11 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [self registerCells];
     
     self.isLastCellVisible = YES;
+    
+    //iPad support
+    if (self.splitViewController) {
+        self.inputToolbar.containerViewController = self;
+    }
 }
 
 - (void)registerCells {

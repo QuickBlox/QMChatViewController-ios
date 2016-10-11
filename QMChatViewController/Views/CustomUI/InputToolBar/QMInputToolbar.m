@@ -207,6 +207,28 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         CGRect frame = self.superview.frame;
         self.inputToolbarFrameChangedBlock(frame);
     }
+    
+    if (self.containerViewController) {
+        
+        CGRect frame = self.frame;
+        CGRect windowRect = [self.containerViewController.view.superview convertRect:self.containerViewController.view.frame toView:nil];
+
+       if (!CGRectEqualToRect(self.frame, windowRect)) {
+           frame.size.width = windowRect.size.width;
+           frame.origin.x = windowRect.origin.x;
+           self.frame = frame;
+       }
+    }
 }
 
+
+- (CGSize)intrinsicContentSize
+{
+    return CGSizeMake(UIViewNoIntrinsicMetric,self.preferredDefaultHeight);
+}
+
++ (BOOL)requiresConstraintBasedLayout
+{
+    return YES;
+}
 @end

@@ -51,6 +51,7 @@
  *  The object that acts as the delegate of the toolbar.
  */
 @property (weak, nonatomic) id<QMInputToolbarDelegate> delegate;
+@property (strong, nonatomic) UIViewController *containerViewController;
 
 /**
  *  Returns the content view of the toolbar. This view contains all subviews of the toolbar.
