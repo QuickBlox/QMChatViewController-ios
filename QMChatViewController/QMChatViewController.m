@@ -439,9 +439,11 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 - (void)didPressAccessoryButton:(UIButton *)sender {
     
-    //[self becomeFirstResponder];
-  //  [self.inputToolbar.contentView.textView resignFirstResponder];
-    
+    if ([self.inputToolbar.contentView.textView isFirstResponder]) {
+        [self becomeFirstResponder];
+        [self.inputToolbar.contentView.textView resignFirstResponder];
+    }
+
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     __weak __typeof(self) weakSelf = self;
