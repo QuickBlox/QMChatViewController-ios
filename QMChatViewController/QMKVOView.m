@@ -7,24 +7,16 @@
 //
 
 #import "QMKVOView.h"
-static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValueObservingContext;
+
+static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingContext;
+
 @interface QMKVOView()
-
-@property (assign, nonatomic) BOOL isObserving;
-@property (nonatomic, assign, getter=isObserverAdded) BOOL observerAdded;
-
+@property (assign, nonatomic, getter=isObserverAdded) BOOL observerAdded;
 @end
+
 @implementation QMKVOView
 
 #pragma mark - Actions
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        
-    }
-    return self;
-}
-
 - (void)willMoveToSuperview:(UIView *)newSuperview {
     
     
@@ -32,21 +24,21 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         
         [self.superview removeObserver:self
                             forKeyPath:@"frame"
-                               context:kQMInputToolbarKeyValueObservingContext];
+                               context:kQMFrameKeyValueObservingContext];
         [self.superview removeObserver:self
                             forKeyPath:@"center"
-                               context:kQMInputToolbarKeyValueObservingContext];
+                               context:kQMFrameKeyValueObservingContext];
     }
     
     [newSuperview addObserver:self
                    forKeyPath:@"frame"
                       options:0
-                      context:kQMInputToolbarKeyValueObservingContext];
+                      context:kQMFrameKeyValueObservingContext];
     
     [newSuperview addObserver:self
                    forKeyPath:@"center"
                       options:0
-                      context:kQMInputToolbarKeyValueObservingContext];
+                      context:kQMFrameKeyValueObservingContext];
     
     self.observerAdded = YES;
     
@@ -54,6 +46,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 }
 
 #pragma mark - Key-value observing
+
 - (void)layoutSubviews {
     
     [super layoutSubviews];
