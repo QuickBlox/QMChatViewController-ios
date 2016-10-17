@@ -51,15 +51,11 @@
  *  The object that acts as the delegate of the toolbar.
  */
 @property (weak, nonatomic) id<QMInputToolbarDelegate> delegate;
-@property (strong, nonatomic) UIViewController *containerViewController;
 
 /**
  *  Returns the content view of the toolbar. This view contains all subviews of the toolbar.
  */
 @property (weak, nonatomic, readonly) QMToolbarContentView *contentView;
-
-
-@property (nonatomic, copy) void (^inputToolbarFrameChangedBlock)(CGRect frame);
 
 /**
  *  A boolean value indicating whether the send button is on the right side of the toolbar or not.

@@ -142,14 +142,6 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
             
             [self toggleSendButtonEnabled];
         }
-        else if (object == self.superview && ([keyPath isEqualToString:@"frame"] ||
-                                              [keyPath isEqualToString:@"center"])) {
-            
-            if  (self.inputToolbarFrameChangedBlock) {
-                CGRect frame = self.superview.frame;
-                self.inputToolbarFrameChangedBlock(frame);
-            }
-        }
     }
 }
 
