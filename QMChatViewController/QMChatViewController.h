@@ -265,5 +265,13 @@
  *  @param animated Pass `YES` if you want to animate scrolling, `NO` if it should be immediate.
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
+- (void)hideKeyboard:(BOOL)animated;
+
+#pragma mark - Life Cycle Methods Requiring Super
+
+- (void)viewDidLoad NS_REQUIRES_SUPER;
+- (void)viewWillAppear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 
 @end
