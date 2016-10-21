@@ -1,6 +1,6 @@
 //
 //  QMKVOView.m
-//  Pods
+//  
 //
 //  Created by Vitaliy Gurkovsky on 10/12/16.
 //
@@ -55,7 +55,7 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
     [super layoutSubviews];
     
     if (self.superFrameDidChangeBlock) {
-        self.superFrameDidChangeBlock();
+        self.superFrameDidChangeBlock(self.superview.frame);
     }
 }
 
@@ -65,7 +65,7 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
                                      [keyPath isEqualToString:@"center"])) {
         
         if  (self.superFrameDidChangeBlock) {
-            self.superFrameDidChangeBlock();
+            self.superFrameDidChangeBlock(self.superview.frame);
         }
     }
 }
