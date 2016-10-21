@@ -265,13 +265,20 @@
  *  @param animated Pass `YES` if you want to animate scrolling, `NO` if it should be immediate.
  */
 - (void)scrollToBottomAnimated:(BOOL)animated;
+
+/**
+ *  Hides keyboard
+ *
+ *  @param animated Pass `YES` if you want to animate hiding, `NO` if it should be immediate.
+ */
 - (void)hideKeyboard:(BOOL)animated;
 
-#pragma mark - Life Cycle Methods Requiring Super
+#pragma mark - Methods requiring super
 
 - (void)viewDidLoad NS_REQUIRES_SUPER;
 - (void)viewWillAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
-
+- (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;;
 @end
