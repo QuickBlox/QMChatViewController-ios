@@ -339,11 +339,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     [self.view layoutIfNeeded];
     [self updateCollectionViewInsets];
-    
-//    // Workaround for a modal dismissal causing the message toolbar to remain offscreen on iOS 8.
-//    if (self.presentedViewController) {
-//        [self becomeFirstResponder];
-//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -591,7 +586,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     if ([self.collectionView numberOfItemsInSection:0] > 0) {
         
         CGPoint contentOffset = self.collectionView.contentOffset;
-        if (![self positionIsAtBottom]) {
+        
+        if (contentOffset.y > 0) {
             contentOffset.y = 0;
             [self.collectionView setContentOffset:contentOffset
                                          animated:animated];
@@ -599,10 +595,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     }
 }
 
-- (BOOL)positionIsAtBottom {
-    CGPoint contentOffset = self.collectionView.contentOffset;
-    return contentOffset.y > 0;
-}
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -625,9 +617,12 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     if (QM_CHAT_SCROLL_LOGS) {
         
+        BOOL scrollIsAtTop = [self scrollIsAtTop];
+        
         NSLog(@"_____________QM_CHAT_SCROLL_LOGS___________________");
         NSLog(@"isMovingKeyboard = %d" ,self.isMovingKeyboard);
         NSLog(@"lastContentOffset = %f",self.lastContentOffset);
+        NSLog(@"scrollIsAtTop = %d",scrollIsAtTop);
         NSLog(@"___________________________________________________");
     }
 }
@@ -983,14 +978,14 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)setBottomCollectionViewInsetsValue:(CGFloat)bottom {
-    return;
+
     [self setCollectionViewInsetsTopValue:self.collectionView.contentInset.bottom
                               bottomValue:bottom];
     
 }
 
 - (void)setTopCollectionViewInsetsValue:(CGFloat)top {
-    return;
+
     [self setCollectionViewInsetsTopValue:top
                               bottomValue:self.collectionView.contentInset.top];
 }
@@ -1222,6 +1217,24 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     return nil;
 }
 
+- (BOOL)scrollIsAtTop {
+    
+    return CGRectGetMaxY([self scrollVisibleRect]) >= CGRectGetMaxY([self scrollTopRect]);
+}
+
+- (CGRect)scrollVisibleRect {
+    
+    CGRect visibleRect;
+    visibleRect.origin = self.collectionView.contentOffset;
+    visibleRect.size = self.collectionView.frame.size;
+    return visibleRect;
+}
+
+- (CGRect)scrollTopRect {
+    
+    return CGRectMake(0.0, self.collectionView.contentSize.height - CGRectGetHeight(self.collectionView.bounds), CGRectGetWidth(self.collectionView.bounds), CGRectGetHeight(self.collectionView.bounds));
+}
+
 #pragma mark - Notification Handlers
 
 - (void)didChangeState:(NSNotification *)notification {
@@ -1259,7 +1272,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     CGPoint panPoint = [gesture locationInView:self.view.window];
     CGRect hostViewRect = [self.view.window convertRect:self.systemInputToolbar.superview.frame toView:nil];
-    CGFloat toolbarMinY = CGRectGetMinY(hostViewRect);
+    CGFloat toolbarMinY = CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputToolbar.frame);
     
     if (QM_CHAT_PAN_LOGS_ALL == 1) {
 
@@ -1285,7 +1298,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
                     NSLog(@"__________________________________________________");
                 }
                 
-                if (self.movingKeyboard) {
+                if (self.isMovingKeyboard && ![self scrollIsAtTop]) {
+                    
                     [self.view layoutIfNeeded];
                     self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.lastContentOffset);
                 }
