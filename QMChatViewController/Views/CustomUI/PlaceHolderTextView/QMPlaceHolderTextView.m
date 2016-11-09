@@ -9,6 +9,8 @@
 #import "QMPlaceHolderTextView.h"
 #import "NSString+QM.h"
 
+NSString *const QMPlaceholderDidChangeHeight = @"com.quickblox.qmunicate.QMPlaceholderDidChangeHeight";
+
 @interface QMPlaceHolderTextView()
 
 @property (nonatomic, weak) NSLayoutConstraint *heightConstraint;
@@ -137,6 +139,7 @@
     }
     
     // update the height constraint
+    
     self.heightConstraint.constant = newHeight;
 }
 
