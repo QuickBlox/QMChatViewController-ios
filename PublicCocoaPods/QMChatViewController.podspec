@@ -36,6 +36,12 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
+  s.subspec 'Categories' do |ss|
+	ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
+
+    ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
+  end
+
   s.subspec 'Utils' do |ss| 
 	ss.dependency 'QMChatViewController/Categories'
 
@@ -48,12 +54,6 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
-  s.subspec 'Categories' do |ss|
-	ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
-
-    ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
-  end
-
   s.subspec 'QMChatDataSource' do |ss|
     ss.source_files = 'QMChatViewController/QMChatDataSource/*.{h,m}'
   end
@@ -63,8 +63,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Views' do |ss|
-  	ss.dependency 'QMChatViewController/Protocols'
   	ss.dependency 'QMChatViewController/Categories'
+  	ss.dependency 'QMChatViewController/Protocols'
+	ss.dependency 'QMChatViewController/Utils'
 
     ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
