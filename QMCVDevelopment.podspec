@@ -30,13 +30,25 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
+  s.subspec 'QMChatLocationSnapshotter' do |ss|
+    ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
+  end
+
   s.subspec 'Categories' do |ss|
-    ss.dependency 'QMCVDevelopment/Utils'
+	ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
+
     ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
   end
 
-  s.subspec 'QMChatSection' do |ss|
-    ss.dependency 'QMChatViewController/QMChatDataSource'
+  s.subspec 'Utils' do |ss| 
+	ss.dependency 'QMChatViewController/Categories'
+
+    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
+  end
+
+  s.subspec 'Sections' do |ss|
+	ss.dependency 'QMChatViewController/QMChatDataSource'
+
     ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
@@ -48,13 +60,11 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/Protocols/*.{h}'
   end
 
-  s.subspec 'Utils' do |ss|
-    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
-  end
-
   s.subspec 'Views' do |ss|
-    ss.dependency 'QMCVDevelopment/Protocols'
-    ss.dependency 'QMCVDevelopment/Categories'
+  	ss.dependency 'QMChatViewController/Categories'
+  	ss.dependency 'QMChatViewController/Protocols'
+	ss.dependency 'QMChatViewController/Utils'
+
     ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 
