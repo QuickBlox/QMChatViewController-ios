@@ -37,6 +37,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Sections' do |ss|
+	ss.dependency 'QMChatViewController/QMChatDataSource'
+
     ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 

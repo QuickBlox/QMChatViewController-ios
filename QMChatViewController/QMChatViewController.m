@@ -444,7 +444,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     dispatch_block_t handler = ^{
         
-        __weak typeof(self) weakSelf = self;
         [self checkAuthorizationStatusWithCompletion:^(BOOL granted) {
             
             typeof(weakSelf) strongSelf = weakSelf;
