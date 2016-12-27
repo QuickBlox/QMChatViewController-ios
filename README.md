@@ -8,10 +8,10 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 #Features
 - Ready-to-go chat view controller with a set of cells.
 - Automatic cell size calculation.
-- UI customisation  for chat cells.
+- UI customization for chat cells.
 - Flexibility in improving and extending functionality.
 - Easy to connect with Quickblox.
-- Optimised and performant.
+- Optimized and performant.
 - Supports portrait and landscape orientations.
 - Auto Layout inside.
 - Time header view with custom time intervals
@@ -43,7 +43,7 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - [Quickblox iOS SDK v2.0+](https://github.com/QuickBlox/quickblox-ios-sdk/archive/master.zip)
 
 # Getting started
-Example is included in repository. Try it out to see how chat view controller works.
+An example is included in the repository. Try it out to see how chat view controller works.
 
 Steps to add QMChatViewController to Your app:
 
