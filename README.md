@@ -216,7 +216,7 @@ Steps to add `QMChatViewController` to Your app:
 	
 	So if you want to hide top label or bottom label you just need to set their height to 0.
 
-## Attachemnts
+## Attachments
 
 `QMChatViewController` supports image attachment cell messages. `QMChatAttachmentIncomingCell` is used for incoming attachments, `QMChatAttachmentOutgoingCell` is used for outgoing attachments. Both of them have progress label to display loading progress. XIB's are also included.
 
