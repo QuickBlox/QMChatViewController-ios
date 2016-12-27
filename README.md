@@ -14,14 +14,13 @@ An elegant ready-to-go chat view controller for iOS chat applications that use Q
 - Optimized and performant.
 - Supports portrait and landscape orientations.
 - Auto Layout inside.
-- Time header view with custom time intervals
 
 # Screenshots
 
 <img src="Screenshots/screenshot4.png" border="5" alt="Chat View Controller" width="300"> 
 
 # Requirements
-- iOS 7.0+
+- iOS 8.0+
 - ARC
 - Xcode 6+
 - Quickblox SDK 2.0+
@@ -59,7 +58,7 @@ Steps to add QMChatViewController to Your app:
     * Insert messages using corresponding methods:
 
 	````objective-c
-    	[self.chatSectionManager addMessages:<array of messages>];
+    	[self.chatDataSource addMessages:<array of messages>];
 	````    
 
 3. Handle message sending.
@@ -109,7 +108,7 @@ Steps to add QMChatViewController to Your app:
 	````objective-c
 		- (CGSize)collectionView:(QMChatCollectionView *)collectionView dynamicSizeAtIndexPath:(NSIndexPath 	*)indexPath maxWidth:(CGFloat)maxWidth {
     
-			QBChatMessage *item = self.items[indexPath.item];
+			QBChatMessage *item = [self.chatDataSource messageForIndexPath:indexPath];
     
 			NSAttributedString *attributedString = [self attributedStringForItem:item];
     
@@ -120,7 +119,7 @@ Steps to add QMChatViewController to Your app:
 		}
 
 		- (CGFloat)collectionView:(QMChatCollectionView *)collectionView minWidthAtIndexPath:(NSIndexPath *)indexPath {
-			QBChatMessage *item = [self messageForIndexPath:indexPath];
+			QBChatMessage *item = [self.chatDataSource messageForIndexPath:indexPath];
     
 			NSAttributedString *attributedString =
 			[item senderID] == self.senderID ?  [self bottomLabelAttributedStringForItem:item] : [self topLabelAttributedStringForItem:item];
@@ -211,44 +210,12 @@ Steps to add QMChatViewController to Your app:
 
 *QMChatViewController* supports image attachment cell messages. *QMChatAttachmentIncomingCell* is used for incoming attachments, *QMChatAttachmentOutgoingCell* is used for outgoing attachments. Both of them have progress label to display loading progress. XIB's are also included.
 
-## Time headers
+## Chat data source
 
-*QMChatViewController* supports time headers for messages. Default value is 300 seconds (e.g. 5 minutes). You can setup your own time interval between headers using QMChatSectionManager property:
+QMChatViewController contains its data source manager called QMChatDataSource. It has implementation of all methods, which you need to work with QMChatViewController.
+This class should be used to add, update and delete messages from data source. QMChatDataSource has delegate, which called whenever  data source were modified.
 
-````objective-c
-	self.chatSectionManager.timeIntervalBetweenSections = 500.0f;
-````
-
-You can also customize header height using this QMChatCollectionViewDataSource data source method:
-
-````objective-c
-	- (CGFloat)heightForSectionHeader {
-    	return 40.0f;
-	}
-````
-
-If you are not happy with default time header view, you can override this method and have your own one:
-
-````objective-c
-	- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-                    	sectionHeaderAtIndexPath:(NSIndexPath *)indexPath;
-````
-
-## Chat section manager
-
-QMChatViewController contains its section manager called QMChatSectionManager. It has implementation of all methods, which you need to work with QMChatViewController chat sections.
-This class should be used to add, update and delete messages from data source. QMChatSectionManager has delegate, which called whenever  data source were modified.
-You can also disable animation for collection view changes using this property:
-
-````objective-c
-/**
- *  Determines whether animation for inserting or deleting is enabled.
- *  Default value: YES
- */
-@property (assign, nonatomic) BOOL animationEnabled;
-````
-
-For more information on methods and its usage check out our inline doc in QMChatSectionManager.h.
+For more information on methods and its usage check out our inline doc in QMChatDataSource.h.
 
 # Questions & Help
 - You could create an issue on GitHub if you are experiencing any problems. We will be happy to help you. 
@@ -259,6 +226,3 @@ Inline code documentation available.
 
 # License
 See [LICENSE](LICENSE)
-
-#Coming soon
-CocoaPods distribution.
