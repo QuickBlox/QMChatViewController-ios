@@ -77,7 +77,7 @@ Steps to add QMChatViewController to Your app:
 			QBChatAttachment *attacment = [[QBChatAttachment alloc] init];
     		message.attachments = @[attacment];
     
-    		[self.chatSectionManager addMessage:message];
+    		[self.chatDataSource addMessage:message];
     
     		[self finishSendingMessageAnimated:YES];
     
