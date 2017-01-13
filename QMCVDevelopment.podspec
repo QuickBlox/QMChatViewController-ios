@@ -1,5 +1,5 @@
 #
-#  Be sure to run `pod spec lint QMCVDevelopment.podspec' to ensure this is a
+#  Be sure to run `pod spec lint QMChatViewController.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
@@ -23,52 +23,52 @@ Pod::Spec.new do |s|
   * Auto Layout inside.
   DESC
 
-  s.homepage     = "https://github.com/QuickBlox/QMCVDevelopment-ios"
+  s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
   s.license      = { :type => "BSD", :file => "LICENSE" }
   s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com", "Vitaliy Gurkovsky" => "vitaliy.gurkovsky@injoit.com"}
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/QuickBlox/QMCVDevelopment-ios.git", :tag => "#{s.version}" }
-  s.source_files = "QMCVDevelopment/QMCVDevelopment.{h,m}"
+  s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
+  s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
   s.subspec 'QMChatLocationSnapshotter' do |ss|
-    ss.source_files = 'QMCVDevelopment/QMChatLocationSnapshotter/*.{h,m}'
+    ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
   s.subspec 'Categories' do |ss|
-	ss.dependency 'QMCVDevelopment/QMChatLocationSnapshotter'
+	ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
 
-    ss.source_files = 'QMCVDevelopment/Categories/*.{h,m}'
+    ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
   end
 
-  s.subspec 'Utils' do |ss|
-	ss.dependency 'QMCVDevelopment/Categories'
+  s.subspec 'Utils' do |ss| 
+	ss.dependency 'QMChatViewController/Categories'
 
-    ss.source_files = 'QMCVDevelopment/Utils/**/*.{h,m}'
+    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
   end
 
   s.subspec 'Sections' do |ss|
-	ss.dependency 'QMCVDevelopment/QMChatDataSource'
+	ss.dependency 'QMChatViewController/QMChatDataSource'
 
-    ss.source_files = 'QMCVDevelopment/QMChatSection/*.{h,m}'
+    ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
   s.subspec 'QMChatDataSource' do |ss|
-    ss.source_files = 'QMCVDevelopment/QMChatDataSource/*.{h,m}'
+    ss.source_files = 'QMChatViewController/QMChatDataSource/*.{h,m}'
   end
 
   s.subspec 'Protocols' do |ss|
-    ss.source_files = 'QMCVDevelopment/Protocols/*.{h}'
+    ss.source_files = 'QMChatViewController/Protocols/*.{h}'
   end
 
   s.subspec 'Views' do |ss|
-  	ss.dependency 'QMCVDevelopment/Categories'
-  	ss.dependency 'QMCVDevelopment/Protocols'
-	ss.dependency 'QMCVDevelopment/Utils'
+  	ss.dependency 'QMChatViewController/Categories'
+  	ss.dependency 'QMChatViewController/Protocols'
+	ss.dependency 'QMChatViewController/Utils'
 
-    ss.source_files = 'QMCVDevelopment/Views/**/*.{h,m}'
+    ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 
-  s.resource_bundles = { "QMCVDevelopment" => ["QMCVDevelopment/**/*.xib", "QMCVDevelopment/**/*.png"] }
+  s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"
