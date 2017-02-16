@@ -1,15 +1,15 @@
 //
-//  QMBaseChatMediaAttachmentCell.m
+//  QMBaseMediaCell.m
 //  Pods
 //
 //  Created by Vitaliy Gurkovsky on 2/07/17.
 //
 //
 
-#import "QMBaseChatMediaAttachmentCell.h"
+#import "QMBaseMediaCell.h"
 #import "QMMediaViewDelegate.h"
 
-@implementation QMBaseChatMediaAttachmentCell
+@implementation QMBaseMediaCell
 @synthesize presenter;
 
 @end

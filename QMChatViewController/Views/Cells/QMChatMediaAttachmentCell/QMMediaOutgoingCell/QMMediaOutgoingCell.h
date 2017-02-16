@@ -6,8 +6,9 @@
 //
 //
 
-#import "QMBaseChatMediaAttachmentCell.h"
+#import "QMBaseMediaCell.h"
 
-@interface QMMediaOutgoingCell : QMBaseChatMediaAttachmentCell
+
+@interface QMMediaOutgoingCell : QMBaseMediaCell
 
 @end

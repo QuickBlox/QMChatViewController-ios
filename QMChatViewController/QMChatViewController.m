@@ -22,6 +22,8 @@
 #import <Photos/Photos.h>
 #import "QMKVOView.h"
 
+
+
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 const NSUInteger kQMSystemInputToolbarDebugHeight = 0;
@@ -145,6 +147,25 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     NSString *locIncomingIdentifier = [QMChatLocationIncomingCell cellReuseIdentifier];
     [self.collectionView registerNib:locIncomingNib forCellWithReuseIdentifier:locIncomingIdentifier];
     
+    // Register video attachment outgoing cell
+    UINib *videoOutgoingNib = [QMVideoOutgoingCell nib];
+    NSString *videoOugoingIdentifier = [QMVideoOutgoingCell cellReuseIdentifier];
+    [self.collectionView registerNib:videoOutgoingNib forCellWithReuseIdentifier:videoOugoingIdentifier];
+    
+    // Register video attachment incoming cell
+    UINib *videoIncomingNib = [QMVideoIncomingCell nib];
+    NSString *videoIncomingIdentifier = [QMVideoIncomingCell cellReuseIdentifier];
+    [self.collectionView registerNib:videoIncomingNib forCellWithReuseIdentifier:videoIncomingIdentifier];
+    
+    // Register audio attachment outgoing cell
+    UINib *audioOutgoingNib = [QMAudioOutgoingCell nib];
+    NSString *audioOutgoingIdentifier = [QMAudioOutgoingCell cellReuseIdentifier];
+    [self.collectionView registerNib:audioOutgoingNib forCellWithReuseIdentifier:audioOutgoingIdentifier];
+    
+    // Register audio attachment incoming cell
+    UINib *audioIncomingNib = [QMAudioIncomingCell nib];
+    NSString *audioIncomingIdentifier = [QMAudioIncomingCell cellReuseIdentifier];
+    [self.collectionView registerNib:audioIncomingNib forCellWithReuseIdentifier:audioIncomingIdentifier];
 }
 
 #pragma mark - UI Responder

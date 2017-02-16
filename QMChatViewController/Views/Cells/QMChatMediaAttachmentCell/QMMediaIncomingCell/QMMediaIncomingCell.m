@@ -10,4 +10,8 @@
 
 @implementation QMMediaIncomingCell
 
+- (void)setupInitialState {
+    
+}
+
 @end

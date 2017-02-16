@@ -10,9 +10,9 @@
 
 @protocol QMMediaViewDelegate;
 
-@interface QMBaseChatMediaAttachmentCell : QMChatCell <QMMediaViewDelegate>
+@interface QMBaseMediaCell : QMChatCell <QMMediaViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIImageView *mediaImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
 @property (nonatomic, weak) IBOutlet UIButton *mediaPlayButton;
 
 @end
