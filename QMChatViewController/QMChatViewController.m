@@ -21,7 +21,8 @@
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
 #import <Photos/Photos.h>
 #import "QMKVOView.h"
-
+#import "QMMediaPresenter.h"
+#import "QMMediaViewDelegate.h"
 
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
@@ -640,7 +641,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
-    
+
     if ([cell isKindOfClass:[QMChatContactRequestCell class]]) {
         
         QMChatContactRequestCell *contactRequestCell = (id)cell;

@@ -32,6 +32,7 @@
 #import "QMAudioIncomingCell.h"
 #import "QMAudioOutgoingCell.h"
 #import "QMMediaViewDelegate.h"
+#import "QMMediaPresenter.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
@@ -287,5 +288,5 @@
 - (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
-- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;;
+- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 @end
