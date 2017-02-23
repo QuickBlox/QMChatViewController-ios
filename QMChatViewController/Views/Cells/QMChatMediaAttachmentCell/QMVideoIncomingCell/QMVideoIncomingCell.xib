@@ -70,9 +70,24 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRs-ay-hfh">
+                                        <rect key="frame" x="52" y="75" width="45" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="HNS-1s-OMw"/>
+                                            <constraint firstAttribute="width" constant="45" id="MEt-4T-uKG"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2F-Xs-R7z">
+                                        <rect key="frame" x="53" y="87" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="sRs-ay-hfh" firstAttribute="centerX" secondItem="1rv-oZ-ov9" secondAttribute="centerX" id="Dby-Ia-M0V"/>
                                     <constraint firstItem="4Tj-AD-mYY" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="J3O-3t-QEe"/>
                                     <constraint firstAttribute="trailing" secondItem="4Tj-AD-mYY" secondAttribute="trailing" id="JbZ-J7-TpC"/>
                                     <constraint firstAttribute="trailing" secondItem="pgQ-H7-Y5u" secondAttribute="trailing" id="MHb-21-BnI"/>
@@ -80,8 +95,11 @@
                                     <constraint firstItem="Fa7-ju-G0X" firstAttribute="top" secondItem="pgQ-H7-Y5u" secondAttribute="bottom" id="Xog-ld-U4i"/>
                                     <constraint firstAttribute="centerX" secondItem="bt4-WH-s4r" secondAttribute="centerX" id="Yek-7L-ctn"/>
                                     <constraint firstAttribute="bottom" secondItem="4Tj-AD-mYY" secondAttribute="bottom" id="bxS-ng-UxW"/>
+                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerX" secondItem="1rv-oZ-ov9" secondAttribute="centerX" id="eiA-MB-h1L"/>
                                     <constraint firstAttribute="centerY" secondItem="bt4-WH-s4r" secondAttribute="centerY" id="fTt-zx-kle"/>
+                                    <constraint firstItem="sRs-ay-hfh" firstAttribute="centerY" secondItem="1rv-oZ-ov9" secondAttribute="centerY" id="i0u-6S-uZJ"/>
                                     <constraint firstItem="pgQ-H7-Y5u" firstAttribute="top" secondItem="1rv-oZ-ov9" secondAttribute="top" id="qvi-DU-nQs"/>
+                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerY" secondItem="1rv-oZ-ov9" secondAttribute="centerY" id="who-hi-3YO"/>
                                     <constraint firstAttribute="trailing" secondItem="Fa7-ju-G0X" secondAttribute="trailing" id="x6E-80-NrW"/>
                                     <constraint firstItem="pgQ-H7-Y5u" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="xDn-Pp-trQ"/>
                                     <constraint firstItem="Fa7-ju-G0X" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="xUT-Sx-H5g"/>
@@ -131,10 +149,12 @@
                 <outlet property="bottomLabelHeightConstraint" destination="CGF-Kf-7DA" id="g0g-gT-Csq"/>
                 <outlet property="containerView" destination="X4d-J3-f3R" id="PGD-cW-pr4"/>
                 <outlet property="containerWidthConstraint" destination="q3d-xO-tGz" id="VmK-ch-bod"/>
-                <outlet property="mediaImageView" destination="Fa7-ju-G0X" id="Wtj-Nm-uqk"/>
+                <outlet property="mediaPlayButton" destination="sRs-ay-hfh" id="O7x-Ah-QyU"/>
                 <outlet property="messageContainer" destination="1rv-oZ-ov9" id="RQK-Dd-jIf"/>
                 <outlet property="messageContainerBottomInsetConstraint" destination="uq1-a3-hdy" id="M9y-ZL-Eba"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="JYn-ad-AzN" id="kBu-AD-ojU"/>
+                <outlet property="previewImageView" destination="Fa7-ju-G0X" id="Q16-Fx-xHm"/>
+                <outlet property="progressLabel" destination="u2F-Xs-R7z" id="dLN-2e-jUq"/>
                 <outlet property="textViewBottomLabelVerticalSpaceConstraint" destination="XHe-Ey-FfR" id="Hh5-xs-Juc"/>
                 <outlet property="topLabel" destination="pgQ-H7-Y5u" id="56f-VT-nrf"/>
                 <outlet property="topLabelHeightConstraint" destination="9mx-bN-is7" id="gRI-ev-FiX"/>
