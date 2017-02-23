@@ -34,6 +34,10 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
+  s.subspec 'QMMediaChatModule' do |ss|
+  ss.source_files = 'QMChatViewController/QMMediaChatModule/**/*.{h,m}'
+  end
+
   s.subspec 'Categories' do |ss|
 	ss.dependency 'QMCVDevelopment/QMChatLocationSnapshotter'
 
@@ -73,6 +77,7 @@ Pod::Spec.new do |s|
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"
   s.dependency "SDWebImage", "~> 3.6"
+  s.dependency "FFCircularProgressView"
 
 
 end

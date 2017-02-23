@@ -16,6 +16,7 @@
 @required
 
 - (void)setupInitialState;
+- (void)setOnLayoutUpdate;
 
 @property (strong, nonatomic) QMMediaPresenter *presenter;
 
@@ -29,6 +30,13 @@
 
 - (void)setPlayingStatus:(NSUInteger)playingStatus;
 
-- (void)setCurrentTime:(NSTimeInterval)currentTiem;
+- (void)setCurrentTime:(NSTimeInterval)currentTime
+           forDuration:(CGFloat)duration;
+
+- (void)setThumbnailImage:(UIImage *)image;
+
+- (void)showLoadingError:(NSError *)error;
+- (void)setIsReady:(BOOL)isReady;
+- (void)showUploadingError:(NSError *)error;
 
 @end
