@@ -10,6 +10,16 @@
 
 @implementation QMAudioOutgoingCell
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+   
 
+}
+
+- (void)setCurrentTime:(NSTimeInterval)currentTime
+           forDuration:(CGFloat)duration {
+    
+    [self.progressView setProgress:currentTime/duration animated:YES];
+}
 
 @end

@@ -7,7 +7,10 @@
 //
 
 #import "QMMediaOutgoingCell.h"
+#import "QMProgressView.h"
 
 @interface QMAudioOutgoingCell : QMMediaOutgoingCell
+
+@property (weak, nonatomic) IBOutlet QMProgressView *progressView;
 
 @end
