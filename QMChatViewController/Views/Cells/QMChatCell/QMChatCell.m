@@ -75,6 +75,8 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [_qmChatCellMenuActions addObject:NSStringFromSelector(action)];
 }
 
+
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     

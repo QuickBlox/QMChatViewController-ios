@@ -22,7 +22,7 @@
 
 @optional
 
-- (void)setDuration:(CGFloat)duration;
+- (void)setDuration:(NSTimeInterval)duration;
 - (void)setOffset:(CGFloat)offset;
 - (void)setProgres:(CGFloat)progress;
 
@@ -31,7 +31,7 @@
 - (void)setPlayingStatus:(NSUInteger)playingStatus;
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(CGFloat)duration;
+           forDuration:(NSTimeInterval)duration;
 
 - (void)setThumbnailImage:(UIImage *)image;
 

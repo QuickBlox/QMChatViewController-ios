@@ -45,7 +45,7 @@
                                         <rect key="frame" x="0.0" y="21" width="165" height="133"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="POB-ZI-etn">
-                                        <rect key="frame" x="59.5" y="64.5" width="45" height="45"/>
+                                        <rect key="frame" x="60" y="65" width="45" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="6Pr-o8-JKN"/>
                                             <constraint firstAttribute="width" constant="45" id="zaj-JO-2BS"/>
@@ -86,25 +86,36 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xux-6h-6al">
+                                        <rect key="frame" x="0.0" y="154" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="diF-ca-yd3" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="2GS-ez-PaZ"/>
                                     <constraint firstItem="diF-ca-yd3" firstAttribute="top" secondItem="aUM-zm-5ky" secondAttribute="top" id="2YG-PH-oBY"/>
+                                    <constraint firstAttribute="bottom" secondItem="xux-6h-6al" secondAttribute="bottom" id="3Pz-s9-nsK"/>
                                     <constraint firstAttribute="trailing" secondItem="35y-FC-UxN" secondAttribute="trailing" id="AoC-SQ-Y4a"/>
                                     <constraint firstItem="nM9-EQ-Vo7" firstAttribute="centerY" secondItem="aUM-zm-5ky" secondAttribute="centerY" id="Bjz-7M-0KE"/>
                                     <constraint firstItem="Tve-03-DKT" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="Cu1-jT-1tl"/>
+                                    <constraint firstAttribute="bottom" secondItem="xux-6h-6al" secondAttribute="bottom" id="F7H-vq-U3M"/>
                                     <constraint firstItem="OT0-Sd-Nzq" firstAttribute="centerY" secondItem="aUM-zm-5ky" secondAttribute="centerY" id="IPa-vb-tRC"/>
                                     <constraint firstItem="POB-ZI-etn" firstAttribute="centerX" secondItem="aUM-zm-5ky" secondAttribute="centerX" id="JCS-dD-1dB"/>
                                     <constraint firstItem="35y-FC-UxN" firstAttribute="top" secondItem="Tve-03-DKT" secondAttribute="bottom" id="QGP-lp-lfN"/>
                                     <constraint firstItem="35y-FC-UxN" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="Xda-1O-jom"/>
                                     <constraint firstItem="POB-ZI-etn" firstAttribute="centerY" secondItem="aUM-zm-5ky" secondAttribute="centerY" id="ggu-nw-Wci"/>
+                                    <constraint firstItem="xux-6h-6al" firstAttribute="top" secondItem="Tve-03-DKT" secondAttribute="bottom" id="h1l-Lg-5li"/>
+                                    <constraint firstItem="xux-6h-6al" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="hSl-mS-ck4"/>
                                     <constraint firstItem="OT0-Sd-Nzq" firstAttribute="centerX" secondItem="aUM-zm-5ky" secondAttribute="centerX" id="jvw-zB-F9E"/>
                                     <constraint firstAttribute="trailing" secondItem="Tve-03-DKT" secondAttribute="trailing" id="nJl-Te-LvY"/>
                                     <constraint firstItem="nM9-EQ-Vo7" firstAttribute="centerX" secondItem="aUM-zm-5ky" secondAttribute="centerX" id="qN0-AE-nuq"/>
                                     <constraint firstAttribute="bottom" secondItem="35y-FC-UxN" secondAttribute="bottom" id="qjn-WF-jgP"/>
                                     <constraint firstAttribute="trailing" secondItem="diF-ca-yd3" secondAttribute="trailing" id="sf6-RH-gfz"/>
                                     <constraint firstItem="Tve-03-DKT" firstAttribute="top" secondItem="diF-ca-yd3" secondAttribute="bottom" id="xs4-sc-NTj"/>
+                                    <constraint firstItem="xux-6h-6al" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="zzh-CT-PM0"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -152,6 +163,7 @@
                 <outlet property="circularProgress" destination="OT0-Sd-Nzq" id="Pix-sZ-LKK"/>
                 <outlet property="containerView" destination="mlp-Ig-WT7" id="k8m-rd-Dhd"/>
                 <outlet property="containerWidthConstraint" destination="jtP-rm-saS" id="9Rs-pi-upC"/>
+                <outlet property="durationLabel" destination="xux-6h-6al" id="9cb-x0-Mva"/>
                 <outlet property="mediaPlayButton" destination="POB-ZI-etn" id="VRj-gL-HH0"/>
                 <outlet property="messageContainer" destination="aUM-zm-5ky" id="rie-RC-nhS"/>
                 <outlet property="messageContainerBottomInsetConstraint" destination="5Sz-rW-mKf" id="DmH-WT-ifj"/>
