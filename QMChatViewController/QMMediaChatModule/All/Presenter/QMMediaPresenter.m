@@ -15,32 +15,55 @@
 @implementation QMMediaPresenter
 
 @synthesize view = _view;
-@synthesize interactor = _interactor;
+@synthesize mediaID = _mediaID;
+@synthesize message = _message;
+@synthesize playerService;
+@synthesize mediaAssistant;
 
 - (instancetype)initWithView:(id <QMMediaViewDelegate>)view {
     
     if (self = [super init]) {
-        
         _view = view;
-        [_view setupInitialState];
     }
-    
     return  self;
 }
+
 - (void)updateView {
     
 }
 
-- (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
+- (void)updateWithMedia:(QMMediaItem *)mediaItem {
     
-    [self.interactor updateWithMedia:mediaItem];
+    
+    [self didUpdateIsActive:NO];
+    
+    if (mediaItem.duration > 0) {
+        [self didUpdateDuration:mediaItem.duration];
+    }
+    
+    BOOL isReady = mediaItem.isReady;
+    
+    if (mediaItem.contentType == QMMediaContentTypeVideo) {
+        
+        UIImage *image = mediaItem.thumbnailImage;
+        if (image) {
+            [self didUpdateThumbnailImage:image];
+        }
+    }
+    
+    [self didUpdateIsReady:isReady];
 }
+
 
 - (void)activateMedia {
     
-    [self.interactor activateMedia];
+    [self.playerService activateMediaWithSender:self];
 }
 
+- (void)requestForMedia {
+    
+    [self.mediaAssistant requestForMediaWithSender:self];
+}
 
 
 - (void)updateProgress:(CGFloat)progress {
@@ -67,21 +90,26 @@
     
     [self.view setOffset:offset];
 }
-- (void)didUpdateDuration:(NSTimeInterval)duration {
-    
-    [self.view setDuration:duration];
-}
-
 
 - (void)didUpdateIsReady:(BOOL)isReady {
-    
     [self.view setIsReady:isReady];
+    if (isReady) {
+        [self.playerService requestPlayingStatus:self];
+        [self.mediaAssistant requestForMediaInfoWithSender:self];
+    }
+    
+    
 }
 - (void)didUpdateProgress:(CGFloat)progress {
     
     [self.view setProgres:progress];
 }
-- (void)didUpdateCurrentTime:(NSTimeInterval)currentTime duration:(CGFloat)duration {
+
+- (void)didUpdateDuration:(NSTimeInterval)duration {
+    [self.view setDuration:duration];
+}
+- (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
+                    duration:(CGFloat)duration {
     
     [self.view setCurrentTime:currentTime
                   forDuration:duration];

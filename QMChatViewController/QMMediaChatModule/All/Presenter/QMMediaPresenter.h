@@ -11,6 +11,21 @@
 #import "QMMediaPresenterDelegate.h"
 #import "QMInteractorDelegate.h"
 
-@interface QMMediaPresenter : NSObject <QMMediaPresenterDelegate, QMMediaInteractorOutput>
+@interface QMMediaPresenter : NSObject <QMMediaPresenterDelegate, QMMediaInteractorOutput, QMMediaInteractorInput>
+
+@end
+
+
+@protocol QMPlayerService <NSObject>
+
+- (void)activateMediaWithSender:(QMMediaPresenter *)sender;
+- (void)requestPlayingStatus:(QMMediaPresenter *)sender;
+
+@end
+
+@protocol QMMediaAssistant <NSObject>
+
+- (void)requestForMediaWithSender:(QMMediaPresenter *)sender;
+- (void)requestForMediaInfoWithSender:(QMMediaPresenter *)sender;
 
 @end

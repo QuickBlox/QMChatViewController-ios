@@ -11,17 +11,17 @@
 @class QMMediaItem;
 
 @protocol QMMediaViewDelegate;
-@protocol QMMediaModelDelegate;
-
-@protocol QMMediaInteractorInput;
+@protocol QMPlayerService;
+@protocol QMMediaAssistant;
 
 @protocol QMMediaPresenterDelegate <NSObject>
 
-@property (nonatomic, weak) id <QMMediaViewDelegate> view;
-@property (nonatomic, strong) id <QMMediaInteractorInput> interactor;
+@property (weak, nonatomic) id <QMMediaViewDelegate> view;
+@property (weak, nonatomic) id <QMPlayerService> playerService;
+@property (weak, nonatomic) id <QMMediaAssistant> mediaAssistant;
 
-//- (instancetype)initWithView:(id <QMMediaViewDelegate>)view message:(QBChatMessage *)message;
-- (instancetype)initWithView:(id <QMMediaViewDelegate>)view;
+- (instancetype)initWithView:(id<QMMediaViewDelegate>)view;
+
 - (void)updateView;
 - (void)activateMedia;
 
