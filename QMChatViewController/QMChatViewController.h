@@ -27,10 +27,13 @@
 #import "QMChatDataSource.h"
 
 #import "QMVideoIncomingCell.h"
-#import "QMVideoOutgoingCell.h"
-
 #import "QMAudioIncomingCell.h"
+#import "QMImageIncomingCell.h"
+
+#import "QMVideoOutgoingCell.h"
+#import "QMImageOutgoingCell.h"
 #import "QMAudioOutgoingCell.h"
+
 #import "QMMediaViewDelegate.h"
 #import "QMMediaPresenter.h"
 

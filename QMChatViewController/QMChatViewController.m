@@ -167,6 +167,18 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     UINib *audioIncomingNib = [QMAudioIncomingCell nib];
     NSString *audioIncomingIdentifier = [QMAudioIncomingCell cellReuseIdentifier];
     [self.collectionView registerNib:audioIncomingNib forCellWithReuseIdentifier:audioIncomingIdentifier];
+    
+    // Register image attachment outgoing cell
+    UINib *imageOutgoingNib = [QMImageOutgoingCell nib];
+    NSString *imageOutgoingIdentifier = [QMImageOutgoingCell cellReuseIdentifier];
+    [self.collectionView registerNib:imageOutgoingNib forCellWithReuseIdentifier:imageOutgoingIdentifier];
+    
+    // Register image attachment incoming cell
+    UINib *imageIncomingNib = [QMImageIncomingCell nib];
+    NSString *imageIncomingIdentifier = [QMImageIncomingCell cellReuseIdentifier];
+    [self.collectionView registerNib:imageIncomingNib forCellWithReuseIdentifier:imageIncomingIdentifier];
+    
+    
 }
 
 #pragma mark - UI Responder
