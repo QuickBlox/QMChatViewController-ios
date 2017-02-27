@@ -29,3 +29,9 @@
 - (void)requestForMediaInfoWithSender:(QMMediaPresenter *)sender;
 
 @end
+
+@protocol QMEventHandler <NSObject>
+
+- (void)didTapContainer:(QMMediaPresenter *)sender;
+
+@end

@@ -83,7 +83,7 @@
     self.mediaPlayButton.hidden = !isReady;
 }
 
-- (void)setThumbnailImage:(UIImage *)image {
+- (void)setImage:(UIImage *)image {
     
     self.previewImageView.image = image;
     [self setNeedsLayout];

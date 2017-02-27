@@ -33,7 +33,7 @@
 - (void)setCurrentTime:(NSTimeInterval)currentTime
            forDuration:(NSTimeInterval)duration;
 
-- (void)setThumbnailImage:(UIImage *)image;
+- (void)setImage:(UIImage *)image;
 
 - (void)showLoadingError:(NSError *)error;
 - (void)setIsReady:(BOOL)isReady;

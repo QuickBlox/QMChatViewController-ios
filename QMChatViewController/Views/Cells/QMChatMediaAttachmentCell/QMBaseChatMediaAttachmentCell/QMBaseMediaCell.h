@@ -18,4 +18,5 @@
 @property (nonatomic, weak) IBOutlet UILabel *progressLabel;
 @property (nonatomic, weak) IBOutlet UILabel *durationLabel;
 @property (nonatomic, weak) IBOutlet FFCircularProgressView *circularProgress;
+
 @end

@@ -19,6 +19,7 @@
 @synthesize message = _message;
 @synthesize playerService;
 @synthesize mediaAssistant;
+@synthesize eventHandler;
 
 - (instancetype)initWithView:(id <QMMediaViewDelegate>)view {
     
@@ -32,7 +33,12 @@
     
 }
 
-- (void)updateWithMedia:(QMMediaItem *)mediaItem {
+- (void)didTapContainer {
+    
+    [self.eventHandler didTapContainer:self];
+}
+
+- (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
     
     
     [self didUpdateIsActive:NO];
@@ -43,7 +49,7 @@
     
     BOOL isReady = mediaItem.isReady;
     
-    if (mediaItem.contentType == QMMediaContentTypeVideo) {
+    if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeImage ) {
         
         UIImage *image = mediaItem.thumbnailImage;
         if (image) {
@@ -62,7 +68,9 @@
 
 - (void)requestForMedia {
     
+    [self.playerService requestPlayingStatus:self];
     [self.mediaAssistant requestForMediaWithSender:self];
+    
 }
 
 
@@ -109,7 +117,7 @@
     [self.view setDuration:duration];
 }
 - (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
-                    duration:(CGFloat)duration {
+                    duration:(NSTimeInterval)duration {
     
     [self.view setCurrentTime:currentTime
                   forDuration:duration];
@@ -117,6 +125,6 @@
 
 - (void)didUpdateThumbnailImage:(UIImage *)image {
     
-    [self.view setThumbnailImage:image];
+    [self.view setImage:image];
 }
 @end
