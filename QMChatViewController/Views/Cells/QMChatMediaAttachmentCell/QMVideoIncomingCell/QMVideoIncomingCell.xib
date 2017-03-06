@@ -84,9 +84,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="th2-rm-wzW" customClass="FFCircularProgressView">
+                                        <rect key="frame" x="52" y="75" width="45" height="45"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="th2-rm-wzW" firstAttribute="centerX" secondItem="sRs-ay-hfh" secondAttribute="centerX" id="9pP-wj-cf7"/>
                                     <constraint firstItem="sRs-ay-hfh" firstAttribute="centerX" secondItem="1rv-oZ-ov9" secondAttribute="centerX" id="Dby-Ia-M0V"/>
                                     <constraint firstItem="4Tj-AD-mYY" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="J3O-3t-QEe"/>
                                     <constraint firstAttribute="trailing" secondItem="4Tj-AD-mYY" secondAttribute="trailing" id="JbZ-J7-TpC"/>
@@ -98,6 +103,7 @@
                                     <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerX" secondItem="1rv-oZ-ov9" secondAttribute="centerX" id="eiA-MB-h1L"/>
                                     <constraint firstAttribute="centerY" secondItem="bt4-WH-s4r" secondAttribute="centerY" id="fTt-zx-kle"/>
                                     <constraint firstItem="sRs-ay-hfh" firstAttribute="centerY" secondItem="1rv-oZ-ov9" secondAttribute="centerY" id="i0u-6S-uZJ"/>
+                                    <constraint firstItem="th2-rm-wzW" firstAttribute="centerY" secondItem="sRs-ay-hfh" secondAttribute="centerY" id="jBr-BX-djT"/>
                                     <constraint firstItem="pgQ-H7-Y5u" firstAttribute="top" secondItem="1rv-oZ-ov9" secondAttribute="top" id="qvi-DU-nQs"/>
                                     <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerY" secondItem="1rv-oZ-ov9" secondAttribute="centerY" id="who-hi-3YO"/>
                                     <constraint firstAttribute="trailing" secondItem="Fa7-ju-G0X" secondAttribute="trailing" id="x6E-80-NrW"/>
@@ -147,6 +153,7 @@
                 <outlet property="avatarView" destination="9r3-Wm-17e" id="ZSG-47-gWm"/>
                 <outlet property="bottomLabel" destination="4Tj-AD-mYY" id="new-qI-SJh"/>
                 <outlet property="bottomLabelHeightConstraint" destination="CGF-Kf-7DA" id="g0g-gT-Csq"/>
+                <outlet property="circularProgress" destination="th2-rm-wzW" id="CPy-yo-Nq8"/>
                 <outlet property="containerView" destination="X4d-J3-f3R" id="PGD-cW-pr4"/>
                 <outlet property="containerWidthConstraint" destination="q3d-xO-tGz" id="VmK-ch-bod"/>
                 <outlet property="mediaPlayButton" destination="sRs-ay-hfh" id="O7x-Ah-QyU"/>

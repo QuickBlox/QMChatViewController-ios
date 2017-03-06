@@ -29,10 +29,10 @@
     return  self;
 }
 
-- (void)updateView {
+- (void)dealloc {
     
+    NSLog(@"Presenter deallock");
 }
-
 - (void)didTapContainer {
     
     [self.eventHandler didTapContainer:self];
@@ -40,24 +40,17 @@
 
 - (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
     
-    
-    [self didUpdateIsActive:NO];
-    
-    if (mediaItem.duration > 0) {
-        [self didUpdateDuration:mediaItem.duration];
+
+    if (mediaItem.mediaDuration > 0) {
+        [self didUpdateDuration:mediaItem.mediaDuration];
     }
-    
-    BOOL isReady = mediaItem.isReady;
-    
+
     if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeImage ) {
-        
-        UIImage *image = mediaItem.thumbnailImage;
+        UIImage *image = mediaItem.image;
         if (image) {
             [self didUpdateThumbnailImage:image];
         }
     }
-    
-    [self didUpdateIsReady:isReady];
 }
 
 
@@ -68,9 +61,7 @@
 
 - (void)requestForMedia {
     
-    [self.playerService requestPlayingStatus:self];
     [self.mediaAssistant requestForMediaWithSender:self];
-    
 }
 
 
@@ -94,18 +85,19 @@
     
     [self.view setPlayingStatus:playingStatus];
 }
+
 - (void)didUpdateOffset:(NSTimeInterval)offset {
     
     [self.view setOffset:offset];
 }
 
 - (void)didUpdateIsReady:(BOOL)isReady {
+    
     [self.view setIsReady:isReady];
+    
     if (isReady) {
         [self.playerService requestPlayingStatus:self];
-        [self.mediaAssistant requestForMediaInfoWithSender:self];
     }
-    
     
 }
 - (void)didUpdateProgress:(CGFloat)progress {
@@ -114,8 +106,10 @@
 }
 
 - (void)didUpdateDuration:(NSTimeInterval)duration {
+    
     [self.view setDuration:duration];
 }
+
 - (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
                     duration:(NSTimeInterval)duration {
     

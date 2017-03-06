@@ -10,6 +10,14 @@
 
 @implementation QMMediaIncomingCell
 
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    
+    self.circularProgress.tintColor = [UIColor darkGrayColor];
+    self.progressLabel.textColor = [UIColor darkGrayColor];
+}
+
 - (void)setupInitialState {
     
 }

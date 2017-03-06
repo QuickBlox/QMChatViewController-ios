@@ -23,10 +23,11 @@
 }
 
 - (void)prepareForReuse {
-    [super prepareForReuse];
     
+    [super prepareForReuse];
     self.previewImageView.image = nil;
 }
+
 - (void)awakeFromNib {
     
     [super awakeFromNib];

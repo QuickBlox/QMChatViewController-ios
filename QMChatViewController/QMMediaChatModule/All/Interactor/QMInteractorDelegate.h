@@ -14,13 +14,13 @@
 
 @protocol QMMediaInteractorInput <NSObject>
 
-@property (strong, nonatomic) QMMediaItem *mediaItem;
 @property (copy, nonatomic) NSString *mediaID;
-@property (strong,nonatomic) QBChatMessage *message;
+@property (strong, nonatomic) QBChatMessage *message;
 
+- (void)didTapContainer;
 - (void)requestForMedia;
 - (void)activateMedia;
-- (void)updateWithMedia:(QMMediaItem *)mediaItem;
+- (void)updateWithMediaItem:(QMMediaItem *)mediaItem;
 
 @end
 
@@ -32,7 +32,7 @@
 - (void)didUpdateOffset:(NSTimeInterval)offset;
 - (void)didUpdateDuration:(NSTimeInterval)duration;
 - (void)didUpdateProgress:(CGFloat)progress;
-- (void)didUpdateCurrentTime:(NSTimeInterval)currentTime duration:(CGFloat)duration;
+- (void)didUpdateCurrentTime:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration;
 
 - (void)didUpdatePlayingStatus:(NSUInteger)playingStatus;
 - (void)didUpdateThumbnailImage:(UIImage *)image;

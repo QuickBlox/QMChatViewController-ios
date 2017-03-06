@@ -10,8 +10,11 @@
 
 @interface QMProgressView : UIView
 
-@property (nonatomic, assign, readonly) CGFloat progress;
+@property (assign, nonatomic, readonly) CGFloat progress;
 
-- (void)setProgress:(CGFloat)progress animated:(BOOL)animated;
+@property (strong, nonatomic) UIColor *progressBarColor;
+
+- (void)setProgress:(CGFloat)progress
+           animated:(BOOL)animated;
 
 @end

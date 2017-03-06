@@ -10,7 +10,12 @@
 
 @implementation QMVideoIncomingCell
 
-
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.mediaPlayButton.tintColor = [UIColor grayColor];
+    self.circularProgress.tintColor = [UIColor grayColor];
+    
+}
 
 
 @end
