@@ -9,6 +9,7 @@
 #import "QMToolbarContentView.h"
 #import "UIView+QM.h"
 #import "QMChatResources.h"
+#import "QMAudioRecordButton.h"
 
 const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
 

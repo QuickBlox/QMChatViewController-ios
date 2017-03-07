@@ -23,6 +23,7 @@
 #import "QMKVOView.h"
 #import "QMMediaPresenter.h"
 #import "QMMediaViewDelegate.h"
+#import "QMAudioRecordButton.h"
 
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
@@ -42,6 +43,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 @property (strong, nonatomic, readonly) UIImagePickerController *pickerController;
 
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
+@property (strong, nonatomic) QMAudioRecordButton *audioRecordButtonItem;
 
 @property (nonatomic, assign) CGFloat lastContentOffset;
 
@@ -279,7 +281,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
-    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
+    self.inputToolbar.contentView.rightBarButtonItem = [self audioRecordButtonItem];
     
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
@@ -375,6 +377,44 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     accessoryButton.tintColor = [UIColor lightGrayColor];
     
     return accessoryButton;
+}
+- (void)recordButtonInteractionDidBegin {
+    [self setShowRecordingInterface:YES velocity:0.0];
+}
+- (void)recordButtonInteractionDidCancell:(CGFloat)velocity {
+    [self setShowRecordingInterface:false velocity:velocity];
+}
+- (void)recordButtonInteractionDidComplete:(CGFloat)velocity {
+    [self setShowRecordingInterface:false velocity:velocity];
+}
+- (void)recordButtonInteractionDidUpdate:(CGFloat)value {
+    
+}
+- (void)setShowRecordingInterface:(bool)show velocity:(CGFloat)velocity
+{
+    if (show)
+    {
+        [self.audioRecordButtonItem animateIn];
+    }
+    else {
+        [self.audioRecordButtonItem animateOut];
+    }
+}
+
+- (QMAudioRecordButton *)audioRecordButtonItem {
+    if (!_audioRecordButtonItem) {
+        UIImage *recordImage = [QMChatResources imageNamed:@"attachment_ic"];
+        UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
+        UIImage *highlightedImage = [recordImage imageMaskedWithColor:[UIColor darkGrayColor]];
+        
+        CGRect frame = CGRectMake(0, 0, 32.0, 32.0);
+        QMAudioRecordButton *button =  [[QMAudioRecordButton alloc] initWithFrame:frame];
+        button.delegate = self;
+        [button setImage:normalImage forState:UIControlStateNormal];
+        [button setImage:highlightedImage forState:UIControlStateHighlighted];
+        _audioRecordButtonItem = button;
+    }
+    return _audioRecordButtonItem;
 }
 
 - (UIButton *)sendButtonItem {
@@ -653,7 +693,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
-
+    
     if ([cell isKindOfClass:[QMChatContactRequestCell class]]) {
         
         QMChatContactRequestCell *contactRequestCell = (id)cell;
@@ -947,14 +987,14 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)setBottomCollectionViewInsetsValue:(CGFloat)bottom {
-
+    
     [self setCollectionViewInsetsTopValue:self.collectionView.contentInset.bottom
                               bottomValue:bottom];
     
 }
 
 - (void)setTopCollectionViewInsetsValue:(CGFloat)top {
-
+    
     [self setCollectionViewInsetsTopValue:top
                               bottomValue:self.collectionView.contentInset.top];
 }
@@ -1195,7 +1235,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     visibleRect.size = self.collectionView.frame.size;
     return visibleRect;
 }
-    
+
 - (CGRect)scrollTopRect {
     
     return CGRectMake(0.0,
@@ -1244,7 +1284,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     CGFloat toolbarMinY = CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputToolbar.frame);
     
     switch (gesture.state) {
-        
+            
         case UIGestureRecognizerStateChanged: {
             
             if ([self.inputToolbar.contentView.textView isFirstResponder]) {

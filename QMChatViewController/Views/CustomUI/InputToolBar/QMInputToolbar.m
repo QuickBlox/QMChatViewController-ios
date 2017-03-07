@@ -90,7 +90,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 }
 
 - (void)rightBarButtonPressed:(UIButton *)sender {
-    
+   
     [self.delegate messagesInputToolbar:self didPressRightBarButton:sender];
 }
 
@@ -100,7 +100,8 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     BOOL hasText = [self.contentView.textView hasText];
     BOOL hasTextAttachment = [self.contentView.textView hasTextAttachment];
-    
+    self.contentView.rightBarButtonItem.enabled = true;
+    return;
     if (self.sendButtonOnRight) {
         
         self.contentView.rightBarButtonItem.enabled = hasText || hasTextAttachment;

@@ -10,7 +10,7 @@
 #import "QMMediaPresenterDelegate.h"
 #import "QMMediaViewDelegate.h"
 #import "QMMediaModelDelegate.h"
-#import "QMMediaItem.h"
+
 
 @implementation QMMediaPresenter
 
@@ -38,20 +38,20 @@
     [self.eventHandler didTapContainer:self];
 }
 
-- (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
-    
-
-    if (mediaItem.mediaDuration > 0) {
-        [self didUpdateDuration:mediaItem.mediaDuration];
-    }
-
-    if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeImage ) {
-        UIImage *image = mediaItem.image;
-        if (image) {
-            [self didUpdateThumbnailImage:image];
-        }
-    }
-}
+//- (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
+//    
+//
+//    if (mediaItem.mediaDuration > 0) {
+//        [self didUpdateDuration:mediaItem.mediaDuration];
+//    }
+//
+//    if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeImage ) {
+//        UIImage *image = mediaItem.image;
+//        if (image) {
+//            [self didUpdateThumbnailImage:image];
+//        }
+//    }
+//}
 
 
 - (void)activateMedia {
