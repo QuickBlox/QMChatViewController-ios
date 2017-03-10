@@ -19,6 +19,7 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
 
 @property (strong, nonatomic) NSURL *url;
 @property (weak, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
+@property (strong, nonatomic) CAShapeLayer *mask;
 
 @end
 
@@ -79,12 +80,6 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
     return self;
 }
 
-- (void)awakeFromNib {
-    
-    [super awakeFromNib];
-    [self configure];
-}
-
 - (void)dealloc {
     
     [self sd_cancelCurrentImageLoad];
@@ -99,6 +94,16 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
     [self addGestureRecognizer:tap];
     self.tapGestureRecognizer = tap;
     self.userInteractionEnabled = YES;
+    
+    _mask = [[CAShapeLayer alloc] init];
+    _mask.rasterizationScale = [UIScreen mainScreen].scale;
+    _mask.shouldRasterize = YES;
+    
+    // Make a circular shape
+    UIBezierPath *circularPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) cornerRadius:MAX(self.frame.size.width, self.frame.size.height)];
+    
+    _mask.path = circularPath.CGPath;
+    self.layer.mask = _mask;
 }
 
 - (void)setImageWithURL:(NSURL *)url
@@ -107,84 +112,75 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
     
-    if ([url isEqual:self.url]) {
-        
-        return;
-    }
+    [self sd_cancelCurrentImageLoad];
     
     self.url = url;
     
-    [self sd_cancelCurrentImageLoad];
     
     if (!(options & SDWebImageDelayPlaceholder)) {
         self.image = placehoder;
     }
     
     __weak __typeof(self)weakSelf = self;
-    id <SDWebImageOperation> operation =
-    [QMImageLoader imageWithURL:url
-                          frame:self.bounds
-                        options:options
-                       progress:progress
-                 transformImage:^UIImage *(UIImage *image, CGRect frame) {
-                     
-                     return [self transformImage:image];
-                     
-                 } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                     
-                     __typeof(weakSelf)strongSelf = weakSelf;
-                     
-                     dispatch_main_sync_safe(^{
-                         
-                         if (!error) {
-                             
-                             strongSelf.image = image;
-                             [strongSelf setNeedsLayout];
-                         }
-                         else {
-                             
-                             if ((options & SDWebImageDelayPlaceholder)) {
-                                 
-                                 strongSelf.image = placehoder;
-                                 [strongSelf setNeedsLayout];
-                             }
-                         }
-                         
-                         if (completedBlock) {
-                             
-                             completedBlock(image, error, cacheType, imageURL);
-                         }
-                     });
-                     
-                 }];
     
-    if (operation != nil) {
-        
-        [self sd_setImageLoadOperation:operation forKey:kQMImageViewLoadOperationKey];
-    }
+    id <SDWebImageOperation> operation =
+    [[QMImageLoader sharedManager]
+     downloadImageWithURL:url
+     options:options
+     progress:progress
+     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+         
+         __typeof(weakSelf)strongSelf = weakSelf;
+         
+         dispatch_main_sync_safe(^{
+             
+             if (!error) {
+                 
+                 strongSelf.image = image;
+                 [strongSelf setNeedsLayout];
+             }
+             else {
+                 
+                 if ((options & SDWebImageDelayPlaceholder)) {
+                     
+                     strongSelf.image = placehoder;
+                     [strongSelf setNeedsLayout];
+                 }
+             }
+             
+             if (completedBlock) {
+                 
+                 completedBlock(image, error, cacheType, imageURL);
+             }
+         });
+         
+     }];
+    
+    [self sd_setImageLoadOperation:operation forKey:kQMImageViewLoadOperationKey];
 }
 
 - (UIImage *)transformImage:(UIImage *)image {
     
-    if (self.imageViewType == QMImageViewTypeSquare) {
-        
-        return [image imageByScaleAndCrop:self.frame.size];
-    }
-    else if (self.imageViewType == QMImageViewTypeCircle) {
-        
-        if (image.size.height > image.size.width
-            || image.size.width > image.size.height) {
-            // if image is not square it will be disorted
-            // making it a square-image first
-            image = [image imageByScaleAndCrop:self.frame.size];
-        }
-        
-        return [image imageByCircularScaleAndCrop:self.frame.size];
-    }
-    else {
-        
-        return image;
-    }
+    //    if (self.imageViewType == QMImageViewTypeSquare) {
+    //
+    //        return [image imageByScaleAndCrop:self.frame.size];
+    //    }
+    //    else if (self.imageViewType == QMImageViewTypeCircle) {
+    //
+    //        if (image.size.height > image.size.width
+    //            || image.size.width > image.size.height) {
+    //            // if image is not square it will be disorted
+    //            // making it a square-image first
+    //            image = [image imageByScaleAndCrop:self.frame.size];
+    //        }
+    //
+    //        return [image imageByCircularScaleAndCrop:self.frame.size];
+    //    }
+    //    else {
+    //
+    //        return image;
+    //    }
+    return nil;
 }
 
 - (void)clearImage {
@@ -195,18 +191,18 @@ static NSString * const kQMImageViewLoadOperationKey = @"UIImageViewImageLoad";
 
 - (void)setImage:(UIImage *)image withKey:(NSString *)key {
     
-    [QMImageLoader cachedImageForKey:key completion:^(UIImage *cachedImage, SDImageCacheType cacheType) {
-        
-        if (cachedImage != nil) {
-            
-            self.image = cachedImage;
-        }
-        else {
-            
-            [self applyImage:image];
-            [QMImageLoader storeImage:image forKey:key];
-        }
-    }];
+//    [QMImageLoader cachedImageForKey:key completion:^(UIImage *cachedImage, SDImageCacheType cacheType) {
+//        
+//        if (cachedImage != nil) {
+//            
+//            self.image = cachedImage;
+//        }
+//        else {
+//            
+//            [self applyImage:image];
+//            [QMImageLoader storeImage:image forKey:key];
+//        }
+//    }];
 }
 
 - (void)applyImage:(UIImage *)image {
