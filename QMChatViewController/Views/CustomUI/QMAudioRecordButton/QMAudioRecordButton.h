@@ -25,7 +25,7 @@
 @protocol QMAudioRecordButtonProtocol <NSObject>
 
 - (void)recordButtonInteractionDidBegin;
-- (void)recordButtonInteractionDidCancell:(CGFloat)velocity;
+- (void)recordButtonInteractionDidCancel:(CGFloat)velocity;
 - (void)recordButtonInteractionDidComplete:(CGFloat)velocity;
 - (void)recordButtonInteractionDidUpdate:(CGFloat)value;
 
