@@ -105,6 +105,10 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.containerView.backgroundColor = [UIColor clearColor];
     self.avatarView.backgroundColor = [UIColor clearColor];
 #endif
+    [_topLabel.layer setDrawsAsynchronously:YES];
+    [_textView.layer setDrawsAsynchronously:YES];
+    [_bottomLabel.layer setDrawsAsynchronously:YES];
+    [self.layer setDrawsAsynchronously:YES];
     
     UITapGestureRecognizer *tap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
@@ -113,38 +117,47 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.tapGestureRecognizer = tap;
 }
 
-- (void)prepareForReuse {
-    
-    [super prepareForReuse];
-}
-
 - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
     return layoutAttributes;
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
 
-    [super applyLayoutAttributes:layoutAttributes];
-
     QMChatCellLayoutAttributes *customAttributes = (id)layoutAttributes;
     
-    [self updateConstraint:self.avatarContainerViewHeightConstraint withConstant:customAttributes.avatarSize.height];
-    [self updateConstraint:self.avatarContainerViewWidthConstraint withConstant:customAttributes.avatarSize.width];
-    [self.avatarView layoutIfNeeded];
+    [self updateConstraint:self.avatarContainerViewHeightConstraint
+              withConstant:customAttributes.avatarSize.height];
+    
+    [self updateConstraint:self.avatarContainerViewWidthConstraint
+              withConstant:customAttributes.avatarSize.width];
 
-    [self updateConstraint:self.topLabelHeightConstraint withConstant:customAttributes.topLabelHeight];
-    [self updateConstraint:self.bottomLabelHeightConstraint withConstant:customAttributes.bottomLabelHeight];
+    [self updateConstraint:self.topLabelHeightConstraint
+              withConstant:customAttributes.topLabelHeight];
     
-    [self updateConstraint:self.messageContainerTopInsetConstraint withConstant:customAttributes.containerInsets.top];
-    [self updateConstraint:self.messageContainerLeftInsetConstraint withConstant:customAttributes.containerInsets.left];
-    [self updateConstraint:self.messageContainerBottomInsetConstraint withConstant:customAttributes.containerInsets.bottom];
-    [self updateConstraint:self.messageContainerRightInsetConstraint withConstant:customAttributes.containerInsets.right];
+    [self updateConstraint:self.bottomLabelHeightConstraint
+              withConstant:customAttributes.bottomLabelHeight];
     
-    [self updateConstraint:self.topLabelTextViewVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTopLabelAndTextView];
-    [self updateConstraint:self.textViewBottomLabelVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
+    [self updateConstraint:self.messageContainerTopInsetConstraint
+              withConstant:customAttributes.containerInsets.top];
+    
+    [self updateConstraint:self.messageContainerLeftInsetConstraint
+              withConstant:customAttributes.containerInsets.left];
+    
+    [self updateConstraint:self.messageContainerBottomInsetConstraint
+              withConstant:customAttributes.containerInsets.bottom];
+    
+    [self updateConstraint:self.messageContainerRightInsetConstraint
+              withConstant:customAttributes.containerInsets.right];
+    
+    [self updateConstraint:self.topLabelTextViewVerticalSpaceConstraint
+              withConstant:customAttributes.spaceBetweenTopLabelAndTextView];
+    
+    [self updateConstraint:self.textViewBottomLabelVerticalSpaceConstraint
+              withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
 	
-    [self updateConstraint:self.containerWidthConstraint withConstant:customAttributes.containerSize.width];
-	
+    [self updateConstraint:self.containerWidthConstraint
+              withConstant:customAttributes.containerSize.width];
+    
     [self layoutIfNeeded];
 }
 
@@ -164,12 +177,6 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 		[self layoutIfNeeded];
         self.contentView.frame = bounds;
     }
-}
-
-- (void)setHighlighted:(BOOL)highlighted {
-    
-    [super setHighlighted:highlighted];
-    self.containerView.highlighted = highlighted;
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -291,7 +298,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     QMChatCellLayoutModel defaultLayoutModel = {
 
         .avatarSize = CGSizeMake(30, 30),
-        .containerInsets = UIEdgeInsetsMake(4, 5, 4, 5),
+        .containerInsets = UIEdgeInsetsMake(4, 0, 4, 5),
         .containerSize = CGSizeZero,
         .topLabelHeight = 17,
         .bottomLabelHeight = 14,
