@@ -249,7 +249,6 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
                 return false;
             }
             
-            
             if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidUpdate:)])
                 [self.delegate recordButtonInteractionDidUpdate:value];
             
