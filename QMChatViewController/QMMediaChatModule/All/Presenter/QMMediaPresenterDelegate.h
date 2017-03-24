@@ -27,7 +27,7 @@
 - (void)updateView;
 - (void)activateMedia;
 
-- (void)updateWithMediaItem:(QMMediaItem *)mediaItem;
+//- (void)updateWithMediaItem:(QMMediaItem *)mediaItem;
 - (void)updateProgress:(CGFloat)progress;
 - (void)setNeedsToUpdateLayout;
 

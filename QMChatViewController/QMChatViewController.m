@@ -43,7 +43,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 @property (strong, nonatomic, readonly) UIImagePickerController *pickerController;
 
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
-@property (strong, nonatomic) QMAudioRecordButton *audioRecordButtonItem;
 
 @property (nonatomic, assign) CGFloat lastContentOffset;
 
@@ -101,6 +100,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.inputToolbar.delegate = self;
     
     self.inputToolbar.contentView.textView.delegate = self;
+    self.inputToolbar.audioRecordingIsEnabled = YES;
     
     self.automaticallyScrollsToMostRecentMessage = YES;
     self.topContentAdditionalInset = 0.0f;
@@ -268,6 +268,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     }
 }
 
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
@@ -280,9 +281,12 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     //Customize your toolbar buttons
-    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
-    self.inputToolbar.contentView.rightBarButtonItem = [self audioRecordButtonItem];
+
+    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
     
+    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
+    
+
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
     [self.collectionView.panGestureRecognizer addTarget:self action:@selector(didPanCollectionView:)];
@@ -377,45 +381,9 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     accessoryButton.tintColor = [UIColor lightGrayColor];
     
     return accessoryButton;
-}
-- (void)recordButtonInteractionDidBegin {
-    [self setShowRecordingInterface:YES velocity:0.0];
-}
-- (void)recordButtonInteractionDidCancell:(CGFloat)velocity {
-    [self setShowRecordingInterface:false velocity:velocity];
-}
-- (void)recordButtonInteractionDidComplete:(CGFloat)velocity {
-    [self setShowRecordingInterface:false velocity:velocity];
-}
-- (void)recordButtonInteractionDidUpdate:(CGFloat)value {
     
 }
-- (void)setShowRecordingInterface:(bool)show velocity:(CGFloat)velocity
-{
-    if (show)
-    {
-        [self.audioRecordButtonItem animateIn];
-    }
-    else {
-        [self.audioRecordButtonItem animateOut];
-    }
-}
 
-- (QMAudioRecordButton *)audioRecordButtonItem {
-    if (!_audioRecordButtonItem) {
-        UIImage *recordImage = [QMChatResources imageNamed:@"attachment_ic"];
-        UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
-        UIImage *highlightedImage = [recordImage imageMaskedWithColor:[UIColor darkGrayColor]];
-        
-        CGRect frame = CGRectMake(0, 0, 32.0, 32.0);
-        QMAudioRecordButton *button =  [[QMAudioRecordButton alloc] initWithFrame:frame];
-        button.delegate = self;
-        [button setImage:normalImage forState:UIControlStateNormal];
-        [button setImage:highlightedImage forState:UIControlStateHighlighted];
-        _audioRecordButtonItem = button;
-    }
-    return _audioRecordButtonItem;
-}
 
 - (UIButton *)sendButtonItem {
     
@@ -580,7 +548,9 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     textView.attributedText = nil;
     [textView.undoManager removeAllActions];
     
+
     [self.inputToolbar toggleSendButtonEnabled];
+    
     
     [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification object:textView];
     
@@ -868,7 +838,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         return;
     }
     
-    [self.inputToolbar toggleSendButtonEnabled];
+        [self.inputToolbar toggleSendButtonEnabled];
+    
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -1308,6 +1279,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         }
     }
 }
+
 
 - (void)hideKeyboard:(BOOL)animated {
     

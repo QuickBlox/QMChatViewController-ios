@@ -29,29 +29,11 @@
     return  self;
 }
 
-- (void)dealloc {
-    
-    NSLog(@"Presenter deallock");
-}
+
 - (void)didTapContainer {
     
     [self.eventHandler didTapContainer:self];
 }
-
-//- (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
-//    
-//
-//    if (mediaItem.mediaDuration > 0) {
-//        [self didUpdateDuration:mediaItem.mediaDuration];
-//    }
-//
-//    if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeImage ) {
-//        UIImage *image = mediaItem.image;
-//        if (image) {
-//            [self didUpdateThumbnailImage:image];
-//        }
-//    }
-//}
 
 
 - (void)activateMedia {
@@ -81,11 +63,6 @@
     [self.view setIsActive:isActive];
 }
 
-- (void)didUpdatePlayingStatus:(NSUInteger)playingStatus {
-    
-    [self.view setPlayingStatus:playingStatus];
-}
-
 - (void)didUpdateOffset:(NSTimeInterval)offset {
     
     [self.view setOffset:offset];
@@ -96,6 +73,7 @@
     [self.view setIsReady:isReady];
     
     if (isReady) {
+        
         [self.playerService requestPlayingStatus:self];
     }
     
@@ -120,5 +98,17 @@
 - (void)didUpdateThumbnailImage:(UIImage *)image {
     
     [self.view setImage:image];
+}
+- (void)dealloc {
+    _view = nil;
+    
+}
+- (NSString *)description {
+    
+    return [NSString stringWithFormat:@"<%@: %p; mediaID = %@>",
+            NSStringFromClass([self class]),
+            self,
+            self.mediaID
+            ];
 }
 @end

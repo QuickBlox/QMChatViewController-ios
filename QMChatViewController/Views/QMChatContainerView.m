@@ -8,6 +8,12 @@
 
 #import "QMChatContainerView.h"
 
+@interface QMChatContainerView()
+
+@property (readwrite, strong, nonatomic) UIBezierPath *maskPath;
+
+@end
+
 @implementation QMChatContainerView
 
 - (void)awakeFromNib {
@@ -41,7 +47,7 @@
     
     if (!self.arrow) {
         
-         UIBezierPath *rectanglePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:self.cornerRadius];
+        UIBezierPath *rectanglePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:self.cornerRadius];
         [rectanglePath fill];
         return;
     }
@@ -59,17 +65,19 @@
     [UIBezierPath bezierPathWithRoundedRect:CGRectMake(x, y, w - self.arrowSize.width, h)
                           byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight | (self.leftArrow ? UIRectCornerBottomRight : UIRectCornerBottomLeft)
                                 cornerRadii:CGSizeMake(self.cornerRadius, self.cornerRadius)];
-    
-    [rectanglePath closePath];
-    [rectanglePath fill];
     //// arrow Drawing
     UIBezierPath* arrowPath = UIBezierPath.bezierPath;
     [arrowPath moveToPoint: CGPointMake(CGRectGetMaxX(arrowRect) + self.arrowSize.width, CGRectGetMaxY(arrowRect))];
     [arrowPath addLineToPoint:CGPointMake(CGRectGetMaxX(arrowRect), CGRectGetMaxY(arrowRect))];
     [arrowPath addLineToPoint:CGPointMake(CGRectGetMaxX(arrowRect) - (self.leftArrow ?  0 : self.arrowSize.width), CGRectGetMaxY(arrowRect) - self.arrowSize.height)];
     [arrowPath addLineToPoint:CGPointMake(CGRectGetMaxX(arrowRect) - self.arrowSize.width, CGRectGetMaxY(arrowRect))];
-    [arrowPath closePath];
-    [arrowPath fill];
+
+    
+    [rectanglePath appendPath:arrowPath];
+    [rectanglePath closePath];
+    [rectanglePath fill];
+    
+    self.maskPath = rectanglePath;
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
