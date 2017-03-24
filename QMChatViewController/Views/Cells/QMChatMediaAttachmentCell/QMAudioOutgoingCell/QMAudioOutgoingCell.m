@@ -12,35 +12,57 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-   
+    self.progressView.progressBarColor = [UIColor redColor];
+}
 
+- (void)prepareForReuse {
+    
+    [super prepareForReuse];
+    
+    [self.progressView setProgress:0
+                          animated:NO];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    CAShapeLayer *layer = [CAShapeLayer layer];
+    layer.path = self.containerView.maskPath.CGPath;
+    layer.frame = self.bounds;
+    self.progressView.layer.mask = layer;
 }
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(CGFloat)duration {
+           forDuration:(NSTimeInterval)duration {
     
-    self.progressLabel.text = [self timestampString:currentTime
-                                        forDuration:duration];
-    [self.progressView setProgress:currentTime/duration animated:YES];
+    if (duration > 0) {
+        NSString *timeStamp = [self timestampString:currentTime
+                                         forDuration:duration];
+        
+        self.durationLabel.text = timeStamp;
+        BOOL animated = currentTime > 0;
+        [self.progressView setProgress:currentTime/duration animated:animated];
+    }
 }
 
 - (NSString *)timestampString:(NSTimeInterval)currentTime forDuration:(NSTimeInterval)duration
 {
+ 
+    NSInteger time = round(currentTime);
+    
     if (duration < 60)
     {
-        
         if (currentTime < duration)
         {
-            return [NSString stringWithFormat:@"0:%02d", (int)round(currentTime)];
+            return [NSString stringWithFormat:@"0:%02d", time];
         }
-        return [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
+        return [NSString stringWithFormat:@"0:%02d", time];
     }
     else if (duration < 3600)
     {
-        return [NSString stringWithFormat:@"%d:%02d", (int)currentTime / 60, (int)currentTime % 60];
+        return [NSString stringWithFormat:@"%d:%02d", time / 60, time % 60];
     }
     
-    return [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
+    return [NSString stringWithFormat:@"%d:%02d:%02d", time / 3600, time / 60, time % 60];
 }
 
 @end

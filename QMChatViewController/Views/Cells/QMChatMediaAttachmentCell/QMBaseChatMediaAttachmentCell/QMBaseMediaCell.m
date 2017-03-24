@@ -14,51 +14,59 @@
 @implementation QMBaseMediaCell
 @synthesize presenter = _presenter;
 
-- (instancetype) initWithCoder:(NSCoder *)aDecoder {
-    
-    if (self = [super initWithCoder:aDecoder]) {
-        
-    }
-    return self;
+- (void)deallock {
+    NSLog(@"deallock base cell");
 }
-
-- (void)prepareForReuse {
-    
-    [super prepareForReuse];
-    self.previewImageView.image = nil;
-}
-
 - (void)awakeFromNib {
     
     [super awakeFromNib];
+    NSString *imageName  = @"play_icon";
+    UIImage *buttonImage = [QMChatResources imageNamed:imageName];
     
-    self.mediaPlayButton.tintColor = [UIColor whiteColor];
+    if (buttonImage) {
+        
+        [self.mediaPlayButton setImage:buttonImage
+                              forState:UIControlStateNormal];
+
+    }
+    self.mediaPlayButton.hidden = NO;
+    self.mediaPlayButton.enabled = NO;
+    
     [self.mediaPlayButton setTitle:nil
                           forState:UIControlStateNormal];
     
     [self.mediaPlayButton addTarget:self
                              action:@selector(activateMedia:)
                    forControlEvents:UIControlEventTouchDown];
+    
     self.circularProgress.hideProgressIcons = YES;
     self.durationLabel.hidden = YES;
-    self.circularProgress.tintColor = [UIColor whiteColor];
+    self.durationLabel.text = nil;
     [self.circularProgress startSpinProgressBackgroundLayer];
+    
     self.progressLabel.text = nil;
+    
+    self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
 }
 
-- (void)dealloc {
+
+- (void)prepareForReuse {
     
-    NSLog(@"Dealock ");
+    [super prepareForReuse];
+    [self setIsActive:NO];
+    self.previewImageView.image = nil;
 }
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime
            forDuration:(NSTimeInterval)duration {
+    
     self.durationLabel.text = [self timestampString:currentTime forDuration:duration];
 }
 
 - (void)setProgres:(CGFloat)progress {
     
     if (progress > 0.0) {
+        
         self.progressLabel.hidden = NO;
         self.circularProgress.hidden = NO;
         [self.circularProgress stopSpinProgressBackgroundLayer];
@@ -70,18 +78,19 @@
 
 - (void)setDuration:(NSTimeInterval)duration {
     
-    self.durationLabel.text = [NSString stringWithFormat:@"%2.0f",duration];
+    self.durationLabel.text = [self timestampString:duration];
 }
 
 - (void)setIsReady:(BOOL)isReady {
     
-    self.circularProgress.hidden = isReady;
     if (isReady) {
         [self.circularProgress stopSpinProgressBackgroundLayer];
     }
+    
+    self.circularProgress.hidden = isReady;
     self.progressLabel.hidden = isReady;
     self.durationLabel.hidden = !isReady;
-    self.mediaPlayButton.hidden = !isReady;
+    self.mediaPlayButton.enabled = isReady;
 }
 
 - (void)setImage:(UIImage *)image {
@@ -93,18 +102,36 @@
 - (void)setIsActive:(BOOL)isActive {
     
     NSString *imageName = isActive ? @"pause_icon" : @"play_icon";
-    
     UIImage *buttonImage = [QMChatResources imageNamed:imageName];
     
     if (buttonImage) {
+        
         [self.mediaPlayButton setImage:buttonImage
                               forState:UIControlStateNormal];
+        [self.mediaPlayButton setImage:buttonImage
+                              forState:UIControlStateDisabled];
     }
 }
 
 - (IBAction)activateMedia:(id)sender {
     
     [self.presenter activateMedia];
+}
+
+- (NSString *)timestampString:(NSTimeInterval)duration {
+    
+    if (duration < 60)
+    {
+        
+        return [NSString stringWithFormat:@"0:%02d", (int)round(duration)];
+        
+    }
+    else if (duration < 3600)
+    {
+        return [NSString stringWithFormat:@"%d:%02d", (int)duration / 60, (int)duration % 60];
+    }
+    
+    return [NSString stringWithFormat:@"%d:%02d:%02d", (int)duration / 3600, (int)duration / 60, (int)duration % 60];
 }
 
 - (NSString *)timestampString:(NSTimeInterval)currentTime forDuration:(NSTimeInterval)duration
