@@ -188,43 +188,29 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         return;
     }
     
-    if ([self.collectionView numberOfItemsInSection:0] > 0) {
+    dispatch_block_t batchUpdatesBlock = ^{
         
-        __weak typeof(self) weakSelf = self;
-        
-        dispatch_block_t batchUpdatesBlock = ^{
-            
-            typeof(weakSelf) strongSelf = weakSelf;
-            
-            NSArray *indexPaths = [strongSelf.chatDataSource performChangesWithMessages:messages updateType:updateType];
-            
-            switch (updateType) {
-                    
-                case QMDataSourceActionTypeAdd:
-                    [strongSelf.collectionView insertItemsAtIndexPaths:indexPaths];
-                    break;
-                    
-                case QMDataSourceActionTypeUpdate:
-                    [strongSelf.collectionView reloadItemsAtIndexPaths:indexPaths];
-                    break;
-                    
-                case QMDataSourceActionTypeRemove:
-                    [strongSelf.collectionView deleteItemsAtIndexPaths:indexPaths];
-                    break;
-                    
-            }
-        };
-        
-        [self.collectionView performBatchUpdates:batchUpdatesBlock
-                                      completion:nil];
-        
-    }
-    else {
-        
+        NSArray *indexPaths =
         [self.chatDataSource performChangesWithMessages:messages
                                              updateType:updateType];
-        [self.collectionView reloadData];
-    }
+        switch (updateType) {
+                
+            case QMDataSourceActionTypeAdd:
+                [self.collectionView insertItemsAtIndexPaths:indexPaths];
+                break;
+                
+            case QMDataSourceActionTypeUpdate:
+                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+                break;
+                
+            case QMDataSourceActionTypeRemove:
+                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+                break;
+        }
+    };
+    
+    [self.collectionView performBatchUpdates:batchUpdatesBlock
+                                  completion:nil];
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
@@ -924,14 +910,14 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)setBottomCollectionViewInsetsValue:(CGFloat)bottom {
-
+    
     [self setCollectionViewInsetsTopValue:self.collectionView.contentInset.bottom
                               bottomValue:bottom];
     
 }
 
 - (void)setTopCollectionViewInsetsValue:(CGFloat)top {
-
+    
     [self setCollectionViewInsetsTopValue:top
                               bottomValue:self.collectionView.contentInset.top];
 }
@@ -1127,7 +1113,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        [self.view layoutIfNeeded];
+        //        [self.view layoutIfNeeded];
         [self resetLayoutAndCaches];
     }];
     
@@ -1172,7 +1158,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     visibleRect.size = self.collectionView.frame.size;
     return visibleRect;
 }
-    
+
 - (CGRect)scrollTopRect {
     
     return CGRectMake(0.0,
@@ -1221,7 +1207,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     CGFloat toolbarMinY = CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputToolbar.frame);
     
     switch (gesture.state) {
-        
+            
         case UIGestureRecognizerStateChanged: {
             
             if ([self.inputToolbar.contentView.textView isFirstResponder]) {
