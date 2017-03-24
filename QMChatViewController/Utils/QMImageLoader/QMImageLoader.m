@@ -78,7 +78,7 @@
  transformDownloadedImage:(UIImage *)image
                   withURL:(NSURL *)imageURL {
     
-    id <SDWebImageManagerDelegate> processor = _imagePorcessors[imageURL];\
+    id <SDWebImageManagerDelegate> processor = _imagePorcessors[imageURL];
     
     return [processor imageManager:imageManager
           transformDownloadedImage:image

@@ -40,10 +40,6 @@ static NSMutableDictionary *_imaages = nil;
     UIImage *img = _imaages[identifier];
     
     if (img) {
-        
-        for (UIImage *img in _imaages.allValues) {
-            
-        }
         return img;
     }
     
