@@ -14,7 +14,7 @@
 
 @interface QMChatCollectionViewFlowLayout()
 
-@property (strong, nonatomic) NSCache *cache;
+@property (strong, nonatomic) NSMutableDictionary *cache;
 
 @end
 
@@ -48,9 +48,7 @@
     /**
      *  Init cache
      */
-    self.cache = [[NSCache alloc] init];
-    self.cache.countLimit = 300;
-    self.cache.name = @"com.qm.chat.sizes";
+    self.cache = [[NSMutableDictionary alloc] init];
 }
 
 - (instancetype)init {
@@ -93,12 +91,12 @@
 
 - (void)setCacheLimit:(NSUInteger)cacheLimit {
 
-    self.cache.countLimit = cacheLimit;
+//    self.cache.countLimit = cacheLimit;
 }
 
 - (NSUInteger)cacheLimit {
 
-    return self.cache.countLimit;
+//    return self.cache.countLimit;
 }
 
 #pragma mark - Notifications
@@ -248,7 +246,7 @@
         
         CGFloat additionalSpace = layoutModel.spaceBetweenTextViewAndBottomLabel + layoutModel.spaceBetweenTopLabelAndTextView;
         
-        CGFloat finalWidth = dynamicSize.width + horizontalInsetsTotal;
+        CGFloat finalWidth = dynamicSize.width + horizontalContainerInsets;
         
         CGFloat cellHeight = dynamicSize.height + verticalContainerInsets + additionalSpace;
         CGFloat finalCellHeight = MAX(cellHeight, layoutModel.avatarSize.height);

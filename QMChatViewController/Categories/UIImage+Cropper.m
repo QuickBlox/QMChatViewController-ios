@@ -69,28 +69,71 @@
 
 - (UIImage *)imageByCircularScaleAndCrop:(CGSize)targetSize {
     
-    //Create the bitmap graphics context
-    UIGraphicsBeginImageContextWithOptions(targetSize, NO, 0.0);
+    //bitmap context properties
+    CGSize size = targetSize;
+    NSUInteger bytesPerPixel = 4;
+    NSUInteger bytesPerRow = bytesPerPixel * size.width;
+    NSUInteger bitsPerComponent = 8;
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    // Create and CLIP to a CIRCULAR Path
-    // (This could be replaced with any closed path if you want a different shaped clip)
-    CGContextBeginPath (context);
-    CGContextAddArc(context, targetSize.width / 2, targetSize.height / 2, targetSize.width / 2, 0, 2 * M_PI, 0);
-    CGContextClosePath (context);
+    float scaleFactor = [[UIScreen mainScreen] scale];
+
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    CGContextRef context = CGBitmapContextCreate(NULL,
+                                                 size.width * scaleFactor, size.height * scaleFactor,
+                                                 8, size.width * scaleFactor * 4,
+                                                 colorSpace,
+                                                 kCGImageAlphaPremultipliedFirst);
+    
+    CGContextScaleCTM(context, scaleFactor, scaleFactor);
+    
+    CGContextBeginPath(context);
+    CGContextAddArc(context,
+                    targetSize.width / 2,
+                    targetSize.height / 2,
+                    targetSize.width / 2, 0, 2 * M_PI, 0);
+    CGContextClosePath(context);
     CGContextClip(context);
-    //Set the SCALE factor for the graphics context
-    //All future draw calls will be scaled by this factor
-    CGContextScaleCTM (context, targetSize.width / self.size.width, targetSize.height / self.size.height);
-    // Draw the IMAGE
-    CGRect myRect = CGRectMake(0, 0, self.size.width, self.size.height);
-    [self drawInRect:myRect];
+    //draw image into bitmap context
+    CGContextDrawImage(context, CGRectMake(0, 0, size.width, size.height), self.CGImage);
+    CGImageRef renderedImage = CGBitmapContextCreateImage(context);
     
-    UIImage *circularImage = UIGraphicsGetImageFromCurrentImageContext();
+    //tidy up
+    CGColorSpaceRelease(colorSpace);
+    CGContextRelease(context);
     
-    UIGraphicsEndImageContext();
+    UIImage *image = [UIImage imageWithCGImage:renderedImage
+                                         scale:scaleFactor
+                                   orientation:self.imageOrientation];
     
-    return circularImage;
+    return image;
+    
+    /* old method
+        //Create the bitmap graphics context
+        UIGraphicsBeginImageContextWithOptions(targetSize, NO, [UIScreen mainScreen].scale);
+    
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        // Create and CLIP to a CIRCULAR Path
+        // (This could be replaced with any closed path if you want a different shaped clip)
+        CGContextBeginPath (context);
+        CGContextAddArc(context, targetSize.width / 2, targetSize.height / 2, targetSize.width / 2, 0, 2 * M_PI, 0);
+        CGContextClosePath (context);
+        CGContextClip(context);
+        //Set the SCALE factor for the graphics context
+        //All future draw calls will be scaled by this factor
+        CGContextScaleCTM (context, targetSize.width / self.size.width, targetSize.height / self.size.height);
+        // Draw the IMAGE
+        CGRect myRect = CGRectMake(0, 0, self.size.width, self.size.height);
+        [self drawInRect:myRect];
+    
+        UIImage *circularImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+        UIGraphicsEndImageContext();
+    
+        return circularImage;
+     */
 }
+
+
 
 @end
