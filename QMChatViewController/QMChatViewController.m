@@ -71,7 +71,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 - (void)dealloc {
     
-    [self.view removeObserver:self forKeyPath:@"frame"];
+   
     
     [self registerForNotifications:NO];
     
@@ -83,6 +83,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.inputToolbar.delegate = nil;
     
     self.senderDisplayName = nil;
+    
+    [self.view removeObserver:self forKeyPath:@"frame"];
 }
 
 #pragma mark - Initialization
@@ -271,9 +273,12 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 // KVO Method
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    [self.collectionView reloadData];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if([keyPath isEqualToString:@"frame"]){
+        [self.collectionView reloadData];
+    }
+    
 }
 
 #pragma mark - View lifecycle
