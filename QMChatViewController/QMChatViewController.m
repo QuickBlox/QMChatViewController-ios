@@ -42,6 +42,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 @property (nonatomic, assign) CGFloat lastContentOffset;
 
+@property (nonatomic, assign) UIGestureRecognizerState interactivePopGestureState;
+
 //Keyboard observing
 @property (strong, nonatomic) QMKVOView *systemInputToolbar;
 @property (assign, nonatomic) CGFloat keyboardDismissAnimationDuration;
@@ -100,7 +102,9 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.inputToolbar.contentView.textView.delegate = self;
     
     self.automaticallyScrollsToMostRecentMessage = YES;
+    
     self.topContentAdditionalInset = 0.0f;
+    self.bottomContentAdditionalInset = 0.0f;
     
     [self registerCells];
     
@@ -178,6 +182,10 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [self updateCollectionViewInsets];
 }
 
+- (void)setBottomContentAdditionalInset:(CGFloat)bottomContentAdditionalInset {
+    _bottomContentAdditionalInset = bottomContentAdditionalInset;
+    [self updateCollectionViewInsets];
+}
 
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
@@ -234,6 +242,9 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
+    [self.navigationController.interactivePopGestureRecognizer addTarget:self
+                                                                  action:@selector(handlePopGesture:)];
+    
     [self configureMessagesViewController];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -249,17 +260,23 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     __weak __typeof(self) weakSelf = self;
     
     [self.systemInputToolbar setSuperFrameDidChangeBlock:^(CGRect superViewFrame) {
-        typeof(weakSelf) strongSelf = weakSelf;
         
+        typeof(weakSelf) strongSelf = weakSelf;
+
         //avoid inputAccessoryView disappearing on pop
-        if (![strongSelf.navigationController.viewControllers containsObject:strongSelf]) {
+        if (strongSelf.interactivePopGestureState == UIGestureRecognizerStateBegan
+            || strongSelf.interactivePopGestureState == UIGestureRecognizerStateChanged) {
             return;
         }
         
         NSInteger newToolbarBottomLayoutGuideConstant = kQMSystemInputToolbarDebugHeight;
         
         if ((NSInteger)CGRectGetHeight(superViewFrame) > kQMSystemInputToolbarDebugHeight) {
-            newToolbarBottomLayoutGuideConstant = CGRectGetHeight([UIScreen mainScreen].bounds) - CGRectGetMinY(superViewFrame);
+            
+            CGRect vcFrame = [strongSelf.view convertRect:strongSelf.view.frame
+                                                 fromView:[UIApplication sharedApplication].keyWindow];
+            
+            newToolbarBottomLayoutGuideConstant = CGRectGetHeight(vcFrame) - CGRectGetMinY(superViewFrame);
         }
         
         [strongSelf setToolbarBottomConstraintValue:newToolbarBottomLayoutGuideConstant
@@ -293,10 +310,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-    if (![self.navigationController.viewControllers containsObject:self]) {
-        [self becomeFirstResponder];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -870,7 +883,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 #pragma mark - Input toolbar utilities
 
 - (void)setToolbarBottomConstraintValue:(CGFloat)constraintValue animated:(BOOL)animated {
-    
+
     if ((NSUInteger)constraintValue == (NSUInteger)self.toolbarBottomLayoutGuide.constant
         && constraintValue < 0) {
         return;
@@ -901,7 +914,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 - (void)updateCollectionViewInsets {
     
     [self setCollectionViewInsetsTopValue:self.topContentAdditionalInset + self.topLayoutGuide.length
-                              bottomValue:self.bottomLayoutGuide.length];
+                              bottomValue:self.bottomContentAdditionalInset];
     
     if ([self shouldScrollToBottom]) {
         [self scrollToBottomAnimated:NO];
@@ -925,7 +938,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 - (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom {
     
     UIEdgeInsets insets = UIEdgeInsetsMake(bottom, 0.0f, top , 0.0f);
-    
+
     if (UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, insets)) {
         return;
     }
@@ -1194,6 +1207,10 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     dispatch_async(dispatch_get_main_queue(), ^{
         [self handlePanGestureRecognizer:gesture];
     });
+}
+
+- (void)handlePopGesture:(UIGestureRecognizer *)gesture {
+    self.interactivePopGestureState = gesture.state;
 }
 
 - (void)handlePanGestureRecognizer:(UIPanGestureRecognizer *)gesture {
