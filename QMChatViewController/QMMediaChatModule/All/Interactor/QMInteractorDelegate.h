@@ -11,16 +11,16 @@
 
 @class QBChatMessage;
 @class QMMediaItem;
+@class QBChatAttachment;
 
 @protocol QMMediaInteractorInput <NSObject>
 
-@property (copy, nonatomic) NSString *mediaID;
+@property (copy, nonatomic) NSString *attachmentID;
 @property (strong, nonatomic) QBChatMessage *message;
 
 - (void)didTapContainer;
 - (void)requestForMedia;
 - (void)activateMedia;
-- (void)updateWithMediaItem:(QMMediaItem *)mediaItem;
 
 @end
 

@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @class QBChatMessage;
-@class QMMediaItem;
 
 @protocol QMMediaViewDelegate;
 @protocol QMPlayerService;
@@ -24,10 +24,7 @@
 
 - (instancetype)initWithView:(id<QMMediaViewDelegate>)view;
 
-- (void)updateView;
 - (void)activateMedia;
-
-//- (void)updateWithMediaItem:(QMMediaItem *)mediaItem;
 - (void)updateProgress:(CGFloat)progress;
 - (void)setNeedsToUpdateLayout;
 

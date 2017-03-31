@@ -26,7 +26,6 @@
 @protocol QMMediaAssistant <NSObject>
 
 - (void)requestForMediaWithSender:(QMMediaPresenter *)sender;
-- (void)requestForMediaInfoWithSender:(QMMediaPresenter *)sender;
 
 @end
 

@@ -98,7 +98,7 @@ static dispatch_queue_t _serialQueue = nil;
 
 - (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceActionType)updateType {
     
-//    dispatch_async(_serialQueue, ^{
+    dispatch_async(_serialQueue, ^{
     
         NSMutableArray *messageIDs = [NSMutableArray arrayWithCapacity:messages.count];
         NSMutableArray *messagesArray = [NSMutableArray arrayWithCapacity:messages.count];
@@ -141,7 +141,7 @@ static dispatch_queue_t _serialQueue = nil;
             [messageIDs addObject:message.ID];
         }
         
-//        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
     
             if (messageIDs.count && updateType != QMDataSourceActionTypeAdd) {
                 
@@ -153,8 +153,8 @@ static dispatch_queue_t _serialQueue = nil;
                 [self.delegate changeDataSource:self withMessages:messagesArray updateType:updateType];
             }
             
-//        });
-//    });
+        });
+    });
 }
 
 - (NSArray *)performChangesWithMessages:(NSArray *)messages updateType:(QMDataSourceActionType)updateType {

@@ -15,7 +15,7 @@
 @implementation QMMediaPresenter
 
 @synthesize view = _view;
-@synthesize mediaID = _mediaID;
+@synthesize attachmentID = _attachmentID;
 @synthesize message = _message;
 @synthesize playerService;
 @synthesize mediaAssistant;
@@ -28,7 +28,6 @@
     }
     return  self;
 }
-
 
 - (void)didTapContainer {
     
@@ -53,6 +52,7 @@
 }
 
 - (void)setNeedsToUpdateLayout {
+    
     [self.view setOnLayoutUpdate];
 }
 
@@ -99,16 +99,17 @@
     
     [self.view setImage:image];
 }
+
 - (void)dealloc {
     _view = nil;
     
 }
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"<%@: %p; mediaID = %@>",
+    return [NSString stringWithFormat:@"<%@: %p; attachmentID = %@>",
             NSStringFromClass([self class]),
             self,
-            self.mediaID
+            self.attachmentID
             ];
 }
 @end
