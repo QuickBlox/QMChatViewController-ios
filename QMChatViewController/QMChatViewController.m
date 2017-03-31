@@ -83,8 +83,9 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.inputToolbar.delegate = nil;
     
     self.senderDisplayName = nil;
-    
-    [self.view removeObserver:self forKeyPath:@"frame"];
+    if ([self isViewLoaded]) {
+        [self.view removeObserver:self forKeyPath:@"frame"];
+    }
 }
 
 #pragma mark - Initialization
