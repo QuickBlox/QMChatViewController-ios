@@ -23,6 +23,9 @@ IB_DESIGNABLE
 
 @property (assign, nonatomic) BOOL highlighted;
 
+@property (readonly, strong, nonatomic) UIImage *backgroundImage;
+
 @property (readonly, strong, nonatomic) UIBezierPath *maskPath;
+
 
 @end

@@ -11,6 +11,7 @@
 @interface QMChatContainerView()
 
 @property (strong, nonatomic) UIImageView *preview;
+@property (readwrite, strong, nonatomic) UIBezierPath *maskPath;
 
 @end
 
@@ -94,7 +95,7 @@ static NSMutableDictionary *_imaages = nil;
     [rectanglePath fill];
     
     img = UIGraphicsGetImageFromCurrentImageContext();
-    img = [img stretchableImageWithLeftCapWidth:arrowSize.width+ cornerRadius
+    img = [img stretchableImageWithLeftCapWidth:arrowSize.width + cornerRadius
                                    topCapHeight:cornerRadius*2];
     UIGraphicsEndImageContext();
     
@@ -116,10 +117,16 @@ static NSMutableDictionary *_imaages = nil;
                                        fillColor:self.bgColor
                                     cornerRadius:self.cornerRadius
                                        leftArrow:self.leftArrow];
+    
     _preview.image = bubleImg;
+    
     _preview.highlightedImage = bubleImg;
     
     [self insertSubview:_preview atIndex:0];
+}
+
+- (UIImage *)backgroundImage {
+    return _preview.image;
 }
 
 - (void)setBgColor:(UIColor *)bgColor {

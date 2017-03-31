@@ -64,7 +64,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     static UIImage *image = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(outerCircleRadius, outerCircleRadius), false, 0.0f);
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(outerCircleRadius, outerCircleRadius), false, [UIScreen mainScreen].scale);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetFillColorWithColor(context, [QMApplicationColor() colorWithAlphaComponent:0.2f].CGColor);
         CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, outerCircleRadius, outerCircleRadius));
@@ -345,11 +345,13 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 UIColor *QMApplicationColor()
 {
     static UIColor *color = nil;
+    
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^
-                  {
-                      color = [UIColor greenColor];
-                  });
+    dispatch_once(&onceToken, ^{
+        
+        color = [UIColor colorWithRed:23.0f/255.0f green:208.0f/255.0f blue:75.0f/255.0f alpha:1.0f];
+    });
+    
     return color;
 }
 

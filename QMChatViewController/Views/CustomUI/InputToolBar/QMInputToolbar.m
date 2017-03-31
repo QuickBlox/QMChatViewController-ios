@@ -410,15 +410,21 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     if (!_audioRecordButtonItem) {
         
-        UIImage *recordImage = [QMChatResources imageNamed:@"MicButton"];
+        UIImage *recordImage = [QMChatResources imageNamed:@"MicOverlay"];
         UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
-        UIImage *highlightedImage = [recordImage imageMaskedWithColor:[UIColor darkGrayColor]];
-        
-        CGRect frame = CGRectMake(0, 0, 40, 32.0);
+
+        CGRect frame = CGRectMake(0, 0, recordImage.size.width, 32.0);
         QMAudioRecordButton *button =  [[QMAudioRecordButton alloc] initWithFrame:frame];
         button.delegate = self;
         [button setImage:normalImage forState:UIControlStateNormal];
-        [button setImage:highlightedImage forState:UIControlStateHighlighted];
+        [button setImage:normalImage forState:UIControlStateHighlighted];
+  
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+        button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+        button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        button.backgroundColor = [UIColor clearColor];
+        button.tintColor = [UIColor lightGrayColor];
+        
         _audioRecordButtonItem = button;
     }
     
