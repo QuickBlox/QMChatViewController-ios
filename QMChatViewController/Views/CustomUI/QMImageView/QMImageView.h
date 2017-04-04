@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
 
 @property (weak, nonatomic) id <QMImageViewDelegate> delegate;
 
-- (void)setImage:(UIImage *)image withKey:(NSString *)key;
+//- (void)setImage:(UIImage *)image withKey:(NSString *)key;
 
 - (void)setImageWithURL:(NSURL *)url
             placeholder:(UIImage *)placehoder
