@@ -43,11 +43,16 @@
 
 @interface QMTextLayer : CALayer
 
-@property (strong, nonatomic) UIColor *fillColor;
-@property (copy, nonatomic) NSString *string;
+- (void)setString:(NSString *)string color:(UIColor *)color;
+
 @end
 
-@implementation QMTextLayer
+
+@implementation QMTextLayer {
+    
+    UIColor *_fillColor;
+    NSString *_string;
+}
 
 static NSDictionary *_defaultStyle;
 
@@ -74,13 +79,16 @@ static NSDictionary *_defaultStyle;
         self.rasterizationScale = [UIScreen mainScreen].scale;
         self.contentsScale = [UIScreen mainScreen].scale;
         [self setDrawsAsynchronously:YES];
-        
     }
     
     return self;
 }
 
 - (void)drawInContext:(CGContextRef)ctx {
+    
+    if (self.hidden) {
+        return;
+    }
     
     UIGraphicsPushContext(ctx);
     
@@ -91,15 +99,21 @@ static NSDictionary *_defaultStyle;
     
     CGContextSetFillColorWithColor(ctx, _fillColor.CGColor);
     CGContextFillEllipseInRect(ctx, self.bounds);
-    [_string drawInRect:rect withAttributes:_defaultStyle];
+    
+    NSRange r = [_string rangeOfComposedCharacterSequenceAtIndex:0];
+    NSString *firstCharacter = [[_string substringWithRange:r] capitalizedString];
+    [firstCharacter drawInRect:rect withAttributes:_defaultStyle];
     
     UIGraphicsPopContext();
 }
 
-- (void)setString:(NSString *)string {
+- (void)setString:(NSString *)string color:(UIColor *)color {
     
-    _string = [string copy];
-    [self setNeedsDisplay];
+    if (![_string isEqualToString:string]) {
+        _string = [string copy];
+        _fillColor = color;
+        [self setNeedsDisplay];
+    }
 }
 
 @end
@@ -230,6 +244,7 @@ unsigned long stringToLong(unsigned char* str) {
     self.userInteractionEnabled = YES;
     
     _textLayer = [[QMTextLayer alloc] init];
+    _textLayer.frame = self.bounds;
     _textLayer.hidden = YES;
     
     [self.layer addSublayer:_textLayer];
@@ -247,20 +262,21 @@ unsigned long stringToLong(unsigned char* str) {
     
     dispatch_block_t showPlaceholder = ^{
         
-        self.image = nil;
-        
-        NSRange r = [title rangeOfComposedCharacterSequenceAtIndex:0];
-        NSString *firstCharacter = [title substringWithRange:r];
-        
-        _textLayer.fillColor = [self colorForString:title];
+        [_textLayer setString:title color:[self colorForString:title]];
         _textLayer.hidden = NO;
-        _textLayer.frame = self.bounds;
-        _textLayer.string = [firstCharacter capitalizedString];
-
+        
+        CGRect bounds = CGRectMake(0,
+                                   0,
+                                   (int)self.bounds.size.width,
+                                   (int)self.bounds.size.height);
+        if (!CGRectEqualToRect(_textLayer.frame, bounds)) {
+            
+            NSLog(@"%@%@", NSStringFromCGRect(bounds), NSStringFromCGRect(_textLayer.frame));
+            _textLayer.frame = bounds;
+        }
     };
     
     if ([_url isEqual:url] && !self.image) {
-        
         showPlaceholder();
         return;
     }
@@ -268,6 +284,13 @@ unsigned long stringToLong(unsigned char* str) {
     _url = url;
     [self sd_cancelCurrentImageLoad];
     
+    UIImage *image = [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
+    
+    if (image) {
+        self.image = image;
+        _textLayer.hidden = YES;
+        return;
+    }
     showPlaceholder();
     
     if (urlIsValid) {
