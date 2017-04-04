@@ -84,7 +84,8 @@ static NSDictionary *_defaultStyle;
     
     UIGraphicsPushContext(ctx);
     
-    CGSize size = [_string sizeWithFont:_defaultStyle[NSFontAttributeName]];
+    UIFont *font = _defaultStyle[NSFontAttributeName];
+    CGSize size = CGSizeMake(self.bounds.size.width, font.lineHeight);
     CGRect rect = self.bounds;
     rect.origin.y = (rect.size.height - size.height) / 2.f;
     
@@ -232,6 +233,10 @@ unsigned long stringToLong(unsigned char* str) {
     _textLayer.hidden = YES;
     
     [self.layer addSublayer:_textLayer];
+}
+
+- (void)setImage:(UIImage *)image withKey:(NSString *)key {
+    [[QMImageLoader instance].imageCache storeImage:image forKey:key];
 }
 
 - (void)setImageWithURL:(NSURL *)url
