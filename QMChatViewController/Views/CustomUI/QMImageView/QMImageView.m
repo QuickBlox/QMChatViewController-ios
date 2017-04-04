@@ -270,8 +270,6 @@ unsigned long stringToLong(unsigned char* str) {
                                    (int)self.bounds.size.width,
                                    (int)self.bounds.size.height);
         if (!CGRectEqualToRect(_textLayer.frame, bounds)) {
-            
-            NSLog(@"%@%@", NSStringFromCGRect(bounds), NSStringFromCGRect(_textLayer.frame));
             _textLayer.frame = bounds;
         }
     };
@@ -284,7 +282,8 @@ unsigned long stringToLong(unsigned char* str) {
     _url = url;
     [self sd_cancelCurrentImageLoad];
     
-    UIImage *image = [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
+    UIImage *image =
+    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
     
     if (image) {
         self.image = image;
@@ -319,13 +318,9 @@ unsigned long stringToLong(unsigned char* str) {
                      weakSelf.image = image;
                      [weakSelf setNeedsLayout];
                  }
-                 else {
-                     
-                     NSLog(@"AAAA");
-                 }
              }
              else {
-                 NSLog(@"AAAA");
+                 NSLog(@"downloadImageWithURL %@", error.localizedDescription);
              }
              
              if (completedBlock) {
