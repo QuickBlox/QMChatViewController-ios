@@ -28,9 +28,5 @@ typedef UIImage *(^QMImageLoaderTransformBlock)(UIImage *image, CGRect frame);
                                         progress:(SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(SDWebImageCompletionWithFinishedBlock)completedBlock;
 
-- (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
-                                         options:(SDWebImageOptions)options
-                                        progress:(SDWebImageDownloaderProgressBlock)progressBlock
-                                       completed:(SDWebImageCompletionWithFinishedBlock)completedBlock;
 
 @end

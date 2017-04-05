@@ -86,14 +86,11 @@ static NSDictionary *_defaultStyle;
 
 - (void)drawInContext:(CGContextRef)ctx {
     
-    if (self.hidden) {
-        return;
-    }
-    
     UIGraphicsPushContext(ctx);
     
     UIFont *font = _defaultStyle[NSFontAttributeName];
-    CGSize size = CGSizeMake(self.bounds.size.width, font.lineHeight);
+    CGSize size = CGSizeMake(self.bounds.size.width,
+                             font.lineHeight);
     CGRect rect = self.bounds;
     rect.origin.y = (rect.size.height - size.height) / 2.f;
     
@@ -290,6 +287,7 @@ unsigned long stringToLong(unsigned char* str) {
         _textLayer.hidden = YES;
         return;
     }
+    self.image = nil;
     showPlaceholder();
     
     if (urlIsValid) {
@@ -331,7 +329,6 @@ unsigned long stringToLong(unsigned char* str) {
         [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
     }
     else {
-        
         
         dispatch_main_async_safe(^{
             
