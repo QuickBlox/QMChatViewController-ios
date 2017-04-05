@@ -79,6 +79,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [super awakeFromNib];
     
     self.avatarView.delegate = self;
+    self.contentView.opaque = YES;
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
 	

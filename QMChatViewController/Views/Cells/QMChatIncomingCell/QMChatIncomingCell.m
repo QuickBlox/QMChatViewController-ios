@@ -18,7 +18,7 @@
 + (QMChatCellLayoutModel)layoutModel {
     
     QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
-    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(4, 15, 0, 4);
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(8, 18, 8, 10);
     
     return defaultLayoutModel;
 }
