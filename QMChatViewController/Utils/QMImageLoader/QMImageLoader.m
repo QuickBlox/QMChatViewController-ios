@@ -62,7 +62,6 @@
                                          options:(SDWebImageOptions)options
                                         progress:(SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(SDWebImageCompletionWithFinishedBlock)completedBlock {
-
     if (transform) {
         _imagePorcessors[url] = transform;
     }
@@ -87,6 +86,7 @@
               transformDownloadedImage:image
                                withURL:imageURL];
     }
+    
     return image;
 }
 

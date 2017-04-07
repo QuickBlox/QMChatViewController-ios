@@ -84,6 +84,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 - (void)configureMessagesViewController {
     
+    [self registerCells];
+    
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     
     self.collectionView.dataSource = self;
@@ -97,8 +99,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     self.automaticallyScrollsToMostRecentMessage = YES;
     self.topContentAdditionalInset = 0.0f;
-    
-    [self registerCells];
     
     self.systemInputToolbar = [[QMKVOView alloc] init];
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);

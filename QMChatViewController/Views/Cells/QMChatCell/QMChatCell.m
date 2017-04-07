@@ -50,7 +50,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 
 @implementation QMChatCell
 
-#pragma mark - Class methods
+//MARK: - Class methods
 
 + (void)initialize {
     
@@ -83,19 +83,19 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
 	
-    self.messageContainerTopInsetConstraint.constant = 0;
-    self.messageContainerLeftInsetConstraint.constant = 0;
-    self.messageContainerBottomInsetConstraint.constant = 0;
-    self.messageContainerRightInsetConstraint.constant = 0;
+    _messageContainerTopInsetConstraint.constant = 0;
+    _messageContainerLeftInsetConstraint.constant = 0;
+    _messageContainerBottomInsetConstraint.constant = 0;
+    _messageContainerRightInsetConstraint.constant = 0;
     
-    self.avatarContainerViewWidthConstraint.constant = 0;
-    self.avatarContainerViewHeightConstraint.constant = 0;
+    _avatarContainerViewWidthConstraint.constant = 0;
+    _avatarContainerViewHeightConstraint.constant = 0;
     
-    self.topLabelHeightConstraint.constant = 0;
-    self.bottomLabelHeightConstraint.constant = 0;
+    _topLabelHeightConstraint.constant = 0;
+    _bottomLabelHeightConstraint.constant = 0;
     
-    self.topLabelTextViewVerticalSpaceConstraint.constant = 0;
-    self.textViewBottomLabelVerticalSpaceConstraint.constant = 0;
+    _topLabelTextViewVerticalSpaceConstraint.constant = 0;
+    _textViewBottomLabelVerticalSpaceConstraint.constant = 0;
     
 #if Q_DEBUG_COLORS == 0
     self.backgroundColor = [UIColor clearColor];
@@ -187,7 +187,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 }
 
 
-#pragma mark - Menu actions
+//MARK: - Menu actions
 
 - (BOOL)respondsToSelector:(SEL)aSelector {
     
@@ -226,7 +226,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     return [super methodSignatureForSelector:aSelector];
 }
 
-#pragma mark - Gesture recognizers
+//MARK: - Gesture recognizers
 
 - (void)imageViewDidTap:(QMImageView *)imageView {
     
@@ -292,7 +292,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     return YES;
 }
 
-#pragma mark - Layout model
+//MARK: - Layout model
 
 + (QMChatCellLayoutModel)layoutModel {
     
