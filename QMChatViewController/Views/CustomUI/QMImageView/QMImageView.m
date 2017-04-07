@@ -351,7 +351,74 @@ unsigned long stringToLong(unsigned char* str) {
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
     
-    [self setImageWithURL:url title:@"t" completedBlock:nil];
+    BOOL urlIsValid = url &&url.scheme && url.host;
+    
+    _url = url;
+    [self sd_cancelCurrentImageLoad];
+    
+    UIImage *image =
+    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
+    
+    if (image) {
+        self.image = image;
+        _textLayer.hidden = YES;
+        return;
+    }
+    self.image = placehoder;
+    
+    if (urlIsValid) {
+        
+        __weak __typeof(self)weakSelf = self;
+        
+        id <SDWebImageOperation> operation =
+        [[QMImageLoader instance]
+         downloadImageWithURL:url
+         transform:nil
+         options:SDWebImageLowPriority
+         progress:nil
+         completed:
+         ^(UIImage *image,
+           NSError *error,
+           SDImageCacheType cacheType,
+           BOOL finished,
+           NSURL *imageURL) {
+             
+             if (!weakSelf) return;
+             
+             if (!error) {
+                 
+                 if (image) {
+                     weakSelf.textLayer.hidden = YES;
+                     weakSelf.image = image;
+                     [weakSelf setNeedsLayout];
+                 }
+             }
+             else {
+                 NSLog(@"downloadImageWithURL %@", error.localizedDescription);
+             }
+             
+             if (completedBlock) {
+                 completedBlock(image, error, cacheType, imageURL);
+             }
+         }];
+        
+        [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
+    }
+    else {
+        
+        dispatch_main_async_safe(^{
+            
+            if (completedBlock) {
+                NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain
+                                                     code:-1
+                                                 userInfo:@
+                                  {
+                                      NSLocalizedDescriptionKey : @"Trying to load a nil url"
+                                  }];
+                completedBlock(nil, error, SDImageCacheTypeNone, url);
+            }
+        });
+    }
 }
 
 - (void)clearImage {
