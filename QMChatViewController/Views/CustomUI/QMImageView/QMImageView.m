@@ -334,6 +334,9 @@ unsigned long stringToLong(unsigned char* str) {
     [self setImageWithURL:url title:@"t" completedBlock:nil];
 }
 
+- (void)setImageWithURL:(NSURL *)url {
+     [self setImageWithURL:url title:@"s" completedBlock:nil];
+}
 - (void)clearImage {
     
     self.image = nil;

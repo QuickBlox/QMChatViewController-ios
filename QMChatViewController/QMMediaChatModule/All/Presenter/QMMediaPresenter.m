@@ -9,8 +9,6 @@
 #import "QMMediaPresenter.h"
 #import "QMMediaPresenterDelegate.h"
 #import "QMMediaViewDelegate.h"
-#import "QMMediaModelDelegate.h"
-
 
 @implementation QMMediaPresenter
 
