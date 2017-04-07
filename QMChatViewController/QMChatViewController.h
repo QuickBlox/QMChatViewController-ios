@@ -36,6 +36,9 @@
 
 #import "QMMediaViewDelegate.h"
 #import "QMMediaPresenter.h"
+#import "QMChatBaseLinkPreviewCell.h"
+#import "QMChatIncomingLinkPreviewCell.h"
+#import "QMChatOutgoingLinkPreviewCell.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 

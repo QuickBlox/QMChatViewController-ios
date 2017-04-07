@@ -71,8 +71,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 - (void)dealloc {
     
-   
-    
     [self registerForNotifications:NO];
     
     self.collectionView.dataSource = nil;
@@ -185,7 +183,15 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     NSString *imageIncomingIdentifier = [QMImageIncomingCell cellReuseIdentifier];
     [self.collectionView registerNib:imageIncomingNib forCellWithReuseIdentifier:imageIncomingIdentifier];
     
+//    // Register link preview incoming cell
+    UINib *linkPreviewIncomingNib = [QMChatIncomingLinkPreviewCell nib];
+    NSString *linkPreviewIncomingIdentifier = [QMChatIncomingLinkPreviewCell cellReuseIdentifier];
+    [self.collectionView registerNib:linkPreviewIncomingNib forCellWithReuseIdentifier:linkPreviewIncomingIdentifier];
     
+    // Register link preview outgoing cell
+    UINib *linkPreviewOutgoingNib = [QMChatOutgoingLinkPreviewCell nib];
+    NSString *linkPreviewOutgoingIdentifier = [QMChatOutgoingLinkPreviewCell cellReuseIdentifier];
+    [self.collectionView registerNib:linkPreviewOutgoingNib forCellWithReuseIdentifier:linkPreviewOutgoingIdentifier];
 }
 
 #pragma mark - UI Responder
