@@ -63,7 +63,9 @@
                                         progress:(SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(SDWebImageCompletionWithFinishedBlock)completedBlock {
 
-    _imagePorcessors[url] = transform;
+    if (transform) {
+        _imagePorcessors[url] = transform;
+    }
     
     id <SDWebImageOperation> operation =
      [super downloadImageWithURL:url
@@ -78,11 +80,14 @@
  transformDownloadedImage:(UIImage *)image
                   withURL:(NSURL *)imageURL {
     
-    id <SDWebImageManagerDelegate> processor = _imagePorcessors[imageURL];\
-    
-    return [processor imageManager:imageManager
-          transformDownloadedImage:image
-                           withURL:imageURL];
+    id <SDWebImageManagerDelegate> processor = _imagePorcessors[imageURL];
+    if (processor) {
+        
+        return [processor imageManager:imageManager
+              transformDownloadedImage:image
+                               withURL:imageURL];
+    }
+    return image;
 }
 
 @end

@@ -43,11 +43,16 @@
 
 @interface QMTextLayer : CALayer
 
-@property (strong, nonatomic) UIColor *fillColor;
-@property (copy, nonatomic) NSString *string;
+- (void)setString:(NSString *)string color:(UIColor *)color;
+
 @end
 
-@implementation QMTextLayer
+
+@implementation QMTextLayer {
+    
+    UIColor *_fillColor;
+    NSString *_string;
+}
 
 static NSDictionary *_defaultStyle;
 
@@ -74,7 +79,6 @@ static NSDictionary *_defaultStyle;
         self.rasterizationScale = [UIScreen mainScreen].scale;
         self.contentsScale = [UIScreen mainScreen].scale;
         [self setDrawsAsynchronously:YES];
-        
     }
     
     return self;
@@ -84,21 +88,29 @@ static NSDictionary *_defaultStyle;
     
     UIGraphicsPushContext(ctx);
     
-    CGSize size = [_string sizeWithFont:_defaultStyle[NSFontAttributeName]];
+    UIFont *font = _defaultStyle[NSFontAttributeName];
+    CGSize size = CGSizeMake(self.bounds.size.width,
+                             font.lineHeight);
     CGRect rect = self.bounds;
     rect.origin.y = (rect.size.height - size.height) / 2.f;
     
     CGContextSetFillColorWithColor(ctx, _fillColor.CGColor);
     CGContextFillEllipseInRect(ctx, self.bounds);
-    [_string drawInRect:rect withAttributes:_defaultStyle];
+    
+    NSRange r = [_string rangeOfComposedCharacterSequenceAtIndex:0];
+    NSString *firstCharacter = [[_string substringWithRange:r] capitalizedString];
+    [firstCharacter drawInRect:rect withAttributes:_defaultStyle];
     
     UIGraphicsPopContext();
 }
 
-- (void)setString:(NSString *)string {
+- (void)setString:(NSString *)string color:(UIColor *)color {
     
-    _string = [string copy];
-    [self setNeedsDisplay];
+    if (![_string isEqualToString:string]) {
+        _string = [string copy];
+        _fillColor = color;
+        [self setNeedsDisplay];
+    }
 }
 
 @end
@@ -229,9 +241,14 @@ unsigned long stringToLong(unsigned char* str) {
     self.userInteractionEnabled = YES;
     
     _textLayer = [[QMTextLayer alloc] init];
+    _textLayer.frame = self.bounds;
     _textLayer.hidden = YES;
     
     [self.layer addSublayer:_textLayer];
+}
+
+- (void)setImage:(UIImage *)image withKey:(NSString *)key {
+    [[QMImageLoader instance].imageCache storeImage:image forKey:key];
 }
 
 - (void)setImageWithURL:(NSURL *)url
@@ -242,20 +259,19 @@ unsigned long stringToLong(unsigned char* str) {
     
     dispatch_block_t showPlaceholder = ^{
         
-        self.image = nil;
-        
-        NSRange r = [title rangeOfComposedCharacterSequenceAtIndex:0];
-        NSString *firstCharacter = [title substringWithRange:r];
-        
-        _textLayer.fillColor = [self colorForString:title];
+        [_textLayer setString:title color:[self colorForString:title]];
         _textLayer.hidden = NO;
-        _textLayer.frame = self.bounds;
-        _textLayer.string = [firstCharacter capitalizedString];
-
+        
+        CGRect bounds = CGRectMake(0,
+                                   0,
+                                   (int)self.bounds.size.width,
+                                   (int)self.bounds.size.height);
+        if (!CGRectEqualToRect(_textLayer.frame, bounds)) {
+            _textLayer.frame = bounds;
+        }
     };
     
     if ([_url isEqual:url] && !self.image) {
-        
         showPlaceholder();
         return;
     }
@@ -263,6 +279,15 @@ unsigned long stringToLong(unsigned char* str) {
     _url = url;
     [self sd_cancelCurrentImageLoad];
     
+    UIImage *image =
+    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
+    
+    if (image) {
+        self.image = image;
+        _textLayer.hidden = YES;
+        return;
+    }
+    self.image = nil;
     showPlaceholder();
     
     if (urlIsValid) {
@@ -291,13 +316,9 @@ unsigned long stringToLong(unsigned char* str) {
                      weakSelf.image = image;
                      [weakSelf setNeedsLayout];
                  }
-                 else {
-                     
-                     NSLog(@"AAAA");
-                 }
              }
              else {
-                 NSLog(@"AAAA");
+                 NSLog(@"downloadImageWithURL %@", error.localizedDescription);
              }
              
              if (completedBlock) {
@@ -308,7 +329,6 @@ unsigned long stringToLong(unsigned char* str) {
         [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
     }
     else {
-        
         
         dispatch_main_async_safe(^{
             
@@ -331,7 +351,74 @@ unsigned long stringToLong(unsigned char* str) {
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
     
-    [self setImageWithURL:url title:@"t" completedBlock:nil];
+    BOOL urlIsValid = url &&url.scheme && url.host;
+    
+    _url = url;
+    [self sd_cancelCurrentImageLoad];
+    
+    UIImage *image =
+    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
+    
+    if (image) {
+        self.image = image;
+        _textLayer.hidden = YES;
+        return;
+    }
+    self.image = placehoder;
+    
+    if (urlIsValid) {
+        
+        __weak __typeof(self)weakSelf = self;
+        
+        id <SDWebImageOperation> operation =
+        [[QMImageLoader instance]
+         downloadImageWithURL:url
+         transform:nil
+         options:SDWebImageLowPriority
+         progress:nil
+         completed:
+         ^(UIImage *image,
+           NSError *error,
+           SDImageCacheType cacheType,
+           BOOL finished,
+           NSURL *imageURL) {
+             
+             if (!weakSelf) return;
+             
+             if (!error) {
+                 
+                 if (image) {
+                     weakSelf.textLayer.hidden = YES;
+                     weakSelf.image = image;
+                     [weakSelf setNeedsLayout];
+                 }
+             }
+             else {
+                 NSLog(@"downloadImageWithURL %@", error.localizedDescription);
+             }
+             
+             if (completedBlock) {
+                 completedBlock(image, error, cacheType, imageURL);
+             }
+         }];
+        
+        [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
+    }
+    else {
+        
+        dispatch_main_async_safe(^{
+            
+            if (completedBlock) {
+                NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain
+                                                     code:-1
+                                                 userInfo:@
+                                  {
+                                      NSLocalizedDescriptionKey : @"Trying to load a nil url"
+                                  }];
+                completedBlock(nil, error, SDImageCacheTypeNone, url);
+            }
+        });
+    }
 }
 
 - (void)setImageWithURL:(NSURL *)url {

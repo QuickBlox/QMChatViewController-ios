@@ -39,16 +39,18 @@ static NSMutableDictionary *_imaages = nil;
                             leftArrow];
     
     UIImage *img = _imaages[identifier];
+    cornerRadius = MIN(cornerRadius, 10);
+    int space = leftArrow ? arrowSize.width : 0;
+    float leftCap = space +  cornerRadius + 1;
+    float topCap = cornerRadius;
+    
+    CGSize size = CGSizeMake(arrowSize.width + (space +  cornerRadius * 2) +2,
+                             cornerRadius * 2 + arrowSize.height);
     
     if (img) {
-        
-        for (UIImage *img in _imaages.allValues) {
-            
-        }
         return img;
     }
     
-    CGSize size = CGSizeMake(20+cornerRadius, 20);
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
     
@@ -58,7 +60,7 @@ static NSMutableDictionary *_imaages = nil;
     
     BOOL arrow = arrowSize.width + arrowSize.height;
     
-    UIBezierPath* rectanglePath = nil;
+    UIBezierPath *rectanglePath = nil;
     if (!arrow) {
         
         rectanglePath =
@@ -94,11 +96,17 @@ static NSMutableDictionary *_imaages = nil;
     
     [rectanglePath fill];
     
+
     img = UIGraphicsGetImageFromCurrentImageContext();
+<<<<<<< HEAD
     img = [img stretchableImageWithLeftCapWidth:arrowSize.width + cornerRadius
                                    topCapHeight:cornerRadius*2];
+=======
+>>>>>>> origin/development
     UIGraphicsEndImageContext();
     
+    img = [img stretchableImageWithLeftCapWidth:leftCap
+                                   topCapHeight:topCap];
     _imaages[identifier] = img;
     
     return img;
@@ -107,7 +115,7 @@ static NSMutableDictionary *_imaages = nil;
 - (void)awakeFromNib {
     
     [super awakeFromNib];
-    
+    self.opaque = YES;
     _preview =
     [[UIImageView alloc] initWithFrame:self.bounds];
     _preview.autoresizingMask =

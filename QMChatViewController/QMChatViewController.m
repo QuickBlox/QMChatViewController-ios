@@ -11,7 +11,6 @@
 #import "QMToolbarContentView.h"
 #import "QMChatCollectionViewFlowLayout.h"
 #import "QMChatSection.h"
-#import "QMChatSectionManager.h"
 #import "QMDateUtils.h"
 #import "QMChatResources.h"
 #import "NSString+QM.h"
@@ -98,10 +97,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.chatDataSource = [[QMChatDataSource alloc] init];
     self.chatDataSource.delegate = self;
     
-    self.chatSectionManager = [[QMChatSectionManager alloc] initWithChatDataSource:self.chatDataSource];
-    
     self.inputToolbar.delegate = self;
-    
     self.inputToolbar.contentView.textView.delegate = self;
     self.inputToolbar.audioRecordingIsEnabled = YES;
     
@@ -112,7 +108,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     self.systemInputToolbar = [[QMKVOView alloc] init];
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
-    [self.systemInputToolbar setBackgroundColor:[UIColor redColor]];
 }
 
 - (void)registerCells {
@@ -223,53 +218,40 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [self updateCollectionViewInsets];
 }
 
-
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
 
-- (void)changeDataSource:(QMChatDataSource *)dataSource withMessages:(NSArray *)messages updateType:(QMDataSourceActionType)updateType {
+- (void)changeDataSource:(QMChatDataSource *)dataSource
+            withMessages:(NSArray *)messages
+              updateType:(QMDataSourceActionType)updateType {
     
     if (messages.count == 0) {
         return;
     }
     
-    if ([self.collectionView numberOfItemsInSection:0] > 0) {
+    dispatch_block_t batchUpdatesBlock = ^{
         
-        __weak typeof(self) weakSelf = self;
-        
-        dispatch_block_t batchUpdatesBlock = ^{
-            
-            typeof(weakSelf) strongSelf = weakSelf;
-            
-            NSArray *indexPaths = [strongSelf.chatDataSource performChangesWithMessages:messages updateType:updateType];
-            
-            switch (updateType) {
-                    
-                case QMDataSourceActionTypeAdd:
-                    [strongSelf.collectionView insertItemsAtIndexPaths:indexPaths];
-                    break;
-                    
-                case QMDataSourceActionTypeUpdate:
-                    [strongSelf.collectionView reloadItemsAtIndexPaths:indexPaths];
-                    break;
-                    
-                case QMDataSourceActionTypeRemove:
-                    [strongSelf.collectionView deleteItemsAtIndexPaths:indexPaths];
-                    break;
-                    
-            }
-        };
-        
-        [self.collectionView performBatchUpdates:batchUpdatesBlock
-                                      completion:nil];
-        
-    }
-    else {
-        
+        NSArray *indexPaths =
         [self.chatDataSource performChangesWithMessages:messages
                                              updateType:updateType];
-        [self.collectionView reloadData];
-    }
+        switch (updateType) {
+                
+            case QMDataSourceActionTypeAdd:
+                [self.collectionView insertItemsAtIndexPaths:indexPaths];
+                break;
+                
+            case QMDataSourceActionTypeUpdate:
+                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+                break;
+                
+            case QMDataSourceActionTypeRemove:
+                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+                break;
+        }
+    };
+    
+    [self.collectionView performBatchUpdates:batchUpdatesBlock
+                                  completion:nil];
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
@@ -311,6 +293,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     __weak __typeof(self) weakSelf = self;
     
     [self.systemInputToolbar setSuperFrameDidChangeBlock:^(CGRect superViewFrame) {
+        
         typeof(weakSelf) strongSelf = weakSelf;
         
         //avoid inputAccessoryView disappearing on pop
@@ -366,16 +349,18 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [self registerForNotifications:NO];
 }
 
-
-- (void)viewDidLayoutSubviews
-{
+- (void)viewDidLayoutSubviews {
+    
     [super viewDidLayoutSubviews];
     
-    
-    if (!self.presentedViewController && self.navigationController && !self.view.inputAccessoryView.superview) {
+    if (!self.presentedViewController &&
+        self.navigationController &&
+        !self.view.inputAccessoryView.superview) {
+        
         [self.view becomeFirstResponder];
     }
 }
+
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
@@ -391,7 +376,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     UIImage *normalImage = [accessoryImage imageMaskedWithColor:[UIColor lightGrayColor]];
     UIImage *highlightedImage = [accessoryImage imageMaskedWithColor:[UIColor darkGrayColor]];
     
-    UIButton *accessoryButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, accessoryImage.size.width, 32.0f)];
+    UIButton *accessoryButton =
+    [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, accessoryImage.size.width, 32.0f)];
     [accessoryButton setImage:normalImage forState:UIControlStateNormal];
     [accessoryButton setImage:highlightedImage forState:UIControlStateHighlighted];
     
@@ -476,7 +462,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
 }
 
-- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
+- (void)presentViewController:(UIViewController *)viewControllerToPresent
+                     animated:(BOOL)flag completion:(void (^)(void))completion {
     
     CGFloat animationDuration = 0;
     
@@ -485,19 +472,25 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         [self.inputToolbar.contentView.textView resignFirstResponder];
     }
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(animationDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        [super presentViewController:viewControllerToPresent animated:flag completion:^{
-            if (completion) {
-                completion();
-            }
-        }];
-    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
+                                 (int64_t)(animationDuration * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+                       
+                       [super presentViewController:viewControllerToPresent
+                                           animated:flag completion:^{
+                                               if (completion) {
+                                                   completion();
+                                               }
+                                           }];
+                   });
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender {
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *alertController =
+    [UIAlertController alertControllerWithTitle:nil
+                                        message:nil
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
     
     __weak __typeof(self) weakSelf = self;
     
@@ -508,7 +501,9 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
             typeof(weakSelf) strongSelf = weakSelf;
             
             if (granted) {
-                [strongSelf presentViewController:self.pickerController animated:YES completion:nil];
+                [strongSelf presentViewController:self.pickerController
+                                         animated:YES
+                                       completion:nil];
             }
             else {
                 [strongSelf showAlertForAccess];
@@ -602,7 +597,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+                  willDecelerate:(BOOL)decelerate {
     self.movingKeyboard = NO;
 }
 
@@ -635,7 +631,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
         return NO;
     }
     
-    UICollectionViewLayoutAttributes *attributes = [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    UICollectionViewLayoutAttributes *attributes =
+    [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
     CGRect cellRect = attributes.frame;
     
     BOOL shouldScroll = self.lastContentOffset < CGRectGetHeight(cellRect) * 0.75;
@@ -659,14 +656,18 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     return [self.chatDataSource messagesCount];
 }
 
-- (UICollectionViewCell *)collectionView:(QMChatCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(QMChatCollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    QBChatMessage *messageItem = [self.chatDataSource messageForIndexPath:indexPath];
+    QBChatMessage *messageItem =
+    [self.chatDataSource messageForIndexPath:indexPath];
     
     Class class = [self viewClassForItem:messageItem];
     NSString *itemIdentifier = [class cellReuseIdentifier];
     
-    QMChatCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:itemIdentifier forIndexPath:indexPath];
+    QMChatCell *cell =
+    [collectionView dequeueReusableCellWithReuseIdentifier:itemIdentifier
+                                              forIndexPath:indexPath];
     cell.transform = self.collectionView.transform;
     
     [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
@@ -751,19 +752,22 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 #pragma mark - Collection view delegate flow layout
 
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView
-                  layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+                  layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     return [collectionViewLayout sizeForItemAtIndexPath:indexPath];
 }
 
-- (NSString *)collectionView:(QMChatCollectionView *)collectionView itemIdAtIndexPath:(NSIndexPath *)indexPath {
+- (NSString *)collectionView:(QMChatCollectionView *)collectionView
+           itemIdAtIndexPath:(NSIndexPath *)indexPath {
     
     QBChatMessage *message = [self.chatDataSource messageForIndexPath:indexPath];
     
     return message.ID;
 }
 
-- (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView layoutModelAtIndexPath:(NSIndexPath *)indexPath {
+- (QMChatCellLayoutModel)collectionView:(QMChatCollectionView *)collectionView
+                 layoutModelAtIndexPath:(NSIndexPath *)indexPath {
     
     QBChatMessage *item = [self.chatDataSource messageForIndexPath:indexPath];
     Class class = [self viewClassForItem:item];
@@ -773,7 +777,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 
 #pragma mark - Input toolbar delegate
 
-- (void)messagesInputToolbar:(QMInputToolbar *)toolbar didPressLeftBarButton:(UIButton *)sender {
+- (void)messagesInputToolbar:(QMInputToolbar *)toolbar
+       didPressLeftBarButton:(UIButton *)sender {
     
     if (toolbar.sendButtonOnRight) {
         
@@ -785,7 +790,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     }
 }
 
-- (void)messagesInputToolbar:(QMInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender {
+- (void)messagesInputToolbar:(QMInputToolbar *)toolbar
+      didPressRightBarButton:(UIButton *)sender {
     
     if (toolbar.sendButtonOnRight) {
         
@@ -825,7 +831,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
              
              NSTextAttachment *attachment = (NSTextAttachment *)value;
              [textAttachments addObject:attachment];
-             
          }
      }];
     
@@ -972,14 +977,14 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)setBottomCollectionViewInsetsValue:(CGFloat)bottom {
-
+    
     [self setCollectionViewInsetsTopValue:self.collectionView.contentInset.bottom
                               bottomValue:bottom];
     
 }
 
 - (void)setTopCollectionViewInsetsValue:(CGFloat)top {
-
+    
     [self setCollectionViewInsetsTopValue:top
                               bottomValue:self.collectionView.contentInset.top];
 }
@@ -1175,7 +1180,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-//        [self.view layoutIfNeeded];
+        //        [self.view layoutIfNeeded];
         [self resetLayoutAndCaches];
     }];
     
@@ -1220,7 +1225,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     visibleRect.size = self.collectionView.frame.size;
     return visibleRect;
 }
-    
+
 - (CGRect)scrollTopRect {
     
     return CGRectMake(0.0,
@@ -1269,7 +1274,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     CGFloat toolbarMinY = CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputToolbar.frame);
     
     switch (gesture.state) {
-        
+            
         case UIGestureRecognizerStateChanged: {
             
             if ([self.inputToolbar.contentView.textView isFirstResponder]) {
@@ -1297,6 +1302,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 - (void)hideKeyboard:(BOOL)animated {
     
     dispatch_block_t hideKeyboardBlock = ^{
+        
         if (self.inputToolbar.contentView.textView.isFirstResponder) {
             [self.inputToolbar.contentView resignFirstResponder];
         }
