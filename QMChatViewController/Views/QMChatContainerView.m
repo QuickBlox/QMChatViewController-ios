@@ -98,11 +98,7 @@ static NSMutableDictionary *_imaages = nil;
     
 
     img = UIGraphicsGetImageFromCurrentImageContext();
-<<<<<<< HEAD
-    img = [img stretchableImageWithLeftCapWidth:arrowSize.width + cornerRadius
-                                   topCapHeight:cornerRadius*2];
-=======
->>>>>>> origin/development
+
     UIGraphicsEndImageContext();
     
     img = [img stretchableImageWithLeftCapWidth:leftCap
@@ -118,6 +114,7 @@ static NSMutableDictionary *_imaages = nil;
     self.opaque = YES;
     _preview =
     [[UIImageView alloc] initWithFrame:self.bounds];
+    _preview.userInteractionEnabled = YES;
     _preview.autoresizingMask =
     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     UIImage *bubleImg =

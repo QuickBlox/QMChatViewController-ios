@@ -351,6 +351,7 @@ unsigned long stringToLong(unsigned char* str) {
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
     
+
     BOOL urlIsValid = url &&url.scheme && url.host;
     
     _url = url;
@@ -422,8 +423,14 @@ unsigned long stringToLong(unsigned char* str) {
 }
 
 - (void)setImageWithURL:(NSURL *)url {
-     [self setImageWithURL:url title:@"s" completedBlock:nil];
+    
+     [self setImageWithURL:url
+               placeholder:nil
+                   options:SDWebImageLowPriority
+                  progress:nil
+            completedBlock:nil];
 }
+
 - (void)clearImage {
     
     self.image = nil;

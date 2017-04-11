@@ -8,10 +8,15 @@
 
 #import "QMChatOutgoingLinkPreviewCell.h"
 
-@interface QMChatOutgoingLinkPreviewCell()
-@end
 
 @implementation QMChatOutgoingLinkPreviewCell
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    self.siteDescriptionLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.textColor = [UIColor whiteColor];
+    self.urlLabel.textColor = [UIColor whiteColor];
+}
 
 @end
