@@ -118,7 +118,7 @@ FOUNDATION_EXPORT const CGFloat kQMToolbarContentViewHorizontalSpacingDefault;
 
 - (void)removeButton:(UIButton *)button;
 
-#pragma mark - Class methods
+//MARK: - Class methods
 
 /**
  *  Returns the `UINib` object initialized for a `QMToolbarContentView`.

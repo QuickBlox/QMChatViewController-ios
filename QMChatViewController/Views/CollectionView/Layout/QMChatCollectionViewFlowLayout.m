@@ -27,7 +27,7 @@
     return (id)self.collectionView;
 }
 
-#pragma mark - Initialization
+//MARK: - Initialization
 
 - (void)configureFlowLayout {
     
@@ -89,17 +89,7 @@
     return CGRectGetWidth(self.collectionView.frame) - self.sectionInset.left - self.sectionInset.right;
 }
 
-- (void)setCacheLimit:(NSUInteger)cacheLimit {
-
-//    self.cache.countLimit = cacheLimit;
-}
-
-- (NSUInteger)cacheLimit {
-
-//    return self.cache.countLimit;
-}
-
-#pragma mark - Notifications
+//MARK: - Notifications
 
 - (void)didReceiveApplicationMemoryWarningNotification:(NSNotification *)notification {
     
@@ -112,7 +102,7 @@
     [self invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-#pragma mark - Collection view flow layout
+//MARK: - Collection view flow layout
 
 - (void)invalidateLayoutWithContext:(QMCollectionViewFlowLayoutInvalidationContext *)context {
     
@@ -163,7 +153,6 @@
 
     return CGRectGetWidth(newBounds) > CGRectGetWidth(oldBounds) ||
     CGRectGetWidth(newBounds) < CGRectGetWidth(oldBounds);
-
 }
 
 - (void)prepareForCollectionViewUpdates:(NSArray *)updateItems {
@@ -193,13 +182,13 @@
     }];
 }
 
-#pragma mark - Invalidation utilities
+//MARK:- Invalidation utilities
 
 - (void)resetLayout {
     [self.cache removeAllObjects];
 }
 
-#pragma mark - Message cell layout utilities
+//MARK: - Message cell layout utilities
 
 - (void)removeSizeFromCacheForItemID:(NSString *)itemID {
     [self.cache removeObjectForKey:itemID];

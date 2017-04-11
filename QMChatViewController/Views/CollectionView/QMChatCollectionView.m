@@ -21,7 +21,7 @@
 @dynamic delegate;
 @dynamic collectionViewLayout;
 
-#pragma mark - Initialization
+//MARK: - Initialization
 
 - (void)configureCollectionView {
     
@@ -48,7 +48,7 @@
     [self configureCollectionView];
 }
 
-#pragma mark - Messages collection view cell delegate
+//MARK: - Messages collection view cell delegate
 
 - (void)chatCellDidTapAvatar:(QMChatCell *)cell {
     

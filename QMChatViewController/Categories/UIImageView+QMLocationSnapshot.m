@@ -38,7 +38,7 @@
     self.image = nil;
     [self qm_cancelPreviousSnapshotCreation];
     
-    NSString *key = [NSString stringWithFormat:@"%lf/%lf",locationCoordinate.latitude, locationCoordinate.longitude];
+    NSString *key = [NSString stringWithFormat:@"%lf/%lf", locationCoordinate.latitude, locationCoordinate.longitude];
     
     self.qm_snapshotKey = key;
     
