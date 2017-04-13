@@ -201,4 +201,11 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  */
 + (QMChatCellLayoutModel)layoutModel;
 
+/**
+ Registers cell for data view
+
+ @param dataView data view. UITableView or UICollectionView
+ */
++ (void)registerForReuseInView:(id)dataView;
+
 @end

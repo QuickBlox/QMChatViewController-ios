@@ -115,78 +115,47 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     UINib *headerNib = [QMHeaderCollectionReusableView nib];
     NSString *headerView = [QMHeaderCollectionReusableView cellReuseIdentifier];
     [self.collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerView];
+    
     // Register contact request cell
-    UINib *requestNib = [QMChatContactRequestCell nib];
-    NSString *requestIdentifier = [QMChatContactRequestCell cellReuseIdentifier];
-    [self.collectionView registerNib:requestNib forCellWithReuseIdentifier:requestIdentifier];
+    [QMChatContactRequestCell registerForReuseInView:self.collectionView];
+    
     // Register Notification cell
-    UINib *notificationNib = [QMChatNotificationCell nib];
-    NSString *notificationIdentifier = [QMChatNotificationCell cellReuseIdentifier];
-    [self.collectionView  registerNib:notificationNib forCellWithReuseIdentifier:notificationIdentifier];
+    [QMChatNotificationCell registerForReuseInView:self.collectionView];
+    
     // Register outgoing cell
-    UINib *outgoingNib = [QMChatOutgoingCell nib];
-    NSString *outgoingIdentifier = [QMChatOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:outgoingNib forCellWithReuseIdentifier:outgoingIdentifier];
+    [QMChatOutgoingCell registerForReuseInView:self.collectionView];
     // Register incoming cell
-    UINib *incomingNib = [QMChatIncomingCell nib];
-    NSString *incomingIdentifier = [QMChatIncomingCell cellReuseIdentifier];
-    [self.collectionView  registerNib:incomingNib forCellWithReuseIdentifier:incomingIdentifier];
+    [QMChatIncomingCell registerForReuseInView:self.collectionView];
+    
     // Register attachment incoming cell
-    UINib *attachmentIncomingNib = [QMChatAttachmentIncomingCell nib];
-    NSString *attachmentIncomingIdentifier = [QMChatAttachmentIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:attachmentIncomingNib forCellWithReuseIdentifier:attachmentIncomingIdentifier];
+    [QMChatAttachmentIncomingCell registerForReuseInView:self.collectionView];
     // Register attachment outgoing cell
-    UINib *attachmentOutgoingNib  = [QMChatAttachmentOutgoingCell nib];
-    NSString *attachmentOutgoingIdentifier = [QMChatAttachmentOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
+    [QMChatAttachmentOutgoingCell registerForReuseInView:self.collectionView];
+    
     // Register location outgoing cell
-    UINib *locOutgoingNib = [QMChatLocationOutgoingCell nib];
-    NSString *locOugoingIdentifier = [QMChatLocationOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:locOutgoingNib forCellWithReuseIdentifier:locOugoingIdentifier];
+    [QMChatLocationOutgoingCell registerForReuseInView:self.collectionView];
     // Register location incoming cell
-    UINib *locIncomingNib = [QMChatLocationIncomingCell nib];
-    NSString *locIncomingIdentifier = [QMChatLocationIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:locIncomingNib forCellWithReuseIdentifier:locIncomingIdentifier];
+    [QMChatLocationIncomingCell registerForReuseInView:self.collectionView];
     
     // Register video attachment outgoing cell
-    UINib *videoOutgoingNib = [QMVideoOutgoingCell nib];
-    NSString *videoOugoingIdentifier = [QMVideoOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:videoOutgoingNib forCellWithReuseIdentifier:videoOugoingIdentifier];
-    
+    [QMVideoOutgoingCell registerForReuseInView:self.collectionView];
     // Register video attachment incoming cell
-    UINib *videoIncomingNib = [QMVideoIncomingCell nib];
-    NSString *videoIncomingIdentifier = [QMVideoIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:videoIncomingNib forCellWithReuseIdentifier:videoIncomingIdentifier];
+    [QMVideoIncomingCell registerForReuseInView:self.collectionView];
     
     // Register audio attachment outgoing cell
-    UINib *audioOutgoingNib = [QMAudioOutgoingCell nib];
-    NSString *audioOutgoingIdentifier = [QMAudioOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:audioOutgoingNib forCellWithReuseIdentifier:audioOutgoingIdentifier];
-    
+    [QMAudioOutgoingCell registerForReuseInView:self.collectionView];
     // Register audio attachment incoming cell
-    UINib *audioIncomingNib = [QMAudioIncomingCell nib];
-    NSString *audioIncomingIdentifier = [QMAudioIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:audioIncomingNib forCellWithReuseIdentifier:audioIncomingIdentifier];
+    [QMAudioIncomingCell registerForReuseInView:self.collectionView];
     
     // Register image attachment outgoing cell
-    UINib *imageOutgoingNib = [QMImageOutgoingCell nib];
-    NSString *imageOutgoingIdentifier = [QMImageOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:imageOutgoingNib forCellWithReuseIdentifier:imageOutgoingIdentifier];
-    
+    [QMImageOutgoingCell registerForReuseInView:self.collectionView];
     // Register image attachment incoming cell
-    UINib *imageIncomingNib = [QMImageIncomingCell nib];
-    NSString *imageIncomingIdentifier = [QMImageIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:imageIncomingNib forCellWithReuseIdentifier:imageIncomingIdentifier];
+    [QMImageIncomingCell registerForReuseInView:self.collectionView];
     
-//    // Register link preview incoming cell
-    UINib *linkPreviewIncomingNib = [QMChatIncomingLinkPreviewCell nib];
-    NSString *linkPreviewIncomingIdentifier = [QMChatIncomingLinkPreviewCell cellReuseIdentifier];
-    [self.collectionView registerNib:linkPreviewIncomingNib forCellWithReuseIdentifier:linkPreviewIncomingIdentifier];
-    
+    // Register link preview incoming cell
+    [QMChatIncomingLinkPreviewCell registerForReuseInView:self.collectionView];
     // Register link preview outgoing cell
-    UINib *linkPreviewOutgoingNib = [QMChatOutgoingLinkPreviewCell nib];
-    NSString *linkPreviewOutgoingIdentifier = [QMChatOutgoingLinkPreviewCell cellReuseIdentifier];
-    [self.collectionView registerNib:linkPreviewOutgoingNib forCellWithReuseIdentifier:linkPreviewOutgoingIdentifier];
+    [QMChatOutgoingLinkPreviewCell registerForReuseInView:self.collectionView];
 }
 
 #pragma mark - UI Responder
@@ -752,7 +721,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 #pragma mark - Collection view delegate flow layout
 
 - (CGSize)collectionView:(QMChatCollectionView *)collectionView
-                  layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
+layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     return [collectionViewLayout sizeForItemAtIndexPath:indexPath];
@@ -1229,7 +1198,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 - (CGRect)scrollTopRect {
     
     return CGRectMake(0.0,
-                      self.collectionView.contentSize.height - CGRectGetHeight(self.collectionView.bounds),
+    self.collectionView.contentSize.height - CGRectGetHeight(self.collectionView.bounds),
                       CGRectGetWidth(self.collectionView.bounds),
                       CGRectGetHeight(self.collectionView.bounds));
 }
