@@ -452,5 +452,13 @@ unsigned long stringToLong(unsigned char* str) {
         }];
     }
 }
-
+- (CGSize)intrinsicContentSize
+{
+    if (self.image)
+    {
+        return [super intrinsicContentSize];
+    }
+    
+    return CGSizeZero;
+}
 @end

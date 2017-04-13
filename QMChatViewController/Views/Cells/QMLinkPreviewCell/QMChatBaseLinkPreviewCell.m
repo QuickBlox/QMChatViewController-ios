@@ -14,6 +14,12 @@
 
 @implementation QMChatBaseLinkPreviewCell
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    _previewImageView.image = nil;
+    _iconImageView.image = nil;
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     _previewImageView.delegate = self;
@@ -28,6 +34,17 @@
     if ([self.delegate respondsToSelector:@selector(chatCellDidTapContainer:)]) {
         [self.delegate chatCellDidTapContainer:self];
     }
+}
+
++ (QMChatCellLayoutModel)layoutModel {
+    
+    QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
+    defaultLayoutModel.avatarSize = CGSizeMake(0, 0);
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(4, 4, 4, 15),
+    defaultLayoutModel.topLabelHeight = 0;
+   // defaultLayoutModel.bottomLabelHeight = 14;
+    
+    return defaultLayoutModel;
 }
 
 @end

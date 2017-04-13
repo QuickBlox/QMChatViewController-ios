@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) IBOutlet TTTAttributedLabel *urlLabel;
 @property (nonatomic, weak) IBOutlet QMImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet UIView *linkPreviewView;
+@property (weak, nonatomic) IBOutlet QMImageView *iconImageView;
 
 @end
 
