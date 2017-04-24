@@ -96,7 +96,7 @@ static dispatch_queue_t _serialQueue = nil;
 #pragma mark -
 #pragma mark - Data Source
 
-- (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceActionType)updateType {
+- (void)changeDataSourceWithMessages:(NSArray *)messages forUpdateType:(QMDataSourceActionType)updateType {
     
    // dispatch_async(_serialQueue, ^{
         

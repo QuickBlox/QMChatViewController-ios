@@ -9,11 +9,16 @@
 #import "QMAudioIncomingCell.h"
 
 @implementation QMAudioIncomingCell
+
 - (void)awakeFromNib {
+    
     [super awakeFromNib];
+    
     _progressView.layer.masksToBounds = YES;
     self.layer.masksToBounds = YES;
+    _progressView.backgroundColor = [UIColor clearColor];
 }
+
 - (void)prepareForReuse {
     
     [super prepareForReuse];
@@ -21,8 +26,11 @@
     [self.progressView setProgress:0
                           animated:NO];
 }
+
 - (void)layoutSubviews {
+    
     [super layoutSubviews];
+    
     UIImage *stretchableImage = self.containerView.backgroundImage;
     
     _progressView.layer.mask = [self maskLayerFromImage:stretchableImage];
@@ -49,7 +57,7 @@
     CGRect contentsCenter = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     if (insets.left > 0 || insets.right > 0) {
         contentsCenter.origin.x = ((insets.left + halfPixelFudge) / imageSize.width);
-        contentsCenter.size.width = 1.0;//(imageSize.width - (insets.left + insets.right + 1.f) + otherPixelFudge) / imageSize.width;
+        contentsCenter.size.width = (imageSize.width - (insets.left + insets.right + 1.f) + otherPixelFudge) / imageSize.width;
     }
     if (insets.top > 0 || insets.bottom > 0) {
         contentsCenter.origin.y = ((insets.top + halfPixelFudge) / imageSize.height);

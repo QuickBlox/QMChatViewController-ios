@@ -22,6 +22,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    
+    _linkPreviewView.backgroundColor = [UIColor clearColor];
     _previewImageView.delegate = self;
     _previewImageView.contentMode = UIViewContentModeScaleAspectFit;
     _previewImageView.clipsToBounds = YES;

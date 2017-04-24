@@ -111,6 +111,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
 }
 
 - (void)registerCells {
+    
     //Register header view
     UINib *headerNib = [QMHeaderCollectionReusableView nib];
     NSString *headerView = [QMHeaderCollectionReusableView cellReuseIdentifier];
