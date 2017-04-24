@@ -153,6 +153,26 @@ static NSMutableDictionary *_imaages = nil;
     }
 }
 
+- (void)setHighlightColor:(UIColor *)highlightColor {
+    
+    if (![_highlightColor isEqual:highlightColor]) {
+        
+        //awakefromnib
+        if (_highlightColor) {
+            
+            UIImage *bubleImg =
+            [QMChatContainerView bubleImageWithArrowSize:self.arrowSize
+                                               fillColor:highlightColor
+                                            cornerRadius:self.cornerRadius
+                                               leftArrow:self.leftArrow];
+            _preview.highlightedImage = bubleImg;
+        }
+        
+        _highlightColor = highlightColor;
+    }
+
+}
+
 - (void)setHighlighted:(BOOL)highlighted {
     
     if (_highlighted != highlighted) {
