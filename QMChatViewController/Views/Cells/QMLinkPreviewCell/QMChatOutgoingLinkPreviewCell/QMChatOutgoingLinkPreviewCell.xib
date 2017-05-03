@@ -79,26 +79,29 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u19-KB-07n">
                                                 <rect key="frame" x="8" y="29" width="149" height="17"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description of site with preview link" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViW-tj-Re3" customClass="TTTAttributedLabel">
-                                                        <rect key="frame" x="3" y="0.0" width="146" height="17"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description of site l" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViW-tj-Re3" customClass="TTTAttributedLabel">
+                                                        <rect key="frame" x="18" y="0.0" width="131" height="18"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="18" id="a5J-Ej-JqJ"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TQK-T9-5WU" customClass="QMImageView">
-                                                        <rect key="frame" x="1" y="1" width="0.0" height="15"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" translatesAutoresizingMaskIntoConstraints="NO" id="TQK-T9-5WU" customClass="QMImageView">
+                                                        <rect key="frame" x="1" y="1" width="15" height="15"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="15" id="Uqg-YV-y9R"/>
+                                                            <constraint firstAttribute="height" constant="15" id="ARG-Yz-HHf"/>
                                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="15" id="wMM-et-zdz"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstItem="ViW-tj-Re3" firstAttribute="top" secondItem="u19-KB-07n" secondAttribute="top" id="MVZ-xM-VKX"/>
+                                                    <constraint firstItem="ViW-tj-Re3" firstAttribute="centerY" secondItem="TQK-T9-5WU" secondAttribute="centerY" id="Mvz-rR-Y8i"/>
                                                     <constraint firstItem="ViW-tj-Re3" firstAttribute="leading" secondItem="TQK-T9-5WU" secondAttribute="trailing" constant="2" id="TS7-AW-2Xk"/>
-                                                    <constraint firstAttribute="bottom" secondItem="ViW-tj-Re3" secondAttribute="bottom" id="VX2-Pb-iZw"/>
+                                                    <constraint firstAttribute="height" constant="17" id="aoz-Qi-LQV"/>
                                                     <constraint firstItem="TQK-T9-5WU" firstAttribute="leading" secondItem="u19-KB-07n" secondAttribute="leading" constant="1" id="h60-JO-WJW"/>
                                                     <constraint firstAttribute="trailing" secondItem="ViW-tj-Re3" secondAttribute="trailing" id="kcO-r1-5ci"/>
                                                     <constraint firstItem="TQK-T9-5WU" firstAttribute="centerY" secondItem="u19-KB-07n" secondAttribute="centerY" id="yU9-sj-t2E"/>
@@ -183,6 +186,8 @@
                 <outlet property="linkPreviewView" destination="hnx-6J-lVm" id="nIw-cM-PgF"/>
                 <outlet property="messageContainer" destination="HJj-TP-WAU" id="G3E-Qu-6Vt"/>
                 <outlet property="messageContainerBottomInsetConstraint" destination="g5C-rg-SyM" id="K8H-kH-KJF"/>
+                <outlet property="messageContainerLeftInsetConstraint" destination="ffj-rY-lgn" id="40S-ds-QAm"/>
+                <outlet property="messageContainerRightInsetConstraint" destination="hCt-qd-lIv" id="mY5-nm-7E3"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="mP1-kC-uHR" id="0Fp-pB-0z5"/>
                 <outlet property="previewImageView" destination="NfK-fW-qES" id="zS4-VB-wtZ"/>
                 <outlet property="siteDescriptionLabel" destination="ViW-tj-Re3" id="Yeh-fQ-Mu4"/>

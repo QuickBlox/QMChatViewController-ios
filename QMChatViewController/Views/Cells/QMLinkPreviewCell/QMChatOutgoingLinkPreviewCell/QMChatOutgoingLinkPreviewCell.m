@@ -19,4 +19,15 @@
     self.urlLabel.textColor = [UIColor whiteColor];
 }
 
++ (QMChatCellLayoutModel)layoutModel {
+    
+    QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
+    defaultLayoutModel.avatarSize = CGSizeMake(0, 0);
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(0, 0, 0, 10),
+    defaultLayoutModel.topLabelHeight = 0;
+    defaultLayoutModel.bottomLabelHeight = 14;
+    
+    return defaultLayoutModel;
+}
+
 @end
