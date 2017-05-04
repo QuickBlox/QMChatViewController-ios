@@ -157,7 +157,6 @@ static NSMutableDictionary *_imaages = nil;
     
     if (![_highlightColor isEqual:highlightColor]) {
         
-        //awakefromnib
         if (_highlightColor) {
             
             UIImage *bubleImg =

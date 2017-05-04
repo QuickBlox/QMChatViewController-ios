@@ -12,11 +12,21 @@
 #import "QMMediaPresenter.h"
 
 @implementation QMBaseMediaCell
+
 @synthesize presenter = _presenter;
+@synthesize duration = _duration;
+@synthesize offset = _offset;
+@synthesize currentTime = _currentTime;
+@synthesize progress = _progress;
+@synthesize isReady = _isReady;
+@synthesize isActive = _isActive;
+
+//MARK: - NSObject
 
 - (void)deallock {
     NSLog(@"deallock base cell");
 }
+
 - (void)awakeFromNib {
     
     [super awakeFromNib];
@@ -53,14 +63,20 @@
 - (void)prepareForReuse {
     
     [super prepareForReuse];
-    [self setIsActive:NO];
+    
+    self.isActive = NO;
+    self.isReady = NO;
     self.previewImageView.image = nil;
 }
 
-- (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(NSTimeInterval)duration {
+-(void)setCurrentTime:(NSInteger)currentTime {
+    if (_currentTime == currentTime) {
+        return;
+    }
     
-    self.durationLabel.text = [self timestampString:currentTime forDuration:duration];
+    _currentTime = currentTime;
+    
+    self.durationLabel.text = [self timestampString:currentTime forDuration:_duration];
 }
 
 - (void)setProgres:(CGFloat)progress {
@@ -76,12 +92,24 @@
     [self.circularProgress setProgress:progress];
 }
 
-- (void)setDuration:(NSTimeInterval)duration {
+- (void)setDuration:(NSInteger)duration {
+    
+    if (_duration == duration) {
+        return;
+    }
+    
+    _duration = duration;
     
     self.durationLabel.text = [self timestampString:duration];
 }
 
 - (void)setIsReady:(BOOL)isReady {
+    
+    if (isReady == _isReady) {
+        return;
+    }
+    
+    _isReady = isReady;
     
     if (isReady) {
         [self.circularProgress stopSpinProgressBackgroundLayer];
@@ -100,6 +128,11 @@
 }
 
 - (void)setIsActive:(BOOL)isActive {
+    
+    if (_isActive == isActive) {
+        return;
+    }
+    _isActive = isActive;
     
     NSString *imageName = isActive ? @"pause_icon" : @"play_icon";
     UIImage *buttonImage = [QMChatResources imageNamed:imageName];

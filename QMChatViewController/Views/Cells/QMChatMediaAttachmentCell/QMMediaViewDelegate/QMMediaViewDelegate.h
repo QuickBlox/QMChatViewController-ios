@@ -20,23 +20,19 @@
 
 @property (strong, nonatomic) QMMediaPresenter *presenter;
 
+@property (nonatomic, assign) BOOL isReady;
+@property (nonatomic, assign) BOOL isActive;
+
 @optional
 
-- (void)setDuration:(NSTimeInterval)duration;
-- (void)setOffset:(CGFloat)offset;
-- (void)setProgres:(CGFloat)progress;
+@property (nonatomic, assign) NSInteger currentTime;
+@property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, assign) CGFloat offset;
+@property (nonatomic, assign) CGFloat progress;
 
-- (void)setIsActive:(BOOL)isActive;
-
-- (void)setPlayingStatus:(NSUInteger)playingStatus;
-
-- (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(NSTimeInterval)duration;
 
 - (void)setImage:(UIImage *)image;
-
 - (void)showLoadingError:(NSError *)error;
-- (void)setIsReady:(BOOL)isReady;
 - (void)showUploadingError:(NSError *)error;
 
 @end

@@ -39,14 +39,14 @@
 }
 
 - (void)requestForMedia {
-    
+   
     [self.mediaAssistant requestForMediaWithSender:self];
 }
 
 
 - (void)updateProgress:(CGFloat)progress {
     
-    [self.view setProgres:progress];
+    [self.view setProgress:progress];
 }
 
 - (void)setNeedsToUpdateLayout {
@@ -78,7 +78,7 @@
 }
 - (void)didUpdateProgress:(CGFloat)progress {
     
-    [self.view setProgres:progress];
+    [self.view setProgress:progress];
 }
 
 - (void)didUpdateDuration:(NSTimeInterval)duration {
@@ -89,8 +89,8 @@
 - (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
                     duration:(NSTimeInterval)duration {
     
-    [self.view setCurrentTime:currentTime
-                  forDuration:duration];
+    [self.view setCurrentTime:currentTime];
+    [self.view setDuration:duration];
 }
 
 - (void)didUpdateThumbnailImage:(UIImage *)image {
@@ -99,9 +99,10 @@
 }
 
 - (void)dealloc {
-    _view = nil;
     
+    _view = nil;
 }
+
 - (NSString *)description {
     
     return [NSString stringWithFormat:@"<%@: %p; attachmentID = %@>",

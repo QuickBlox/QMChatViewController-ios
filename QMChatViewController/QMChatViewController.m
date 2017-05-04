@@ -602,7 +602,8 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     }
     
     UICollectionViewLayoutAttributes *attributes =
-    [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0
+                                                                                inSection:0]];
     CGRect cellRect = attributes.frame;
     
     BOOL shouldScroll = self.lastContentOffset < CGRectGetHeight(cellRect) * 0.75;
@@ -981,12 +982,12 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
 
 - (BOOL)shouldCancelScrollingForItemIndexPaths:(NSArray*)indexPathes {
     
-    NSSet *visibleInxexPathes= [NSSet setWithArray:self.collectionView.indexPathsForVisibleItems];
+    NSSet *visibleInxexPathes = [NSSet setWithArray:self.collectionView.indexPathsForVisibleItems];
+    
     //Index path of the first cell - last message
     NSIndexPath *pathToLastMessage = [NSIndexPath indexPathForRow:0 inSection:0];
     
-    if  ([visibleInxexPathes containsObject:pathToLastMessage]) {
-        
+    if ([visibleInxexPathes containsObject:pathToLastMessage]) {
         return NO;
     }
     

@@ -59,7 +59,10 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
     
     if (object == self.superview && ([keyPath isEqualToString:@"frame"] ||
                                      [keyPath isEqualToString:@"center"])) {
