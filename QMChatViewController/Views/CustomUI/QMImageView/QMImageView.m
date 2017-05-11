@@ -15,19 +15,30 @@
 
 @interface QMImageProcessor : NSObject <SDWebImageManagerDelegate>
 
-+ (instancetype)instance;
++ (instancetype)processorWithType:(QMImageViewType)processorType
+                      andCropSize:(CGSize)cropSize;
 
 @end
 
+@interface QMImageProcessor()
+
+@property (assign, nonatomic) QMImageViewType imageViewType;
+@property (assign, nonatomic) CGSize cropSize;
+
+@end
 @implementation QMImageProcessor
 
-+ (instancetype)instance {
++ (instancetype)processorWithType:(QMImageViewType)imageViewType
+                          andCropSize:(CGSize)cropSize {
     
     static dispatch_once_t onceToken;
     static QMImageProcessor *_imageProcessor = nil;
     dispatch_once(&onceToken, ^{
         _imageProcessor = [[QMImageProcessor alloc] init];
     });
+    
+    _imageProcessor.imageViewType = imageViewType;
+    _imageProcessor.cropSize = cropSize;
     
     return _imageProcessor;
 }
@@ -36,7 +47,34 @@
  transformDownloadedImage:(UIImage *)image
                   withURL:(NSURL *)imageURL {
     
-    return [image imageByCircularScaleAndCrop:CGSizeMake(59, 59)];
+    BOOL shouldCrop = !(CGSizeEqualToSize(_cropSize, CGSizeZero));
+
+    switch (_imageViewType) {
+            
+        case QMImageViewTypeNone: {
+            
+            return shouldCrop ? [image imageByScaleAndCrop:_cropSize] : image;
+            break;
+        }
+        case QMImageViewTypeCircle: {
+            
+            return shouldCrop
+            ? [image imageByCircularScaleAndCrop:_cropSize]
+            : [image imageByCircularScaleAndCrop:CGSizeMake(59, 59)];
+            
+            break;
+        }
+        case QMImageViewTypeSquare: {
+            return shouldCrop
+            ? [image imageByScaleAndCrop:_cropSize]
+            : [image imageByScaleAndCrop:CGSizeMake(59, 59)];
+
+            break;
+        }
+        default:
+            break;
+    }
+    
 }
 
 @end
@@ -297,7 +335,8 @@ unsigned long stringToLong(unsigned char* str) {
         id <SDWebImageOperation> operation =
         [[QMImageLoader instance]
          downloadImageWithURL:url
-         transform:[QMImageProcessor instance]
+         transform:[QMImageProcessor processorWithType:self.imageViewType
+                                           andCropSize:self.bounds.size]
          options:SDWebImageLowPriority
          progress:nil
          completed:
@@ -318,7 +357,7 @@ unsigned long stringToLong(unsigned char* str) {
                  }
              }
              else {
-                 NSLog(@"downloadImageWithURL %@", error.localizedDescription);
+                 NSLog(@"downloadImageWithURL = %@ error: %@",imageURL, error.localizedDescription);
              }
              
              if (completedBlock) {
@@ -363,6 +402,11 @@ unsigned long stringToLong(unsigned char* str) {
     if (image) {
         self.image = image;
         _textLayer.hidden = YES;
+        [self setNeedsLayout];
+        
+        if (completedBlock) {
+            completedBlock(image, nil, SDImageCacheTypeMemory, url);
+        }
         return;
     }
     self.image = placehoder;
@@ -374,8 +418,9 @@ unsigned long stringToLong(unsigned char* str) {
         id <SDWebImageOperation> operation =
         [[QMImageLoader instance]
          downloadImageWithURL:url
-         transform:nil
-         options:SDWebImageLowPriority
+         transform:[QMImageProcessor processorWithType:self.imageViewType
+                                           andCropSize:self.bounds.size]
+         options:options
          progress:nil
          completed:
          ^(UIImage *image,
