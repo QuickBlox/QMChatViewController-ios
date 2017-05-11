@@ -79,7 +79,7 @@
     self.durationLabel.text = [self timestampString:currentTime forDuration:_duration];
 }
 
-- (void)setProgres:(CGFloat)progress {
+- (void)setProgress:(CGFloat)progress {
     
     if (progress > 0.0) {
         

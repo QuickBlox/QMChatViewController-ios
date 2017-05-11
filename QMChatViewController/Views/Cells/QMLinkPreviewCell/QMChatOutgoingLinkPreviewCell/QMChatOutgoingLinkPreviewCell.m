@@ -11,19 +11,11 @@
 
 @implementation QMChatOutgoingLinkPreviewCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    
-    self.siteDescriptionLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.textColor = [UIColor whiteColor];
-    self.urlLabel.textColor = [UIColor whiteColor];
-}
-
 + (QMChatCellLayoutModel)layoutModel {
     
     QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
     defaultLayoutModel.avatarSize = CGSizeMake(0, 0);
-    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(0, 0, 0, 10),
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(4, 4, 4, 12);
     defaultLayoutModel.topLabelHeight = 0;
     defaultLayoutModel.bottomLabelHeight = 14;
     
