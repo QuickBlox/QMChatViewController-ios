@@ -1,5 +1,5 @@
 //
-//  QMInteractor.h
+//  QMMediaPresenterInput.h
 //  QMPLayer
 //
 //  Created by Vitaliy Gurkovsky on 1/30/17.
@@ -10,10 +10,9 @@
 #import <UIKit/UIKit.h>
 
 @class QBChatMessage;
-@class QMMediaItem;
 @class QBChatAttachment;
 
-@protocol QMMediaInteractorInput <NSObject>
+@protocol QMMediaPresenterInput <NSObject>
 
 @property (copy, nonatomic) NSString *attachmentID;
 @property (strong, nonatomic) QBChatMessage *message;
@@ -24,7 +23,7 @@
 
 @end
 
-@protocol QMMediaInteractorOutput <NSObject>
+@protocol QMMediaPresenterOutput <NSObject>
 
 - (void)didUpdateIsReady:(BOOL)isReady;
 - (void)didUpdateIsActive:(BOOL)isActive;
@@ -32,11 +31,12 @@
 - (void)didUpdateOffset:(NSTimeInterval)offset;
 - (void)didUpdateDuration:(NSTimeInterval)duration;
 - (void)didUpdateProgress:(CGFloat)progress;
-- (void)didUpdateCurrentTime:(NSTimeInterval)currentTime duration:(NSTimeInterval)duration;
+- (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
+                    duration:(NSTimeInterval)duration;
 
-- (void)didUpdatePlayingStatus:(NSUInteger)playingStatus;
 - (void)didUpdateThumbnailImage:(UIImage *)image;
-- (void)didUpdateLoadingStatus:(NSUInteger)loadingStatus;
+- (void)didUpdateImage:(UIImage *)image;
+
 - (void)didUpdateLoadingProgress:(CGFloat)loadingProgress;
 
 - (void)didOccureUploadError:(NSError *)error;

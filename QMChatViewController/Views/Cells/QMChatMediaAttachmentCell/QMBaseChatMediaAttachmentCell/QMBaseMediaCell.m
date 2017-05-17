@@ -70,6 +70,7 @@
 }
 
 -(void)setCurrentTime:(NSInteger)currentTime {
+    
     if (_currentTime == currentTime) {
         return;
     }
@@ -105,20 +106,20 @@
 
 - (void)setIsReady:(BOOL)isReady {
     
-    if (isReady == _isReady) {
-        return;
-    }
-    
     _isReady = isReady;
     
-    if (isReady) {
-        [self.circularProgress stopSpinProgressBackgroundLayer];
-    }
-    
+    isReady ? [self.circularProgress stopSpinProgressBackgroundLayer] : [self.circularProgress startSpinProgressBackgroundLayer];
+
     self.circularProgress.hidden = isReady;
     self.progressLabel.hidden = isReady;
     self.durationLabel.hidden = !isReady;
     self.mediaPlayButton.enabled = isReady;
+}
+
+- (void)setThumbnailImage:(UIImage *)image {
+    
+    self.previewImageView.image = image;
+    [self setNeedsLayout];
 }
 
 - (void)setImage:(UIImage *)image {

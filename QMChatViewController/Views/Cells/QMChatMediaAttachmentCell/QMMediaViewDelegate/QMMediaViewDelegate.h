@@ -8,17 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-@class QMMediaPresenter;
+#import "QMMediaPresenterDelegate.h"
 
 @protocol QMMediaViewDelegate <NSObject>
 
 @required
 
 - (void)setupInitialState;
-- (void)setOnLayoutUpdate;
 
-@property (strong, nonatomic) QMMediaPresenter *presenter;
+@property (strong, nonatomic) id <QMMediaPresenterDelegate> presenter;
 
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL isActive;
@@ -30,7 +28,7 @@
 @property (nonatomic, assign) CGFloat offset;
 @property (nonatomic, assign) CGFloat progress;
 
-
+- (void)setThumbnailImage:(UIImage *)image;
 - (void)setImage:(UIImage *)image;
 - (void)showLoadingError:(NSError *)error;
 - (void)showUploadingError:(NSError *)error;

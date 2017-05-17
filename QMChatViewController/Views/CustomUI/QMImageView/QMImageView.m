@@ -335,8 +335,7 @@ unsigned long stringToLong(unsigned char* str) {
         id <SDWebImageOperation> operation =
         [[QMImageLoader instance]
          downloadImageWithURL:url
-         transform:[QMImageProcessor processorWithType:self.imageViewType
-                                           andCropSize:self.bounds.size]
+         transform:nil
          options:SDWebImageLowPriority
          progress:nil
          completed:
@@ -357,7 +356,7 @@ unsigned long stringToLong(unsigned char* str) {
                  }
              }
              else {
-                 NSLog(@"downloadImageWithURL = %@ error: %@",imageURL, error.localizedDescription);
+                 NSLog(@"downloadImageWithURL:%@ error: %@",imageURL, error.localizedDescription);
              }
              
              if (completedBlock) {
@@ -418,8 +417,7 @@ unsigned long stringToLong(unsigned char* str) {
         id <SDWebImageOperation> operation =
         [[QMImageLoader instance]
          downloadImageWithURL:url
-         transform:[QMImageProcessor processorWithType:self.imageViewType
-                                           andCropSize:self.bounds.size]
+         transform:nil
          options:options
          progress:nil
          completed:
@@ -440,7 +438,7 @@ unsigned long stringToLong(unsigned char* str) {
                  }
              }
              else {
-                 NSLog(@"downloadImageWithURL %@", error.localizedDescription);
+                 NSLog(@"downloadImageWithURL:%@ error: %@",imageURL, error.localizedDescription);
              }
              
              if (completedBlock) {

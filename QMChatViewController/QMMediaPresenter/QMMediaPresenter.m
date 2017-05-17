@@ -43,15 +43,9 @@
     [self.mediaAssistant requestForMediaWithSender:self];
 }
 
-
 - (void)updateProgress:(CGFloat)progress {
     
     [self.view setProgress:progress];
-}
-
-- (void)setNeedsToUpdateLayout {
-    
-    [self.view setOnLayoutUpdate];
 }
 
 #pragma mark - Interactor output
@@ -93,9 +87,26 @@
     [self.view setDuration:duration];
 }
 
-- (void)didUpdateThumbnailImage:(UIImage *)image {
+- (void)didUpdateImage:(UIImage *)image {
     
     [self.view setImage:image];
+}
+
+- (void)didUpdateThumbnailImage:(UIImage *)image {
+    
+    [self.view setThumbnailImage:image];
+}
+
+- (void)didUpdateLoadingProgress:(CGFloat)loadingProgress {
+    
+}
+
+- (void)didOccureUploadError:(NSError *)error {
+    
+}
+
+- (void)didOccureDownloadError:(NSError *)error {
+    
 }
 
 - (void)dealloc {

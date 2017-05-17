@@ -115,6 +115,7 @@
     _siteURL = [siteURL copy];
     
     NSString *siteHost = [NSURL URLWithString:siteURL].host;
+    _siteDescriptionLabel.text = siteHost;
     
     NSURL *iconURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/favicon.ico", siteHost]];
     
