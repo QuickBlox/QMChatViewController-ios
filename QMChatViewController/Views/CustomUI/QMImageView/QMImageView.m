@@ -26,10 +26,11 @@
 @property (assign, nonatomic) CGSize cropSize;
 
 @end
+
 @implementation QMImageProcessor
 
 + (instancetype)processorWithType:(QMImageViewType)imageViewType
-                          andCropSize:(CGSize)cropSize {
+                      andCropSize:(CGSize)cropSize {
     
     static dispatch_once_t onceToken;
     static QMImageProcessor *_imageProcessor = nil;
@@ -48,7 +49,7 @@
                   withURL:(NSURL *)imageURL {
     
     BOOL shouldCrop = !(CGSizeEqualToSize(_cropSize, CGSizeZero));
-
+    
     switch (_imageViewType) {
             
         case QMImageViewTypeNone: {
@@ -68,7 +69,7 @@
             return shouldCrop
             ? [image imageByScaleAndCrop:_cropSize]
             : [image imageByScaleAndCrop:CGSizeMake(59, 59)];
-
+            
             break;
         }
         default:
@@ -165,6 +166,8 @@ static NSDictionary *_defaultStyle;
 
 static NSArray *qm_colors = nil;
 
+//MARK: Initialization
+
 + (void)initialize {
     
     static dispatch_once_t onceToken;
@@ -183,27 +186,6 @@ static NSArray *qm_colors = nil;
           [UIColor colorWithRed:0.122f green:0.737f blue:0.823f alpha:1.0f],
           [UIColor colorWithRed:0.251f green:0.329f blue:0.698f alpha:1.0f]];
     });
-}
-
-unsigned long stringToLong(unsigned char* str) {
-    
-    unsigned long hash = 5381;
-    int c;
-    while ((c = *str++)) {
-        hash = ((hash << 5) + hash) + c;
-    }
-    return hash;
-}
-
-- (UIColor *)colorForString:(NSString*)string {
-    
-    if (!string) {
-        string = @"";
-    }
-    
-    unsigned long hashNumber = stringToLong((unsigned char*)[string UTF8String]);
-    
-    return qm_colors[hashNumber % 10];
 }
 
 - (instancetype)init {
@@ -261,28 +243,17 @@ unsigned long stringToLong(unsigned char* str) {
     return self;
 }
 
+//MARK: - NSObject
+
 - (void)dealloc {
     
     [self sd_cancelCurrentImageLoad];
 }
 
-- (void)configure {
-    
-    self.backgroundColor = [UIColor clearColor];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(handleTapGesture:)];
-    
-    [self addGestureRecognizer:tap];
-    self.tapGestureRecognizer = tap;
-    self.userInteractionEnabled = YES;
-    
-    _textLayer = [[QMTextLayer alloc] init];
-    _textLayer.frame = self.bounds;
-    _textLayer.hidden = YES;
-    
-    [self.layer addSublayer:_textLayer];
+//MARK: - Public interface
+
+-(UIImage *)originalImage {
+    return self.image;
 }
 
 - (void)setImage:(UIImage *)image withKey:(NSString *)key {
@@ -389,7 +360,7 @@ unsigned long stringToLong(unsigned char* str) {
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
     
-
+    
     BOOL urlIsValid = url &&url.scheme && url.host;
     
     _url = url;
@@ -467,16 +438,29 @@ unsigned long stringToLong(unsigned char* str) {
 
 - (void)setImageWithURL:(NSURL *)url {
     
-     [self setImageWithURL:url
-               placeholder:nil
-                   options:SDWebImageLowPriority
-                  progress:nil
-            completedBlock:nil];
+    [self setImageWithURL:url
+              placeholder:nil
+                  options:SDWebImageLowPriority
+                 progress:nil
+           completedBlock:nil];
 }
 
 - (void)clearImage {
     
     self.image = nil;
+}
+
+
+//MARK: - UIView
+
+- (CGSize)intrinsicContentSize
+{
+    if (self.image)
+    {
+        return [super intrinsicContentSize];
+    }
+    
+    return CGSizeZero;
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer *)tapGesture {
@@ -495,13 +479,48 @@ unsigned long stringToLong(unsigned char* str) {
         }];
     }
 }
-- (CGSize)intrinsicContentSize
-{
-    if (self.image)
-    {
-        return [super intrinsicContentSize];
+
+
+//MARK: - Helpers
+
+- (void)configure {
+    
+    self.backgroundColor = [UIColor clearColor];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(handleTapGesture:)];
+    
+    [self addGestureRecognizer:tap];
+    self.tapGestureRecognizer = tap;
+    self.userInteractionEnabled = YES;
+    
+    _textLayer = [[QMTextLayer alloc] init];
+    _textLayer.frame = self.bounds;
+    _textLayer.hidden = YES;
+    
+    [self.layer addSublayer:_textLayer];
+}
+
+- (UIColor *)colorForString:(NSString*)string {
+    
+    if (!string) {
+        string = @"";
     }
     
-    return CGSizeZero;
+    unsigned long hashNumber = stringToLong((unsigned char*)[string UTF8String]);
+    
+    return qm_colors[hashNumber % qm_colors.count];
 }
+
+unsigned long stringToLong(unsigned char* str) {
+    
+    unsigned long hash = 5381;
+    int c;
+    while ((c = *str++)) {
+        hash = ((hash << 5) + hash) + c;
+    }
+    return hash;
+}
+
 @end

@@ -21,8 +21,9 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
 /**
  Default QMUserImageViewType QMUserImageViewTypeNone
  */
-@property (nonatomic) IBInspectable CGFloat borderWidth;
 @property (assign, nonatomic) QMImageViewType imageViewType;
+
+@property (nonatomic) IBInspectable CGFloat borderWidth;
 @property (strong, nonatomic, readonly) NSURL *url;
 
 @property (weak, nonatomic) id <QMImageViewDelegate> delegate;
@@ -38,6 +39,8 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
 - (void)setImageWithURL:(NSURL *)url
                   title:(NSString *)title
          completedBlock:(SDWebImageCompletionBlock)completedBlock;
+
+- (UIImage *)originalImage;
 
 @end
 
