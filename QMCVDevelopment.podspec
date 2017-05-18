@@ -76,7 +76,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 3.6"
+  s.dependency "SDWebImage", "~> 3.8.2"
   s.dependency "FFCircularProgressView"
 
 
