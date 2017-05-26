@@ -12,9 +12,11 @@
 
 @implementation QMMediaPresenter
 
-@synthesize view = _view;
-@synthesize attachmentID = _attachmentID;
 @synthesize message = _message;
+@synthesize attachmentID = _attachmentID;
+@synthesize view = _view;
+@synthesize model = _model;
+
 @synthesize playerService;
 @synthesize mediaAssistant;
 @synthesize eventHandler;
@@ -83,8 +85,8 @@
 - (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
                     duration:(NSTimeInterval)duration {
     
-    [self.view setCurrentTime:currentTime];
     [self.view setDuration:duration];
+    [self.view setCurrentTime:currentTime];
 }
 
 - (void)didUpdateImage:(UIImage *)image {
@@ -119,7 +121,27 @@
     return [NSString stringWithFormat:@"<%@: %p; attachmentID = %@>",
             NSStringFromClass([self class]),
             self,
-            self.attachmentID
-            ];
+            _attachmentID];
 }
+
+- (void)setModel:(QMChatModel *)model {
+    
+    _model = model;
+    
+    if (model[@"image"]) {
+        [self.view setImage:model[@"image"]];
+    }
+    if (model[@"placeholder_image"]) {
+        [self.view setThumbnailImage:model[@"placeholder_image"]];
+    }
+    if ([model[@"isReady"] boolValue]) {
+        [self.view setIsReady:[model[@"isReady"] boolValue]];
+    }
+    
+    if ([model[@"duration"] integerValue] > 0) {
+        [self.view setIsReady:[model[@"duration"] integerValue]];
+    }
+    
+}
+
 @end

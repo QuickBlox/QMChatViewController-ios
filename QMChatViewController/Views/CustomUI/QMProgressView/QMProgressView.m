@@ -47,7 +47,6 @@
 
 - (void)initalSetup {
 
-    
     self.bar = [UIView new];
     self.bar.translatesAutoresizingMaskIntoConstraints = NO;
     

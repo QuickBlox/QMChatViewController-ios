@@ -38,6 +38,8 @@
 #import "QMChatBaseLinkPreviewCell.h"
 #import "QMChatIncomingLinkPreviewCell.h"
 #import "QMChatOutgoingLinkPreviewCell.h"
+#import "QMChatModel.h"
+#import "QMLinkPreviewChatModel.h"
 
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
@@ -163,6 +165,8 @@
  */
 - (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
                     sectionHeaderAtIndexPath:(NSIndexPath *)indexPath DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.0.");
+
+- (QMChatModel *)chatModelforIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Class methods
 

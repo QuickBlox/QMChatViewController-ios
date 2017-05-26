@@ -10,6 +10,10 @@
 
 @implementation QMVideoIncomingCell
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.previewImageView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+}
 - (void)setDuration:(NSTimeInterval)duration {
     
     if (duration > 0) {

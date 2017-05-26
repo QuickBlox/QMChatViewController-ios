@@ -14,8 +14,6 @@
 
 @required
 
-- (void)setupInitialState;
-
 @property (strong, nonatomic) id <QMMediaPresenterDelegate> presenter;
 
 @property (nonatomic, assign) BOOL isReady;
@@ -23,13 +21,13 @@
 
 @optional
 
-@property (nonatomic, assign) NSInteger currentTime;
-@property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, assign) NSTimeInterval currentTime;
+@property (nonatomic, assign) NSTimeInterval duration;
 @property (nonatomic, assign) CGFloat offset;
 @property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic, strong) UIImage *image;
 
-- (void)setThumbnailImage:(UIImage *)image;
-- (void)setImage:(UIImage *)image;
 - (void)showLoadingError:(NSError *)error;
 - (void)showUploadingError:(NSError *)error;
 

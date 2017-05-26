@@ -26,6 +26,7 @@
 }
 
 - (void)layoutSubviews {
+    
     [super layoutSubviews];
     
     UIImage *stretchableImage = self.containerView.backgroundImage;
@@ -36,14 +37,15 @@
 - (CALayer *)maskLayerFromImage:(UIImage *)image {
     
     CALayer *layer = [CALayer layer];
-    layer.frame = self.bounds;
+    
+    layer.frame = self.progressView.bounds;
     layer.contents = (id)[image CGImage];
     layer.contentsScale = [image scale];
     layer.rasterizationScale = [image scale];
     CGSize imageSize = [image size];
     
     NSAssert(image.resizingMode == UIImageResizingModeStretch || UIEdgeInsetsEqualToEdgeInsets(image.capInsets, UIEdgeInsetsZero),
-                         @"the resizing mode of image should be stretch; if not, then its insets must be all-zero");
+             @"the resizing mode of image should be stretch; if not, then its insets must be all-zero");
     
     UIEdgeInsets insets = [image capInsets];
     
@@ -54,7 +56,7 @@
     CGRect contentsCenter = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
     if (insets.left > 0 || insets.right > 0) {
         contentsCenter.origin.x = ((insets.left + halfPixelFudge) / imageSize.width);
-        contentsCenter.size.width = 1.0;//(imageSize.width - (insets.left + insets.right + 1.f) + otherPixelFudge) / imageSize.width;
+        contentsCenter.size.width = (imageSize.width - (insets.left + insets.right + 1.f) + otherPixelFudge) / imageSize.width;
     }
     if (insets.top > 0 || insets.bottom > 0) {
         contentsCenter.origin.y = ((insets.top + halfPixelFudge) / imageSize.height);
@@ -63,47 +65,25 @@
     layer.contentsGravity = kCAGravityResize;
     layer.contentsCenter = contentsCenter;
     
-    /*CGRectMake(insets.left/imageSize.width,
-                                      insets.top/imageSize.height,
-                                      1.0/imageSize.width,
-                                      1.0/imageSize.height);*/
-    
     return layer;
 }
 
-
-- (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(NSTimeInterval)duration {
+- (void)setCurrentTime:(NSTimeInterval)currentTime {
+    [super setCurrentTime:currentTime];
+    NSInteger duration = self.duration;
+    NSString *timeStamp = [self timestampString:currentTime
+                                    forDuration:duration];
+    
+    self.durationLabel.text = timeStamp;
     
     if (duration > 0) {
-        NSString *timeStamp = [self timestampString:currentTime
-                                        forDuration:duration];
-        
-        self.durationLabel.text = timeStamp;
         BOOL animated = currentTime > 0;
-        [self.progressView setProgress:currentTime/duration animated:animated];
+        [self.progressView setProgress:currentTime/duration
+                              animated:animated];
     }
 }
 
-- (NSString *)timestampString:(NSTimeInterval)currentTime forDuration:(NSTimeInterval)duration
-{
-    
-    NSInteger time = round(currentTime);
-    
-    if (duration < 60)
-    {
-        if (currentTime < duration)
-        {
-            return [NSString stringWithFormat:@"0:%02d", time];
-        }
-        return [NSString stringWithFormat:@"0:%02d", time];
-    }
-    else if (duration < 3600)
-    {
-        return [NSString stringWithFormat:@"%d:%02d", time / 60, time % 60];
-    }
-    
-    return [NSString stringWithFormat:@"%d:%02d:%02d", time / 3600, time / 60, time % 60];
-}
+
+
 
 @end

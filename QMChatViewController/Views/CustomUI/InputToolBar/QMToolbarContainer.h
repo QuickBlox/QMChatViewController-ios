@@ -10,7 +10,7 @@
 
 @interface QMToolbarContainer : UIToolbar
 
-- (void)addButton:(UIButton *)button
-           action:(nullable void(^)(UIButton *sender))action;
+- (void)addButton:(UIButton *_Nonnull)button
+           action:(nullable void(^)(UIButton *_Nonnull sender))action;
 
 @end

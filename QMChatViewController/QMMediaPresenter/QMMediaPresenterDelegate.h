@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "QMMediaPresenterInputOutput.h"
 
-@class QBChatMessage;
+
 
 @protocol QMMediaViewDelegate;
 @protocol QMPlayerService;

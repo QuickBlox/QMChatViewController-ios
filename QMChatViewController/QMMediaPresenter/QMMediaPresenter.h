@@ -13,8 +13,3 @@
 @interface QMMediaPresenter : NSObject <QMMediaPresenterDelegate>
 
 @end
-
-
-
-
-

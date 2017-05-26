@@ -18,6 +18,7 @@
 static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValueObservingContext;
 
 @interface QMInputToolbar() <QMAudioRecordButtonProtocol, QMAudioRecordViewProtocol>
+
 @property (assign, nonatomic) BOOL isObserving;
 
 @property (assign, nonatomic, getter=isRecording) BOOL recording;
@@ -239,11 +240,9 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 - (void)setShowRecordingInterface:(BOOL)show velocity:(CGFloat)velocity
 {
-    
-    if (show)
-    {
-        [self.audioRecordButtonItem animateIn];
+    if (show) {
         
+        [self.audioRecordButtonItem animateIn];
         
         if (_audioRecordView == nil)
         {
@@ -257,7 +256,8 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
             _audioRecordView = recordView;
         }
         
-        [self.audioRecordView setShowRecordingInterface:show velocity:velocity];
+        [self.audioRecordView setShowRecordingInterface:show
+                                               velocity:velocity];
         
         
         [UIView animateWithDuration:0.26 delay:0.0 options:0 animations:^
@@ -312,39 +312,6 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
                 [self.delegate messagesInputToolbarAudioRecordingStart:self];
             }
         }
-        //        else {
-        //
-        //            if (_audioRecordView == nil)
-        //            {
-        //                QMAudioRecordView *recordView = [QMAudioRecordView loadAudioRecordView];
-        //                recordView.clipsToBounds = true;
-        //                recordView.delegate = self;
-        //                [self insertSubview:recordView aboveSubview:self.contentView];
-        //                [self pinAllEdgesOfSubview:recordView];
-        //                [self setNeedsUpdateConstraints];
-        //
-        //                _audioRecordView = recordView;
-        //            }
-        //
-        //            [self shakeControls];
-        //
-        //            [UIView animateWithDuration:0.26 delay:0.0 options:0 animations:^
-        //             {
-        //                 self.contentView.alpha = 0.0f;
-        //
-        //             } completion:nil];
-        //
-        //            [self.audioRecordView showErrorMessage:@"Audio recording is not granted" completion:^{
-        //
-        //                [UIView animateWithDuration:0.26 delay:0.0 options:0 animations:^
-        //                 {
-        //                     self.contentView.alpha = 1.0f;
-        //
-        //                 } completion:nil];
-        //                [self.audioRecordView removeFromSuperview];
-        //                self.audioRecordView = nil;
-        //            }];
-        //        }
     }
 }
 

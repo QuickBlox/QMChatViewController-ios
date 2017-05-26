@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "QMChatModel.h"
 
 @class QBChatMessage;
 @class QBChatAttachment;
+
 
 @protocol QMMediaPresenterInput <NSObject>
 
 @property (copy, nonatomic) NSString *attachmentID;
 @property (strong, nonatomic) QBChatMessage *message;
+@property (nonatomic, strong) QMChatModel *model;
 
 - (void)didTapContainer;
 - (void)requestForMedia;

@@ -69,7 +69,7 @@
     self.previewImageView.image = nil;
 }
 
--(void)setCurrentTime:(NSInteger)currentTime {
+- (void)setCurrentTime:(NSTimeInterval)currentTime {
     
     if (_currentTime == currentTime) {
         return;
@@ -78,6 +78,7 @@
     _currentTime = currentTime;
     
     self.durationLabel.text = [self timestampString:currentTime forDuration:_duration];
+
 }
 
 - (void)setProgress:(CGFloat)progress {
@@ -95,9 +96,9 @@
 
 - (void)setDuration:(NSInteger)duration {
     
-    if (_duration == duration) {
-        return;
-    }
+//    if (_duration == duration) {
+//        return;
+//    }
     
     _duration = duration;
     
@@ -145,6 +146,10 @@
         [self.mediaPlayButton setImage:buttonImage
                               forState:UIControlStateDisabled];
     }
+    
+    if (!isActive) {
+    self.durationLabel.text = [self timestampString:self.duration];
+    }
 }
 
 - (IBAction)activateMedia:(id)sender {
@@ -185,6 +190,40 @@
     }
     
     return [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
+}
+
+
+- (CALayer *)maskLayerFromImage:(UIImage *)image {
+    
+    CALayer *layer = [CALayer layer];
+    layer.frame = self.bounds;
+    layer.contents = (id)[image CGImage];
+    layer.contentsScale = [image scale];
+    layer.rasterizationScale = [image scale];
+    CGSize imageSize = [image size];
+    
+    NSAssert(image.resizingMode == UIImageResizingModeStretch || UIEdgeInsetsEqualToEdgeInsets(image.capInsets, UIEdgeInsetsZero),
+             @"the resizing mode of image should be stretch; if not, then its insets must be all-zero");
+    
+    UIEdgeInsets insets = [image capInsets];
+    
+    // These are lifted from what UIImageView does by experimentation. Without these exact values, the stretching is slightly off.
+    const CGFloat halfPixelFudge = 0.49f;
+    const CGFloat otherPixelFudge = 0.02f;
+    // Convert to unit coordinates for the contentsCenter property.
+    CGRect contentsCenter = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    if (insets.left > 0 || insets.right > 0) {
+        contentsCenter.origin.x = ((insets.left + halfPixelFudge) / imageSize.width);
+        contentsCenter.size.width = (imageSize.width - (insets.left + insets.right + 1.f) + otherPixelFudge) / imageSize.width;
+    }
+    if (insets.top > 0 || insets.bottom > 0) {
+        contentsCenter.origin.y = ((insets.top + halfPixelFudge) / imageSize.height);
+        contentsCenter.size.height = (imageSize.height - (insets.top + insets.bottom + 1.f) + otherPixelFudge) / imageSize.height;
+    }
+    layer.contentsGravity = kCAGravityResize;
+    layer.contentsCenter = contentsCenter;
+    
+    return layer;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
