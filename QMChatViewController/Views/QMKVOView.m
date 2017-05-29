@@ -50,22 +50,13 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
 
 #pragma mark - Key-value observing
 
-- (void)layoutSubviews {
-    
-    [super layoutSubviews];
-    
-    if (self.superFrameDidChangeBlock) {
-        self.superFrameDidChangeBlock(self.superview.frame);
-    }
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if (object == self.superview && ([keyPath isEqualToString:@"frame"] ||
                                      [keyPath isEqualToString:@"center"])) {
         
-        if  (self.superFrameDidChangeBlock) {
-            self.superFrameDidChangeBlock(self.superview.frame);
+        if (self.hostViewFrameChangeBlock) {
+            self.hostViewFrameChangeBlock(self.superview);
         }
     }
 }
