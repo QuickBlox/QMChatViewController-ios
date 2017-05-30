@@ -12,8 +12,6 @@
 
 @implementation QMMediaPresenter
 
-@synthesize message = _message;
-@synthesize attachmentID = _attachmentID;
 @synthesize view = _view;
 @synthesize model = _model;
 
@@ -25,6 +23,16 @@
     
     if (self = [super init]) {
         _view = view;
+    }
+    return  self;
+}
+
+- (instancetype)initWithView:(id <QMMediaViewDelegate>)view
+                       model:(id <QMChatModelProtocol>)model {
+    
+    if (self = [super init]) {
+        _view = view;
+        _model = model;
     }
     return  self;
 }
@@ -99,6 +107,9 @@
     [self.view setThumbnailImage:image];
 }
 
+
+
+
 - (void)didUpdateLoadingProgress:(CGFloat)loadingProgress {
     
 }
@@ -118,30 +129,12 @@
 
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"<%@: %p; attachmentID = %@>",
+    return [NSString stringWithFormat:@"<%@: %p; model = %@>",
             NSStringFromClass([self class]),
             self,
-            _attachmentID];
+            self.model];
 }
 
-- (void)setModel:(QMChatModel *)model {
-    
-    _model = model;
-    
-    if (model[@"image"]) {
-        [self.view setImage:model[@"image"]];
-    }
-    if (model[@"placeholder_image"]) {
-        [self.view setThumbnailImage:model[@"placeholder_image"]];
-    }
-    if ([model[@"isReady"] boolValue]) {
-        [self.view setIsReady:[model[@"isReady"] boolValue]];
-    }
-    
-    if ([model[@"duration"] integerValue] > 0) {
-        [self.view setIsReady:[model[@"duration"] integerValue]];
-    }
-    
-}
+
 
 @end

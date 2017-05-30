@@ -94,7 +94,7 @@
     [self.circularProgress setProgress:progress];
 }
 
-- (void)setDuration:(NSInteger)duration {
+- (void)setDuration:(NSTimeInterval)duration {
     
 //    if (_duration == duration) {
 //        return;

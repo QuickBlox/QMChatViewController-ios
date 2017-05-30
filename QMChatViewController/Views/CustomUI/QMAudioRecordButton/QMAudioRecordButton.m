@@ -89,6 +89,10 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         _panRecognizer.cancelsTouchesInView = false;
         _panRecognizer.delegate = self;
         
+        _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
+        _panRecognizer.cancelsTouchesInView = false;
+        _panRecognizer.delegate = self;
+        
         _iconView.image = [UIImage imageNamed:@"MicOverlay"];
         [self addGestureRecognizer:_panRecognizer];
     }
@@ -163,7 +167,6 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         _innerIconView.center = centerPoint;
     };
     
-    block();
     dispatch_async(dispatch_get_main_queue(), block);
     
     _innerCircleView.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
@@ -217,6 +220,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
+     NSLog(@"continueTrackingWithTouch ");
     if ([super continueTrackingWithTouch:touch withEvent:event])
     {
         _lastVelocity = [_panRecognizer velocityInView:self].x;
@@ -230,7 +234,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             
             CGFloat velocity = [_panRecognizer velocityInView:self].x;
             
-            if (CACurrentMediaTime() > _animationStartTime + 0.50) {
+            if (CACurrentMediaTime() > _animationStartTime + 1.0) {
                 CGFloat scale = MAX(0.4f, MIN(1.0f, 1.0f - value));
                 if (scale > 0.8f) {
                     scale = 1.0f;
@@ -260,7 +264,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
-    
+    NSLog(@"cancelTrackingWithEvent");
     if (_processCurrentTouch) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -274,7 +278,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    
+    NSLog(@"endTrackingWithTouch");
     if (_processCurrentTouch)
     {
         CGFloat velocity = _lastVelocity;
@@ -295,22 +299,21 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     
-    if ([super beginTrackingWithTouch:touch withEvent:event])
-    {
+    NSLog(@"beginTrackingWithTouch");
+    
+    if ([super beginTrackingWithTouch:touch withEvent:event]) {
         
         _lastVelocity = 0.0;
         
-        if (ABS(CFAbsoluteTimeGetCurrent() - _lastTouchTime) < 0.5)
-        {
+        if (ABS(CFAbsoluteTimeGetCurrent() - _lastTouchTime) < 1.0) {
             _processCurrentTouch = false;
             
             return false;
         }
-        else
-        {
+        else {
+            
             _processCurrentTouch = true;
             _lastTouchTime = CFAbsoluteTimeGetCurrent();
-            
             
             if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidBegin)]) {
                 [self.delegate recordButtonInteractionDidBegin];
@@ -319,7 +322,6 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             _touchLocation = [touch locationInView:self];
         }
         
-        
         return true;
     }
     
@@ -327,16 +329,18 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)panGesture:(UIPanGestureRecognizer *)__unused recognizer {
-    
+    NSLog(@"panGesture");
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    if(UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero) ||       !self.enabled || self.hidden) {
+    
+    if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)
+       || !self.enabled
+       || self.hidden) {
         return [super pointInside:point withEvent:event];
     }
     
-    CGRect relativeFrame = self.bounds;
-    CGRect hitFrame = UIEdgeInsetsInsetRect(relativeFrame, self.hitTestEdgeInsets);
+    CGRect hitFrame = UIEdgeInsetsInsetRect(self.bounds, self.hitTestEdgeInsets);
     
     return CGRectContainsPoint(hitFrame, point);
 }

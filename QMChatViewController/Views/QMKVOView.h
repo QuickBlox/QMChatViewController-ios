@@ -10,7 +10,7 @@
 
 @interface QMKVOView : UIView
 
-@property (nonatomic, copy, nullable) void (^superFrameDidChangeBlock)(CGRect superViewFrame);
+@property (nonatomic, copy, nullable) void (^hostViewFrameChangeBlock)(UIView * _Nullable view);
 
 @end
        

@@ -325,6 +325,7 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
 }
 
 - (void)addRecordingDotAnimation {
+    
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
     animation.values = @[@1.0f, @1.0f, @0.0f];
     animation.keyTimes = @[@.0, @0.4546, @0.9091, @1];

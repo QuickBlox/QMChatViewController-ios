@@ -6,9 +6,9 @@
 //
 //
 
-#import "QMChatModel.h"
+#import "QMChatModelProtocol.h"
 
-@interface QMLinkPreviewChatModel : QMChatModel
+@interface QMLinkPreviewChatModel : NSObject <QMChatModelProtocol>
 
 @property (nonatomic, copy, readonly, nullable) void (^imageDidSet)();
 

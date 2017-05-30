@@ -19,8 +19,11 @@
 @protocol QMMediaPresenterDelegate <QMMediaPresenterInput, QMMediaPresenterOutput>
 
 @property (weak, nonatomic) id <QMMediaViewDelegate> view;
+@property (nonatomic, strong) id <QMChatModelProtocol> model;
 
 - (instancetype)initWithView:(id <QMMediaViewDelegate>)view;
+- (instancetype)initWithView:(id <QMMediaViewDelegate>)view
+                       model:(id <QMChatModelProtocol>)model;
 
 @property (weak, nonatomic) id <QMPlayerService> playerService;
 @property (weak, nonatomic) id <QMMediaAssistant> mediaAssistant;

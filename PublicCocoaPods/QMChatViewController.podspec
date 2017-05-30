@@ -4,14 +4,14 @@
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
 #  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/
-#   
+#
 #  To submit use `pod trunk push QMChatViewController.podspec --verbose --use-libraries --allow-warnings`
 #
 
 Pod::Spec.new do |s|
 
   s.name         = "QMChatViewController"
-  s.version      = "0.4.0.1"
+  s.version      = "0.4.1"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
@@ -41,21 +41,18 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Categories' do |ss|
-	ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
-
-    ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
+	   ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
+     ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
   end
 
-  s.subspec 'Utils' do |ss| 
-	ss.dependency 'QMChatViewController/Categories'
-
-    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
+  s.subspec 'Utils' do |ss|
+	   ss.dependency 'QMChatViewController/Categories'
+     ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
   end
 
   s.subspec 'Sections' do |ss|
-	ss.dependency 'QMChatViewController/QMChatDataSource'
-
-    ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
+	   ss.dependency 'QMChatViewController/QMChatDataSource'
+     ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
   s.subspec 'QMChatDataSource' do |ss|
@@ -67,10 +64,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Views' do |ss|
-  	ss.dependency 'QMChatViewController/Categories'
-  	ss.dependency 'QMChatViewController/Protocols'
-	ss.dependency 'QMChatViewController/Utils'
-
+    ss.dependency 'QMChatViewController/Categories'
+    ss.dependency 'QMChatViewController/Protocols'
+	  ss.dependency 'QMChatViewController/Utils'
     ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 

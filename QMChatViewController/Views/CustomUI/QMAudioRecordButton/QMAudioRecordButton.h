@@ -27,6 +27,6 @@
 - (void)recordButtonInteractionDidBegin;
 - (void)recordButtonInteractionDidCancel:(CGFloat)velocity;
 - (void)recordButtonInteractionDidComplete:(CGFloat)velocity;
-- (void)recordButtonInteractionDidUpdate:(CGFloat)value;
+- (void)recordButtonInteractionDidUpdate:(CGFloat)velocity;
 
 @end

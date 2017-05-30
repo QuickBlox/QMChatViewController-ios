@@ -299,19 +299,12 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 - (void)recordButtonInteractionDidBegin {
     
-    if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingEnabled:)])
-    {
+    if ([self.delegate messagesInputToolbarAudioRecordingEnabled:self]) {
         
-        if ([self.delegate messagesInputToolbarAudioRecordingEnabled:self]) {
-            
-            if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingStart:)]) {
-                
-                self.recording = true;
-                [self setShowRecordingInterface:true velocity:0.0f];
-                
-                [self.delegate messagesInputToolbarAudioRecordingStart:self];
-            }
-        }
+        self.recording = true;
+        [self setShowRecordingInterface:true velocity:0.0f];
+        
+        [self.delegate messagesInputToolbarAudioRecordingStart:self];
     }
 }
 
@@ -322,9 +315,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         self.recording = NO;
         [self setShowRecordingInterface:false velocity:velocity];
         
-        if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingCancel:)]) {
-            [self.delegate messagesInputToolbarAudioRecordingCancel:self];
-        }
+        [self.delegate messagesInputToolbarAudioRecordingCancel:self];
     }
 }
 
@@ -379,13 +370,13 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         
         UIImage *recordImage = [QMChatResources imageNamed:@"MicOverlay"];
         UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
-
+        
         CGRect frame = CGRectMake(0, 0, recordImage.size.width, 32.0);
         QMAudioRecordButton *button =  [[QMAudioRecordButton alloc] initWithFrame:frame];
         button.delegate = self;
         [button setImage:normalImage forState:UIControlStateNormal];
         [button setImage:normalImage forState:UIControlStateHighlighted];
-  
+        
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
         button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
         button.imageView.contentMode = UIViewContentModeScaleAspectFit;

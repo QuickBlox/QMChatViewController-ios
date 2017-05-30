@@ -2,13 +2,14 @@
 //  QMChatModel.h
 //  Pods
 //
-//  Created by Vitaliy Gurkovsky on 5/30/17.
+//  Created by Vitaliy Gurkovsky on 5/19/17.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import "QMChatModelProtocol.h"
 
-@interface QMChatModel : NSObject <QMChatModelProtocol>
+@interface QMChatMessageModel : NSObject <QMChatModelProtocol>
+
 
 @end
