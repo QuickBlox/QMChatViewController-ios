@@ -250,6 +250,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
     __weak __typeof(self) weakSelf = self;
+    [self.collectionView.panGestureRecognizer addTarget:self
+                                                 action:@selector(handlePanGestureRecognizer:)];
     
     [self.systemInputToolbar setHostViewFrameChangeBlock:^(UIView * view) {
         
@@ -298,15 +300,15 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 }
 
 
-- (void)viewDidLayoutSubviews
-{
+- (void)viewDidLayoutSubviews {
+    
     [super viewDidLayoutSubviews];
     
-//    
 //    if (!self.presentedViewController && self.navigationController && !self.view.inputAccessoryView.superview) {
 //        [self.view becomeFirstResponder];
 //    }
 }
+
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
@@ -869,13 +871,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         return;
     }
     self.toolbarBottomLayoutGuide.constant = constraintValue;
-    if ([self.inputToolbar.contentView.textView isFirstResponder]) {
-        
-        
-        if ( ![self scrollIsAtTop]) {
-            self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.lastContentOffset);
-        }
-    }
     [self.view updateConstraintsIfNeeded];
     [self.view layoutIfNeeded];
 }
@@ -896,8 +891,13 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)updateCollectionViewInsets {
     
+    BOOL shift = [self inputToolBarStartPos] > 0;
+    
+    CGFloat bottomValue = self.bottomLayoutGuide.length - [self inputToolBarStartPos]  +
+    (shift ? - [UIApplication sharedApplication].statusBarFrame.size.height : 0);
+    
     [self setCollectionViewInsetsTopValue:self.topContentAdditionalInset + self.topLayoutGuide.length
-                              bottomValue:self.bottomLayoutGuide.length - [self inputToolBarStartPos] - [UIApplication sharedApplication].statusBarFrame.size.height];
+                              bottomValue:bottomValue];
     
     if ([self shouldScrollToBottom]) {
         [self scrollToBottomAnimated:NO];
@@ -1146,6 +1146,36 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     }
     else {
         hideKeyboardBlock();
+    }
+}
+
+
+- (void)handlePanGestureRecognizer:(UIPanGestureRecognizer *)gesture {
+    
+    if (self.systemInputToolbar.superview == nil) {
+        return;
+    }
+    
+    CGPoint panPoint = [gesture locationInView:self.view.window];
+    CGRect hostViewRect = [self.view.window convertRect:self.systemInputToolbar.superview.frame toView:nil];
+    CGFloat toolbarMinY = CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputToolbar.frame);
+    
+    if (gesture.state == UIGestureRecognizerStateChanged) {
+        
+        
+        if ([self.inputToolbar.contentView.textView isFirstResponder]) {
+            
+            self.movingKeyboard = panPoint.y > toolbarMinY;
+            
+            if (self.isMovingKeyboard && ![self scrollIsAtTop]) {
+                [self.view layoutIfNeeded];
+                self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.lastContentOffset);
+            }
+        }
+    }
+    else {
+        
+        self.movingKeyboard = NO;
     }
 }
 

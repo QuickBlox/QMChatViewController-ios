@@ -77,7 +77,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="ebM-r1-xFp" kind="relationship" relationship="rootViewController" id="JNm-Vy-XYJ"/>
+                        <segue destination="Ljb-8m-bex" kind="relationship" relationship="rootViewController" id="DJy-Pj-xJ1"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T87-JG-qez" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -85,4 +85,7 @@
             <point key="canvasLocation" x="-394" y="-324"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="DJy-Pj-xJ1"/>
+    </inferredMetricsTieBreakers>
 </document>
