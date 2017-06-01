@@ -242,18 +242,17 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [self.systemInputToolbar setHostViewFrameChangeBlock:^(UIView * view) {
         
-        if (weakSelf.presentedViewController) {
-            if(!weakSelf.presentedViewController.isBeingDismissed ) {
-                [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]];
-                return;
-            }
-        }
         
-        if (view.superview.frame.origin.y > 0) {
+        CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
+
+        if (view.superview.frame.origin.y > 0 && pos == 0) {
             return;
         }
         
-        CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
+        if (!weakSelf.inputToolbar.contentView.textView.isFirstResponder && pos == 0) {
+            [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]];
+            return;
+        }
         
         CGFloat v = [weakSelf inputToolBarStartPos];
         if (pos < v ) {
@@ -267,7 +266,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
                 forKeyPath:@"frame"
                    options:NSKeyValueObservingOptionNew context:nil];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -858,8 +856,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         return;
     }
     self.toolbarBottomLayoutGuide.constant = constraintValue;
-    [self.view updateConstraintsIfNeeded];
-    [self.view layoutIfNeeded];
+    
+    if (!self.movingKeyboard) {
+        [self.view layoutIfNeeded];
+    }
 }
 
 - (BOOL)inputToolbarHasReachedMaximumHeight {
