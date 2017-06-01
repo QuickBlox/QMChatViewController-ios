@@ -185,6 +185,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
               withConstant:customAttributes.containerSize.width];
     
     [self layoutIfNeeded];
+    
 }
 
 - (void)updateConstraint:(NSLayoutConstraint *)constraint withConstant:(CGFloat)constant {

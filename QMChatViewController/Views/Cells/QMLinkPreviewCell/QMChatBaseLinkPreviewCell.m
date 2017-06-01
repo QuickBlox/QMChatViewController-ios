@@ -61,7 +61,7 @@
     _imageURL = [imageURL copy];
     
     BOOL exists =
-    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:imageURL];
+    [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:imageURL];
     
     SDWebImageOptions options =
     SDWebImageLowPriority | SDWebImageRetryFailed | SDWebImageAllowInvalidSSLCertificates;

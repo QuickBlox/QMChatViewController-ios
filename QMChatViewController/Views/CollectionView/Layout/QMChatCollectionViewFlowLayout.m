@@ -157,9 +157,6 @@
 
 - (void)prepareForCollectionViewUpdates:(NSArray *)updateItems {
     
-    [super prepareForCollectionViewUpdates:updateItems];
-	
-	
 	__weak __typeof(self)weakSelf = self;
     [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger index, BOOL *stop) {
         __typeof(self)strongSelf = weakSelf;
@@ -180,6 +177,7 @@
                                           CGRectGetHeight(attributes.frame));
         }
     }];
+    [super prepareForCollectionViewUpdates:updateItems];
 }
 
 //MARK:- Invalidation utilities

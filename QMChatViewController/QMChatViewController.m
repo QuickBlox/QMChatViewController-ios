@@ -106,8 +106,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.inputToolbar.audioRecordingIsEnabled = YES;
     
     self.automaticallyScrollsToMostRecentMessage = YES;
-    //    self.topContentAdditionalInset = 0.0f;
-    
     self.systemInputToolbar = [[QMKVOView alloc] init];
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
 }
@@ -248,24 +246,32 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
     [[[self class] nib] instantiateWithOwner:self options:nil];
+    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
     [self configureMessagesViewController];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
-    
-    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
     __weak __typeof(self) weakSelf = self;
     [self.collectionView.panGestureRecognizer addTarget:self
                                                  action:@selector(handlePanGestureRecognizer:)];
     
     [self.systemInputToolbar setHostViewFrameChangeBlock:^(UIView * view) {
+        
+        if (weakSelf.presentedViewController) {
+            if(!weakSelf.presentedViewController.isBeingDismissed ) {
+                [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]];
+                return;
+            }
+        }
+        
+        if (view.superview.frame.origin.y > 0) {
+            return;
+        }
         
         CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
         
@@ -277,8 +283,11 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         [weakSelf setToolbarBottomConstraintValue:pos];
     }];
     
-    [self.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
+    [self.view addObserver:self
+                forKeyPath:@"frame"
+                   options:NSKeyValueObservingOptionNew context:nil];
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -288,16 +297,14 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [self registerForNotifications:YES];
     
     [super viewWillAppear:animated];
-    
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    
+
     [self updateCollectionViewInsets];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -307,17 +314,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [self registerForNotifications:NO];
-}
-
-
-- (void)viewDidLayoutSubviews {
-    
-    [super viewDidLayoutSubviews];
-    
-//    
-//    if (!self.presentedViewController && self.navigationController && !self.view.inputAccessoryView.superview) {
-//        [self.view becomeFirstResponder];
-//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -419,29 +415,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
                       date:(NSDate *)__unused date {
     
     NSAssert(NO, @"Error! required method not implemented in subclass. Need to implement %s", __PRETTY_FUNCTION__);
-}
-
-- (void)presentViewController:(UIViewController *)viewControllerToPresent
-                     animated:(BOOL)flag completion:(void (^)(void))completion {
-    
-    CGFloat animationDuration = 0;
-    
-    if ([self.inputToolbar.contentView.textView isFirstResponder]) {
-        animationDuration = self.keyboardDismissAnimationDuration > 0 ?: 0.2;
-        [self.inputToolbar.contentView.textView resignFirstResponder];
-    }
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                 (int64_t)(animationDuration * NSEC_PER_SEC)),
-                   dispatch_get_main_queue(), ^{
-                       
-                       [super presentViewController:viewControllerToPresent
-                                           animated:flag completion:^{
-                                               if (completion) {
-                                                   completion();
-                                               }
-                                           }];
-                   });
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender {
@@ -628,7 +601,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     QMChatCell *cell =
     [collectionView dequeueReusableCellWithReuseIdentifier:itemIdentifier
                                               forIndexPath:indexPath];
-    cell.transform = self.collectionView.transform;
     
     [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
     
