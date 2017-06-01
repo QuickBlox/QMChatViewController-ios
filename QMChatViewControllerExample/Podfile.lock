@@ -1,42 +1,45 @@
 PODS:
-  - QMCVDevelopment (0.3.10):
-    - QMCVDevelopment/Categories (= 0.3.10)
-    - QMCVDevelopment/KeyboardViewController (= 0.3.10)
-    - QMCVDevelopment/Protocols (= 0.3.10)
-    - QMCVDevelopment/QMChatDataSource (= 0.3.10)
-    - QMCVDevelopment/QMChatSection (= 0.3.10)
-    - QMCVDevelopment/Utils (= 0.3.10)
-    - QMCVDevelopment/Views (= 0.3.10)
+  - QMCVDevelopment (0.4.1.1):
+    - QMCVDevelopment/Categories (= 0.4.1.1)
+    - QMCVDevelopment/Protocols (= 0.4.1.1)
+    - QMCVDevelopment/QMChatDataSource (= 0.4.1.1)
+    - QMCVDevelopment/QMChatLocationSnapshotter (= 0.4.1.1)
+    - QMCVDevelopment/Sections (= 0.4.1.1)
+    - QMCVDevelopment/Utils (= 0.4.1.1)
+    - QMCVDevelopment/Views (= 0.4.1.1)
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Categories (0.3.10):
+  - QMCVDevelopment/Categories (0.4.1.1):
+    - QMCVDevelopment/QMChatLocationSnapshotter
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Protocols (0.4.1.1):
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/QMChatDataSource (0.4.1.1):
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/QMChatLocationSnapshotter (0.4.1.1):
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Sections (0.4.1.1):
+    - QMCVDevelopment/QMChatDataSource
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Utils (0.4.1.1):
+    - QMCVDevelopment/Categories
+    - SDWebImage (~> 3.6)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/Views (0.4.1.1):
+    - QMCVDevelopment/Categories
+    - QMCVDevelopment/Protocols
     - QMCVDevelopment/Utils
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/KeyboardViewController (0.3.10):
-    - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Protocols (0.3.10):
-    - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/QMChatDataSource (0.3.10):
-    - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/QMChatSection (0.3.10):
-    - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Utils (0.3.10):
-    - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Views (0.3.10):
-    - QMCVDevelopment/Categories
-    - QMCVDevelopment/Protocols
-    - SDWebImage (~> 3.6)
-    - TTTAttributedLabel (> 1.13)
   - QuickBlox (2.7.6)
-  - SDWebImage (3.8.1):
-    - SDWebImage/Core (= 3.8.1)
-  - SDWebImage/Core (3.8.1)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
   - TTTAttributedLabel (2.0.0)
 
 DEPENDENCIES:
@@ -48,11 +51,11 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMCVDevelopment: 5eb7c76471fcc2e082bfe777f8d77fe4ea442b4c
+  QMCVDevelopment: f459b796b0102a3f9e5e9fc7a1dcec653b8bbd53
   QuickBlox: 348157145386d7fe568f5dab13ef7c4e4c1b5e05
-  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
 
 PODFILE CHECKSUM: 75210a90fc37445073f25d6462938d3d7817a5d9
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.2.1

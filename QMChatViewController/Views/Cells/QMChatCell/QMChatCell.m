@@ -83,21 +83,21 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
 	
-    _messageContainerTopInsetConstraint.constant = 0;
-    _messageContainerLeftInsetConstraint.constant = 0;
-    _messageContainerBottomInsetConstraint.constant = 0;
-    _messageContainerRightInsetConstraint.constant = 0;
+    self.messageContainerTopInsetConstraint.constant = 0;
+    self.messageContainerLeftInsetConstraint.constant = 0;
+    self.messageContainerBottomInsetConstraint.constant = 0;
+    self.messageContainerRightInsetConstraint.constant = 0;
     
-    _avatarContainerViewWidthConstraint.constant = 0;
-    _avatarContainerViewHeightConstraint.constant = 0;
+    self.avatarContainerViewWidthConstraint.constant = 0;
+    self.avatarContainerViewHeightConstraint.constant = 0;
     
-    _topLabelHeightConstraint.constant = 0;
-    _bottomLabelHeightConstraint.constant = 0;
+    self.topLabelHeightConstraint.constant = 0;
+    self.bottomLabelHeightConstraint.constant = 0;
     
-    _topLabelTextViewVerticalSpaceConstraint.constant = 0;
-    _textViewBottomLabelVerticalSpaceConstraint.constant = 0;
+    self.topLabelTextViewVerticalSpaceConstraint.constant = 0;
+    self.textViewBottomLabelVerticalSpaceConstraint.constant = 0;
     
-#if Q_DEBUG_COLORS == 0
+#if Q_DEBUG_COLORS == 1
     self.backgroundColor = [UIColor clearColor];
     self.messageContainer.backgroundColor = [UIColor clearColor];
     self.topLabel.backgroundColor = [UIColor clearColor];
@@ -124,42 +124,27 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
 
+    
     QMChatCellLayoutAttributes *customAttributes = (id)layoutAttributes;
     
-    [self updateConstraint:self.avatarContainerViewHeightConstraint
-              withConstant:customAttributes.avatarSize.height];
+    [self updateConstraint:self.avatarContainerViewHeightConstraint withConstant:customAttributes.avatarSize.height];
+    [self updateConstraint:self.avatarContainerViewWidthConstraint withConstant:customAttributes.avatarSize.width];
     
-    [self updateConstraint:self.avatarContainerViewWidthConstraint
-              withConstant:customAttributes.avatarSize.width];
-
-    [self updateConstraint:self.topLabelHeightConstraint
-              withConstant:customAttributes.topLabelHeight];
+    [self updateConstraint:self.topLabelHeightConstraint withConstant:customAttributes.topLabelHeight];
+    [self updateConstraint:self.bottomLabelHeightConstraint withConstant:customAttributes.bottomLabelHeight];
     
-    [self updateConstraint:self.bottomLabelHeightConstraint
-              withConstant:customAttributes.bottomLabelHeight];
+    [self updateConstraint:self.messageContainerTopInsetConstraint withConstant:customAttributes.containerInsets.top];
+    [self updateConstraint:self.messageContainerLeftInsetConstraint withConstant:customAttributes.containerInsets.left];
+    [self updateConstraint:self.messageContainerBottomInsetConstraint withConstant:customAttributes.containerInsets.bottom];
+    [self updateConstraint:self.messageContainerRightInsetConstraint withConstant:customAttributes.containerInsets.right];
     
-    [self updateConstraint:self.messageContainerTopInsetConstraint
-              withConstant:customAttributes.containerInsets.top];
+    [self updateConstraint:self.topLabelTextViewVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTopLabelAndTextView];
+    [self updateConstraint:self.textViewBottomLabelVerticalSpaceConstraint withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
     
-    [self updateConstraint:self.messageContainerLeftInsetConstraint
-              withConstant:customAttributes.containerInsets.left];
-    
-    [self updateConstraint:self.messageContainerBottomInsetConstraint
-              withConstant:customAttributes.containerInsets.bottom];
-    
-    [self updateConstraint:self.messageContainerRightInsetConstraint
-              withConstant:customAttributes.containerInsets.right];
-    
-    [self updateConstraint:self.topLabelTextViewVerticalSpaceConstraint
-              withConstant:customAttributes.spaceBetweenTopLabelAndTextView];
-    
-    [self updateConstraint:self.textViewBottomLabelVerticalSpaceConstraint
-              withConstant:customAttributes.spaceBetweenTextViewAndBottomLabel];
-	
-    [self updateConstraint:self.containerWidthConstraint
-              withConstant:customAttributes.containerSize.width];
+    [self updateConstraint:self.containerWidthConstraint withConstant:customAttributes.containerSize.width];
     
     [self layoutIfNeeded];
+    
 }
 
 - (void)updateConstraint:(NSLayoutConstraint *)constraint withConstant:(CGFloat)constant {

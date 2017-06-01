@@ -15,15 +15,21 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
 @end
 
 @implementation QMKVOView
+
 #pragma mark - Life cycle
 - (void)dealloc {
     //ILog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
+
 #pragma mark - Actions
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
     
     if (self.isObserverAdded) {
+        
+        if (self.hostViewFrameChangeBlock) {
+            self.hostViewFrameChangeBlock(newSuperview);
+        }
         
         [self.superview removeObserver:self
                             forKeyPath:@"frame"
@@ -50,22 +56,13 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
 
 #pragma mark - Key-value observing
 
-- (void)layoutSubviews {
-    
-    [super layoutSubviews];
-    
-    if (self.superFrameDidChangeBlock) {
-        self.superFrameDidChangeBlock(self.superview.frame);
-    }
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if (object == self.superview && ([keyPath isEqualToString:@"frame"] ||
                                      [keyPath isEqualToString:@"center"])) {
         
-        if  (self.superFrameDidChangeBlock) {
-            self.superFrameDidChangeBlock(self.superview.frame);
+        if (self.hostViewFrameChangeBlock) {
+            self.hostViewFrameChangeBlock(self.superview);
         }
     }
 }
