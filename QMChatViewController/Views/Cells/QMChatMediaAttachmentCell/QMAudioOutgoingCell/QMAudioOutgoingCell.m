@@ -69,15 +69,17 @@
 }
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime {
+    
     [super setCurrentTime:currentTime];
-    NSInteger duration = self.duration;
+    
+    NSTimeInterval duration = self.duration;
     NSString *timeStamp = [self timestampString:currentTime
                                     forDuration:duration];
     
     self.durationLabel.text = timeStamp;
     
     if (duration > 0) {
-        BOOL animated = currentTime > 0;
+        BOOL animated = YES;// currentTime > 0;
         [self.progressView setProgress:currentTime/duration
                               animated:animated];
     }

@@ -8,19 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "QMMediaPresenterDelegate.h"
+
+#import "QMChatPresenterDelegate.h"
 
 @protocol QMMediaViewDelegate <NSObject>
 
 @required
-
-@property (strong, nonatomic) id <QMMediaPresenterDelegate> presenter;
-
-@property (nonatomic, assign) BOOL isReady;
-@property (nonatomic, assign) BOOL isActive;
+@property (strong, nonatomic) id <QMChatPresenterDelegate> presenter;
 
 @optional
 
+@property (nonatomic, assign) BOOL isReady;
+@property (nonatomic, assign) BOOL isActive;
 @property (nonatomic, assign) NSTimeInterval currentTime;
 @property (nonatomic, assign) NSTimeInterval duration;
 @property (nonatomic, assign) CGFloat offset;
@@ -30,5 +29,6 @@
 
 - (void)showLoadingError:(NSError *)error;
 - (void)showUploadingError:(NSError *)error;
+
 
 @end

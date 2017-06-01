@@ -29,9 +29,10 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 const NSUInteger kQMSystemInputToolbarDebugHeight = 0;
 
-@interface QMChatViewController () <QMInputToolbarDelegate, UIImagePickerControllerDelegate,
+@interface QMChatViewController ()
+<QMInputToolbarDelegate, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate,
-UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate, UIGestureRecognizerDelegate>
+UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -105,7 +106,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     self.inputToolbar.audioRecordingIsEnabled = YES;
     
     self.automaticallyScrollsToMostRecentMessage = YES;
-//    self.topContentAdditionalInset = 0.0f;
+    //    self.topContentAdditionalInset = 0.0f;
     
     self.systemInputToolbar = [[QMKVOView alloc] init];
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
@@ -250,9 +251,6 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
-    [self.navigationController.interactivePopGestureRecognizer addTarget:self
-                                                                  action:@selector(handlePopGesture:)];
-    
     [self configureMessagesViewController];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -263,23 +261,20 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
-//    [self.collectionView.panGestureRecognizer addTarget:self action:@selector(didPanCollectionView:)];
-    
     __weak __typeof(self) weakSelf = self;
+    [self.collectionView.panGestureRecognizer addTarget:self
+                                                 action:@selector(handlePanGestureRecognizer:)];
     
-
-    [self.systemInputToolbar setHostViewFrameChangeBlock:^(UIView * view){
-
-        CGRect rect = [view convertRect:weakSelf.view.frame toView:weakSelf.view];
-    
-        CGFloat value = weakSelf.view.frame.size.height - CGRectGetMinY(rect);
+    [self.systemInputToolbar setHostViewFrameChangeBlock:^(UIView * view) {
+        
+        CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
         
         CGFloat v = [weakSelf inputToolBarStartPos];
-        if (value < v ) {
-            value = [self inputToolBarStartPos];
+        if (pos < v ) {
+            pos = [weakSelf inputToolBarStartPos];
         }
-        [weakSelf setToolbarBottomConstraintValue:value
-                                         animated:YES];
+        
+        [weakSelf setToolbarBottomConstraintValue:pos];
     }];
     
     [self.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
@@ -295,7 +290,7 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [super viewWillAppear:animated];
     
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-
+    
     [self updateCollectionViewInsets];
 }
 
@@ -314,16 +309,15 @@ UIAlertViewDelegate,QMPlaceHolderTextViewPasteDelegate, QMChatDataSourceDelegate
     [self registerForNotifications:NO];
 }
 
+
 - (void)viewDidLayoutSubviews {
     
     [super viewDidLayoutSubviews];
     
-    if (!self.presentedViewController &&
-        self.navigationController &&
-        !self.view.inputAccessoryView.superview) {
-        
-        [self.view becomeFirstResponder];
-    }
+//    
+//    if (!self.presentedViewController && self.navigationController && !self.view.inputAccessoryView.superview) {
+//        [self.view becomeFirstResponder];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -840,7 +834,7 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1 && &UIApplicationOpenSettingsURLString != NULL) {
+    if (buttonIndex == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
     }
 }
@@ -902,34 +896,15 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
 
 #pragma mark - Input toolbar utilities
 
-- (void)setToolbarBottomConstraintValue:(CGFloat)constraintValue animated:(BOOL)animated {
-
+- (void)setToolbarBottomConstraintValue:(CGFloat)constraintValue  {
+    
     if ((NSUInteger)constraintValue == (NSUInteger)self.toolbarBottomLayoutGuide.constant
         && constraintValue < 0) {
         return;
     }
     self.toolbarBottomLayoutGuide.constant = constraintValue;
-    
-    dispatch_block_t layoutUpdatesBlock = ^{
-        
-        if ([self.inputToolbar.contentView.textView isFirstResponder]) {
-            
-            
-            if ( ![self scrollIsAtTop]) {
-                self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.lastContentOffset);
-            }
-        }
-        [self.view updateConstraintsIfNeeded];
-        [self.view layoutIfNeeded];
-
-    };
-    
-    if (!animated) {
-        [UIView performWithoutAnimation:layoutUpdatesBlock];
-    }
-    else {
-        layoutUpdatesBlock();
-    }
+    [self.view updateConstraintsIfNeeded];
+    [self.view layoutIfNeeded];
 }
 
 - (BOOL)inputToolbarHasReachedMaximumHeight {
@@ -948,8 +923,13 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
 
 - (void)updateCollectionViewInsets {
     
+    BOOL shift = [self inputToolBarStartPos] > 0;
+    
+    CGFloat bottomValue = self.bottomLayoutGuide.length - [self inputToolBarStartPos]  +
+    (shift ? - [UIApplication sharedApplication].statusBarFrame.size.height : 0);
+    
     [self setCollectionViewInsetsTopValue:self.topContentAdditionalInset + self.topLayoutGuide.length
-                              bottomValue:self.bottomLayoutGuide.length - [self inputToolBarStartPos]];
+                              bottomValue:bottomValue];
     
     if ([self shouldScrollToBottom]) {
         [self scrollToBottomAnimated:NO];
@@ -969,7 +949,7 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
 }
 
 - (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom {
-//    
+    //
     UIEdgeInsets insets = UIEdgeInsetsMake(bottom, 0.0f, top , 0.0f);
 
     if (UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, insets)) {
@@ -1142,7 +1122,6 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     
     [super traitCollectionDidChange:previousTraitCollection];
-    [self resetLayoutAndCaches];
 }
 
 - (void)resetLayoutAndCaches {
@@ -1185,5 +1164,52 @@ layout:(QMChatCollectionViewFlowLayout *)collectionViewLayout
                       CGRectGetWidth(self.collectionView.bounds),
                       CGRectGetHeight(self.collectionView.bounds));
 }
+
+- (void)hideKeyboard:(BOOL)animated {
+    
+    dispatch_block_t hideKeyboardBlock = ^{
+        if (self.inputToolbar.contentView.textView.isFirstResponder) {
+            [self.inputToolbar.contentView resignFirstResponder];
+        }
+    };
+    
+    if (!animated) {
+        [UIView performWithoutAnimation:hideKeyboardBlock];
+    }
+    else {
+        hideKeyboardBlock();
+    }
+}
+
+
+- (void)handlePanGestureRecognizer:(UIPanGestureRecognizer *)gesture {
+    
+    if (self.systemInputToolbar.superview == nil) {
+        return;
+    }
+    
+    CGPoint panPoint = [gesture locationInView:self.view.window];
+    CGRect hostViewRect = [self.view.window convertRect:self.systemInputToolbar.superview.frame toView:nil];
+    CGFloat toolbarMinY = CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputToolbar.frame);
+    
+    if (gesture.state == UIGestureRecognizerStateChanged) {
+        
+        
+        if ([self.inputToolbar.contentView.textView isFirstResponder]) {
+            
+            self.movingKeyboard = panPoint.y > toolbarMinY;
+            
+            if (self.isMovingKeyboard && ![self scrollIsAtTop]) {
+                [self.view layoutIfNeeded];
+                self.collectionView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, self.lastContentOffset);
+            }
+        }
+    }
+    else {
+        
+        self.movingKeyboard = NO;
+    }
+}
+
 
 @end

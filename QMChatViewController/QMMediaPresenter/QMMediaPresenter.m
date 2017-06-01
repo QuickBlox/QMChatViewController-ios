@@ -7,11 +7,12 @@
 //
 
 #import "QMMediaPresenter.h"
-#import "QMMediaPresenterDelegate.h"
 #import "QMMediaViewDelegate.h"
 
 @implementation QMMediaPresenter
 
+@synthesize message = _message;
+@synthesize modelID = _modelID;
 @synthesize view = _view;
 @synthesize model = _model;
 
@@ -22,19 +23,17 @@
 - (instancetype)initWithView:(id <QMMediaViewDelegate>)view {
     
     if (self = [super init]) {
+        
         _view = view;
     }
-    return  self;
+    return self;
 }
 
-- (instancetype)initWithView:(id <QMMediaViewDelegate>)view
-                       model:(id <QMChatModelProtocol>)model {
+- (void)updateWithModel:(id <QMChatModelProtocol>)model {
     
-    if (self = [super init]) {
-        _view = view;
-        _model = model;
-    }
-    return  self;
+    model = _model;
+    
+    [self updateView];
 }
 
 - (void)didTapContainer {
@@ -49,7 +48,10 @@
 }
 
 - (void)requestForMedia {
-   
+    
+    if (self.model) {
+        
+    }
     [self.mediaAssistant requestForMediaWithSender:self];
 }
 
@@ -108,8 +110,6 @@
 }
 
 
-
-
 - (void)didUpdateLoadingProgress:(CGFloat)loadingProgress {
     
 }
@@ -122,10 +122,6 @@
     
 }
 
-- (void)dealloc {
-    
-    _view = nil;
-}
 
 - (NSString *)description {
     

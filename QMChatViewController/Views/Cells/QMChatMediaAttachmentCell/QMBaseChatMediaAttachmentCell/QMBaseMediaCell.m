@@ -141,10 +141,17 @@
     
     if (buttonImage) {
         
-        [self.mediaPlayButton setImage:buttonImage
-                              forState:UIControlStateNormal];
-        [self.mediaPlayButton setImage:buttonImage
-                              forState:UIControlStateDisabled];
+        [UIView transitionWithView:self.mediaPlayButton
+                          duration:0.15
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+            [self.mediaPlayButton setImage:buttonImage
+                                  forState:UIControlStateNormal];
+            [self.mediaPlayButton setImage:buttonImage
+                                  forState:UIControlStateDisabled];
+        } completion:nil];
+        
+
     }
     
     if (!isActive) {
@@ -175,21 +182,26 @@
 
 - (NSString *)timestampString:(NSTimeInterval)currentTime forDuration:(NSTimeInterval)duration
 {
-    if (duration < 60)
-    {
-        
+    
+    NSString *timestampString  = nil;
+    if (duration < 60) {
         if (currentTime < duration)
         {
-            return [NSString stringWithFormat:@"0:%02d", (int)round(currentTime)];
+            timestampString = [NSString stringWithFormat:@"0:%02d", (int)round(currentTime)];
         }
-        return [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
+        else {
+        timestampString = [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
+        }
     }
     else if (duration < 3600)
     {
-        return [NSString stringWithFormat:@"%d:%02d", (int)currentTime / 60, (int)currentTime % 60];
+        timestampString = [NSString stringWithFormat:@"%d:%02d", (int)currentTime / 60, (int)currentTime % 60];
+    }
+    else {
+    timestampString = [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
     }
     
-    return [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
+    return timestampString;
 }
 
 
@@ -234,5 +246,11 @@
         return [super gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
     }
 }
+
+- (void)updateView {
+    
+}
+
+
 
 @end

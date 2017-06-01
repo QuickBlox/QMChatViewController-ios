@@ -20,7 +20,7 @@
 - (void)audioRecordingStarted;
 - (void)audioRecordingFinished;
 
-+ (instancetype)loadAudioRecordView;
++ (UINib *)loadAudioRecordView;
 
 - (void)showErrorMessage:(NSString *)errorMessage completion:(void(^)())completion;
 

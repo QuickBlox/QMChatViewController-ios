@@ -59,7 +59,7 @@
  *  Returns the input toolbar view object managed by this view controller.
  *  This view controller is the toolbar's delegate.
  */
-@property (strong, nonatomic, readonly) QMInputToolbar *inputToolbar;
+@property (weak, nonatomic, readonly) QMInputToolbar *inputToolbar;
 
 /**
  *  The display name of the current user who is sending messages.
@@ -148,6 +148,8 @@
  *  @return Collection Cell View Class
  */
 - (Class)viewClassForItem:(QBChatMessage *)item;
+
+- (NSUInteger)inputToolBarStartPos;
 
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 

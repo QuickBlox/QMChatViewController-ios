@@ -167,6 +167,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         _innerIconView.center = centerPoint;
     };
     
+    block();
     dispatch_async(dispatch_get_main_queue(), block);
     
     _innerCircleView.transform = CGAffineTransformMakeScale(0.1f, 0.1f);
@@ -207,6 +208,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     } completion:^(BOOL finished) {
         if (finished) {
             _overlayWindow.hidden = true;
+            _overlayWindow = nil;
         }
     }];
 }

@@ -200,12 +200,12 @@
     NSString *itemID = [self.chatCollectionView.dataSource collectionView:self.chatCollectionView
                                                         itemIdAtIndexPath:indexPath];
 
-    NSValue *cachedSize = [self.cache objectForKey:itemID];
-    
-    if (cachedSize != nil) {
-        
-        return [cachedSize CGSizeValue];
-    }
+//    NSValue *cachedSize = [self.cache objectForKey:itemID];
+//    
+//    if (cachedSize != nil) {
+//        
+//        return [cachedSize CGSizeValue];
+//    }
     
     
     QMChatCellLayoutModel layoutModel =

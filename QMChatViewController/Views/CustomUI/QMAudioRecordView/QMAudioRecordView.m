@@ -75,7 +75,7 @@
     
     _recordDurationLabel.textAlignment = NSTextAlignmentLeft;
     
-    UIImage *indicatorImage = circleImage(9.0f, [UIColor redColor]);
+    UIImage *indicatorImage = circleImage(CGRectGetWidth(_recordIndicatorView.frame), [UIColor redColor]);
     
     _recordIndicatorView.image = indicatorImage;
     _recordIndicatorView.alpha = 0.0f;
@@ -329,7 +329,6 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
     animation.values = @[@1.0f, @1.0f, @0.0f];
     animation.keyTimes = @[@.0, @0.4546, @0.9091, @1];
-    animation.duration = 0.5;
     animation.duration = 0.5;
     animation.autoreverses = true;
     animation.repeatCount = INFINITY;

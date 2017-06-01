@@ -51,7 +51,9 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 @implementation QMChatCell
 
 //MARK: - Class methods
-
+- (void)dealloc {
+    NSLog(@"deallock %@", NSStringFromClass(self.class));
+}
 + (void)initialize {
     
     static dispatch_once_t onceToken;
