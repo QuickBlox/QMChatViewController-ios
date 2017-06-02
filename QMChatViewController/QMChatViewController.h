@@ -25,6 +25,21 @@
 #import "QMChatLocationOutgoingCell.h"
 #import "QMChatDataSource.h"
 
+#import "QMVideoIncomingCell.h"
+#import "QMAudioIncomingCell.h"
+#import "QMImageIncomingCell.h"
+
+#import "QMVideoOutgoingCell.h"
+#import "QMImageOutgoingCell.h"
+#import "QMAudioOutgoingCell.h"
+
+#import "QMMediaViewDelegate.h"
+#import "QMMediaPresenter.h"
+#import "QMChatBaseLinkPreviewCell.h"
+#import "QMChatIncomingLinkPreviewCell.h"
+#import "QMChatOutgoingLinkPreviewCell.h"
+#import "QMLinkPreviewChatModel.h"
+
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
 
