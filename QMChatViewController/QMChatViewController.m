@@ -237,7 +237,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-
+    
     
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
@@ -249,7 +249,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
-      self.inputToolbar.audioRecordingIsEnabled = YES;
+    self.inputToolbar.audioRecordingIsEnabled = YES;
     
     __weak __typeof(self) weakSelf = self;
     self.systemInputToolbar = [[QMKVOView alloc] init];
@@ -276,7 +276,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         }
         
         if (animated) {
-           
+            
             NSLog(@"%@", view.superview.layer.debugDescription);
         }
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];

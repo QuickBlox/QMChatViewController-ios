@@ -49,6 +49,16 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     return self;
 }
 
+
+- (void)setAudioRecordingIsEnabled:(BOOL)audioRecordingIsEnabled {
+    
+    if (_audioRecordingIsEnabled != audioRecordingIsEnabled) {
+        
+        _audioRecordingIsEnabled = audioRecordingIsEnabled;
+        [self toggleSendButtonEnabled];
+    }
+}
+
 - (void)commonInit {
     
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -119,7 +129,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         if (hasText || hasTextAttachment) {
             
             self.contentView.rightBarButtonItem.hidden = NO;
-            
+            self.contentView.rightBarButtonItem.enabled = YES;
             if (!self.audioRecordButtonItem.superview) {
                 [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
             }

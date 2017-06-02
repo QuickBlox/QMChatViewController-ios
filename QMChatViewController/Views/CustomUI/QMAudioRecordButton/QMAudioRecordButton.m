@@ -238,11 +238,12 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
-    NSLog(@"cancelTrackingWithEvent");
+
     if (_processCurrentTouch) {
         
+        _cancelled = true;
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _cancelled = false;
             if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidCancel:)]) {
                 [self.delegate recordButtonInteractionDidCancel:_lastVelocity];
             }
@@ -253,21 +254,20 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"endTrackingWithTouch");
-    if (_processCurrentTouch)
-    {
+
+    if (_processCurrentTouch) {
+        _cancelled = true;
+        
         CGFloat velocity = _lastVelocity;
         
-        if (velocity < -400.0f)
-        {
+        if (velocity < -400.0f) {
+            
             if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidCancel:)])
                 [self.delegate recordButtonInteractionDidCancel:_lastVelocity];
         }
-        else
-        {
+        else {
             [self _commitCompleted];
         }
-        _cancelled = true;
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
@@ -275,7 +275,6 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     
-    NSLog(@"beginTrackingWithTouch");
     
     if ([super beginTrackingWithTouch:touch withEvent:event]) {
         
@@ -287,13 +286,17 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             return false;
         }
         else {
+            
             _cancelled = false;
+            
             _processCurrentTouch = true;
             
             _lastTouchTime = CFAbsoluteTimeGetCurrent();
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.03 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSLog(@"_cancelled = %d", _cancelled);
+                _processCurrentTouch = !_cancelled;
                 if (!_cancelled) {
-                    
                     if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidBegin)]) {
                         [self.delegate recordButtonInteractionDidBegin];
                     }
