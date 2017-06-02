@@ -80,7 +80,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     if ([self isViewLoaded]) {
         [self.view removeObserver:self forKeyPath:@"frame"];
     }
-
 }
 
 #pragma mark - Initialization

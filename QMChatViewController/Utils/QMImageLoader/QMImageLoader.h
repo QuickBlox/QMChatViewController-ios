@@ -21,12 +21,10 @@ typedef UIImage *(^QMImageLoaderTransformBlock)(UIImage *image, CGRect frame);
 + (instancetype)instance;
 
 + (SDWebImageManager *)sharedManager NS_UNAVAILABLE;
-
+- (UIImage *)originalImageWithURL:(NSURL *)url;
 - (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
                                        transform:(id <SDWebImageManagerDelegate>)transform
                                          options:(SDWebImageOptions)options
                                         progress:(SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(SDWebImageCompletionWithFinishedBlock)completedBlock;
-
-
 @end

@@ -68,9 +68,7 @@
 }
 
 - (UIImage *)imageByCircularScaleAndCrop:(CGSize)targetSize {
-    
     //bitmap context properties
-    
     float scaleFactor = [[UIScreen mainScreen] scale];
     
     CGColorSpaceRef colorSpace =

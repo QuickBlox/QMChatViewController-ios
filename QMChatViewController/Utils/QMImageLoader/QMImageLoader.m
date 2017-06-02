@@ -75,12 +75,28 @@
     return operation;
 }
 
+CG_INLINE NSString *qm_image_orig_key(NSURL *url) {
+    
+    return [NSString stringWithFormat:@"orig:%@", url.absoluteString];
+}
+
+- (UIImage *)originalImageWithURL:(NSURL *)url {
+    
+    return [self.imageCache imageFromDiskCacheForKey:qm_image_orig_key(url)];
+}
+
 - (UIImage *)imageManager:(SDWebImageManager *)imageManager
  transformDownloadedImage:(UIImage *)image
                   withURL:(NSURL *)imageURL {
     
     id <SDWebImageManagerDelegate> processor = _imagePorcessors[imageURL];
     if (processor) {
+        
+        [imageManager.imageCache storeImage:image
+                       recalculateFromImage:NO
+                                  imageData:nil
+                                     forKey:qm_image_orig_key(imageURL)
+                                     toDisk:YES];
         
         return [processor imageManager:imageManager
               transformDownloadedImage:image

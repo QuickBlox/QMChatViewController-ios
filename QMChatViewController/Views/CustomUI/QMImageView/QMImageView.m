@@ -17,7 +17,6 @@
 
 + (instancetype)processorWithType:(QMImageViewType)processorType
                       andCropSize:(CGSize)cropSize;
-
 @end
 
 @interface QMImageProcessor()
@@ -75,7 +74,6 @@
         default:
             break;
     }
-    
 }
 
 @end
@@ -85,7 +83,6 @@
 - (void)setString:(NSString *)string color:(UIColor *)color;
 
 @end
-
 
 @implementation QMTextLayer {
     
@@ -252,12 +249,21 @@ static NSArray *qm_colors = nil;
 
 //MARK: - Public interface
 
--(UIImage *)originalImage {
+- (UIImage *)originalImage {
     return self.image;
 }
 
+- (void)setImageWithURL:(NSURL *)url {
+    
+    [self setImageWithURL:url
+              placeholder:nil
+                  options:SDWebImageLowPriority
+                 progress:nil
+           completedBlock:nil];
+}
+
 - (void)setImage:(UIImage *)image withKey:(NSString *)key {
-    [[QMImageLoader instance].imageCache storeImage:image forKey:key];
+//    [[QMImageLoader instance].imageCache storeImage:image forKey:key];
 }
 
 - (void)setImageWithURL:(NSURL *)url
@@ -306,8 +312,8 @@ static NSArray *qm_colors = nil;
         id <SDWebImageOperation> operation =
         [[QMImageLoader instance]
          downloadImageWithURL:url
-         transform:nil
-         options:SDWebImageLowPriority
+         transform:[QMImageProcessor processorWithType:self.imageViewType andCropSize:CGSizeZero]
+         options:SDWebImageLowPriority 
          progress:nil
          completed:
          ^(UIImage *image,
@@ -359,7 +365,6 @@ static NSArray *qm_colors = nil;
                 options:(SDWebImageOptions)options
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
-    
     
     BOOL urlIsValid = url &&url.scheme && url.host;
     
@@ -436,27 +441,11 @@ static NSArray *qm_colors = nil;
     }
 }
 
-- (void)setImageWithURL:(NSURL *)url {
-    
-    [self setImageWithURL:url
-              placeholder:nil
-                  options:SDWebImageLowPriority
-                 progress:nil
-           completedBlock:nil];
-}
-
-- (void)clearImage {
-    
-    self.image = nil;
-}
-
-
 //MARK: - UIView
 
-- (CGSize)intrinsicContentSize
-{
-    if (self.image)
-    {
+- (CGSize)intrinsicContentSize {
+    
+    if (self.image) {
         return [super intrinsicContentSize];
     }
     
@@ -479,7 +468,6 @@ static NSArray *qm_colors = nil;
         }];
     }
 }
-
 
 //MARK: - Helpers
 
