@@ -25,21 +25,6 @@
 #import "QMChatLocationOutgoingCell.h"
 #import "QMChatDataSource.h"
 
-#import "QMVideoIncomingCell.h"
-#import "QMAudioIncomingCell.h"
-#import "QMImageIncomingCell.h"
-
-#import "QMVideoOutgoingCell.h"
-#import "QMImageOutgoingCell.h"
-#import "QMAudioOutgoingCell.h"
-
-#import "QMMediaViewDelegate.h"
-#import "QMMediaPresenter.h"
-#import "QMChatBaseLinkPreviewCell.h"
-#import "QMChatIncomingLinkPreviewCell.h"
-#import "QMChatOutgoingLinkPreviewCell.h"
-#import "QMLinkPreviewChatModel.h"
-
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
 
@@ -102,13 +87,6 @@
 @property (assign, nonatomic) CGFloat topContentAdditionalInset;
 
 /**
- *  Specifies an additional inset amount to be added to the collectionView's contentInsets.bottom value.
- *
- *  @discussion Use this property to adjust the bottom content inset to account for a custom subview at the bottom of your view controller.
- */
-@property (assign, nonatomic) CGFloat bottomContentAdditionalInset;
-
-/**
  *  Enable text checking types for cells. Must be set in view did load.
  */
 @property (assign, nonatomic) NSTextCheckingTypes enableTextCheckingTypes;
@@ -149,8 +127,6 @@
  */
 - (Class)viewClassForItem:(QBChatMessage *)item;
 
-- (NSUInteger)inputToolBarStartPos;
-
 - (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
 /**
@@ -166,8 +142,6 @@
  */
 - (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
                     sectionHeaderAtIndexPath:(NSIndexPath *)indexPath DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.0.");
-
-//- (QMChatModel *)chatModelforIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Class methods
 
@@ -301,5 +275,5 @@
 - (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
-- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
+
 @end
