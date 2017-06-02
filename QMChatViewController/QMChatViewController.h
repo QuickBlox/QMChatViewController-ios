@@ -275,5 +275,5 @@
 - (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
-- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;;
+
 @end
