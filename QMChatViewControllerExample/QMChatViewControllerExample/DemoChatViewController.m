@@ -26,6 +26,10 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 @implementation DemoChatViewController
 
+- (IBAction)unwindToTab:(UIStoryboardSegue *)unwindSegue
+{
+}
+
 - (NSTimeInterval)timeIntervalBetweenSections {
     return 300.0f;
 }
