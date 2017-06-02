@@ -97,7 +97,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.topLabelTextViewVerticalSpaceConstraint.constant = 0;
     self.textViewBottomLabelVerticalSpaceConstraint.constant = 0;
     
-#if Q_DEBUG_COLORS == 1
+#if Q_DEBUG_COLORS == 0
     self.backgroundColor = [UIColor clearColor];
     self.messageContainer.backgroundColor = [UIColor clearColor];
     self.topLabel.backgroundColor = [UIColor clearColor];
@@ -123,7 +123,6 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 }
 
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
-
     
     QMChatCellLayoutAttributes *customAttributes = (id)layoutAttributes;
     
