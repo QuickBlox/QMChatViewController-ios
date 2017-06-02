@@ -66,8 +66,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)dealloc {
     
-    [self.view removeObserver:self forKeyPath:@"frame"];
-    
     [self registerForNotifications:NO];
     
     self.collectionView.dataSource = nil;
@@ -78,6 +76,11 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.inputToolbar.delegate = nil;
     
     self.senderDisplayName = nil;
+    
+    if ([self isViewLoaded]) {
+        [self.view removeObserver:self forKeyPath:@"frame"];
+    }
+
 }
 
 #pragma mark - Initialization
