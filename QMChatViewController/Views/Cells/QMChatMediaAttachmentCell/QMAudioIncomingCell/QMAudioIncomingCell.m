@@ -25,13 +25,25 @@
                           animated:NO];
 }
 
+- (void)setIsActive:(BOOL)isActive {
+    [super setIsActive:isActive];
+    
+//    [UIView transitionWithView:self.progressView
+//                      duration:0.15
+//                       options:UIViewAnimationOptionTransitionCrossDissolve
+//                    animations:^{
+//                        self.progressView.alpha = isActive ? 1.0 : 0.0;
+//                    } completion:nil];
+
+}
 - (void)layoutSubviews {
     
     [super layoutSubviews];
     
     UIImage *stretchableImage = self.containerView.backgroundImage;
     
-    _progressView.layer.mask = [self maskLayerFromImage:stretchableImage];
+    _progressView.layer.mask = [self maskLayerFromImage:stretchableImage
+                                              withFrame:_progressView.bounds];
 }
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime {
@@ -44,9 +56,9 @@
     self.durationLabel.text = timeStamp;
     
     if (duration > 0) {
-        BOOL animated = currentTime > 0;
+        
         [self.progressView setProgress:currentTime/duration
-                              animated:animated];
+                              animated:YES];
     }
 }
 

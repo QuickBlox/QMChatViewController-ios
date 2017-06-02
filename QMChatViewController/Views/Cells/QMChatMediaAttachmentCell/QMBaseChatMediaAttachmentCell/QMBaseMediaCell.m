@@ -205,10 +205,12 @@
 }
 
 
-- (CALayer *)maskLayerFromImage:(UIImage *)image {
+- (CALayer *)maskLayerFromImage:(UIImage *)image
+                      withFrame:(CGRect)frame {
     
     CALayer *layer = [CALayer layer];
-    layer.frame = self.bounds;
+    
+    layer.frame = frame;
     layer.contents = (id)[image CGImage];
     layer.contentsScale = [image scale];
     layer.rasterizationScale = [image scale];

@@ -36,6 +36,9 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     CGFloat _currentLevel;
     CGFloat _inputLevel;
     bool _animatedIn;
+    
+    bool _cancelled;
+    
 }
 
 @property(nonatomic, assign) UIEdgeInsets hitTestEdgeInsets;
@@ -43,39 +46,8 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 @end
 @implementation QMAudioRecordButton
 
-- (UIImage *)innerCircleImage {
-    
-    static UIImage *image = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(innerCircleRadius, innerCircleRadius), false, [UIScreen mainScreen].scale);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, QMApplicationColor().CGColor);
-        CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, innerCircleRadius, innerCircleRadius));
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    });
-    
-    return image;
-}
-
-- (UIImage *)outerCircleImage {
-    
-    static UIImage *image = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(outerCircleRadius, outerCircleRadius), false, [UIScreen mainScreen].scale);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, [QMApplicationColor() colorWithAlphaComponent:0.2f].CGColor);
-        CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, outerCircleRadius, outerCircleRadius));
-        image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    });
-    return image;
-}
-
-
 //MARK: Life cycle
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -222,7 +194,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-     NSLog(@"continueTrackingWithTouch ");
+    NSLog(@"continueTrackingWithTouch ");
     if ([super continueTrackingWithTouch:touch withEvent:event])
     {
         _lastVelocity = [_panRecognizer velocityInView:self].x;
@@ -248,7 +220,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             
             if (distance < -100.0f)
             {
-                
+                _cancelled = true;
                 if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidCancel:)])
                     [self.delegate recordButtonInteractionDidCancel:velocity];
                 
@@ -270,6 +242,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     if (_processCurrentTouch) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            _cancelled = false;
             if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidCancel:)]) {
                 [self.delegate recordButtonInteractionDidCancel:_lastVelocity];
             }
@@ -294,6 +267,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         {
             [self _commitCompleted];
         }
+        _cancelled = true;
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
@@ -313,13 +287,18 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             return false;
         }
         else {
-            
+            _cancelled = false;
             _processCurrentTouch = true;
-            _lastTouchTime = CFAbsoluteTimeGetCurrent();
             
-            if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidBegin)]) {
-                [self.delegate recordButtonInteractionDidBegin];
-            }
+            _lastTouchTime = CFAbsoluteTimeGetCurrent();
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.03 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (!_cancelled) {
+                    
+                    if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidBegin)]) {
+                        [self.delegate recordButtonInteractionDidBegin];
+                    }
+                }
+            });
             
             _touchLocation = [touch locationInView:self];
         }
@@ -337,8 +316,8 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
     
     if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)
-       || !self.enabled
-       || self.hidden) {
+        || !self.enabled
+        || self.hidden) {
         return [super pointInside:point withEvent:event];
     }
     
@@ -359,6 +338,37 @@ UIColor *QMApplicationColor()
     });
     
     return color;
+}
+
+- (UIImage *)innerCircleImage {
+    
+    static UIImage *image = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(innerCircleRadius, innerCircleRadius), false, [UIScreen mainScreen].scale);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, QMApplicationColor().CGColor);
+        CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, innerCircleRadius, innerCircleRadius));
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    });
+    
+    return image;
+}
+
+- (UIImage *)outerCircleImage {
+    
+    static UIImage *image = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(outerCircleRadius, outerCircleRadius), false, [UIScreen mainScreen].scale);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context, [QMApplicationColor() colorWithAlphaComponent:0.2f].CGColor);
+        CGContextFillEllipseInRect(context, CGRectMake(0.0f, 0.0f, outerCircleRadius, outerCircleRadius));
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    });
+    return image;
 }
 
 @end

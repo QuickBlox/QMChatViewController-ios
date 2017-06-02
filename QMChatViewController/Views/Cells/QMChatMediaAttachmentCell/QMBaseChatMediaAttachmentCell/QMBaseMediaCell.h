@@ -21,6 +21,8 @@
 
 - (NSString *)timestampString:(NSTimeInterval)currentTime
                   forDuration:(NSTimeInterval)duration;
-- (CALayer *)maskLayerFromImage:(UIImage *)image;
+
+- (CALayer *)maskLayerFromImage:(UIImage *)image
+                      withFrame:(CGRect)frame;
 
 @end
