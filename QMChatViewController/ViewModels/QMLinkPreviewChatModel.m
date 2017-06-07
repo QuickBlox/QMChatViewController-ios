@@ -9,5 +9,7 @@
 #import "QMLinkPreviewChatModel.h"
 
 @implementation QMLinkPreviewChatModel
+@synthesize modelContentType;
+@synthesize modelID;
 
 @end

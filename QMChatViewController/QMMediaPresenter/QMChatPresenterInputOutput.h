@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "QMChatModelProtocol.h"
 
-
+@class QBChatMessage;
 @protocol QMChatPresenterInput <NSObject>
 
 @property (nonatomic, strong, nullable) QBChatMessage *message;

@@ -13,16 +13,14 @@
 
 @implementation QMChatModel
 
-@synthesize message = _message;
 @synthesize modelID = _modelID;
 @synthesize modelContentType = _modelContentType;
 
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"<%@: %p; model = %@>",
+    return [NSString stringWithFormat:@"<%@: %p; modelID =>",
             NSStringFromClass([self class]),
-            self,
-            self.message];
+            self.modelID];
 }
 
 @end

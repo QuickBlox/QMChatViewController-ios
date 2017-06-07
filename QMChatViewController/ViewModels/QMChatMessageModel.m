@@ -15,6 +15,7 @@
 @end
 
 @implementation QMChatMessageModel
-
+@synthesize modelID;
+@synthesize modelContentType;
 
 @end

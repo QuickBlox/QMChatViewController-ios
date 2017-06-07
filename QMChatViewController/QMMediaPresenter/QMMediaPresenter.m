@@ -31,7 +31,7 @@
 
 - (void)updateWithModel:(id <QMChatModelProtocol>)model {
     
-    model = _model;
+    _model = model;
     
     [self updateView];
 }
@@ -50,7 +50,7 @@
 - (void)requestForMedia {
     
     if (self.model) {
-        
+        [self updateView];
     }
     [self.mediaAssistant requestForMediaWithSender:self];
 }
@@ -122,6 +122,9 @@
     
 }
 
+- (void)updateView {
+    
+}
 
 - (NSString *)description {
     

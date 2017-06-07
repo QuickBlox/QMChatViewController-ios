@@ -253,6 +253,18 @@ static NSString *qm_dateSeparator = @".";
     return [formatter stringFromDate:date];
 }
 
++ (NSString *)formatDateForWeekRange:(NSDate *)date {
+    
+    static NSDateFormatter* formatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.dateFormat = @"EEEE";
+    });
+    
+    return [formatter stringFromDate:date];
+}
+
 + (NSString *)formatDateForMonthRange:(NSDate *)date {
     
     static NSDateFormatter* formatter;

@@ -61,7 +61,7 @@
     _imageURL = [imageURL copy];
     
     BOOL exists =
-    [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:imageURL];
+    [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:imageURL] != nil;
     
     SDWebImageOptions options =
     SDWebImageLowPriority | SDWebImageRetryFailed | SDWebImageAllowInvalidSSLCertificates;
@@ -79,11 +79,8 @@
          if (image) {
              
              _linkPreviewView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-             
-             if (!exists) {
-                 if (weakSelf.imageDidSet) {
-                     weakSelf.imageDidSet();
-                 }
+             if (weakSelf.imageDidSet) {
+                 weakSelf.imageDidSet();
              }
          }
          else {
@@ -142,7 +139,7 @@
 
 + (UIImage *)imageForURLKey:(NSString *)urlKey {
     
-    return [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:urlKey];
+    return [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:urlKey];
 }
 
 @end

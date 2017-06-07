@@ -7,8 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Quickblox/Quickblox.h>
-
 
 typedef NS_ENUM(NSInteger, QMModelContentType) {
     
@@ -24,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol QMChatModelProtocol <NSObject>
 
-@property (nonatomic, strong, nullable) QBChatMessage *message;
 @property (nonatomic, copy, nullable) NSString *modelID;
 @property (nonatomic, assign) QMModelContentType modelContentType;
 
