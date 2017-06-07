@@ -127,7 +127,7 @@
     
     UIImage *image =
     [UIImage imageWithCGImage:renderedImage
-                        scale:scaleFactor
+                        scale:0
                   orientation:self.imageOrientation];
     
     return image;

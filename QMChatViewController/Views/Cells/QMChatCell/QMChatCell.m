@@ -98,14 +98,11 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [_qmChatCellMenuActions addObject:NSStringFromSelector(action)];
 }
 
-
-
 - (void)awakeFromNib {
     [super awakeFromNib];
     
     self.avatarView.delegate = self;
     self.contentView.opaque = YES;
-    
     self.translatesAutoresizingMaskIntoConstraints = NO;
     
     _messageContainerTopInsetConstraint.constant = 0;
@@ -135,6 +132,8 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     [_textView.layer setDrawsAsynchronously:YES];
     [_bottomLabel.layer setDrawsAsynchronously:YES];
     [self.layer setDrawsAsynchronously:YES];
+    
+    self.avatarView.imageViewType = QMImageViewTypeCircle;
     
     UITapGestureRecognizer *tap =
     [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
