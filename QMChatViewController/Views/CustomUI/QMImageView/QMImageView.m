@@ -11,72 +11,6 @@
 #import "UIImageView+WebCache.h"
 #import "objc/runtime.h"
 #import "QMImageLoader.h"
-#import "UIImage+Cropper.h"
-
-@interface QMImageProcessor : NSObject <SDWebImageManagerDelegate>
-
-+ (instancetype)processorWithType:(QMImageViewType)processorType
-                      andCropSize:(CGSize)cropSize;
-@end
-
-@interface QMImageProcessor()
-
-@property (assign, nonatomic) QMImageViewType imageViewType;
-@property (assign, nonatomic) CGSize cropSize;
-
-@end
-
-@implementation QMImageProcessor
-
-+ (instancetype)processorWithType:(QMImageViewType)imageViewType
-                      andCropSize:(CGSize)cropSize {
-    
-    static dispatch_once_t onceToken;
-    static QMImageProcessor *_imageProcessor = nil;
-    dispatch_once(&onceToken, ^{
-        _imageProcessor = [[QMImageProcessor alloc] init];
-    });
-    
-    _imageProcessor.imageViewType = imageViewType;
-    _imageProcessor.cropSize = cropSize;
-    
-    return _imageProcessor;
-}
-
-- (UIImage *)imageManager:(SDWebImageManager *)imageManager
- transformDownloadedImage:(UIImage *)image
-                  withURL:(NSURL *)imageURL {
-    
-    BOOL shouldCrop = !(CGSizeEqualToSize(_cropSize, CGSizeZero));
-    
-    switch (_imageViewType) {
-            
-        case QMImageViewTypeNone: {
-            
-            return shouldCrop ? [image imageByScaleAndCrop:_cropSize] : image;
-            break;
-        }
-        case QMImageViewTypeCircle: {
-            
-            return shouldCrop
-            ? [image imageByCircularScaleAndCrop:_cropSize]
-            : [image imageByCircularScaleAndCrop:CGSizeMake(59, 59)];
-            
-            break;
-        }
-        case QMImageViewTypeSquare: {
-            return shouldCrop
-            ? [image imageByScaleAndCrop:_cropSize]
-            : [image imageByScaleAndCrop:CGSizeMake(59, 59)];
-            
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-@end
 
 @interface QMTextLayer : CALayer
 
@@ -92,8 +26,8 @@
 
 static NSDictionary *_defaultStyle;
 
-- (instancetype)init
-{
+- (instancetype)init {
+    
     self = [super init];
     if (self) {
         
@@ -262,10 +196,6 @@ static NSArray *qm_colors = nil;
            completedBlock:nil];
 }
 
-- (void)setImage:(UIImage *)image withKey:(NSString *)key {
-//    [[QMImageLoader instance].imageCache storeImage:image forKey:key];
-}
-
 - (void)setImageWithURL:(NSURL *)url
                   title:(NSString *)title
          completedBlock:(SDWebImageCompletionBlock)completedBlock {
@@ -277,12 +207,8 @@ static NSArray *qm_colors = nil;
         [_textLayer setString:title color:[self colorForString:title]];
         _textLayer.hidden = NO;
         
-        CGRect bounds = CGRectMake(0,
-                                   0,
-                                   (int)self.bounds.size.width,
-                                   (int)self.bounds.size.height);
-        if (!CGRectEqualToRect(_textLayer.frame, bounds)) {
-            _textLayer.frame = bounds;
+        if (!CGRectEqualToRect(_textLayer.frame, self.bounds)) {
+            _textLayer.frame = self.bounds;
         }
     };
     
@@ -294,14 +220,10 @@ static NSArray *qm_colors = nil;
     _url = url;
     [self sd_cancelCurrentImageLoad];
     
-    UIImage *image =
-    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
+    QMImageTransform *transform =
+    [QMImageTransform transformWithSize:self.bounds.size
+                               isCircle:self.imageViewType == QMImageViewTypeCircle];
     
-    if (image) {
-        self.image = image;
-        _textLayer.hidden = YES;
-        return;
-    }
     self.image = nil;
     showPlaceholder();
     
@@ -312,23 +234,22 @@ static NSArray *qm_colors = nil;
         id <SDWebImageOperation> operation =
         [[QMImageLoader instance]
          downloadImageWithURL:url
-         transform:[QMImageProcessor processorWithType:self.imageViewType andCropSize:CGSizeZero]
-         options:SDWebImageLowPriority 
+         transform:transform
+         options:SDWebImageHighPriority
          progress:nil
          completed:
-         ^(UIImage *image,
-           NSError *error,
-           SDImageCacheType cacheType,
-           BOOL finished,
-           NSURL *imageURL) {
+         ^(UIImage *image, UIImage *transfomedImage,
+           NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+         {
              
              if (!weakSelf) return;
              
              if (!error) {
+
                  
-                 if (image) {
+                 if (transfomedImage) {
                      weakSelf.textLayer.hidden = YES;
-                     weakSelf.image = image;
+                     weakSelf.image = transfomedImage;
                      [weakSelf setNeedsLayout];
                  }
              }
@@ -366,24 +287,12 @@ static NSArray *qm_colors = nil;
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock  {
     
+
     BOOL urlIsValid = url &&url.scheme && url.host;
     
     _url = url;
     [self sd_cancelCurrentImageLoad];
     
-    UIImage *image =
-    [[QMImageLoader instance].imageCache imageFromMemoryCacheForKey:url.absoluteString];
-    
-    if (image) {
-        self.image = image;
-        _textLayer.hidden = YES;
-        [self setNeedsLayout];
-        
-        if (completedBlock) {
-            completedBlock(image, nil, SDImageCacheTypeMemory, url);
-        }
-        return;
-    }
     self.image = placehoder;
     
     if (urlIsValid) {
@@ -397,18 +306,14 @@ static NSArray *qm_colors = nil;
          options:options
          progress:nil
          completed:
-         ^(UIImage *image,
-           NSError *error,
-           SDImageCacheType cacheType,
-           BOOL finished,
-           NSURL *imageURL) {
-             
+         ^(UIImage *image, UIImage *transfomedImage,
+           NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
+         {
              if (!weakSelf) return;
              
              if (!error) {
-                 
+                
                  if (image) {
-                     weakSelf.textLayer.hidden = YES;
                      weakSelf.image = image;
                      [weakSelf setNeedsLayout];
                  }

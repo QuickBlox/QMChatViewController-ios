@@ -120,7 +120,6 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  *  Doing so could result in unexpected behavior.
  */
 @property (weak, nonatomic, readonly) UIView *avatarContainerView;
-@property (weak, nonatomic, readonly) UIImage *avatarImageView;
 
 /**
  *  Property to set avatar view
