@@ -46,6 +46,7 @@
 - (void)messagesInputToolbarAudioRecordingCancel:(QMInputToolbar *)toolbar;
 - (void)messagesInputToolbarAudioRecordingComplete:(QMInputToolbar *)toolbar;
 - (NSTimeInterval)inputPanelAudioRecordingDuration:(QMInputToolbar *)toolbar;
+- (NSTimeInterval)inputPanelAudioRecordingMaximumDuration:(QMInputToolbar *)toolbar;
 
 @end
 

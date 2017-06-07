@@ -9,6 +9,8 @@
 #import "QMAudioRecordButton.h"
 #import "QMChatResources.h"
 
+#import <SexyTooltip/SexyTooltip.h>
+
 static const CGFloat innerCircleRadius = 110.0f;
 static const CGFloat outerCircleRadius = innerCircleRadius + 50.0f;
 static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius;
@@ -41,9 +43,11 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     
 }
 
-@property(nonatomic, assign) UIEdgeInsets hitTestEdgeInsets;
+@property (nonatomic, assign) UIEdgeInsets hitTestEdgeInsets;
+@property (nonatomic, strong) SexyTooltip *notificationTooltip;
 
 @end
+
 @implementation QMAudioRecordButton
 
 //MARK: Life cycle
@@ -85,6 +89,21 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     }
     return _displayLink;
+}
+
+- (SexyTooltip *)notificationTooltip {
+    
+    if (!_notificationTooltip) {
+        
+        NSDictionary *attrs = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+        NSAttributedString *text = [[NSAttributedString alloc] initWithString:@"Hold to record" attributes:attrs];
+        
+        SexyTooltip *errorTooltip = [[SexyTooltip alloc] initWithAttributedString:text];
+        errorTooltip.color = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        _notificationTooltip = errorTooltip;
+    }
+    
+    return _notificationTooltip;
 }
 
 - (void)displayLinkUpdate {
@@ -293,13 +312,23 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             
             _lastTouchTime = CFAbsoluteTimeGetCurrent();
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSLog(@"_cancelled = %d", _cancelled);
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    
                 _processCurrentTouch = !_cancelled;
+                
                 if (!_cancelled) {
+                    
                     if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidBegin)]) {
                         [self.delegate recordButtonInteractionDidBegin];
                     }
+                }
+                else {
+                    
+                    if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidStopped)]) {
+                        [self.delegate recordButtonInteractionDidStopped];
+                    }
+                    [self.notificationTooltip presentFromView:self inView:self.superview.window animated:YES];
+                    [self.notificationTooltip dismissInTimeInterval:1.0];
                 }
             });
             

@@ -109,15 +109,6 @@ FOUNDATION_EXPORT const CGFloat kQMToolbarContentViewHorizontalSpacingDefault;
  */
 @property (weak, nonatomic, readonly) UIView *rightBarButtonContainerView;
 
-- (void)setButtons:(NSArray <UIButton *> *)array
-          position:(QMToolbarPosition)position;
-
-- (void)addButton:(UIButton *)button
-           action:(void(^)(UIButton *sender))action
-         position:(QMToolbarPosition)position;
-
-- (void)removeButton:(UIButton *)button;
-
 //MARK: - Class methods
 
 /**

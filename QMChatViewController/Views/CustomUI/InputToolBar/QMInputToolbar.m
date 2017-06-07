@@ -343,12 +343,16 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 - (void)recordButtonInteractionDidComplete:(CGFloat)velocity {
     
     if (self.isRecording) {
+        
         self.recording = NO;
         [self setShowRecordingInterface:false velocity:velocity];
-        if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingComplete:)]) {
-            [self.delegate messagesInputToolbarAudioRecordingComplete:self];
-        }
+       
+        [self.delegate messagesInputToolbarAudioRecordingComplete:self];
     }
+}
+- (void)recordButtonInteractionDidStopped {
+    
+    [self shakeControls];
 }
 
 - (void)recordButtonInteractionDidUpdate:(CGFloat)value {
@@ -363,6 +367,15 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     animation.values = @[@(-10), @(10), @(-5), @(5), @(0)];
     [self.audioRecordButtonItem.layer addAnimation:animation forKey:@"shake"];
     
+}
+
+- (NSTimeInterval)maximumDuration {
+    
+    if ([self.delegate respondsToSelector:@selector(inputPanelAudioRecordingMaximumDuration:)]) {
+        return [self.delegate inputPanelAudioRecordingMaximumDuration:self];
+    }
+    
+    return 0.0;
 }
 
 - (NSTimeInterval)currentDuration {

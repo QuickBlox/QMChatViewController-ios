@@ -20,7 +20,7 @@
 - (void)audioRecordingStarted;
 - (void)audioRecordingFinished;
 
-+ (UINib *)loadAudioRecordView;
++ (instancetype)loadAudioRecordView;
 
 - (void)showErrorMessage:(NSString *)errorMessage completion:(void(^)())completion;
 
@@ -29,5 +29,7 @@
 @protocol QMAudioRecordViewProtocol <NSObject>
 
 - (NSTimeInterval)currentDuration;
+- (NSTimeInterval)maximumDuration;
+
 
 @end

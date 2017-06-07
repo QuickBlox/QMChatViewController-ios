@@ -78,52 +78,6 @@ const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
     _rightBarButtonContainerView = nil;
 }
 
-
-#pragma mark - Interface
-- (void)setButtons:(NSArray <UIButton *> *)buttons
-          position:(QMToolbarPosition)position {
-    for (UIButton *btn in buttons) {
-        
-    }
-}
-
-- (void)addButton:(UIButton *)button
-           action:(void(^)(UIButton *sender))action
-         position:(QMToolbarPosition)position {
-    
-    switch (position) {
-        case QMToolbarPositionLeft:
-            
-            if (!self.leftToolbarContainer) {
-                
-                QMToolbarContainer *leftToolbarContainer = [[QMToolbarContainer alloc] init];
-                [self.leftBarButtonContainerView addSubview:leftToolbarContainer];
-                [self.leftBarButtonContainerView pinAllEdgesOfSubview:leftToolbarContainer];
-                self.leftToolbarContainer = leftToolbarContainer;
-            }
-            
-            [self.leftToolbarContainer addButton:button action:action];
-            
-            break;
-        case QMToolbarPositionRight:
-            
-            if (!self.rightToolbarContainer) {
-                QMToolbarContainer *rightToolbarContainer = [[QMToolbarContainer alloc] init];
-                [self.rightBarButtonContainerView addSubview:rightToolbarContainer];
-                [self.rightBarButtonContainerView pinAllEdgesOfSubview:rightToolbarContainer];
-                self.rightToolbarContainer = rightToolbarContainer;
-            }
-            
-            [self.rightToolbarContainer addButton:button action:action];
-            break;
-        case QMToolbarPositionBottom:
-            break;
-        default:
-            break;
-    }
-}
-
-
 #pragma mark - Setters
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {

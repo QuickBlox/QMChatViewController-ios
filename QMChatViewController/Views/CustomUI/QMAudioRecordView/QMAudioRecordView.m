@@ -12,11 +12,15 @@
 #import "UIImage+QM.h"
 #import "QMChatResources.h"
 #import <mach/mach_time.h>
+#import <SexyTooltip/SexyTooltip.h>
 
 @interface QMAudioRecordView() {
     
     NSUInteger _audioRecordingDurationSeconds;
     NSUInteger _audioRecordingDurationMilliseconds;
+    NSUInteger _audioRecordingMaximumDurationSeconds;
+    NSUInteger _maxDurationWarningLimit;
+    
     NSTimer *_audioRecordingTimer;
     
     UIImageView *_recordIndicatorView;
@@ -34,11 +38,12 @@
 @property IBOutlet UILabel *errorMessageLabel;
 @property IBOutlet UILabel *slideToCancelLabel;
 
+@property (nonatomic, strong, nullable) SexyTooltip *notificationTooltip;
 @end
 
 @implementation QMAudioRecordView
 
-+ (UINib *)loadAudioRecordView {
++ (instancetype)loadAudioRecordView {
     
     NSArray *nibViews = [[QMChatResources resourceBundle] loadNibNamed:NSStringFromClass([self class])
                                                                  owner:nil
@@ -67,12 +72,15 @@
 - (void)commonInit {
     
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
     self.backgroundColor = self.superview.backgroundColor;
+    
+    _maxDurationWarningLimit = 3;
+    
     _recordDurationLabel.backgroundColor = self.backgroundColor;
     _recordDurationLabel.textColor = [UIColor blackColor];
     _recordDurationLabel.font = [UIFont systemFontOfSize:16.0];
     _recordDurationLabel.text = @"0:00,00 ";
-    
     _recordDurationLabel.textAlignment = NSTextAlignmentLeft;
     
     UIImage *indicatorImage = circleImage(CGRectGetWidth(_recordIndicatorView.frame), [UIColor redColor]);
@@ -81,7 +89,7 @@
     _recordIndicatorView.alpha = 0.0f;
     
     _slideToCancelLabel.backgroundColor = self.backgroundColor;
-    _slideToCancelLabel.textColor = [UIColor greenColor];
+    _slideToCancelLabel.textColor = [UIColor grayColor];
     _slideToCancelLabel.font = [UIFont systemFontOfSize:14.0];
     
     _recordElementsView.hidden = NO;
@@ -140,6 +148,10 @@
     else {
         
         [self removeDotAnimation];
+        
+        if (_notificationTooltip.isShowing) {
+            [self.notificationTooltip dismiss];
+        }
         
         NSTimeInterval durationFactor = MIN(0.4, MAX(1.0, velocity / 1000.0));
         
@@ -237,24 +249,30 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
 
 
 - (void)audioRecordingStarted {
+    
     [self startAudioRecordingTimer];
 }
 
 - (void)audioRecordingFinished {
     
+    [self.notificationTooltip dismiss];
     [self stopAudioRecordingTimer];
 }
 
-- (void)startAudioRecordingTimer
-{
+- (void)startAudioRecordingTimer {
+    
     _recordDurationLabel.text = @"0:00,00";
+    _recordDurationLabel.textColor = [UIColor blackColor];
     
     _audioRecordingDurationSeconds = 0;
     _audioRecordingDurationMilliseconds = 0.0;
     _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:2.0 /60.0] interval:2.0 /60.0 target:self selector:@selector(audioTimerEvent) userInfo:nil repeats:false];
     
-    [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer forMode:NSRunLoopCommonModes];
+    if ([self.delegate respondsToSelector:@selector(maximumDuration)]) {
+        _audioRecordingMaximumDurationSeconds = [self.delegate maximumDuration];
+    }
     
+    [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)showErrorMessage:(NSString *)errorMessage completion:(void(^)())completion {
@@ -296,6 +314,7 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
     CFAbsoluteTime currentTime = MTAbsoluteSystemTime();
     NSUInteger currentAudioDurationSeconds = (NSUInteger)recordingDuration;
     NSUInteger currentAudioDurationMilliseconds = (int)(recordingDuration * 100.0f) % 100;
+    
     if (currentAudioDurationSeconds == _audioRecordingDurationSeconds && currentAudioDurationMilliseconds == _audioRecordingDurationMilliseconds)
     {
         NSTimeInterval interval = MAX(0.01, _audioRecordingDurationSeconds + 2.0 / 60.0 - currentTime);
@@ -305,15 +324,50 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
     }
     else
     {
+        if (_audioRecordingMaximumDurationSeconds > 0 && _audioRecordingMaximumDurationSeconds - _audioRecordingDurationSeconds <= _maxDurationWarningLimit) {
+            
+            NSInteger secondsLeft = _audioRecordingMaximumDurationSeconds - _audioRecordingDurationSeconds;
+            if (secondsLeft == 0) {
+                currentAudioDurationSeconds = _audioRecordingMaximumDurationSeconds;
+                currentAudioDurationMilliseconds = 0;
+            }
+            if (!self.notificationTooltip.isShowing) {
+                [self.notificationTooltip presentFromView:self.recordIndicatorView inView:self.window];
+            }
+            
+            CGFloat intensityStep = 255.0/_maxDurationWarningLimit;
+            CGFloat redColorIntensity = intensityStep * (_maxDurationWarningLimit - secondsLeft);
+            
+            _recordDurationLabel.textColor = [UIColor colorWithRed:redColorIntensity/255.0f green:0.0f blue:0.0f alpha:1.0f];
+        }
+        
         _audioRecordingDurationSeconds = currentAudioDurationSeconds;
         _audioRecordingDurationMilliseconds = currentAudioDurationMilliseconds;
         _recordDurationLabel.text = [[NSString alloc] initWithFormat:@"%d:%02d,%02d", (int)_audioRecordingDurationSeconds / 60, (int)_audioRecordingDurationSeconds % 60, (int)_audioRecordingDurationMilliseconds];
         NSTimeInterval interval = 2.0 / 60.0;
+        
+
+        
         _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:interval] interval:interval target:self selector:@selector(audioTimerEvent) userInfo:nil repeats:false];
         [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer forMode:NSRunLoopCommonModes];
     }
 }
 
+- (SexyTooltip *)notificationTooltip {
+    
+    if (!_notificationTooltip) {
+        
+        NSDictionary *attrs = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+        NSString *text = [NSString stringWithFormat:@"Maximum duration is %lu %@", (unsigned long)_audioRecordingMaximumDurationSeconds, _audioRecordingMaximumDurationSeconds > 1 ? @"seconds" : @"second"];
+        NSAttributedString *errorAttrText = [[NSAttributedString alloc] initWithString:text attributes:attrs];
+        
+        SexyTooltip *errorTooltip = [[SexyTooltip alloc] initWithAttributedString:errorAttrText];
+        errorTooltip.color = [[UIColor redColor] colorWithAlphaComponent:0.8];
+        _notificationTooltip = errorTooltip;
+    }
+    
+    return _notificationTooltip;
+}
 
 - (void)stopAudioRecordingTimer
 {
