@@ -235,7 +235,7 @@ static NSArray *qm_colors = nil;
         [[QMImageLoader instance]
          downloadImageWithURL:url
          transform:transform
-         options:SDWebImageHighPriority
+         options:SDWebImageHighPriority | SDWebImageContinueInBackground
          progress:nil
          completed:
          ^(UIImage *image, UIImage *transfomedImage,

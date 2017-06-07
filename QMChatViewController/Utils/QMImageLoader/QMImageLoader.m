@@ -26,11 +26,6 @@
 
 @implementation QMImageTransform
 
-- (void)dealloc {
-    
-    //    NSLog(@"dealloc %@", NSStringFromClass(self.class));
-}
-
 + (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle {
     
     QMImageTransform *transform = [[QMImageTransform alloc] init];
@@ -85,13 +80,11 @@
     dispatch_once(&onceToken, ^{
         
         SDImageCache *qmCache = [[SDImageCache alloc] initWithNamespace:@"default"];
-        qmCache.shouldCacheImagesInMemory = NO;
+        qmCache.shouldCacheImagesInMemory = YES;
         
         SDWebImageDownloader *qmDownloader = [[SDWebImageDownloader alloc] init];
-        qmDownloader.maxConcurrentDownloads = 6;
         
         _loader = [[QMImageLoader alloc] initWithCache:qmCache downloader:qmDownloader];
-        _loader.transforms = [NSMutableDictionary dictionary];
     });
     
     return _loader;
@@ -103,6 +96,7 @@
     self = [super initWithCache:cache downloader:downloader];
     if (self) {
         
+        _transforms = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -287,12 +281,6 @@
                                                               toDisk:cacheOnDisk];
                                      }
                                      
-                                     NSString *transformKey = [transform keyWithURL:url];
-                                     
-                                     if (transformedImage) {
-                                         NSLog(@"END %@", transformKey);
-                                     }
-                                     
                                      clenupTransform();
                                      
                                      dispatch_main_sync_safe(^{
@@ -357,8 +345,6 @@
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                         
-                        NSString *transformKey = [transform keyWithURL:url];
-                        
                         UIImage *transformedImage = [weakSelf.imageCache imageFromDiskCacheForKey:transformKey];
                         
                         if (!transformedImage) {
@@ -367,12 +353,6 @@
                                                         transform:transform
                                          transformDownloadedImage:image
                                                           withURL:url];
-                            
-                            CGSize size = CGSizeMake(UIScreen.mainScreen.scale * transform.size.width ,
-                                                     UIScreen.mainScreen.scale * transform.size.height);
-                            
-                            NSParameterAssert(transformedImage && CGSizeEqualToSize(transformedImage.size, size));
-                            
                             clenupTransform();
                             
                             dispatch_main_sync_safe(^{
@@ -386,12 +366,7 @@
                             }
                         }
                         else {
-                            
-                            CGSize size = CGSizeMake(UIScreen.mainScreen.scale * transform.size.width ,
-                                                     UIScreen.mainScreen.scale * transform.size.height);
-                            
-                            NSParameterAssert(transformedImage && CGSizeEqualToSize(transformedImage.size, size));
-                            
+
                             clenupTransform();
                             dispatch_main_sync_safe(^{
                                 __strong __typeof(weakOperation) strongOperation = weakOperation;
