@@ -21,15 +21,12 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
 /**
  Default QMUserImageViewType QMUserImageViewTypeNone
  */
-@property (nonatomic) IBInspectable CGFloat borderWidth;
 @property (assign, nonatomic) QMImageViewType imageViewType;
 @property (strong, nonatomic, readonly) NSURL *url;
 
 @property (weak, nonatomic) id <QMImageViewDelegate> delegate;
 
-- (void)setImage:(UIImage *)image withKey:(NSString *)key;
-
-- (void)applyImage:(UIImage *)image;
+- (void)setImageWithURL:(NSURL *)url;
 
 - (void)setImageWithURL:(NSURL *)url
             placeholder:(UIImage *)placehoder
@@ -37,10 +34,11 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDWebImageCompletionBlock)completedBlock;
 
-/**
- *  Clear current image view instance from image.
- */
-- (void)clearImage;
+- (void)setImageWithURL:(NSURL *)url
+                  title:(NSString *)title
+         completedBlock:(SDWebImageCompletionBlock)completedBlock;
+
+- (UIImage *)originalImage;
 
 @end
 

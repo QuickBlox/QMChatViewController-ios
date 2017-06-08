@@ -9,51 +9,36 @@
 #import <Foundation/Foundation.h>
 #import <SDWebImage/SDWebImageManager.h>
 
-typedef UIImage *(^QMImageLoaderTransformBlock)(UIImage *image, CGRect frame);
+NS_ASSUME_NONNULL_BEGIN
+
+@interface QMImageTransform : NSObject
+
+@property (assign, nonatomic, readonly) CGSize size;
+
++ (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle;
+
+- (NSString *)keyWithURL:(NSURL *)url;
+
+@end
+
+typedef void(^QMWebImageCompletionWithFinishedBlock)(UIImage *_Nullable image, UIImage *_Nullable transfomedImage, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL);
 
 /**
  *  QMImageLoader class interface.
  *  This class is responsible for image caching, loading and size handling using
  *  SDWebImage component.
  */
-@interface QMImageLoader : NSObject
+@interface QMImageLoader : SDWebImageManager
 
-/**
- *  Image with URL.
- *
- *  @param url            image url
- *  @param frame          image frame (pass CGRectZero if you want original size image)
- *  @param options        SDWebImageOptions
- *  @param progressBlock  progress block
- *  @param transformImage transform block (perform your own transformation here using passed frame)
- *  @param completedBlock completion block
- *
- *  @discussion Method will look for image in cache first. Will transform image if there is original one and no
- *  a secific one yet. Will load image if neither cached or original image existent.
- *
- *  @return SDWebImageOperation to manage your own operation queues.
- */
-+ (id <SDWebImageOperation>)imageWithURL:(NSURL *)url
-                                   frame:(CGRect)frame
-                                 options:(SDWebImageOptions)options
-                                progress:(SDWebImageDownloaderProgressBlock)progressBlock
-                          transformImage:(QMImageLoaderTransformBlock)transformImage
-                               completed:(SDWebImageCompletionBlock)completedBlock;
-
-/**
- *  Looking for cached image in memory and disk for a specific key.
- *
- *  @param key          image key
- *  @param completion   completion block with cached image (if existent) and cache type
- */
-+ (void)cachedImageForKey:(NSString *)key completion:(SDWebImageQueryCompletedBlock)completion;
-
-/**
- *  Store image in memory and disk cache for a specific key.
- *
- *  @param image image to store
- *  @param key   key
- */
-+ (void)storeImage:(UIImage *)image forKey:(NSString *)key;
-
++ (instancetype)instance;
++ (SDWebImageManager *)sharedManager NS_UNAVAILABLE;
+- (UIImage *)originalImageWithURL:(NSURL *)url;
+- (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
+                                       transform:(nullable QMImageTransform *)transform
+                                         options:(SDWebImageOptions)options
+                                        progress:(_Nullable SDWebImageDownloaderProgressBlock)progressBlock
+                                       completed:(QMWebImageCompletionWithFinishedBlock)completedBlock;
 @end
+
+
+NS_ASSUME_NONNULL_END

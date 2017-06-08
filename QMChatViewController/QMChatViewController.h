@@ -14,7 +14,6 @@
 #import "QMChatActionsHandler.h"
 #import "QMInputToolbar.h"
 #import <Quickblox/Quickblox.h>
-#import "QMChatSectionManager.h"
 
 #import "QMChatContactRequestCell.h"
 #import "QMChatIncomingCell.h"
@@ -26,12 +25,23 @@
 #import "QMChatLocationOutgoingCell.h"
 #import "QMChatDataSource.h"
 
+#import "QMVideoIncomingCell.h"
+#import "QMAudioIncomingCell.h"
+#import "QMImageIncomingCell.h"
+
+#import "QMVideoOutgoingCell.h"
+#import "QMImageOutgoingCell.h"
+#import "QMAudioOutgoingCell.h"
+
+#import "QMMediaViewDelegate.h"
+#import "QMMediaPresenter.h"
+#import "QMChatBaseLinkPreviewCell.h"
+#import "QMChatIncomingLinkPreviewCell.h"
+#import "QMChatOutgoingLinkPreviewCell.h"
+#import "QMLinkPreviewChatModel.h"
+
 @interface QMChatViewController : UIViewController <QMChatCollectionViewDataSource, QMChatCollectionViewDelegateFlowLayout, UITextViewDelegate>
 
-/**
- *  @warning *Deprecated in 0.4.0:* Use 'chatDataSource:' instead.
- */
-@property (strong, nonatomic) QMChatSectionManager *chatSectionManager DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.0. Use 'chatDataSource:' instead");
 
 @property (strong, nonatomic) QMChatDataSource *chatDataSource;
 /**
@@ -280,5 +290,5 @@
 - (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
-- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;;
+
 @end
