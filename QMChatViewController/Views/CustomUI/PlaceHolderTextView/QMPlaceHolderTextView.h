@@ -9,12 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <Quickblox/Quickblox.h>
 
+extern NSString * const QMPlaceholderDidChangeHeight;
 
 @class QMPlaceHolderTextView;
 
 NS_ASSUME_NONNULL_BEGIN
-
-extern NSString * const QMPlaceholderDidChangeHeight;
 
 @protocol QMPlaceHolderTextViewPasteDelegate;
 

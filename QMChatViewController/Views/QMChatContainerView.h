@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+IB_DESIGNABLE
 /**
  *  Customisable chat container view.
  */
@@ -21,10 +22,5 @@
 @property (assign, nonatomic) IBInspectable CGSize arrowSize;
 
 @property (assign, nonatomic) BOOL highlighted;
-
-@property (readonly, strong, nonatomic) UIImage *backgroundImage;
-
-@property (readonly, strong, nonatomic) UIBezierPath *maskPath;
-
 
 @end

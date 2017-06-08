@@ -8,6 +8,9 @@
 
 #import "QMChatCollectionView.h"
 
+#import "QMChatContactRequestCell.h"
+
+#import "UIColor+QM.h"
 
 @interface QMChatCollectionView()
 @end
@@ -18,7 +21,17 @@
 @dynamic delegate;
 @dynamic collectionViewLayout;
 
-//MARK: - Initialization
+#pragma mark - Initialization
+
+- (void)configureCollectionView {
+    
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    self.backgroundColor = [UIColor clearColor];
+    self.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    self.alwaysBounceVertical = YES;
+    self.bounces = YES;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout {
     
@@ -36,13 +49,36 @@
     [self configureCollectionView];
 }
 
-- (void)configureCollectionView {
+#pragma mark - Messages collection view cell delegate
+
+- (void)chatCellDidTapAvatar:(QMChatCell *)cell {
     
-    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSIndexPath *indexPath = [self indexPathForCell:cell];
+    if (indexPath == nil) {
+        return;
+    }
     
-    self.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
-    self.alwaysBounceVertical = YES;
-    self.bounces = YES;
+//    [self.delegate collectionView:self didTapAvatarImageView:cell.avatarImageView atIndexPath:indexPath];
+}
+
+- (void)chatCellDidTapMessageBubble:(QMChatCell *)cell {
+    
+    NSIndexPath *indexPath = [self indexPathForCell:cell];
+    if (indexPath == nil) {
+        return;
+    }
+    
+//    [self.delegate collectionView:self didTapMessageBubbleAtIndexPath:indexPath];
+}
+
+- (void)chatCellDidTapCell:(QMChatCell *)cell atPosition:(CGPoint)position {
+    
+    NSIndexPath *indexPath = [self indexPathForCell:cell];
+    if (indexPath == nil) {
+        return;
+    }
+    
+//    [self.delegate collectionView:self didTapCellAtIndexPath:indexPath touchLocation:position];
 }
 
 @end
