@@ -121,41 +121,36 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 - (void)toggleButtons {
     
-    BOOL hasText = [self.contentView.textView hasText];
+    BOOL hasText = self.contentView.textView.text.length > 0;
     BOOL hasTextAttachment = [self.contentView.textView hasTextAttachment];
+    BOOL hasDataToSend = hasText || hasTextAttachment;
     
     if (self.sendButtonOnRight) {
         
-        if (hasText || hasTextAttachment) {
-            
-            self.contentView.rightBarButtonItem.hidden = NO;
-            self.contentView.rightBarButtonItem.enabled = YES;
-            if (!self.audioRecordButtonItem.superview) {
-                [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
-            }
-            self.audioRecordButtonItem.hidden = YES;
-            
-        }
-        else {
-            
-            self.contentView.rightBarButtonItem.hidden = YES;
-            
-            if (!self.audioRecordButtonItem.superview) {
-                [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
-            }
-            self.audioRecordButtonItem.hidden = NO;
-        }
+        self.contentView.rightBarButtonItem.hidden = !hasDataToSend;
+        self.contentView.rightBarButtonItem.enabled = [self.contentView.textView hasText];
         
+        if (!self.audioRecordButtonItem.superview) {
+            [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+        }
     }
     else {
         
-        self.contentView.leftBarButtonItem.hidden = !(hasText || hasTextAttachment);
+        self.contentView.leftBarButtonItem.hidden = !hasDataToSend;
+        self.contentView.leftBarButtonItem.enabled = [self.contentView.textView hasText];
+        
+        if (!self.audioRecordButtonItem.superview) {
+            [self.contentView.leftBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+        }
     }
+    
+    self.audioRecordButtonItem.hidden = hasDataToSend;
 }
 
 - (void)toggleSendButtonEnabled {
     
     if (self.audioRecordingIsEnabled) {
+        
         [self toggleButtons];
         return;
     }
