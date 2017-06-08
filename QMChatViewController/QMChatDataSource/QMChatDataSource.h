@@ -18,7 +18,6 @@ typedef NS_ENUM(NSInteger, QMDataSourceActionType) {
     QMDataSourceActionTypeRemove
 };
 
-
 @class QBChatMessage;
 
 @protocol QMChatDataSourceDelegate;
@@ -31,13 +30,13 @@ typedef NS_ENUM(NSInteger, QMDataSourceActionType) {
 - (NSArray *)allMessages;
 
 - (void)addMessage:(QBChatMessage *)message;
-- (void)addMessages:(NSArray<QBChatMessage *> *)messages;
+- (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
 - (void)deleteMessage:(QBChatMessage *)message;
-- (void)deleteMessages:(NSArray <QBChatMessage *> *)messages;
+- (void)deleteMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
 - (void)updateMessage:(QBChatMessage *)message;
-- (void)updateMessages:(NSArray <QBChatMessage *> *)messages;
+- (void)updateMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
 - (NSArray *)performChangesWithMessages:(NSArray *)messages updateType:(QMDataSourceActionType)updateType;
 

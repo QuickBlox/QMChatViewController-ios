@@ -9,15 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "QMPlaceHolderTextView.h"
 
-typedef NS_ENUM(NSUInteger, QMToolbarPosition) {
-    QMToolbarPositionRight,
-    QMToolbarPositionLeft,
-    QMToolbarPositionBottom
-};
-
-
-
-
 /**
  *  A constant value representing the default spacing to use for the left and right edges
  *  of the toolbar content view.
@@ -109,7 +100,7 @@ FOUNDATION_EXPORT const CGFloat kQMToolbarContentViewHorizontalSpacingDefault;
  */
 @property (weak, nonatomic, readonly) UIView *rightBarButtonContainerView;
 
-//MARK: - Class methods
+#pragma mark - Class methods
 
 /**
  *  Returns the `UINib` object initialized for a `QMToolbarContentView`.

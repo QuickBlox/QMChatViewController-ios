@@ -36,10 +36,6 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
-  s.subspec 'QMMediaPresenter' do |ss|
-    ss.source_files = 'QMChatViewController/QMMediaPresenter/**/*.{h,m}'
-  end
-
   s.subspec 'Categories' do |ss|
 	   ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
      ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
@@ -76,7 +72,6 @@ Pod::Spec.new do |s|
   s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
   s.dependency "QuickBlox", ">= 2.0"
   s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 3.8.2"
-  s.dependency "SexyTooltip"
+  s.dependency "SDWebImage", "~> 3.6"
 
 end

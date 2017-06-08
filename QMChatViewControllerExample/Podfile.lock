@@ -1,36 +1,36 @@
 PODS:
-  - QMCVDevelopment (0.4.1.1):
-    - QMCVDevelopment/Categories (= 0.4.1.1)
-    - QMCVDevelopment/Protocols (= 0.4.1.1)
-    - QMCVDevelopment/QMChatDataSource (= 0.4.1.1)
-    - QMCVDevelopment/QMChatLocationSnapshotter (= 0.4.1.1)
-    - QMCVDevelopment/Sections (= 0.4.1.1)
-    - QMCVDevelopment/Utils (= 0.4.1.1)
-    - QMCVDevelopment/Views (= 0.4.1.1)
+  - QMCVDevelopment (0.4.1):
+    - QMCVDevelopment/Categories (= 0.4.1)
+    - QMCVDevelopment/Protocols (= 0.4.1)
+    - QMCVDevelopment/QMChatDataSource (= 0.4.1)
+    - QMCVDevelopment/QMChatLocationSnapshotter (= 0.4.1)
+    - QMCVDevelopment/Sections (= 0.4.1)
+    - QMCVDevelopment/Utils (= 0.4.1)
+    - QMCVDevelopment/Views (= 0.4.1)
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Categories (0.4.1.1):
+  - QMCVDevelopment/Categories (0.4.1):
     - QMCVDevelopment/QMChatLocationSnapshotter
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Protocols (0.4.1.1):
+  - QMCVDevelopment/Protocols (0.4.1):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/QMChatDataSource (0.4.1.1):
+  - QMCVDevelopment/QMChatDataSource (0.4.1):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/QMChatLocationSnapshotter (0.4.1.1):
+  - QMCVDevelopment/QMChatLocationSnapshotter (0.4.1):
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Sections (0.4.1.1):
+  - QMCVDevelopment/Sections (0.4.1):
     - QMCVDevelopment/QMChatDataSource
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Utils (0.4.1.1):
+  - QMCVDevelopment/Utils (0.4.1):
     - QMCVDevelopment/Categories
     - SDWebImage (~> 3.6)
     - TTTAttributedLabel (> 1.13)
-  - QMCVDevelopment/Views (0.4.1.1):
+  - QMCVDevelopment/Views (0.4.1):
     - QMCVDevelopment/Categories
     - QMCVDevelopment/Protocols
     - QMCVDevelopment/Utils
@@ -51,7 +51,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMCVDevelopment: f459b796b0102a3f9e5e9fc7a1dcec653b8bbd53
+  QMCVDevelopment: de89bd5257b8cb978dc302859a044063d271343c
   QuickBlox: 348157145386d7fe568f5dab13ef7c4e4c1b5e05
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656

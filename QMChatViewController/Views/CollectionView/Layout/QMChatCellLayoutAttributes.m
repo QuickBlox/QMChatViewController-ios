@@ -16,7 +16,7 @@
 
 @implementation QMChatCellLayoutAttributes
 
-//MARK: - Lifecycle
+#pragma mark - Lifecycle
 
 - (instancetype)init
 {
@@ -41,7 +41,7 @@
     return self.customAttributes[key];
 }
 
-//MARK: - Setters
+#pragma mark - Setters
 
 - (void)setContainerSize:(CGSize)containerSize {
     
@@ -54,14 +54,14 @@
     _avatarSize = [self correctedSizeFromSize:avatarSize];
 }
 
-//MARK: - Utilities
+#pragma  mark - Utilities
 
 - (CGSize)correctedSizeFromSize:(CGSize)size {
     
     return CGSizeMake(ceilf(size.width), ceilf(size.height));
 }
 
-//MARK: - NSObject
+#pragma mark - NSObject
 
 - (BOOL)isEqual:(id)object {
     
@@ -98,7 +98,7 @@
     return [self.indexPath hash];
 }
 
-//MARK: - NSCopying
+#pragma mark - NSCopying
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     

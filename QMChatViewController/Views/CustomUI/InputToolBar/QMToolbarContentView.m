@@ -9,17 +9,8 @@
 #import "QMToolbarContentView.h"
 #import "UIView+QM.h"
 #import "QMChatResources.h"
-#import "QMAudioRecordButton.h"
-#import "QMToolbarContainer.h"
 
 const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
-
-
-@interface QMToolbarButton : UIButton
-
-@property (assign, nonatomic) QMToolbarPosition *position;
-
-@end
 
 @interface QMToolbarContentView()
 
@@ -33,9 +24,6 @@ const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftHorizontalSpacingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightHorizontalSpacingConstraint;
-
-@property (weak, nonatomic) QMToolbarContainer *rightToolbarContainer;
-@property (weak, nonatomic) QMToolbarContainer *leftToolbarContainer;
 
 @end
 
@@ -53,11 +41,6 @@ const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
 - (void)awakeFromNib {
     
     [super awakeFromNib];
-    [self initialize];
-    
-}
-
-- (void)initialize {
     
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     
@@ -65,8 +48,6 @@ const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
     self.rightHorizontalSpacingConstraint.constant = kQMToolbarContentViewHorizontalSpacingDefault;
     
     self.backgroundColor = [UIColor clearColor];
-    
-    
 }
 
 - (void)dealloc {
@@ -155,7 +136,6 @@ const CGFloat kQMToolbarContentViewHorizontalSpacingDefault = 8.0f;
     
     _rightBarButtonItem = rightBarButtonItem;
 }
-
 
 - (void)setRightBarButtonItemWidth:(CGFloat)rightBarButtonItemWidth {
     
