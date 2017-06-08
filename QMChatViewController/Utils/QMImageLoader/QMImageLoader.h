@@ -9,7 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <SDWebImage/SDWebImageManager.h>
 
-typedef UIImage *(^QMImageLoaderTransformBlock)(UIImage *image, CGRect frame);
+NS_ASSUME_NONNULL_BEGIN
+
+@interface QMImageTransform : NSObject
+
+@property (assign, nonatomic, readonly) CGSize size;
+
++ (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle;
+
+- (NSString *)keyWithURL:(NSURL *)url;
+
+@end
+
+typedef void(^QMWebImageCompletionWithFinishedBlock)(UIImage *_Nullable image, UIImage *_Nullable transfomedImage, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL);
 
 /**
  *  QMImageLoader class interface.
@@ -19,14 +31,14 @@ typedef UIImage *(^QMImageLoaderTransformBlock)(UIImage *image, CGRect frame);
 @interface QMImageLoader : SDWebImageManager
 
 + (instancetype)instance;
-
 + (SDWebImageManager *)sharedManager NS_UNAVAILABLE;
-
+- (UIImage *)originalImageWithURL:(NSURL *)url;
 - (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
-                                       transform:(id <SDWebImageManagerDelegate>)transform
+                                       transform:(nullable QMImageTransform *)transform
                                          options:(SDWebImageOptions)options
-                                        progress:(SDWebImageDownloaderProgressBlock)progressBlock
-                                       completed:(SDWebImageCompletionWithFinishedBlock)completedBlock;
-
-
+                                        progress:(_Nullable SDWebImageDownloaderProgressBlock)progressBlock
+                                       completed:(QMWebImageCompletionWithFinishedBlock)completedBlock;
 @end
+
+
+NS_ASSUME_NONNULL_END

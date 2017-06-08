@@ -20,6 +20,10 @@
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
 #import <Photos/Photos.h>
 #import "QMKVOView.h"
+#import "QMMediaPresenter.h"
+#import "QMMediaViewDelegate.h"
+#import "QMAudioRecordButton.h"
+
 
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
@@ -62,8 +66,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)dealloc {
     
-    [self.view removeObserver:self forKeyPath:@"frame"];
-    
     [self registerForNotifications:NO];
     
     self.collectionView.dataSource = nil;
@@ -74,6 +76,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.inputToolbar.delegate = nil;
     
     self.senderDisplayName = nil;
+    
+    if ([self isViewLoaded]) {
+        [self.view removeObserver:self forKeyPath:@"frame"];
+    }
 }
 
 #pragma mark - Initialization
@@ -98,39 +104,52 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 }
 
 - (void)registerCells {
+    
     //Register header view
     UINib *headerNib = [QMHeaderCollectionReusableView nib];
     NSString *headerView = [QMHeaderCollectionReusableView cellReuseIdentifier];
     [self.collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:headerView];
+    
     // Register contact request cell
-    UINib *requestNib = [QMChatContactRequestCell nib];
-    NSString *requestIdentifier = [QMChatContactRequestCell cellReuseIdentifier];
-    [self.collectionView registerNib:requestNib forCellWithReuseIdentifier:requestIdentifier];
+    [QMChatContactRequestCell registerForReuseInView:self.collectionView];
+    
     // Register Notification cell
-    UINib *notificationNib = [QMChatNotificationCell nib];
-    NSString *notificationIdentifier = [QMChatNotificationCell cellReuseIdentifier];
-    [self.collectionView  registerNib:notificationNib forCellWithReuseIdentifier:notificationIdentifier];
+    [QMChatNotificationCell registerForReuseInView:self.collectionView];
+    
     // Register outgoing cell
-    UINib *outgoingNib = [QMChatOutgoingCell nib];
-    NSString *outgoingIdentifier = [QMChatOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:outgoingNib forCellWithReuseIdentifier:outgoingIdentifier];
+    [QMChatOutgoingCell registerForReuseInView:self.collectionView];
     // Register incoming cell
-    UINib *incomingNib = [QMChatIncomingCell nib];
-    NSString *incomingIdentifier = [QMChatIncomingCell cellReuseIdentifier];
-    [self.collectionView  registerNib:incomingNib forCellWithReuseIdentifier:incomingIdentifier];
+    [QMChatIncomingCell registerForReuseInView:self.collectionView];
+    
     // Register attachment incoming cell
-    UINib *attachmentIncomingNib = [QMChatAttachmentIncomingCell nib];
-    NSString *attachmentIncomingIdentifier = [QMChatAttachmentIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:attachmentIncomingNib forCellWithReuseIdentifier:attachmentIncomingIdentifier];
+    [QMChatAttachmentIncomingCell registerForReuseInView:self.collectionView];
     // Register attachment outgoing cell
-    UINib *attachmentOutgoingNib  = [QMChatAttachmentOutgoingCell nib];
-    NSString *attachmentOutgoingIdentifier = [QMChatAttachmentOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:attachmentOutgoingNib forCellWithReuseIdentifier:attachmentOutgoingIdentifier];
+    [QMChatAttachmentOutgoingCell registerForReuseInView:self.collectionView];
+    
     // Register location outgoing cell
-    UINib *locOutgoingNib = [QMChatLocationOutgoingCell nib];
-    NSString *locOugoingIdentifier = [QMChatLocationOutgoingCell cellReuseIdentifier];
-    [self.collectionView registerNib:locOutgoingNib forCellWithReuseIdentifier:locOugoingIdentifier];
+    [QMChatLocationOutgoingCell registerForReuseInView:self.collectionView];
     // Register location incoming cell
+    [QMChatLocationIncomingCell registerForReuseInView:self.collectionView];
+    
+    // Register video attachment outgoing cell
+    [QMVideoOutgoingCell registerForReuseInView:self.collectionView];
+    // Register video attachment incoming cell
+    [QMVideoIncomingCell registerForReuseInView:self.collectionView];
+    
+    // Register audio attachment outgoing cell
+    [QMAudioOutgoingCell registerForReuseInView:self.collectionView];
+    // Register audio attachment incoming cell
+    [QMAudioIncomingCell registerForReuseInView:self.collectionView];
+    
+    // Register image attachment outgoing cell
+    [QMImageOutgoingCell registerForReuseInView:self.collectionView];
+    // Register image attachment incoming cell
+    [QMImageIncomingCell registerForReuseInView:self.collectionView];
+    
+    // Register link preview incoming cell
+    [QMChatIncomingLinkPreviewCell registerForReuseInView:self.collectionView];
+    // Register link preview outgoing cell
+    [QMChatOutgoingLinkPreviewCell registerForReuseInView:self.collectionView];
     UINib *locIncomingNib = [QMChatLocationIncomingCell nib];
     NSString *locIncomingIdentifier = [QMChatLocationIncomingCell cellReuseIdentifier];
     [self.collectionView registerNib:locIncomingNib forCellWithReuseIdentifier:locIncomingIdentifier];
@@ -220,7 +239,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    
     [[[self class] nib] instantiateWithOwner:self options:nil];
+    
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
     [self configureMessagesViewController];
@@ -229,6 +251,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
+    self.inputToolbar.audioRecordingIsEnabled = YES;
     
     __weak __typeof(self) weakSelf = self;
     self.systemInputToolbar = [[QMKVOView alloc] init];
@@ -255,7 +278,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         }
         
         if (animated) {
-           
+            
             NSLog(@"%@", view.superview.layer.debugDescription);
         }
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];

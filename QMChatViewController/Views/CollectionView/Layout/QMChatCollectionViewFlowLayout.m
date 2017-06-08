@@ -198,12 +198,12 @@
     NSString *itemID = [self.chatCollectionView.dataSource collectionView:self.chatCollectionView
                                                         itemIdAtIndexPath:indexPath];
 
-    NSValue *cachedSize = [self.cache objectForKey:itemID];
-    
-    if (cachedSize != nil) {
-        
-        return [cachedSize CGSizeValue];
-    }
+//    NSValue *cachedSize = [self.cache objectForKey:itemID];
+//    
+//    if (cachedSize != nil) {
+//        
+//        return [cachedSize CGSizeValue];
+//    }
     
     
     QMChatCellLayoutModel layoutModel =
@@ -231,14 +231,16 @@
         layoutModel.containerInsets.top + layoutModel.containerInsets.bottom +
         layoutModel.topLabelHeight + layoutModel.bottomLabelHeight;
         
-        CGFloat additionalSpace = layoutModel.spaceBetweenTextViewAndBottomLabel + layoutModel.spaceBetweenTopLabelAndTextView;
+        CGFloat additionalSpace =
+        layoutModel.spaceBetweenTextViewAndBottomLabel + layoutModel.spaceBetweenTopLabelAndTextView;
         
         CGFloat finalWidth = dynamicSize.width + horizontalContainerInsets;
         
         CGFloat cellHeight = dynamicSize.height + verticalContainerInsets + additionalSpace;
         CGFloat finalCellHeight = MAX(cellHeight, layoutModel.avatarSize.height);
         
-        CGFloat minWidth = [self.chatCollectionView.delegate collectionView:self.chatCollectionView minWidthAtIndexPath:indexPath];
+        CGFloat minWidth = [self.chatCollectionView.delegate collectionView:self.chatCollectionView
+                                                        minWidthAtIndexPath:indexPath];
         minWidth += horizontalContainerInsets;
         
         finalSize = CGSizeMake(MIN(MAX(finalWidth, minWidth), maximumWidth), finalCellHeight);

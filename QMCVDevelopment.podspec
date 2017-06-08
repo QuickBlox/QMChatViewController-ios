@@ -34,6 +34,10 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
+  s.subspec 'QMMediaPresenter' do |ss|
+  ss.source_files = 'QMChatViewController/QMMediaPresenter/**/*.{h,m}'
+  end
+
   s.subspec 'Categories' do |ss|
 	   ss.dependency 'QMCVDevelopment/QMChatLocationSnapshotter'
      ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
@@ -42,6 +46,12 @@ Pod::Spec.new do |s|
   s.subspec 'Utils' do |ss|
 	   ss.dependency 'QMCVDevelopment/Categories'
      ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
+  end
+
+  s.subspec 'ViewModels' do |ss|
+
+    ss.dependency 'QMCVDevelopment/Categories'
+    ss.source_files = 'QMChatViewController/ViewModels/**/*.{h,m}'
   end
 
   s.subspec 'Sections' do |ss|
@@ -68,7 +78,9 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 3.6"
+  s.dependency "SDWebImage", "~> 3.8.2"
+  s.dependency "FFCircularProgressView"
+  s.dependency "SexyTooltip"
 
 
 end
