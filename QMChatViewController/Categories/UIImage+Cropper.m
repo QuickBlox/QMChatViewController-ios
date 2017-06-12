@@ -129,6 +129,7 @@
     [UIImage imageWithCGImage:renderedImage
                         scale:0
                   orientation:self.imageOrientation];
+    CGImageRelease(renderedImage);
     
     return image;
 }
