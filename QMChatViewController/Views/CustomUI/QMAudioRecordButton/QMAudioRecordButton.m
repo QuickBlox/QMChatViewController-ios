@@ -186,6 +186,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 
 
 - (void)animateOut {
+    
     _animatedIn = false;
     _displayLink.paused = true;
     _currentLevel = 0.0f;
@@ -207,7 +208,8 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 
 //MARK: UIGestureRecognizerDelegate
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)__unused gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unused otherGestureRecognizer {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)__unused gestureRecognizer
+shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unused otherGestureRecognizer {
     return true;
 }
 
@@ -257,7 +259,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)cancelTrackingWithEvent:(UIEvent *)event {
-
+    
     if (_processCurrentTouch) {
         
         _cancelled = true;
@@ -273,7 +275,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 }
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
-
+    
     if (_processCurrentTouch) {
         _cancelled = true;
         
@@ -313,7 +315,7 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
             _lastTouchTime = CFAbsoluteTimeGetCurrent();
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    
+                
                 _processCurrentTouch = !_cancelled;
                 
                 if (!_cancelled) {

@@ -291,12 +291,12 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 //MARK: QMAudioRecordButtonProtocol
 
-- (void)audioRecordingStarted {
+- (void)startAudioRecording {
     
     [self.audioRecordView audioRecordingStarted];
 }
 
-- (void)audioRecordingFinished {
+- (void)finishAudioRecording {
     
     [self.audioRecordView audioRecordingFinished];
     [self setShowRecordingInterface:false velocity:0.0];
@@ -306,7 +306,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     if ([self.delegate messagesInputToolbarAudioRecordingEnabled:self]) {
         
-        self.recording = true;
+        self.recording = YES;
         [self setShowRecordingInterface:true velocity:0.0f];
         
         [self.delegate messagesInputToolbarAudioRecordingStart:self];
@@ -362,6 +362,13 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     animation.values = @[@(-10), @(10), @(-5), @(5), @(0)];
     [self.audioRecordButtonItem.layer addAnimation:animation forKey:@"shake"];
     
+}
+
+- (void)shouldStopRecordingByTimeOut {
+    
+    if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingPausedByTimeOut:)]) {
+        return [self.delegate messagesInputToolbarAudioRecordingPausedByTimeOut:self];
+    }
 }
 
 - (NSTimeInterval)maximumDuration {
