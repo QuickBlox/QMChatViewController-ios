@@ -30,6 +30,7 @@
 - (void)awakeFromNib {
     
     [super awakeFromNib];
+    
     NSString *imageName  = @"play_icon";
     UIImage *buttonImage = [QMChatResources imageNamed:imageName];
     
@@ -50,7 +51,6 @@
                    forControlEvents:UIControlEventTouchDown];
     
     self.circularProgress.hideProgressIcons = YES;
-    self.durationLabel.hidden = YES;
     self.durationLabel.text = nil;
     [self.circularProgress startSpinProgressBackgroundLayer];
     
@@ -113,7 +113,6 @@
 
     self.circularProgress.hidden = isReady;
     self.progressLabel.hidden = isReady;
-    self.durationLabel.hidden = !isReady;
     self.mediaPlayButton.enabled = isReady;
 }
 
