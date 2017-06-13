@@ -19,7 +19,6 @@
 
 @synthesize siteURL = _siteURL;
 @synthesize imageURL = _imageURL;
-@synthesize imageDidSet = _imageDidSet;
 @synthesize siteTitle = _siteTitle;
 @synthesize siteDescription = _siteDescription;
 
@@ -56,59 +55,19 @@
 
 //MARK: -  QMLinkPreviewDelegate
 
-- (void)setImageURL:(NSString *)imageURL {
-    
-    _imageURL = [imageURL copy];
-    
-    BOOL exists =
-    [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:imageURL] != nil;
-    
-    SDWebImageOptions options =
-    SDWebImageLowPriority | SDWebImageRetryFailed | SDWebImageAllowInvalidSSLCertificates;
-    
-    __weak typeof(self) weakSelf = self;
-    [_previewImageView setImageWithURL:[NSURL URLWithString:imageURL]
-                           placeholder:nil
-                               options:options
-                              progress:nil
-                        completedBlock:^(UIImage *image,
-                                         NSError *__unused error,
-                                         SDImageCacheType __unused cacheType,
-                                         NSURL *__unused imageURL)
-     {
-         if (image) {
-             
-             _linkPreviewView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-             if (weakSelf.imageDidSet) {
-                 weakSelf.imageDidSet();
-             }
-         }
-         else {
-             _linkPreviewView.backgroundColor = [UIColor clearColor];
-         }
-     }];
-    
-}
-
 -(void)setSiteDescription:(NSString *)siteDescription {
     
-    if ([_siteDescription isEqualToString:siteDescription]) {
-        return;
-    }
     _siteDescription = [siteDescription copy];
 }
 
 - (void)setSiteTitle:(NSString *)siteTitle {
     
-    if ([_siteTitle isEqualToString:siteTitle]) {
-        return;
-    }
     _siteTitle = [siteTitle copy];
     _titleLabel.text = siteTitle;
 }
 
 - (void)setSiteURL:(NSString *)siteURL {
-    
+
     _siteURL = [siteURL copy];
     
     NSString *siteHost = [NSURL URLWithString:siteURL].host;
@@ -128,13 +87,41 @@
           imageURL:(nullable NSString *)imageURL
          siteTitle:(NSString *)siteTitle
    siteDescription:(nullable NSString *)siteDescription
-     onImageDidSet:(nullable void(^)())imageDidSet {
+     onImageDidSet:(void(^)())imageDidSet {
     
     [self setSiteURL:siteURL];
     [self setSiteTitle:siteTitle];
     [self setSiteDescription:siteDescription];
-    _imageDidSet = [imageDidSet copy];
-    [self setImageURL:imageURL];
+    
+    _imageURL = [imageURL copy];
+    
+    BOOL exists =
+    [[self class] imageForURLKey:imageURL] != nil;
+    
+    SDWebImageOptions options =
+    SDWebImageLowPriority;
+    
+    [_previewImageView setImageWithURL:[NSURL URLWithString:imageURL]
+                           placeholder:nil
+                               options:options
+                              progress:nil
+                        completedBlock:^(UIImage *image,
+                                         NSError *__unused error,
+                                         SDImageCacheType __unused cacheType,
+                                         NSURL *__unused imageURL)
+     {
+         if (image) {
+             _linkPreviewView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+             if (!exists) {
+                 if (imageDidSet) {
+                     imageDidSet();
+                 }
+             }
+         }
+         else {
+             _linkPreviewView.backgroundColor = [UIColor clearColor];
+         }
+     }];
 }
 
 + (UIImage *)imageForURLKey:(NSString *)urlKey {

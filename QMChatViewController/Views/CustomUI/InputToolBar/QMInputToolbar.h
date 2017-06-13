@@ -45,6 +45,8 @@
 - (void)messagesInputToolbarAudioRecordingStart:(QMInputToolbar *)toolbar;
 - (void)messagesInputToolbarAudioRecordingCancel:(QMInputToolbar *)toolbar;
 - (void)messagesInputToolbarAudioRecordingComplete:(QMInputToolbar *)toolbar;
+- (void)messagesInputToolbarAudioRecordingPausedByTimeOut:(QMInputToolbar *)toolbar;
+
 - (NSTimeInterval)inputPanelAudioRecordingDuration:(QMInputToolbar *)toolbar;
 - (NSTimeInterval)inputPanelAudioRecordingMaximumDuration:(QMInputToolbar *)toolbar;
 
@@ -102,8 +104,8 @@
 
 @property (assign, nonatomic) BOOL audioRecordingIsEnabled;
 
-- (void)audioRecordingStarted;
-- (void)audioRecordingFinished;
+- (void)startAudioRecording;
+- (void)finishAudioRecording;
 - (void)forceFinishRecording;
 - (void)shakeControls;
 

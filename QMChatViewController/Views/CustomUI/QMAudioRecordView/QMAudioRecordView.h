@@ -30,6 +30,6 @@
 
 - (NSTimeInterval)currentDuration;
 - (NSTimeInterval)maximumDuration;
-
+- (void)shouldStopRecordingByTimeOut;
 
 @end

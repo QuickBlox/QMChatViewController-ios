@@ -74,7 +74,7 @@
     
     self.backgroundColor = self.superview.backgroundColor;
     
-    _maxDurationWarningLimit = 3;
+    _maxDurationWarningLimit = 4;
     
     _recordDurationLabel.backgroundColor = self.backgroundColor;
     _recordDurationLabel.textColor = [UIColor blackColor];
@@ -336,32 +336,38 @@ UIImage *circleImage(CGFloat radius, UIColor *color) {
             CGFloat redColorIntensity = intensityStep * (_maxDurationWarningLimit - secondsLeft);
             
             _recordDurationLabel.textColor = [UIColor colorWithRed:redColorIntensity/255.0f green:0.0f blue:0.0f alpha:1.0f];
+            
+            if (secondsLeft == 0) {
+                currentAudioDurationSeconds = _audioRecordingMaximumDurationSeconds;
+                currentAudioDurationMilliseconds = 0;
+                
+                _audioRecordingDurationSeconds = currentAudioDurationSeconds;
+                _audioRecordingDurationMilliseconds = currentAudioDurationMilliseconds;
+                _recordDurationLabel.text = [[NSString alloc] initWithFormat:@"%d:%02d,%02d", (int)_audioRecordingDurationSeconds / 60, (int)_audioRecordingDurationSeconds % 60, (int)_audioRecordingDurationMilliseconds];
+                
+                [self.delegate shouldStopRecordingByTimeOut];
+                [self removeDotAnimation];
+                [self stopAudioRecordingTimer];
+                
+                return;
+            }
         }
         
         _audioRecordingDurationSeconds = currentAudioDurationSeconds;
         _audioRecordingDurationMilliseconds = currentAudioDurationMilliseconds;
         _recordDurationLabel.text = [[NSString alloc] initWithFormat:@"%d:%02d,%02d", (int)_audioRecordingDurationSeconds / 60, (int)_audioRecordingDurationSeconds % 60, (int)_audioRecordingDurationMilliseconds];
+        
+        
         NSTimeInterval interval = 2.0 / 60.0;
-        
-        
-        
-        _audioRecordingTimer =
-        [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:interval]
-                                 interval:interval
-                                   target:self
-                                 selector:@selector(audioTimerEvent)
-                                 userInfo:nil
-                                  repeats:false];
-        
-        [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer
-                                  forMode:NSRunLoopCommonModes];
+        _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:interval] interval:interval target:self selector:@selector(audioTimerEvent) userInfo:nil repeats:false];
+        [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer forMode:NSRunLoopCommonModes];
     }
 }
 
-- (void)stopAudioRecordingTimer {
-    
-    if (_audioRecordingTimer != nil) {
-        
+- (void)stopAudioRecordingTimer
+{
+    if (_audioRecordingTimer != nil)
+    {
         [_audioRecordingTimer invalidate];
         _audioRecordingTimer = nil;
     }
