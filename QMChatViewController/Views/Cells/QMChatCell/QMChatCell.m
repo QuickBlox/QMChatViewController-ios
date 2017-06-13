@@ -52,7 +52,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
 
 //MARK: - Class methods
 - (void)dealloc {
-    NSLog(@"deallock %@", NSStringFromClass(self.class));
+//    NSLog(@"deallock %@", NSStringFromClass(self.class));
 }
 + (void)initialize {
     

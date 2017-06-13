@@ -41,14 +41,15 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     [self commonInit];
     
 }
+
 - (instancetype)init {
+    
     self = [super init];
     if (self) {
         [self commonInit];
     }
     return self;
 }
-
 
 - (void)setAudioRecordingIsEnabled:(BOOL)audioRecordingIsEnabled {
     
@@ -243,8 +244,8 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 }
 
 
-- (void)setShowRecordingInterface:(BOOL)show velocity:(CGFloat)velocity
-{
+- (void)setShowRecordingInterface:(BOOL)show velocity:(CGFloat)velocity {
+    
     if (show) {
         
         [self.audioRecordButtonItem animateIn];
@@ -280,14 +281,11 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         [self.audioRecordView setShowRecordingInterface:show velocity:velocity];
         [self.audioRecordView removeFromSuperview];
         self.audioRecordView = nil;
-        [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^
-         {
-             self.contentView.alpha = 1.0f;
-         } completion:nil];
+        [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
+            self.contentView.alpha = 1.0f;
+        } completion:nil];
     }
-    
 }
-
 
 //MARK: QMAudioRecordButtonProtocol
 
@@ -335,16 +333,18 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         }
     }
 }
+
 - (void)recordButtonInteractionDidComplete:(CGFloat)velocity {
     
     if (self.isRecording) {
         
         self.recording = NO;
         [self setShowRecordingInterface:false velocity:velocity];
-       
+        
         [self.delegate messagesInputToolbarAudioRecordingComplete:self];
     }
 }
+
 - (void)recordButtonInteractionDidStopped {
     
     [self shakeControls];

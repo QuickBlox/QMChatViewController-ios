@@ -9,14 +9,14 @@
 #import "QMAudioRecordButton.h"
 #import "QMChatResources.h"
 
-#import <SexyTooltip/SexyTooltip.h>
+//#import <SexyTooltip/SexyTooltip.h>
 
 static const CGFloat innerCircleRadius = 110.0f;
 static const CGFloat outerCircleRadius = innerCircleRadius + 50.0f;
 static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius;
 
-@interface QMAudioRecordButton() <UIGestureRecognizerDelegate>
-{
+@interface QMAudioRecordButton() <UIGestureRecognizerDelegate> {
+    
     CGPoint _touchLocation;
     UIPanGestureRecognizer *_panRecognizer;
     
@@ -40,11 +40,9 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     bool _animatedIn;
     
     bool _cancelled;
-    
 }
 
 @property (nonatomic, assign) UIEdgeInsets hitTestEdgeInsets;
-@property (nonatomic, strong) SexyTooltip *notificationTooltip;
 
 @end
 
@@ -89,21 +87,6 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     }
     return _displayLink;
-}
-
-- (SexyTooltip *)notificationTooltip {
-    
-    if (!_notificationTooltip) {
-        
-        NSDictionary *attrs = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
-        NSAttributedString *text = [[NSAttributedString alloc] initWithString:@"Hold to record" attributes:attrs];
-        
-        SexyTooltip *errorTooltip = [[SexyTooltip alloc] initWithAttributedString:text];
-        errorTooltip.color = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-        _notificationTooltip = errorTooltip;
-    }
-    
-    return _notificationTooltip;
 }
 
 - (void)displayLinkUpdate {
@@ -327,8 +310,6 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
                     if ([self.delegate respondsToSelector:@selector(recordButtonInteractionDidStopped)]) {
                         [self.delegate recordButtonInteractionDidStopped];
                     }
-                    [self.notificationTooltip presentFromView:self inView:self.superview.window animated:YES];
-                    [self.notificationTooltip dismissInTimeInterval:1.0];
                 }
             });
             

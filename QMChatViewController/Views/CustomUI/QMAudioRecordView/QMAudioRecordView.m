@@ -12,7 +12,6 @@
 #import "UIImage+QM.h"
 #import "QMChatResources.h"
 #import <mach/mach_time.h>
-#import <SexyTooltip/SexyTooltip.h>
 
 @interface QMAudioRecordView() {
     
@@ -33,12 +32,12 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIView *recordElementsView;
+
 @property IBOutlet UIImageView *recordIndicatorView;
 @property IBOutlet UILabel *recordDurationLabel;
 @property IBOutlet UILabel *errorMessageLabel;
 @property IBOutlet UILabel *slideToCancelLabel;
 
-@property (nonatomic, strong, nullable) SexyTooltip *notificationTooltip;
 @end
 
 @implementation QMAudioRecordView
@@ -124,24 +123,23 @@
         
         int animationCurveOption = 7 << 16;
         
-        [UIView animateWithDuration:0.25 delay:0.06 options:animationCurveOption animations:^
-         {
-             _recordIndicatorView.alpha = 1.0f;
-             _recordIndicatorView.transform = CGAffineTransformIdentity;
-         } completion:nil];
+        [UIView animateWithDuration:0.25 delay:0.06 options:animationCurveOption animations:^{
+            _recordIndicatorView.alpha = 1.0f;
+            _recordIndicatorView.transform = CGAffineTransformIdentity;
+        } completion:nil];
         
-        [UIView animateWithDuration:0.25 delay:0.0 options:animationCurveOption animations:^
-         {
-             _recordDurationLabel.alpha = 1.0f;
-             _recordDurationLabel.transform = CGAffineTransformIdentity;
-         } completion:nil];
+        [UIView animateWithDuration:0.25 delay:0.0 options:animationCurveOption animations:^{
+            _recordDurationLabel.alpha = 1.0f;
+            _recordDurationLabel.transform = CGAffineTransformIdentity;
+        } completion:nil];
         
-        
-        [UIView animateWithDuration:0.18 delay:0.04 options:animationCurveOption animations:^
-         {
-             _slideToCancelLabel.alpha = 1.0f;
-             _slideToCancelLabel.transform = CGAffineTransformIdentity;
-         } completion:nil];
+        [UIView animateWithDuration:0.18
+                              delay:0.04
+                            options:animationCurveOption
+                         animations:^{
+                             _slideToCancelLabel.alpha = 1.0f;
+                             _slideToCancelLabel.transform = CGAffineTransformIdentity;
+                         } completion:nil];
         
         [self addRecordingDotAnimation];
     }
@@ -149,52 +147,52 @@
         
         [self removeDotAnimation];
         
-        if (_notificationTooltip.isShowing) {
-            [self.notificationTooltip dismiss];
-        }
-        
         NSTimeInterval durationFactor = MIN(0.4, MAX(1.0, velocity / 1000.0));
         
         int options = 0;
         
-        if (ABS(CFAbsoluteTimeGetCurrent() - _recordingInterfaceShowTime) < 0.2)
-        {
+        if (ABS(CFAbsoluteTimeGetCurrent() - _recordingInterfaceShowTime) < 0.2) {
             options = UIViewAnimationOptionBeginFromCurrentState;
         }
         
         int animationCurveOption = 7 << 16;
-        [UIView animateWithDuration:0.25 * durationFactor delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption animations:^
-         {
-             _recordIndicatorView.alpha = 0.0f;
-             _recordIndicatorView.transform = CGAffineTransformMakeTranslation(-90.0f, 0.0f);
-         } completion:^(BOOL finished)
-         {
-             if (finished)
-             {
-                 [_recordIndicatorView removeFromSuperview];
-             }
-         }];
+        [UIView animateWithDuration:0.25 * durationFactor
+                              delay:0.0
+                            options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption
+                         animations:^{
+                             
+                             _recordIndicatorView.alpha = 0.5f;
+                             _recordIndicatorView.transform = CGAffineTransformMakeTranslation(-90.0f, 0.0f);
+                         }
+                         completion:^(BOOL finished) {
+                             if (finished){
+                                 [_recordIndicatorView removeFromSuperview];
+                             }
+                         }];
         
-        [UIView animateWithDuration:0.25 * durationFactor delay:0.05 * durationFactor options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption animations:^
-         {
-             _recordDurationLabel.alpha = 0.0f;
-             _recordDurationLabel.transform = CGAffineTransformMakeTranslation(-90.0f, 0.0f);
-         } completion:^(BOOL finished)
-         {
-             if (finished)
-             {
-                 [_recordDurationLabel removeFromSuperview];
-             }
-         }];
+        [UIView animateWithDuration:0.25 * durationFactor
+                              delay:0.05 * durationFactor
+                            options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption
+                         animations:^ {
+                             
+                             _recordDurationLabel.alpha = 0.0f;
+                             _recordDurationLabel.transform = CGAffineTransformMakeTranslation(-90.0f, 0.0f);
+                             
+                         } completion:^(BOOL finished) {
+                             
+                             if (finished){
+                                 [_recordDurationLabel removeFromSuperview];
+                             }
+                         }];
         
-        
-        [UIView animateWithDuration:0.2 * durationFactor delay:0.05 * durationFactor options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption animations:^
-         {
-             _slideToCancelLabel.alpha = 0.0f;
-             _slideToCancelLabel.transform = CGAffineTransformMakeTranslation(-200, 0.0f);
-         } completion:^(__unused BOOL finished)
-         {
-         }];
+        [UIView animateWithDuration:0.2 * durationFactor
+                              delay:0.05 * durationFactor
+                            options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption
+                         animations:^ {
+                             
+                             _slideToCancelLabel.alpha = 0.0f;
+                             _slideToCancelLabel.transform = CGAffineTransformMakeTranslation(-200, 0.0f);
+                         } completion:nil];
     }
 }
 
@@ -233,8 +231,8 @@
         _recordDurationLabel.transform = durationTransform;
 }
 
-UIImage *circleImage(CGFloat radius, UIColor *color)
-{
+UIImage *circleImage(CGFloat radius, UIColor *color) {
+    
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(radius, radius), false, [UIScreen mainScreen].scale);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -247,7 +245,6 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
     return image;
 }
 
-
 - (void)audioRecordingStarted {
     
     [self startAudioRecordingTimer];
@@ -255,7 +252,6 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
 
 - (void)audioRecordingFinished {
     
-    [self.notificationTooltip dismiss];
     [self stopAudioRecordingTimer];
 }
 
@@ -266,7 +262,12 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
     
     _audioRecordingDurationSeconds = 0;
     _audioRecordingDurationMilliseconds = 0.0;
-    _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:2.0 /60.0] interval:2.0 /60.0 target:self selector:@selector(audioTimerEvent) userInfo:nil repeats:false];
+    _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:2.0 /60.0]
+                                                    interval:2.0 /60.0
+                                                      target:self
+                                                    selector:@selector(audioTimerEvent)
+                                                    userInfo:nil
+                                                     repeats:false];
     
     if ([self.delegate respondsToSelector:@selector(maximumDuration)]) {
         _audioRecordingMaximumDurationSeconds = [self.delegate maximumDuration];
@@ -283,25 +284,24 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
     
     _recordElementsView.hidden = YES;
     
-    [UIView animateWithDuration:0.25 delay:0.06 options:0 animations:^
-     {
-         _errorMessageLabel.alpha = 1.0f;
-         
-     } completion:^(BOOL finished) {
-         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-             if (completion) {
-                 completion();
-             }
-         });
-     }];
-    
-    
+    [UIView animateWithDuration:0.25 delay:0.06 options:0 animations:^{
+        
+        _errorMessageLabel.alpha = 1.0f;
+        
+    } completion:^(BOOL finished) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion();
+            }
+        });
+    }];
 }
 
-- (void)audioTimerEvent
-{
-    if (_audioRecordingTimer != nil)
-    {
+- (void)audioTimerEvent {
+    
+    if (_audioRecordingTimer != nil) {
+        
         [_audioRecordingTimer invalidate];
         _audioRecordingTimer = nil;
     }
@@ -322,17 +322,14 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
         _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:interval] interval:interval target:self selector:@selector(audioTimerEvent) userInfo:nil repeats:false];
         [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer forMode:NSRunLoopCommonModes];
     }
-    else
-    {
+    else {
+        
         if (_audioRecordingMaximumDurationSeconds > 0 && _audioRecordingMaximumDurationSeconds - _audioRecordingDurationSeconds <= _maxDurationWarningLimit) {
             
             NSInteger secondsLeft = _audioRecordingMaximumDurationSeconds - _audioRecordingDurationSeconds;
             if (secondsLeft == 0) {
                 currentAudioDurationSeconds = _audioRecordingMaximumDurationSeconds;
                 currentAudioDurationMilliseconds = 0;
-            }
-            if (!self.notificationTooltip.isShowing) {
-                [self.notificationTooltip presentFromView:self.recordIndicatorView inView:self.window];
             }
             
             CGFloat intensityStep = 255.0/_maxDurationWarningLimit;
@@ -346,33 +343,25 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
         _recordDurationLabel.text = [[NSString alloc] initWithFormat:@"%d:%02d,%02d", (int)_audioRecordingDurationSeconds / 60, (int)_audioRecordingDurationSeconds % 60, (int)_audioRecordingDurationMilliseconds];
         NSTimeInterval interval = 2.0 / 60.0;
         
-
         
-        _audioRecordingTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:interval] interval:interval target:self selector:@selector(audioTimerEvent) userInfo:nil repeats:false];
-        [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer forMode:NSRunLoopCommonModes];
+        
+        _audioRecordingTimer =
+        [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:interval]
+                                 interval:interval
+                                   target:self
+                                 selector:@selector(audioTimerEvent)
+                                 userInfo:nil
+                                  repeats:false];
+        
+        [[NSRunLoop mainRunLoop] addTimer:_audioRecordingTimer
+                                  forMode:NSRunLoopCommonModes];
     }
 }
 
-- (SexyTooltip *)notificationTooltip {
+- (void)stopAudioRecordingTimer {
     
-    if (!_notificationTooltip) {
+    if (_audioRecordingTimer != nil) {
         
-        NSDictionary *attrs = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
-        NSString *text = [NSString stringWithFormat:@"Maximum duration is %lu %@", (unsigned long)_audioRecordingMaximumDurationSeconds, _audioRecordingMaximumDurationSeconds > 1 ? @"seconds" : @"second"];
-        NSAttributedString *errorAttrText = [[NSAttributedString alloc] initWithString:text attributes:attrs];
-        
-        SexyTooltip *errorTooltip = [[SexyTooltip alloc] initWithAttributedString:errorAttrText];
-        errorTooltip.color = [[UIColor redColor] colorWithAlphaComponent:0.8];
-        _notificationTooltip = errorTooltip;
-    }
-    
-    return _notificationTooltip;
-}
-
-- (void)stopAudioRecordingTimer
-{
-    if (_audioRecordingTimer != nil)
-    {
         [_audioRecordingTimer invalidate];
         _audioRecordingTimer = nil;
     }
@@ -381,9 +370,9 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
 - (void)addRecordingDotAnimation {
     
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
-    animation.values = @[@1.0f, @1.0f, @0.0f];
-    animation.keyTimes = @[@.0, @0.4546, @0.9091, @1];
-    animation.duration = 0.5;
+    animation.values = @[@.3f, @1];
+    animation.keyTimes = @[@.0, @1];
+    animation.duration = 0.6;
     animation.autoreverses = true;
     animation.repeatCount = INFINITY;
     
@@ -391,11 +380,12 @@ UIImage *circleImage(CGFloat radius, UIColor *color)
 }
 
 - (void)removeDotAnimation {
+    
     [_recordIndicatorView.layer removeAnimationForKey:@"opacity-dot"];
 }
 
-CFAbsoluteTime MTAbsoluteSystemTime()
-{
+CFAbsoluteTime MTAbsoluteSystemTime() {
+    
     static mach_timebase_info_data_t s_timebase_info;
     
     if (s_timebase_info.denom == 0) {
@@ -404,6 +394,5 @@ CFAbsoluteTime MTAbsoluteSystemTime()
     
     return ((CFAbsoluteTime)(mach_absolute_time() * s_timebase_info.numer)) / (s_timebase_info.denom * NSEC_PER_SEC);
 }
-
 
 @end
