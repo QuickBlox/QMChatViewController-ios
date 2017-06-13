@@ -36,7 +36,6 @@
 
 - (void)setIsActive:(BOOL)isActive {
     [super setIsActive:isActive];
-
 }
 
 
@@ -51,13 +50,10 @@
     self.durationLabel.text = timeStamp;
     
     if (duration > 0) {
-        
+        BOOL animated = self.isActive && currentTime > 0;
         [self.progressView setProgress:currentTime/duration
-                              animated:YES];
+                              animated:animated];
     }
 }
-
-
-
 
 @end
