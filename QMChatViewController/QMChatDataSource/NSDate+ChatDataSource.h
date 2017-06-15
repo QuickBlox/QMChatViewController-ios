@@ -16,7 +16,6 @@
 
 - (NSDate *)dateAtStartOfDay;
 - (NSDate *)dateAtEndOfDay;
-- (NSString *)stringDateWithFormat:(NSString *)dateFormat;
 
 - (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate;
 
