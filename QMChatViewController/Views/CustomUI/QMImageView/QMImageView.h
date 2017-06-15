@@ -32,11 +32,11 @@ typedef NS_ENUM(NSUInteger, QMImageViewType) {
             placeholder:(UIImage *)placehoder
                 options:(SDWebImageOptions)options
                progress:(SDWebImageDownloaderProgressBlock)progress
-         completedBlock:(SDWebImageCompletionBlock)completedBlock;
+         completedBlock:(SDExternalCompletionBlock)completedBlock;
 
 - (void)setImageWithURL:(NSURL *)url
                   title:(NSString *)title
-         completedBlock:(SDWebImageCompletionBlock)completedBlock;
+         completedBlock:(SDExternalCompletionBlock)completedBlock;
 
 - (UIImage *)originalImage;
 

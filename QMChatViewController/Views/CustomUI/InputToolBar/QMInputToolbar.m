@@ -306,7 +306,6 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         
         self.recording = YES;
         [self setShowRecordingInterface:true velocity:0.0f];
-        
         [self.delegate messagesInputToolbarAudioRecordingStart:self];
     }
 }

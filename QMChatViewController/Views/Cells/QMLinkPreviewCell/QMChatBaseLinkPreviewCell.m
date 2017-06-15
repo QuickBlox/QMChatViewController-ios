@@ -55,7 +55,7 @@
 
 //MARK: -  QMLinkPreviewDelegate
 
--(void)setSiteDescription:(NSString *)siteDescription {
+- (void)setSiteDescription:(NSString *)siteDescription {
     
     _siteDescription = [siteDescription copy];
 }
@@ -76,7 +76,7 @@
     NSURL *iconURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/favicon.ico", siteHost]];
     
     if (iconURL.scheme == nil) {
-        NSString *urlString = [NSString stringWithFormat:@"https://%@",iconURL.absoluteString];
+        NSString *urlString = [NSString stringWithFormat:@"http://%@",iconURL.absoluteString];
         iconURL = [NSURL URLWithString:urlString];
     }
     
@@ -95,11 +95,9 @@
     
     _imageURL = [imageURL copy];
     
-    BOOL exists =
-    [[self class] imageForURLKey:imageURL] != nil;
+    BOOL exists = [[self class] imageForURLKey:imageURL] != nil;
     
-    SDWebImageOptions options =
-    SDWebImageLowPriority;
+    SDWebImageOptions options = SDWebImageLowPriority;
     
     [_previewImageView setImageWithURL:[NSURL URLWithString:imageURL]
                            placeholder:nil
@@ -111,6 +109,7 @@
                                          NSURL *__unused imageURL)
      {
          if (image) {
+             
              _linkPreviewView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
              if (!exists) {
                  if (imageDidSet) {
@@ -126,7 +125,9 @@
 
 + (UIImage *)imageForURLKey:(NSString *)urlKey {
     
-    return [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:urlKey];
+     UIImage *image = [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:urlKey];
+    
+    return image;
 }
 
 @end

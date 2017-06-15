@@ -178,7 +178,7 @@ static NSArray *qm_colors = nil;
 
 - (void)dealloc {
     
-    [self sd_cancelCurrentImageLoad];
+    [self sd_cancelCurrentAnimationImagesLoad];
 }
 
 //MARK: - Public interface
@@ -191,14 +191,14 @@ static NSArray *qm_colors = nil;
     
     [self setImageWithURL:url
               placeholder:nil
-                  options:SDWebImageLowPriority
+                  options:(SDWebImageHighPriority | SDWebImageContinueInBackground | SDWebImageAllowInvalidSSLCertificates)
                  progress:nil
            completedBlock:nil];
 }
 
 - (void)setImageWithURL:(NSURL *)url
                   title:(NSString *)title
-         completedBlock:(SDWebImageCompletionBlock)completedBlock {
+         completedBlock:(SDExternalCompletionBlock)completedBlock {
     
     BOOL urlIsValid = url &&url.scheme && url.host;
     
@@ -218,7 +218,7 @@ static NSArray *qm_colors = nil;
     }
     
     _url = url;
-    [self sd_cancelCurrentImageLoad];
+    [self sd_cancelCurrentAnimationImagesLoad];
     
     QMImageTransform *transform =
     [QMImageTransform transformWithSize:self.bounds.size
@@ -235,7 +235,7 @@ static NSArray *qm_colors = nil;
         [[QMImageLoader instance]
          downloadImageWithURL:url
          transform:transform
-         options:SDWebImageHighPriority | SDWebImageContinueInBackground
+         options:(SDWebImageHighPriority | SDWebImageContinueInBackground | SDWebImageAllowInvalidSSLCertificates)
          progress:nil
          completed:
          ^(UIImage *image, UIImage *transfomedImage,
@@ -262,7 +262,7 @@ static NSArray *qm_colors = nil;
              }
          }];
         
-        [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
+        [self sd_setImageLoadOperation:operation forKey:@"UIImageViewAnimationImages"];
     }
     else {
         
@@ -285,13 +285,13 @@ static NSArray *qm_colors = nil;
             placeholder:(UIImage *)placehoder
                 options:(SDWebImageOptions)options
                progress:(SDWebImageDownloaderProgressBlock)progress
-         completedBlock:(SDWebImageCompletionBlock)completedBlock  {
+         completedBlock:(SDExternalCompletionBlock)completedBlock  {
     
 
     BOOL urlIsValid = url &&url.scheme && url.host;
     
     _url = url;
-    [self sd_cancelCurrentImageLoad];
+    [self sd_cancelCurrentAnimationImagesLoad];
     
     self.image = placehoder;
     
