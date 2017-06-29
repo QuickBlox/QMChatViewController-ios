@@ -47,6 +47,7 @@
 @protocol QMMediaAssistant <NSObject>
 
 - (void)requestForMediaWithSender:(QMMediaPresenter *)sender;
+- (void)shouldCancellOperationWithSender:(QMMediaPresenter *)sender;
 
 @end
 

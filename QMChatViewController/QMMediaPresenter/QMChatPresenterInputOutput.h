@@ -11,14 +11,17 @@
 #import "QMChatModelProtocol.h"
 
 @class QBChatMessage;
+
 @protocol QMChatPresenterInput <NSObject>
 
-@property (nonatomic, strong, nullable) QBChatMessage *message;
-@property (nonatomic, copy, nullable) NSString *modelID;
+@property (nonatomic, copy, nullable) QBChatMessage *message;
+@property (nonatomic, copy) NSString *modelID;
+
 
 - (void)didTapContainer;
 - (void)requestForMedia;
 - (void)activateMedia;
+- (void)cancellMediaOperation;
 
 @end
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -86,8 +86,11 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xux-6h-6al">
-                                        <rect key="frame" x="0.0" y="154" width="42" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xux-6h-6al">
+                                        <rect key="frame" x="2" y="23" width="42" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="xhv-vr-kEh"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -97,25 +100,22 @@
                                 <constraints>
                                     <constraint firstItem="diF-ca-yd3" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="2GS-ez-PaZ"/>
                                     <constraint firstItem="diF-ca-yd3" firstAttribute="top" secondItem="aUM-zm-5ky" secondAttribute="top" id="2YG-PH-oBY"/>
-                                    <constraint firstAttribute="bottom" secondItem="xux-6h-6al" secondAttribute="bottom" id="3Pz-s9-nsK"/>
                                     <constraint firstAttribute="trailing" secondItem="35y-FC-UxN" secondAttribute="trailing" id="AoC-SQ-Y4a"/>
                                     <constraint firstItem="nM9-EQ-Vo7" firstAttribute="centerY" secondItem="aUM-zm-5ky" secondAttribute="centerY" id="Bjz-7M-0KE"/>
                                     <constraint firstItem="Tve-03-DKT" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="Cu1-jT-1tl"/>
-                                    <constraint firstAttribute="bottom" secondItem="xux-6h-6al" secondAttribute="bottom" id="F7H-vq-U3M"/>
                                     <constraint firstItem="OT0-Sd-Nzq" firstAttribute="centerY" secondItem="aUM-zm-5ky" secondAttribute="centerY" id="IPa-vb-tRC"/>
                                     <constraint firstItem="POB-ZI-etn" firstAttribute="centerX" secondItem="aUM-zm-5ky" secondAttribute="centerX" id="JCS-dD-1dB"/>
                                     <constraint firstItem="35y-FC-UxN" firstAttribute="top" secondItem="Tve-03-DKT" secondAttribute="bottom" id="QGP-lp-lfN"/>
                                     <constraint firstItem="35y-FC-UxN" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="Xda-1O-jom"/>
+                                    <constraint firstItem="xux-6h-6al" firstAttribute="top" secondItem="Tve-03-DKT" secondAttribute="top" constant="2" id="YKQ-lW-bbD"/>
                                     <constraint firstItem="POB-ZI-etn" firstAttribute="centerY" secondItem="aUM-zm-5ky" secondAttribute="centerY" id="ggu-nw-Wci"/>
-                                    <constraint firstItem="xux-6h-6al" firstAttribute="top" secondItem="Tve-03-DKT" secondAttribute="bottom" id="h1l-Lg-5li"/>
-                                    <constraint firstItem="xux-6h-6al" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="hSl-mS-ck4"/>
                                     <constraint firstItem="OT0-Sd-Nzq" firstAttribute="centerX" secondItem="aUM-zm-5ky" secondAttribute="centerX" id="jvw-zB-F9E"/>
                                     <constraint firstAttribute="trailing" secondItem="Tve-03-DKT" secondAttribute="trailing" id="nJl-Te-LvY"/>
                                     <constraint firstItem="nM9-EQ-Vo7" firstAttribute="centerX" secondItem="aUM-zm-5ky" secondAttribute="centerX" id="qN0-AE-nuq"/>
                                     <constraint firstAttribute="bottom" secondItem="35y-FC-UxN" secondAttribute="bottom" id="qjn-WF-jgP"/>
                                     <constraint firstAttribute="trailing" secondItem="diF-ca-yd3" secondAttribute="trailing" id="sf6-RH-gfz"/>
                                     <constraint firstItem="Tve-03-DKT" firstAttribute="top" secondItem="diF-ca-yd3" secondAttribute="bottom" id="xs4-sc-NTj"/>
-                                    <constraint firstItem="xux-6h-6al" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" id="zzh-CT-PM0"/>
+                                    <constraint firstItem="xux-6h-6al" firstAttribute="leading" secondItem="aUM-zm-5ky" secondAttribute="leading" constant="2" id="zuL-AR-8Ap"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -176,7 +176,7 @@
                 <outlet property="topLabelHeightConstraint" destination="hqg-jI-Mlo" id="AUj-9L-u18"/>
                 <outlet property="topLabelTextViewVerticalSpaceConstraint" destination="xs4-sc-NTj" id="XNp-5O-3BZ"/>
             </connections>
-            <point key="canvasLocation" x="-41.5" y="269.5"/>
+            <point key="canvasLocation" x="-47" y="80"/>
         </collectionViewCell>
     </objects>
 </document>

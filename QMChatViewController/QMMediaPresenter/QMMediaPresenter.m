@@ -8,13 +8,13 @@
 
 #import "QMMediaPresenter.h"
 #import "QMMediaViewDelegate.h"
+#import <Quickblox/Quickblox.h>
 
 @implementation QMMediaPresenter
 
 @synthesize message = _message;
-@synthesize modelID = _modelID;
 @synthesize view = _view;
-@synthesize model = _model;
+@synthesize modelID = _modelID;
 
 @synthesize playerService;
 @synthesize mediaAssistant;
@@ -29,32 +29,32 @@
     return self;
 }
 
-- (void)updateWithModel:(id <QMChatModelProtocol>)model {
-    
-    _model = model;
-    
-    [self updateView];
-}
-
 - (void)didTapContainer {
+//    NSLog(@"self.view %@", self.view);
+//    NSLog(@"self.messageID %@", self.message.ID);
     
     [self.eventHandler didTapContainer:self];
 }
 
+//- (void)setView:(id<QMMediaViewDelegate>)view {
+//
+//    if (_view != nil && ![view isEqual:_view]) {
+//         [self.mediaAssistant shouldCancellOperationWithSender:self];
+//    }
+//    _view = view;
+//}
 
 - (void)activateMedia {
-    
     [self.playerService activateMediaWithSender:self];
 }
 
 - (void)requestForMedia {
     
-    if (self.model) {
-        [self updateView];
-    }
     [self.mediaAssistant requestForMediaWithSender:self];
 }
-
+- (void)cancellMediaOperation {
+    [self.mediaAssistant shouldCancellOperationWithSender:self];
+}
 - (void)updateProgress:(CGFloat)progress {
     
     [self.view setProgress:progress];
@@ -110,10 +110,6 @@
 }
 
 
-- (void)didUpdateLoadingProgress:(CGFloat)loadingProgress {
-    
-}
-
 - (void)didOccureUploadError:(NSError *)error {
     
 }
@@ -128,10 +124,11 @@
 
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"<%@: %p; model = %@>",
+    return [NSString stringWithFormat:@"<%@: %p; messageID = %@; model = %@>",
             NSStringFromClass([self class]),
             self,
-            self.model];
+            self.message.ID,
+            [self.message.attachments firstObject]];
 }
 
 

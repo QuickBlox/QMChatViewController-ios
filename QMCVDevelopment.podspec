@@ -80,7 +80,5 @@ Pod::Spec.new do |s|
   s.dependency "TTTAttributedLabel", "> 1.13"
   s.dependency "SDWebImage", "~> 4.0.0"
   s.dependency "FFCircularProgressView"
-  s.dependency "SexyTooltip"
-
 
 end

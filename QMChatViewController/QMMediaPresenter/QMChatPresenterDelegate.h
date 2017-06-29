@@ -14,10 +14,8 @@
 @protocol QMChatPresenterDelegate <QMChatPresenterInput, QMChatPresenterOutput>
 
 @property (nonatomic, weak) id <QMMediaViewDelegate> view;
-@property (nonatomic, strong, readonly) id <QMChatModelProtocol> model;
 
 - (instancetype)initWithView:(id <QMMediaViewDelegate>)view;
-- (void)updateWithModel:(id <QMChatModelProtocol>)model;
 
 @end
 

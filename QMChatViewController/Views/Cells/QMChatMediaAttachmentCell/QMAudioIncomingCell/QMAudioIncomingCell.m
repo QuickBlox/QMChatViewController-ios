@@ -13,6 +13,7 @@
 - (void)awakeFromNib {
     
     [super awakeFromNib];
+    [self.circularProgress removeFromSuperview];
     _progressView.layer.masksToBounds = YES;
     self.layer.masksToBounds = YES;
 }

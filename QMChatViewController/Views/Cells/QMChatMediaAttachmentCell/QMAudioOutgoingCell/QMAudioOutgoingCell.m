@@ -11,7 +11,7 @@
 @implementation QMAudioOutgoingCell
 
 - (void)awakeFromNib {
-    
+    [self.circularProgress removeFromSuperview];
     [super awakeFromNib];
     _progressView.layer.masksToBounds = YES;
     self.layer.masksToBounds = YES;

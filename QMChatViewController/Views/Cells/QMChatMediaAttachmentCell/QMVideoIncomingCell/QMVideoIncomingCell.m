@@ -11,14 +11,18 @@
 @implementation QMVideoIncomingCell
 
 - (void)awakeFromNib {
+    
     [super awakeFromNib];
-    self.previewImageView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+    
+    self.durationLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:0.55];
+    self.durationLabel.layer.cornerRadius = 4.0f;
+    self.durationLabel.layer.masksToBounds = YES;
+    self.durationLabel.textColor = [UIColor whiteColor];
 }
+
 - (void)setDuration:(NSTimeInterval)duration {
     
-    if (duration > 0) {
-        self.durationLabel.text = [self timestampStringForDuration:duration];
-    }
+    self.durationLabel.text = [self timestampStringForDuration:duration];
 }
 
 - (NSString *)timestampStringForDuration:(NSTimeInterval)duration {

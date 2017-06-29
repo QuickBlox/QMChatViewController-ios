@@ -90,8 +90,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
+    //    self.collectionView.dataSource = self;
+    //    self.collectionView.delegate = self;
     
     self.chatDataSource = [[QMChatDataSource alloc] init];
     self.chatDataSource.delegate = self;
@@ -188,6 +188,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     dispatch_block_t batchUpdatesBlock = ^{
         
+        if (!self.collectionView.delegate) {
+            return;
+        }
+        
         NSArray *indexPaths =
         [self.chatDataSource performChangesWithMessages:messages
                                              updateType:updateType];
@@ -237,8 +241,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    
+
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
@@ -300,10 +303,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

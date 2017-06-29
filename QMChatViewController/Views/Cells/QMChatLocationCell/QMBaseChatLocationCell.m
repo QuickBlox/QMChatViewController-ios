@@ -16,4 +16,12 @@
 
 @implementation QMBaseChatLocationCell
 
+- (void)awakeFromNib {
+    
+    [super awakeFromNib];
+    
+    self.imageView.layer.cornerRadius = 4.0;
+    self.imageView.layer.masksToBounds = YES;
+}
+
 @end

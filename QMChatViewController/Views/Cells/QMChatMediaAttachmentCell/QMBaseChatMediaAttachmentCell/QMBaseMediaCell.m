@@ -13,7 +13,9 @@
 
 @implementation QMBaseMediaCell
 
-@synthesize presenter = _presenter;
+@synthesize messageID = _messageID;
+@synthesize mediaHandler = _mediaHandler;
+//@synthesize presenter = _presenter;
 @synthesize duration = _duration;
 @synthesize offset = _offset;
 @synthesize currentTime = _currentTime;
@@ -38,8 +40,8 @@
         
         [self.mediaPlayButton setImage:buttonImage
                               forState:UIControlStateNormal];
-
     }
+    
     self.mediaPlayButton.hidden = NO;
     self.mediaPlayButton.enabled = NO;
     
@@ -52,11 +54,10 @@
     
     self.circularProgress.hideProgressIcons = YES;
     self.durationLabel.text = nil;
-    [self.circularProgress startSpinProgressBackgroundLayer];
-    
     self.progressLabel.text = nil;
     
     self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.previewImageView.layer.cornerRadius = 4.0;
 }
 
 
@@ -64,8 +65,11 @@
     
     [super prepareForReuse];
     
+ //   [self.presenter cancellMediaOperation];
+    [self setIsReady:YES];
+    self.circularProgress.hideProgressIcons = YES;
+    self.progress = 0.0;
     self.isActive = NO;
-    self.isReady = NO;
     self.previewImageView.image = nil;
 }
 
@@ -78,10 +82,14 @@
     _currentTime = currentTime;
     
     self.durationLabel.text = [self timestampString:currentTime forDuration:_duration];
-
+    
 }
 
 - (void)setProgress:(CGFloat)progress {
+    
+    if (self.isReady) {
+        return;
+    }
     
     if (progress > 0.0) {
         
@@ -89,16 +97,22 @@
         self.circularProgress.hidden = NO;
         [self.circularProgress stopSpinProgressBackgroundLayer];
     }
+    else {
+        self.progressLabel.hidden = YES;
+        self.circularProgress.hidden = YES;
+    }
     
     self.progressLabel.text = [NSString stringWithFormat:@"%2.0f%%", progress * 100.0f];
-    [self.circularProgress setProgress:progress];
+    
+    if (progress >= 1) {
+        self.circularProgress.hidden = YES;
+    }
+    else {
+        [self.circularProgress setProgress:progress];
+    }
 }
 
 - (void)setDuration:(NSTimeInterval)duration {
-    
-//    if (_duration == duration) {
-//        return;
-//    }
     
     _duration = duration;
     
@@ -110,22 +124,23 @@
     _isReady = isReady;
     
     isReady ? [self.circularProgress stopSpinProgressBackgroundLayer] : [self.circularProgress startSpinProgressBackgroundLayer];
-
+    
     self.circularProgress.hidden = isReady;
     self.progressLabel.hidden = isReady;
     self.mediaPlayButton.enabled = isReady;
+  //  NSLog(@"<isReady: %@, messageID:%@, view:%@", isReady? @"YES" : @"NO", self.presenter, self);
 }
 
 - (void)setThumbnailImage:(UIImage *)image {
     
     self.previewImageView.image = image;
-    [self setNeedsLayout];
+    [self.previewImageView setNeedsLayout];
 }
 
 - (void)setImage:(UIImage *)image {
     
     self.previewImageView.image = image;
-    [self setNeedsLayout];
+    [self.previewImageView setNeedsLayout];
 }
 
 - (void)setIsActive:(BOOL)isActive {
@@ -144,23 +159,23 @@
                           duration:0.15
                            options:UIViewAnimationOptionTransitionCrossDissolve
                         animations:^{
-            [self.mediaPlayButton setImage:buttonImage
-                                  forState:UIControlStateNormal];
-            [self.mediaPlayButton setImage:buttonImage
-                                  forState:UIControlStateDisabled];
-        } completion:nil];
+                            [self.mediaPlayButton setImage:buttonImage
+                                                  forState:UIControlStateNormal];
+                            [self.mediaPlayButton setImage:buttonImage
+                                                  forState:UIControlStateDisabled];
+                        } completion:nil];
         
-
+        
     }
     
     if (!isActive) {
-    self.durationLabel.text = [self timestampString:self.duration];
+        self.durationLabel.text = [self timestampString:self.duration];
     }
 }
 
 - (IBAction)activateMedia:(id)sender {
     
-    [self.presenter activateMedia];
+    [self.mediaHandler didTapPlayButton:self];
 }
 
 - (NSString *)timestampString:(NSTimeInterval)duration {
@@ -189,7 +204,7 @@
             timestampString = [NSString stringWithFormat:@"0:%02d", (int)round(currentTime)];
         }
         else {
-        timestampString = [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
+            timestampString = [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
         }
     }
     else if (duration < 3600)
@@ -197,7 +212,7 @@
         timestampString = [NSString stringWithFormat:@"%d:%02d", (int)currentTime / 60, (int)currentTime % 60];
     }
     else {
-    timestampString = [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
+        timestampString = [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
     }
     
     return timestampString;

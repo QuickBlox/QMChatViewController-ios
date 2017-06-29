@@ -10,11 +10,14 @@
 #import <UIKit/UIKit.h>
 
 #import "QMChatPresenterDelegate.h"
+@protocol QMMediaHandler;
 
 @protocol QMMediaViewDelegate <NSObject>
 
 @required
-@property (strong, nonatomic) id <QMChatPresenterDelegate> presenter;
+//@property (strong, nonatomic) id <QMChatPresenterDelegate> presenter;
+@property (nonatomic, weak) id <QMMediaHandler> mediaHandler;
+@property (nonatomic, strong) NSString *messageID;
 
 @optional
 
@@ -30,5 +33,12 @@
 - (void)showLoadingError:(NSError *)error;
 - (void)showUploadingError:(NSError *)error;
 
+
+@end
+
+@protocol QMMediaHandler
+
+- (void)didTapPlayButton:(id<QMMediaViewDelegate>)view;
+- (void)requestMedia:(id<QMMediaViewDelegate>)view;
 
 @end
