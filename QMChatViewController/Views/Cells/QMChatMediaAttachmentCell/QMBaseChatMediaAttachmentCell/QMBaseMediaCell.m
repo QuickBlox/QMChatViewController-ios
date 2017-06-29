@@ -22,6 +22,8 @@
 @synthesize progress = _progress;
 @synthesize isReady = _isReady;
 @synthesize isActive = _isActive;
+@synthesize image = _image;
+@synthesize thumbnailImage = _thumbnailImage;
 
 //MARK: - NSObject
 
@@ -132,13 +134,13 @@
 }
 
 - (void)setThumbnailImage:(UIImage *)image {
-    
+    _thumbnailImage = image;
     self.previewImageView.image = image;
     [self.previewImageView setNeedsLayout];
 }
 
 - (void)setImage:(UIImage *)image {
-    
+    _image = image;
     self.previewImageView.image = image;
     [self.previewImageView setNeedsLayout];
 }

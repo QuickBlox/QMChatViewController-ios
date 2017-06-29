@@ -90,8 +90,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
-    //    self.collectionView.dataSource = self;
-    //    self.collectionView.delegate = self;
     
     self.chatDataSource = [[QMChatDataSource alloc] init];
     self.chatDataSource.delegate = self;

@@ -38,6 +38,7 @@
 
 @protocol QMMediaHandler
 
+- (void)didTapContainer:(id<QMMediaViewDelegate>)view;
 - (void)didTapPlayButton:(id<QMMediaViewDelegate>)view;
 - (void)requestMedia:(id<QMMediaViewDelegate>)view;
 
