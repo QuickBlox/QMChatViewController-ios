@@ -9,7 +9,7 @@
 #import "QMChatCell.h"
 #import "FFCircularProgressView.h"
 
-@protocol QMMediaViewDelegate;
+#import "QMMediaViewDelegate.h"
 
 @interface QMBaseMediaCell : QMChatCell <QMMediaViewDelegate>
 
@@ -19,4 +19,9 @@
 @property (nonatomic, weak) IBOutlet UILabel *durationLabel;
 @property (nonatomic, weak) IBOutlet FFCircularProgressView *circularProgress;
 
+- (NSString *)timestampString:(NSTimeInterval)currentTime
+                  forDuration:(NSTimeInterval)duration;
+
+- (CALayer *)maskLayerFromImage:(UIImage *)image
+                      withFrame:(CGRect)frame;
 @end

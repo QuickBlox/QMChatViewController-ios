@@ -7,16 +7,15 @@
 //
 
 #import "QMMediaPresenter.h"
-#import "QMMediaPresenterDelegate.h"
 #import "QMMediaViewDelegate.h"
-#import "QMMediaModelDelegate.h"
-#import "QMMediaItem.h"
 
 @implementation QMMediaPresenter
 
-@synthesize view = _view;
-@synthesize mediaID = _mediaID;
 @synthesize message = _message;
+@synthesize modelID = _modelID;
+@synthesize view = _view;
+@synthesize model = _model;
+
 @synthesize playerService;
 @synthesize mediaAssistant;
 @synthesize eventHandler;
@@ -24,33 +23,22 @@
 - (instancetype)initWithView:(id <QMMediaViewDelegate>)view {
     
     if (self = [super init]) {
+        
         _view = view;
     }
-    return  self;
+    return self;
 }
 
-- (void)dealloc {
+- (void)updateWithModel:(id <QMChatModelProtocol>)model {
     
-    NSLog(@"Presenter deallock");
+    _model = model;
+    
+    [self updateView];
 }
+
 - (void)didTapContainer {
     
     [self.eventHandler didTapContainer:self];
-}
-
-- (void)updateWithMediaItem:(QMMediaItem *)mediaItem {
-    
-
-    if (mediaItem.mediaDuration > 0) {
-        [self didUpdateDuration:mediaItem.mediaDuration];
-    }
-
-    if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeImage ) {
-        UIImage *image = mediaItem.image;
-        if (image) {
-            [self didUpdateThumbnailImage:image];
-        }
-    }
 }
 
 
@@ -61,17 +49,15 @@
 
 - (void)requestForMedia {
     
+    if (self.model) {
+        [self updateView];
+    }
     [self.mediaAssistant requestForMediaWithSender:self];
 }
 
-
 - (void)updateProgress:(CGFloat)progress {
     
-    [self.view setProgres:progress];
-}
-
-- (void)setNeedsToUpdateLayout {
-    [self.view setOnLayoutUpdate];
+    [self.view setProgress:progress];
 }
 
 #pragma mark - Interactor output
@@ -79,11 +65,6 @@
 - (void)didUpdateIsActive:(BOOL)isActive {
     
     [self.view setIsActive:isActive];
-}
-
-- (void)didUpdatePlayingStatus:(NSUInteger)playingStatus {
-    
-    [self.view setPlayingStatus:playingStatus];
 }
 
 - (void)didUpdateOffset:(NSTimeInterval)offset {
@@ -96,13 +77,14 @@
     [self.view setIsReady:isReady];
     
     if (isReady) {
+        
         [self.playerService requestPlayingStatus:self];
     }
     
 }
 - (void)didUpdateProgress:(CGFloat)progress {
     
-    [self.view setProgres:progress];
+    [self.view setProgress:progress];
 }
 
 - (void)didUpdateDuration:(NSTimeInterval)duration {
@@ -113,12 +95,45 @@
 - (void)didUpdateCurrentTime:(NSTimeInterval)currentTime
                     duration:(NSTimeInterval)duration {
     
-    [self.view setCurrentTime:currentTime
-                  forDuration:duration];
+    [self.view setDuration:duration];
+    [self.view setCurrentTime:currentTime];
+}
+
+- (void)didUpdateImage:(UIImage *)image {
+    
+    [self.view setImage:image];
 }
 
 - (void)didUpdateThumbnailImage:(UIImage *)image {
     
-    [self.view setImage:image];
+    [self.view setThumbnailImage:image];
 }
+
+
+- (void)didUpdateLoadingProgress:(CGFloat)loadingProgress {
+    
+}
+
+- (void)didOccureUploadError:(NSError *)error {
+    
+}
+
+- (void)didOccureDownloadError:(NSError *)error {
+    
+}
+
+- (void)updateView {
+    
+}
+
+- (NSString *)description {
+    
+    return [NSString stringWithFormat:@"<%@: %p; model = %@>",
+            NSStringFromClass([self class]),
+            self,
+            self.model];
+}
+
+
+
 @end

@@ -10,12 +10,23 @@
 #import "UIView+QM.h"
 #import "QMToolbarContentView.h"
 #import "QMChatResources.h"
+#import "QMAudioRecordButton.h"
+#import "UIImage+QM.h"
+#import "QMAudioRecordView.h"
+
 
 static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValueObservingContext;
 
-@interface QMInputToolbar()
+@interface QMInputToolbar() <QMAudioRecordButtonProtocol, QMAudioRecordViewProtocol>
 
 @property (assign, nonatomic) BOOL isObserving;
+
+@property (assign, nonatomic, getter=isRecording) BOOL recording;
+
+@property (weak, nonatomic) QMAudioRecordView *audioRecordView;
+
+@property (strong, nonatomic) UIButton *sendButton;
+@property (strong, nonatomic) QMAudioRecordButton *audioRecordButtonItem;
 
 @end
 
@@ -28,14 +39,25 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     [super awakeFromNib];
     [self commonInit];
-
+    
 }
+
 - (instancetype)init {
+    
     self = [super init];
     if (self) {
         [self commonInit];
     }
     return self;
+}
+
+- (void)setAudioRecordingIsEnabled:(BOOL)audioRecordingIsEnabled {
+    
+    if (_audioRecordingIsEnabled != audioRecordingIsEnabled) {
+        
+        _audioRecordingIsEnabled = audioRecordingIsEnabled;
+        [self toggleSendButtonEnabled];
+    }
 }
 
 - (void)commonInit {
@@ -60,6 +82,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     [self toggleSendButtonEnabled];
 }
 
+
 - (QMToolbarContentView *)loadToolbarContentView {
     
     NSArray *nibViews = [[QMChatResources resourceBundle] loadNibNamed:NSStringFromClass([QMToolbarContentView class])
@@ -72,6 +95,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     [self removeObservers];
     _contentView = nil;
+    _audioRecordView = nil;
 }
 
 #pragma mark - Setters
@@ -96,7 +120,41 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 #pragma mark - Input toolbar
 
+- (void)toggleButtons {
+    
+    BOOL hasText = self.contentView.textView.text.length > 0;
+    BOOL hasTextAttachment = [self.contentView.textView hasTextAttachment];
+    BOOL hasDataToSend = hasText || hasTextAttachment;
+    
+    if (self.sendButtonOnRight) {
+        
+        self.contentView.rightBarButtonItem.hidden = !hasDataToSend;
+        self.contentView.rightBarButtonItem.enabled = [self.contentView.textView hasText];
+        
+        if (!self.audioRecordButtonItem.superview) {
+            [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+        }
+    }
+    else {
+        
+        self.contentView.leftBarButtonItem.hidden = !hasDataToSend;
+        self.contentView.leftBarButtonItem.enabled = [self.contentView.textView hasText];
+        
+        if (!self.audioRecordButtonItem.superview) {
+            [self.contentView.leftBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+        }
+    }
+    
+    self.audioRecordButtonItem.hidden = hasDataToSend;
+}
+
 - (void)toggleSendButtonEnabled {
+    
+    if (self.audioRecordingIsEnabled) {
+        
+        [self toggleButtons];
+        return;
+    }
     
     BOOL hasText = [self.contentView.textView hasText];
     BOOL hasTextAttachment = [self.contentView.textView hasTextAttachment];
@@ -104,10 +162,11 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     if (self.sendButtonOnRight) {
         
         self.contentView.rightBarButtonItem.enabled = hasText || hasTextAttachment;
+        
     }
     else {
         
-        self.contentView.leftBarButtonItem.enabled = hasText || hasTextAttachment;
+        self.contentView.leftBarButtonItem.hidden = !(hasText || hasTextAttachment);
     }
 }
 
@@ -165,7 +224,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 }
 
 - (void)removeObservers {
-
+    
     if (!self.isObserving) {
         return;
     }
@@ -183,5 +242,176 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     self.isObserving = NO;
 }
+
+
+- (void)setShowRecordingInterface:(BOOL)show velocity:(CGFloat)velocity {
+    
+    if (show) {
+        
+        [self.audioRecordButtonItem animateIn];
+        
+        if (_audioRecordView == nil)
+        {
+            QMAudioRecordView *recordView = [QMAudioRecordView loadAudioRecordView];
+            recordView.clipsToBounds = true;
+            recordView.delegate = self;
+            [self insertSubview:recordView aboveSubview:self.contentView];
+            [self pinAllEdgesOfSubview:recordView];
+            [self setNeedsUpdateConstraints];
+            
+            _audioRecordView = recordView;
+        }
+        
+        [self.audioRecordView setShowRecordingInterface:show
+                                               velocity:velocity];
+        
+        
+        [UIView animateWithDuration:0.26 delay:0.0 options:0 animations:^
+         {
+             self.contentView.alpha = 0.0f;
+         } completion:nil];
+        
+    }
+    else
+    {
+        [self.audioRecordButtonItem animateOut];
+        
+        int options = 0;
+        
+        [self.audioRecordView setShowRecordingInterface:show velocity:velocity];
+        [self.audioRecordView removeFromSuperview];
+        self.audioRecordView = nil;
+        [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
+            self.contentView.alpha = 1.0f;
+        } completion:nil];
+    }
+}
+
+//MARK: QMAudioRecordButtonProtocol
+
+- (void)startAudioRecording {
+    
+    [self.audioRecordView audioRecordingStarted];
+}
+
+- (void)finishAudioRecording {
+    
+    [self.audioRecordView audioRecordingFinished];
+    [self setShowRecordingInterface:false velocity:0.0];
+}
+
+- (void)recordButtonInteractionDidBegin {
+    
+    if ([self.delegate messagesInputToolbarAudioRecordingEnabled:self]) {
+        
+        self.recording = YES;
+        [self setShowRecordingInterface:true velocity:0.0f];
+        [self.delegate messagesInputToolbarAudioRecordingStart:self];
+    }
+}
+
+- (void)recordButtonInteractionDidCancel:(CGFloat)velocity {
+    
+    if (self.isRecording) {
+        
+        self.recording = NO;
+        [self setShowRecordingInterface:false velocity:velocity];
+        
+        [self.delegate messagesInputToolbarAudioRecordingCancel:self];
+    }
+}
+
+- (void)forceFinishRecording {
+    
+    if (self.isRecording) {
+        self.recording = NO;
+        
+        [self setShowRecordingInterface:false velocity:0.0];
+        if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingCancel:)]) {
+            [self.delegate messagesInputToolbarAudioRecordingCancel:self];
+        }
+    }
+}
+
+- (void)recordButtonInteractionDidComplete:(CGFloat)velocity {
+    
+    if (self.isRecording) {
+        
+        self.recording = NO;
+        [self setShowRecordingInterface:false velocity:velocity];
+        
+        [self.delegate messagesInputToolbarAudioRecordingComplete:self];
+    }
+}
+
+- (void)recordButtonInteractionDidStopped {
+    
+    [self shakeControls];
+}
+
+- (void)recordButtonInteractionDidUpdate:(CGFloat)value {
+    [self.audioRecordView updateInterfaceWithVelocity:value];
+}
+
+- (void)shakeControls {
+    
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.x"];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation.duration = 0.3f;
+    animation.values = @[@(-10), @(10), @(-5), @(5), @(0)];
+    [self.audioRecordButtonItem.layer addAnimation:animation forKey:@"shake"];
+    
+}
+
+- (void)shouldStopRecordingByTimeOut {
+    
+    if ([self.delegate respondsToSelector:@selector(messagesInputToolbarAudioRecordingPausedByTimeOut:)]) {
+        return [self.delegate messagesInputToolbarAudioRecordingPausedByTimeOut:self];
+    }
+}
+
+- (NSTimeInterval)maximumDuration {
+    
+    if ([self.delegate respondsToSelector:@selector(inputPanelAudioRecordingMaximumDuration:)]) {
+        return [self.delegate inputPanelAudioRecordingMaximumDuration:self];
+    }
+    
+    return 0.0;
+}
+
+- (NSTimeInterval)currentDuration {
+    
+    if ([self.delegate respondsToSelector:@selector(inputPanelAudioRecordingDuration:)]) {
+        return [self.delegate inputPanelAudioRecordingDuration:self];
+    }
+    
+    return 0.0;
+}
+
+- (QMAudioRecordButton *)audioRecordButtonItem {
+    
+    if (!_audioRecordButtonItem) {
+        
+        UIImage *recordImage = [QMChatResources imageNamed:@"MicOverlay"];
+        UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
+        
+        CGRect frame = CGRectMake(0, 0, recordImage.size.width, 32.0);
+        QMAudioRecordButton *button =  [[QMAudioRecordButton alloc] initWithFrame:frame];
+        button.delegate = self;
+        [button setImage:normalImage forState:UIControlStateNormal];
+        [button setImage:normalImage forState:UIControlStateHighlighted];
+        
+        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+        button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+        button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        button.backgroundColor = [UIColor clearColor];
+        button.tintColor = [UIColor lightGrayColor];
+        
+        _audioRecordButtonItem = button;
+    }
+    
+    return _audioRecordButtonItem;
+}
+
 
 @end

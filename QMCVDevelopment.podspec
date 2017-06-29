@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "QMCVDevelopment"
-  s.version      = "0.4.0.1"
+  s.version      = "0.4.1.1"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
@@ -34,26 +34,29 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
-  s.subspec 'QMMediaChatModule' do |ss|
-  ss.source_files = 'QMChatViewController/QMMediaChatModule/**/*.{h,m}'
+  s.subspec 'QMMediaPresenter' do |ss|
+  ss.source_files = 'QMChatViewController/QMMediaPresenter/**/*.{h,m}'
   end
 
   s.subspec 'Categories' do |ss|
-	ss.dependency 'QMCVDevelopment/QMChatLocationSnapshotter'
-
-    ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
+	   ss.dependency 'QMCVDevelopment/QMChatLocationSnapshotter'
+     ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
   end
 
-  s.subspec 'Utils' do |ss| 
-	ss.dependency 'QMCVDevelopment/Categories'
+  s.subspec 'Utils' do |ss|
+	   ss.dependency 'QMCVDevelopment/Categories'
+     ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
+  end
 
-    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
+  s.subspec 'ViewModels' do |ss|
+
+    ss.dependency 'QMCVDevelopment/Categories'
+    ss.source_files = 'QMChatViewController/ViewModels/**/*.{h,m}'
   end
 
   s.subspec 'Sections' do |ss|
-	ss.dependency 'QMCVDevelopment/QMChatDataSource'
-
-    ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
+	   ss.dependency 'QMCVDevelopment/QMChatDataSource'
+     ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
   s.subspec 'QMChatDataSource' do |ss|
@@ -65,19 +68,19 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Views' do |ss|
-  	ss.dependency 'QMCVDevelopment/Categories'
-  	ss.dependency 'QMCVDevelopment/Protocols'
-	ss.dependency 'QMCVDevelopment/Utils'
-
-    ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
+  	 ss.dependency 'QMCVDevelopment/Categories'
+  	 ss.dependency 'QMCVDevelopment/Protocols'
+	   ss.dependency 'QMCVDevelopment/Utils'
+     ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 
   s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 3.6"
+  s.dependency "SDWebImage", "~> 4.0.0"
   s.dependency "FFCircularProgressView"
+  s.dependency "SexyTooltip"
 
 
 end

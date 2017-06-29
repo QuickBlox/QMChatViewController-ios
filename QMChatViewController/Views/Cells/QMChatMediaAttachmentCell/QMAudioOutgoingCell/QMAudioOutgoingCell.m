@@ -11,36 +11,49 @@
 @implementation QMAudioOutgoingCell
 
 - (void)awakeFromNib {
+    
     [super awakeFromNib];
-   
-
+    _progressView.layer.masksToBounds = YES;
+    self.layer.masksToBounds = YES;
 }
 
-- (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(CGFloat)duration {
+- (void)prepareForReuse {
     
-    self.progressLabel.text = [self timestampString:currentTime
-                                        forDuration:duration];
-    [self.progressView setProgress:currentTime/duration animated:YES];
+    [super prepareForReuse];
+    
+    [self.progressView setProgress:0
+                          animated:NO];
 }
 
-- (NSString *)timestampString:(NSTimeInterval)currentTime forDuration:(NSTimeInterval)duration
-{
-    if (duration < 60)
-    {
-        
-        if (currentTime < duration)
-        {
-            return [NSString stringWithFormat:@"0:%02d", (int)round(currentTime)];
-        }
-        return [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
-    }
-    else if (duration < 3600)
-    {
-        return [NSString stringWithFormat:@"%d:%02d", (int)currentTime / 60, (int)currentTime % 60];
-    }
+- (void)layoutSubviews {
     
-    return [NSString stringWithFormat:@"%d:%02d:%02d", (int)currentTime / 3600, (int)currentTime / 60, (int)currentTime % 60];
+    [super layoutSubviews];
+    
+    UIImage *stretchableImage = self.containerView.backgroundImage;
+
+    _progressView.layer.mask = [self maskLayerFromImage:stretchableImage withFrame:_progressView.bounds];
+}
+
+- (void)setIsActive:(BOOL)isActive {
+    [super setIsActive:isActive];
+}
+
+
+- (void)setCurrentTime:(NSTimeInterval)currentTime {
+    
+    [super setCurrentTime:currentTime];
+    
+    NSTimeInterval duration = self.duration;
+    NSString *timeStamp = [self timestampString:currentTime
+                                    forDuration:duration];
+    
+    self.durationLabel.text = timeStamp;
+    
+    if (duration > 0) {
+        BOOL animated = self.isActive && currentTime > 0;
+        [self.progressView setProgress:currentTime/duration
+                              animated:animated];
+    }
 }
 
 @end

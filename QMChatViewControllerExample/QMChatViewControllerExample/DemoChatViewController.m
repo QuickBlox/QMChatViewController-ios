@@ -26,6 +26,10 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 @implementation DemoChatViewController
 
+- (IBAction)unwindToTab:(UIStoryboardSegue *)unwindSegue
+{
+}
+
 - (NSTimeInterval)timeIntervalBetweenSections {
     return 300.0f;
 }
@@ -36,6 +40,9 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.topContentAdditionalInset =
+    self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height;
     
     self.senderID = 2000;
     self.senderDisplayName = @"hello";
@@ -71,16 +78,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
     message4.dateSent = [NSDate dateWithTimeInterval:-3.0f sinceDate:[NSDate date]];
     
     [self.chatDataSource addMessages:@[message1, message2, message3, message4]];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
 }
 
 #pragma mark Tool bar Actions

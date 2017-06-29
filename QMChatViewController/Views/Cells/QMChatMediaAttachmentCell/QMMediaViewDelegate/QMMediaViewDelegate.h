@@ -9,34 +9,26 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class QMMediaPresenter;
+#import "QMChatPresenterDelegate.h"
 
 @protocol QMMediaViewDelegate <NSObject>
 
 @required
-
-- (void)setupInitialState;
-- (void)setOnLayoutUpdate;
-
-@property (strong, nonatomic) QMMediaPresenter *presenter;
+@property (strong, nonatomic) id <QMChatPresenterDelegate> presenter;
 
 @optional
 
-- (void)setDuration:(NSTimeInterval)duration;
-- (void)setOffset:(CGFloat)offset;
-- (void)setProgres:(CGFloat)progress;
-
-- (void)setIsActive:(BOOL)isActive;
-
-- (void)setPlayingStatus:(NSUInteger)playingStatus;
-
-- (void)setCurrentTime:(NSTimeInterval)currentTime
-           forDuration:(NSTimeInterval)duration;
-
-- (void)setImage:(UIImage *)image;
+@property (nonatomic, assign) BOOL isReady;
+@property (nonatomic, assign) BOOL isActive;
+@property (nonatomic, assign) NSTimeInterval currentTime;
+@property (nonatomic, assign) NSTimeInterval duration;
+@property (nonatomic, assign) CGFloat offset;
+@property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic, strong) UIImage *image;
 
 - (void)showLoadingError:(NSError *)error;
-- (void)setIsReady:(BOOL)isReady;
 - (void)showUploadingError:(NSError *)error;
+
 
 @end

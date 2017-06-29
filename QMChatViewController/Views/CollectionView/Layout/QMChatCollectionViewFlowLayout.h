@@ -30,16 +30,11 @@
 @property (weak, nonatomic) QMChatCollectionView *chatCollectionView;
 
 /**
- *  The maximum number of items that the layout should keep in its cache of layout information.
- *
- *  @discussion The default value is `300`. A limit of `0` means no limit. This is not a strict limit.
- */
-@property (assign, nonatomic) NSUInteger cacheLimit;
-
-/**
  *  Returns the width of items in the layout.
  */
 @property (readonly, nonatomic) CGFloat itemWidth;
+
+- (CGSize)containerViewSizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  Size for item and index path.

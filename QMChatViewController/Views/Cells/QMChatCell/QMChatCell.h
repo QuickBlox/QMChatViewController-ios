@@ -120,7 +120,6 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  *  Doing so could result in unexpected behavior.
  */
 @property (weak, nonatomic, readonly) UIView *avatarContainerView;
-@property (weak, nonatomic, readonly) UIImage *avatarImageView;
 
 /**
  *  Property to set avatar view
@@ -165,7 +164,7 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  */
 @property (weak, nonatomic) id <QMChatCellDelegate> delegate;
 
-#pragma mark - Class methods
+//MARK: - Class methods
 
 /**
  *  Returns the `UINib` object initialized for the cell.
@@ -200,5 +199,12 @@ typedef struct QMChatLayoutModel QMChatCellLayoutModel;
  *  @return QMChatCellLayoutModel struct
  */
 + (QMChatCellLayoutModel)layoutModel;
+
+/**
+ Registers cell for data view
+
+ @param dataView data view. UITableView or UICollectionView
+ */
++ (void)registerForReuseInView:(id)dataView;
 
 @end

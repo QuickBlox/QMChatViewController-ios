@@ -11,6 +11,7 @@
 
 @class QMInputToolbar;
 @class QMToolbarContentView;
+@class QMAudioRecordButton;
 
 /**
  *  The `QBChatMessageInputToolbarDelegate` protocol defines methods for interacting with
@@ -37,6 +38,17 @@
  */
 - (void)messagesInputToolbar:(QMInputToolbar *)toolbar
        didPressLeftBarButton:(UIButton *)sender;
+
+@optional
+
+- (BOOL)messagesInputToolbarAudioRecordingEnabled:(QMInputToolbar *)toolbar;
+- (void)messagesInputToolbarAudioRecordingStart:(QMInputToolbar *)toolbar;
+- (void)messagesInputToolbarAudioRecordingCancel:(QMInputToolbar *)toolbar;
+- (void)messagesInputToolbarAudioRecordingComplete:(QMInputToolbar *)toolbar;
+- (void)messagesInputToolbarAudioRecordingPausedByTimeOut:(QMInputToolbar *)toolbar;
+
+- (NSTimeInterval)inputPanelAudioRecordingDuration:(QMInputToolbar *)toolbar;
+- (NSTimeInterval)inputPanelAudioRecordingMaximumDuration:(QMInputToolbar *)toolbar;
 
 @end
 
@@ -89,5 +101,12 @@
  *  @return An initialized `QMToolbarContentView` if successful, otherwise `nil`.
  */
 - (QMToolbarContentView *)loadToolbarContentView;
+
+@property (assign, nonatomic) BOOL audioRecordingIsEnabled;
+
+- (void)startAudioRecording;
+- (void)finishAudioRecording;
+- (void)forceFinishRecording;
+- (void)shakeControls;
 
 @end
