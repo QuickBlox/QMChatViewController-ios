@@ -24,26 +24,10 @@
     NSString *_string;
 }
 
-static NSDictionary *_defaultStyle;
-
 - (instancetype)init {
     
     self = [super init];
     if (self) {
-        
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            
-            UIColor *color = [UIColor colorWithWhite:1 alpha:0.8];
-            UIFont *font = [UIFont systemFontOfSize:24];
-            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-            style.alignment = NSTextAlignmentCenter;
-            style.lineBreakMode = NSLineBreakByTruncatingTail;
-            
-            _defaultStyle = @{NSParagraphStyleAttributeName:style,
-                              NSForegroundColorAttributeName:color,
-                              NSFontAttributeName:font};
-        });
         
         self.shouldRasterize = YES;
         self.rasterizationScale = [UIScreen mainScreen].scale;
@@ -56,12 +40,22 @@ static NSDictionary *_defaultStyle;
 
 - (void)drawInContext:(CGContextRef)ctx {
     
+    CGRect rect = self.bounds;
+    
+    UIColor *color = [UIColor colorWithWhite:1 alpha:0.8];
+    UIFont *font = [UIFont systemFontOfSize:rect.size.height * 0.4];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.alignment = NSTextAlignmentCenter;
+    style.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    NSDictionary *defaultStyle = @{NSParagraphStyleAttributeName:style,
+                                   NSForegroundColorAttributeName:color,
+                                   NSFontAttributeName:font};
+    
     UIGraphicsPushContext(ctx);
     
-    UIFont *font = _defaultStyle[NSFontAttributeName];
     CGSize size = CGSizeMake(self.bounds.size.width,
                              font.lineHeight);
-    CGRect rect = self.bounds;
     rect.origin.y = (rect.size.height - size.height) / 2.f;
     
     CGContextSetFillColorWithColor(ctx, _fillColor.CGColor);
@@ -69,7 +63,7 @@ static NSDictionary *_defaultStyle;
     
     NSRange r = [_string rangeOfComposedCharacterSequenceAtIndex:0];
     NSString *firstCharacter = [[_string substringWithRange:r] capitalizedString];
-    [firstCharacter drawInRect:rect withAttributes:_defaultStyle];
+    [firstCharacter drawInRect:rect withAttributes:defaultStyle];
     
     UIGraphicsPopContext();
 }
@@ -245,7 +239,7 @@ static NSArray *qm_colors = nil;
              if (!weakSelf) return;
              
              if (!error) {
-
+                 
                  
                  if (transfomedImage) {
                      weakSelf.textLayer.hidden = YES;
@@ -287,7 +281,7 @@ static NSArray *qm_colors = nil;
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDExternalCompletionBlock)completedBlock  {
     
-
+    
     BOOL urlIsValid = url &&url.scheme && url.host;
     
     _url = url;
@@ -312,7 +306,7 @@ static NSArray *qm_colors = nil;
              if (!weakSelf) return;
              
              if (!error) {
-                
+                 
                  if (image) {
                      weakSelf.image = image;
                      [weakSelf setNeedsLayout];

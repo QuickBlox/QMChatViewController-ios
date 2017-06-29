@@ -30,7 +30,8 @@ typedef void(^QMWebImageCompletionWithFinishedBlock)(UIImage *_Nullable image, U
  */
 @interface QMImageLoader : SDWebImageManager
 
-+ (instancetype)instance;
+@property (nonatomic, strong, class) QMImageLoader *instance;
+
 + (SDWebImageManager *)sharedManager NS_UNAVAILABLE;
 - (UIImage *)originalImageWithURL:(NSURL *)url;
 - (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url

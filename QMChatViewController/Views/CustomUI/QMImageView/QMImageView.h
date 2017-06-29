@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SDWebImage/SDWebImageManager.h>
-IB_DESIGNABLE
+#import "QMImageLoader.h"
+
 @protocol QMImageViewDelegate ;
 
 typedef NS_ENUM(NSUInteger, QMImageViewType) {
