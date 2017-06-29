@@ -10,9 +10,9 @@
 #import "QMChatBaseLinkPreviewCell.h"
 #import "QMChatResources.h"
 #import "QMImageLoader.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface QMChatBaseLinkPreviewCell() <QMImageViewDelegate>
-
 @end
 
 @implementation QMChatBaseLinkPreviewCell
@@ -22,26 +22,12 @@
 @synthesize siteTitle = _siteTitle;
 @synthesize siteDescription = _siteDescription;
 
-- (void)prepareForReuse {
-    
-    [super prepareForReuse];
-    
-    _previewImageView.image = nil;
-    _iconImageView.image = nil;
-    _linkPreviewView.backgroundColor = [UIColor clearColor];
-}
-
 - (void)awakeFromNib {
     
     [super awakeFromNib];
     
-    _previewImageView.delegate = self;
     _previewImageView.contentMode = UIViewContentModeScaleToFill;
     _previewImageView.clipsToBounds = YES;
-    
-    _siteDescriptionLabel.textColor = [UIColor whiteColor];
-    _titleLabel.textColor = [UIColor whiteColor];
-    _urlLabel.textColor = [UIColor whiteColor];
 }
 
 //MARK: -  QMImageViewDelegate
@@ -55,79 +41,42 @@
 
 //MARK: -  QMLinkPreviewDelegate
 
-- (void)setSiteDescription:(NSString *)siteDescription {
+- (void)setSiteURL:(NSString *)siteURL
+      previewImage:(UIImage *)previewImage
+           favicon:(UIImage *)favicon {
     
-    _siteDescription = [siteDescription copy];
-}
-
-- (void)setSiteTitle:(NSString *)siteTitle {
-    
-    _siteTitle = [siteTitle copy];
-    _titleLabel.text = siteTitle;
-}
-
-- (void)setSiteURL:(NSString *)siteURL {
-
     _siteURL = [siteURL copy];
     
-    NSString *siteHost = [NSURL URLWithString:siteURL].host;
-    _siteDescriptionLabel.text = siteHost;
+    NSMutableAttributedString *resultHostString = [[NSMutableAttributedString alloc] init];
     
-    NSURL *iconURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/favicon.ico", siteHost]];
-    
-    if (iconURL.scheme == nil) {
-        NSString *urlString = [NSString stringWithFormat:@"http://%@",iconURL.absoluteString];
-        iconURL = [NSURL URLWithString:urlString];
+    if (favicon) {
+        
+        NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+        attachment.image = favicon;
+        
+        UIFont *font = _urlLabel.font;
+        CGFloat mid = font.descender + font.capHeight;
+        
+        CGSize imageSize = AVMakeRectWithAspectRatioInsideRect(favicon.size,
+                                                               CGRectMake(0, 0, 16, 16)).size;
+        attachment.bounds = CGRectIntegral(
+                                           CGRectMake(0,
+                                                      font.descender - imageSize.height / 2 + mid + 2,
+                                                      imageSize.width,
+                                                      imageSize.height));
+        
+        NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+   
+        [resultHostString appendAttributedString:attachmentString];
     }
     
-    [_iconImageView setImageWithURL:iconURL];
-}
-
-- (void)setSiteURL:(NSString *)siteURL
-          imageURL:(nullable NSString *)imageURL
-         siteTitle:(NSString *)siteTitle
-   siteDescription:(nullable NSString *)siteDescription
-     onImageDidSet:(void(^)())imageDidSet {
+    NSString *hostSring = [NSString stringWithFormat:@" %@", [NSURL URLWithString:siteURL].host];
+    NSDictionary *attrs = @{ NSForegroundColorAttributeName : UIColor.whiteColor };
+    NSAttributedString *host = [[NSAttributedString alloc] initWithString:hostSring attributes:attrs];
+    [resultHostString appendAttributedString:host];
     
-    [self setSiteURL:siteURL];
-    [self setSiteTitle:siteTitle];
-    [self setSiteDescription:siteDescription];
-    
-    _imageURL = [imageURL copy];
-    
-    BOOL exists = [[self class] imageForURLKey:imageURL] != nil;
-    
-    SDWebImageOptions options = SDWebImageLowPriority;
-    
-    [_previewImageView setImageWithURL:[NSURL URLWithString:imageURL]
-                           placeholder:nil
-                               options:options
-                              progress:nil
-                        completedBlock:^(UIImage *image,
-                                         NSError *__unused error,
-                                         SDImageCacheType __unused cacheType,
-                                         NSURL *__unused imageURL)
-     {
-         if (image) {
-             
-             _linkPreviewView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
-             if (!exists) {
-                 if (imageDidSet) {
-                     imageDidSet();
-                 }
-             }
-         }
-         else {
-             _linkPreviewView.backgroundColor = [UIColor clearColor];
-         }
-     }];
-}
-
-+ (UIImage *)imageForURLKey:(NSString *)urlKey {
-    
-     UIImage *image = [[QMImageLoader instance].imageCache imageFromDiskCacheForKey:urlKey];
-    
-    return image;
+    _urlLabel.attributedText = resultHostString;
+    _previewImageView.image = previewImage;
 }
 
 @end

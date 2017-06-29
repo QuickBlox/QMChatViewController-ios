@@ -24,5 +24,4 @@
 
 - (CALayer *)maskLayerFromImage:(UIImage *)image
                       withFrame:(CGRect)frame;
-
 @end

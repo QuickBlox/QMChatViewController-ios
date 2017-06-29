@@ -24,7 +24,6 @@
 #import "QMMediaViewDelegate.h"
 #import "QMAudioRecordButton.h"
 
-
 static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 const NSUInteger kQMSystemInputToolbarDebugHeight = 0;
@@ -208,8 +207,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         }
     };
     
-    [self.collectionView performBatchUpdates:batchUpdatesBlock
-                                  completion:nil];
+    batchUpdatesBlock();
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
@@ -585,9 +583,9 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
         
-        chatCell.textView.text = [self attributedStringForItem:messageItem];
-        chatCell.topLabel.text = [self topLabelAttributedStringForItem:messageItem];
-        chatCell.bottomLabel.text = [self bottomLabelAttributedStringForItem:messageItem];
+        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
+        chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
+        chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
     }
 }
 

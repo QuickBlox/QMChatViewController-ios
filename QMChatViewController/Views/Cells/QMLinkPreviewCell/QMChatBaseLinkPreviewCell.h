@@ -16,12 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QMChatBaseLinkPreviewCell : QMChatCell <QMLinkPreviewDelegate>
 
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel *titleLabel;
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel *siteDescriptionLabel;
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel *urlLabel;
-@property (nonatomic, weak) IBOutlet QMImageView *previewImageView;
-@property (weak, nonatomic) IBOutlet UIView *linkPreviewView;
-@property (weak, nonatomic) IBOutlet QMImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UILabel *urlLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
+
+- (void)setSiteURL:(NSString *)siteURL
+      previewImage:(UIImage *)previewImage
+           favicon:(UIImage *)favicon;
 
 @end
 

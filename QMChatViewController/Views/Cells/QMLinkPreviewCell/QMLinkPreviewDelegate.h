@@ -17,14 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly, nullable) NSString *siteURL;
 @property (nonatomic, copy, readonly, nullable) NSString *imageURL;
 
-+ (nullable UIImage *)imageForURLKey:(NSString *)urlKey;
-
-- (void)setSiteURL:(NSString *)siteURL
-          imageURL:(nullable NSString *)imageURL
-         siteTitle:(NSString *)siteTitle
-   siteDescription:(nullable NSString *)siteDescription
-     onImageDidSet:(void(^)())imageDidSet;
-
 @end
 
 NS_ASSUME_NONNULL_END
