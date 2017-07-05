@@ -125,9 +125,7 @@ static NSMutableSet *_qmChatCellMenuActions = nil;
     self.containerView.backgroundColor = [UIColor clearColor];
     self.avatarView.backgroundColor = [UIColor clearColor];
 #endif
-    [_topLabel.layer setDrawsAsynchronously:YES];
-    [_textView.layer setDrawsAsynchronously:YES];
-    [_bottomLabel.layer setDrawsAsynchronously:YES];
+    
     [self.layer setDrawsAsynchronously:YES];
     
     self.avatarView.imageViewType = QMImageViewTypeCircle;
