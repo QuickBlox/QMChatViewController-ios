@@ -11,6 +11,26 @@
 
 @implementation UIImage (Cropper)
 
+- (UIImage *)imageWithCornerRadius:(CGFloat)cornerRadius
+                        targetSize:(CGSize)targetSize {
+    
+    UIImage *scaledImage = [self imageByScaleAndCrop:targetSize];
+    
+    CALayer *imageLayer = [CALayer layer];
+    imageLayer.frame = CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height);
+    imageLayer.contents = (id) scaledImage.CGImage;
+    
+    imageLayer.masksToBounds = YES;
+    imageLayer.cornerRadius = cornerRadius;
+    
+    UIGraphicsBeginImageContext(scaledImage.size);
+    [imageLayer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return roundedImage;
+}
+
 - (UIImage *)imageByScaleAndCrop:(CGSize)targetSize {
     
     UIImage *newImage = nil;

@@ -9,6 +9,7 @@
 #import "QMImageView.h"
 #import "UIView+WebCacheOperation.h"
 #import "UIImageView+WebCache.h"
+#import "UIImage+Cropper.h"
 #import "objc/runtime.h"
 #import "QMImageLoader.h"
 
@@ -214,9 +215,19 @@ static NSArray *qm_colors = nil;
     _url = url;
     [self sd_cancelCurrentAnimationImagesLoad];
     
-    QMImageTransform *transform =
-    [QMImageTransform transformWithSize:self.bounds.size
-                               isCircle:self.imageViewType == QMImageViewTypeCircle];
+    QMImageTransformType type = self.imageViewType == QMImageViewTypeCircle ?  QMImageTransformTypeCircle : QMImageTransformTypeCustom;
+    QMImageTransform *transform;
+    if (type == QMImageTransformTypeCircle)
+    transform =
+    [QMImageTransform transformWithType:type size:self.bounds.size];
+    
+    else if (type == QMImageTransformTypeCustom) {
+        
+    transform =
+        [QMImageTransform transformWithCustomTransformBlock:^UIImage *(NSURL *imageURL, UIImage *originalImage) {
+            return [originalImage imageWithCornerRadius:4.0 targetSize:self.bounds.size];
+        }];
+    }
     
     self.image = nil;
     showPlaceholder();
