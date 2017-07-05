@@ -8,15 +8,33 @@
 
 #import <Foundation/Foundation.h>
 #import <SDWebImage/SDWebImageManager.h>
+#import "UIImage+Cropper.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class QMWebImageCombinedOperation;
+
+typedef UIImage  * _Nullable (^QMCustomTransformBlock)(NSURL *imageURL, UIImage *originalImage);
+
+
+typedef NS_ENUM(NSInteger, QMImageTransformType) {
+    
+    QMImageTransformTypeScaleAndCrop = 0,
+    QMImageTransformTypeCircle,
+    QMImageTransformTypeRounding,
+    QMImageTransformTypeCustom
+};
+
 
 @interface QMImageTransform : NSObject
 
 @property (assign, nonatomic, readonly) CGSize size;
 
-+ (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle;
++ (instancetype)transformWithType:(QMImageTransformType)transformType
+                             size:(CGSize)size;
 
++ (instancetype)transformWithCustomTransformBlock:(QMCustomTransformBlock)transformBlock;
++ (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle; //deprecate???
 - (NSString *)keyWithURL:(NSURL *)url;
 
 @end
@@ -34,11 +52,23 @@ typedef void(^QMWebImageCompletionWithFinishedBlock)(UIImage *_Nullable image, U
 
 + (SDWebImageManager *)sharedManager NS_UNAVAILABLE;
 - (UIImage *)originalImageWithURL:(NSURL *)url;
-- (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
+- (BOOL)hasImageOperationWithURL:(NSURL *)url;
+- (QMWebImageCombinedOperation *)operationWithURL:(NSURL *)url;
+- (void)cancelOperationWithURL:(NSURL *)url;
+
+- (QMWebImageCombinedOperation *)downloadImageWithURL:(NSURL *)url
                                        transform:(nullable QMImageTransform *)transform
                                          options:(SDWebImageOptions)options
                                         progress:(_Nullable SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(QMWebImageCompletionWithFinishedBlock)completedBlock;
+
+- (QMWebImageCombinedOperation *)downloadImageWithURL:(NSURL *)url
+                                           token:(nullable NSString *)token
+                                       transform:(QMImageTransform *)transform
+                                         options:(SDWebImageOptions)options
+                                        progress:(_Nullable SDWebImageDownloaderProgressBlock)progressBlock
+                                       completed:(QMWebImageCompletionWithFinishedBlock)completedBlock;
+
 @end
 
 

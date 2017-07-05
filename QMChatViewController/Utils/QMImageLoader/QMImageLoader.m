@@ -7,36 +7,60 @@
 //
 
 #import "QMImageLoader.h"
-#import "UIImage+Cropper.h"
+
 
 @interface QMWebImageCombinedOperation : NSObject <SDWebImageOperation>
 
+@property (copy, nonatomic) NSString *operationID;
 @property (assign, nonatomic, getter = isCancelled) BOOL cancelled;
 @property (copy, nonatomic) SDWebImageNoParamsBlock cancelBlock;
 @property (strong, nonatomic) NSOperation *cacheOperation;
 
 @end
 
+
+
 @interface QMImageTransform()
 
 @property (assign, nonatomic) CGSize size;
-@property (assign, nonatomic) BOOL isCircle;
+@property (assign, nonatomic) QMImageTransformType transformType;
+@property (assign, nonatomic) BOOL isCircle; //deprecate
+@property (copy, nonatomic, nullable) QMCustomTransformBlock customTransformBlock;
 
 @end
 
 @implementation QMImageTransform
 
-+ (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle {
++ (instancetype)transformWithType:(QMImageTransformType)transformType
+                             size:(CGSize)size {
     
     QMImageTransform *transform = [[QMImageTransform alloc] init];
+    transform.transformType = transformType;
     transform.size = size;
-    transform.isCircle = isCircle;
+    
     return transform;
 }
 
++ (instancetype)transformWithCustomTransformBlock:(QMCustomTransformBlock)customTransformBlock {
+    
+    QMImageTransform *transform = [[QMImageTransform alloc] init];
+    transform.transformType = QMImageTransformTypeCustom;
+    transform.customTransformBlock = customTransformBlock;
+    
+    return transform;
+}
+
++ (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle {
+    
+    QMImageTransformType transformType = isCircle ? QMImageTransformTypeCircle : QMImageTransformTypeScaleAndCrop;
+    
+    return  [QMImageTransform transformWithType:transformType size:size];
+}
+
 - (NSString *)keyWithURL:(NSURL *)url {
-    return [NSString stringWithFormat:@"%s_%@_%@",
-            _isCircle ? "circle" : "default",
+    
+    return [NSString stringWithFormat:@"%@_%@_%@",
+            stringWithImageTransformType(_transformType),
             NSStringFromCGSize(_size), url.absoluteString];
 }
 
@@ -44,22 +68,65 @@
  transformDownloadedImage:(UIImage *)image
                   withURL:(NSURL *)imageURL {
     
-    if (self.isCircle) {
-        
-        return [image imageByCircularScaleAndCrop:self.size];
+    switch (_transformType) {
+            
+        case QMImageTransformTypeScaleAndCrop: {
+            
+            return [image imageByScaleAndCrop:self.size];
+            break;
+        }
+        case QMImageTransformTypeCircle: {
+            
+            return [image imageByCircularScaleAndCrop:self.size];
+            break;
+            
+        }
+        case QMImageTransformTypeCustom: {
+            
+            if (self.customTransformBlock) {
+                UIImage *transformedImage = self.customTransformBlock(imageURL, image);
+                return transformedImage;
+            }
+            else {
+                NSAssert(NO, @"self.customTransformBlock == nil");
+            }
+            
+            break;
+        }
+        case QMImageTransformTypeRounding: {
+            
+            return [image imageWithCornerRadius:4 targetSize:self.size];
+            break;
+        }
+            
+        default:
+        {
+            NSAssert(NO, @"Undefined image transform type");
+            break;
+        }
     }
-    else {
-        return [image imageByScaleAndCrop:self.size];
-    }
+    
+    return nil;
 }
 
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"%@ size:%@ isCircle:%s",
+    return [NSString stringWithFormat:@"%@ size:%@ transformType:%@",
             [super description],
             NSStringFromCGSize(self.size),
-            _isCircle ? "true" : "false"];
+            stringWithImageTransformType(_transformType)];
 }
+
+NSString *stringWithImageTransformType(QMImageTransformType transformType) {
+    NSArray *arr = @[
+                     @"QMImageTransformTypeScaleAndCrop",
+                     @"QMImageTransformTypeCircle",
+                     @"QMImageTransformTypeRounding",
+                     @"QMImageTransformTypeCustom"
+                     ];
+    return (NSString *)[arr objectAtIndex:transformType];
+}
+
 
 @end
 
@@ -67,11 +134,23 @@
 
 @property (strong, nonatomic) NSMutableDictionary<NSString *, QMImageTransform *> *transforms;
 @property (strong, nonatomic) NSMutableSet *failedURLs;
-@property (strong, nonatomic) NSMutableArray *runningOperations;
+@property (strong, nonatomic) NSMutableDictionary *runningOperations;
 
 @end
 
 @implementation QMImageLoader
+
+- (void)cancelImageOperationForURL:(NSURL *)url {
+    
+    NSString *operationID = [self cacheKeyForURL:url];
+    
+    QMWebImageCombinedOperation *operation = self.runningOperations[operationID];
+    [operation cancel];
+    
+    @synchronized (self.runningOperations) {
+        [self.runningOperations removeObjectForKey:operationID];
+    }
+}
 
 + (instancetype)instance {
     
@@ -105,12 +184,26 @@
     
     @synchronized (self.runningOperations) {
         if (operation) {
-            [self.runningOperations removeObject:operation];
+            [self.runningOperations removeObjectForKey:operation.operationID];
         }
     }
 }
+- (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
+                                       transform:(QMImageTransform *)transform
+                                         options:(SDWebImageOptions)options
+                                        progress:(SDWebImageDownloaderProgressBlock)progressBlock
+                                       completed:(QMWebImageCompletionWithFinishedBlock)completedBlock {
+    
+    return [self downloadImageWithURL:url
+                                token:nil
+                            transform:transform
+                              options:options
+                             progress:progressBlock
+                            completed:completedBlock];
+}
 
 - (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
+                                           token:(NSString *)token
                                        transform:(QMImageTransform *)transform
                                          options:(SDWebImageOptions)options
                                         progress:(SDWebImageDownloaderProgressBlock)progressBlock
@@ -151,8 +244,10 @@
         return operation;
     }
     
+    NSString *operationID = [self cacheKeyForURL:url];
+    operation.operationID = operationID;
     @synchronized (self.runningOperations) {
-        [self.runningOperations addObject:operation];
+        self.runningOperations[operationID] = operation;
     }
     
     NSString *key = [self cacheKeyForURL:url];
@@ -163,7 +258,7 @@
     }
     
     dispatch_block_t cleanupTransform = ^() {
-
+        
         if (transformKey) {
             self.transforms[transformKey] = nil;
         }
@@ -210,9 +305,18 @@
                         // ignore image read from NSURLCache if image if cached but force refreshing
                         downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
                     }
-                    
+                    NSURL *urlToDownload = url;
+                    if (token) {
+                        NSURLComponents *components =
+                        [NSURLComponents componentsWithURL:url
+                                   resolvingAgainstBaseURL:false];
+                        
+                        components.query = [NSString stringWithFormat:@"token=%@",token];
+                        
+                        urlToDownload = [components URL];
+                    }
                     SDWebImageDownloadToken * subOperation =
-                    [self.imageDownloader downloadImageWithURL:url
+                    [self.imageDownloader downloadImageWithURL:urlToDownload
                                                        options:downloaderOptions
                                                       progress:progressBlock
                                                      completed:^(UIImage *downloadedImage,
@@ -361,11 +465,11 @@
                                 }
                             });
                             @synchronized (self.runningOperations) {
-                                [self.runningOperations removeObject:operation];
+                                [self.runningOperations removeObjectForKey:operationID];
                             }
                         }
                         else {
-
+                            
                             cleanupTransform();
                             dispatch_main_async_safe(^{
                                 __strong __typeof(weakOperation) strongOperation = weakOperation;
@@ -374,7 +478,7 @@
                                 }
                             });
                             @synchronized (self.runningOperations) {
-                                [self.runningOperations removeObject:operation];
+                                [self.runningOperations removeObjectForKey:operationID];
                             }
                         }
                     });
@@ -412,22 +516,22 @@
                                               done:^(UIImage * _Nullable tranformedImageFromCache,
                                                      NSData * _Nullable data,
                                                      SDImageCacheType cacheType)
-        {
-            if (tranformedImageFromCache) {
-                
-                cleanupTransform();
-                dispatch_main_async_safe(^{
-                    __strong __typeof(weakOperation) strongOperation = weakOperation;
-                    if (strongOperation && !strongOperation.isCancelled) {
-                        completedBlock(nil, tranformedImageFromCache, nil, cacheType, YES, url);
-                    }
-                });
-                [self safelyRemoveOperationFromRunning:operation];
-                return;
-            }
-            
-            operation.cacheOperation = cacheOp();
-        }];
+         {
+             if (tranformedImageFromCache) {
+                 
+                 cleanupTransform();
+                 dispatch_main_async_safe(^{
+                     __strong __typeof(weakOperation) strongOperation = weakOperation;
+                     if (strongOperation && !strongOperation.isCancelled) {
+                         completedBlock(nil, tranformedImageFromCache, nil, cacheType, YES, url);
+                     }
+                 });
+                 [self safelyRemoveOperationFromRunning:operation];
+                 return;
+             }
+             
+             operation.cacheOperation = cacheOp();
+         }];
     }
     else {
         
@@ -465,6 +569,28 @@
     return nil;
 }
 
+
+- (void)cancelOperationWithURL:(NSURL *)url {
+    
+    [[self operationWithURL:url] cancel];
+}
+
+- (QMWebImageCombinedOperation *)operationWithURL:(NSURL *)url {
+    
+    NSString *key = [self cacheKeyForURL:url];
+    
+    QMWebImageCombinedOperation *operation = nil;
+    @synchronized (self.runningOperations) {
+        operation = self.runningOperations [key];
+    }
+    return operation;
+}
+
+- (BOOL)hasImageOperationWithURL:(NSURL *)url {
+    
+    return [self operationWithURL:url] != nil;
+}
+
 @end
 
 @implementation QMWebImageCombinedOperation
@@ -482,7 +608,9 @@
 }
 
 - (void)cancel {
+    
     self.cancelled = YES;
+    
     if (self.cacheOperation) {
         [self.cacheOperation cancel];
         self.cacheOperation = nil;
