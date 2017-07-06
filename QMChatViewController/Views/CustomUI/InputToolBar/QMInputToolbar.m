@@ -360,7 +360,6 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     animation.duration = 0.3f;
     animation.values = @[@(-10), @(10), @(-5), @(5), @(0)];
     [self.audioRecordButtonItem.layer addAnimation:animation forKey:@"shake"];
-    
 }
 
 - (void)shouldStopRecordingByTimeOut {
@@ -395,7 +394,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         UIImage *recordImage = [QMChatResources imageNamed:@"MicOverlay"];
         UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
         
-        CGRect frame = CGRectMake(0, 0, recordImage.size.width, 32.0);
+        CGRect frame = CGRectMake(12, 0, recordImage.size.width, 32.0);
         QMAudioRecordButton *button =  [[QMAudioRecordButton alloc] initWithFrame:frame];
         button.delegate = self;
         [button setImage:normalImage forState:UIControlStateNormal];
