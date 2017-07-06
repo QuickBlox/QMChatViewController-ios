@@ -13,7 +13,6 @@
 
 static const CLLocationDegrees kQMMKCoordinateSpanDefaultValue = 250;
 
-static const NSUInteger kQMChatLocationSnapshotCacheCountLimit = 200;
 static NSString * const kQMChatLocationSnapshotCacheName = @"com.q-municate.chat.location.snapshot";
 
 @implementation QMChatLocationSnapshotter

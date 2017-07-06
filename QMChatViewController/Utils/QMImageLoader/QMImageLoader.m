@@ -18,8 +18,6 @@
 
 @end
 
-
-
 @interface QMImageTransform()
 
 @property (assign, nonatomic) CGSize size;
@@ -27,16 +25,17 @@
 @property (assign, nonatomic) BOOL isCircle; //deprecate
 @property (copy, nonatomic, nullable) QMCustomTransformBlock customTransformBlock;
 
+@property (copy, nonatomic) NSString *spec;
+
 @end
 
 @implementation QMImageTransform
 
 + (instancetype)transformWithType:(QMImageTransformType)transformType
                              size:(CGSize)size {
-    
     QMImageTransform *transform = [[QMImageTransform alloc] init];
-    transform.transformType = transformType;
     transform.size = size;
+    transform.transformType = transformType;
     
     return transform;
 }
@@ -105,6 +104,13 @@
             break;
         }
     }
+#warning need update this case
+//    else {
+//        
+//        UIImage *img = [image resizedImageBySpec:self.spec];
+//        
+//        return img;
+//    }
     
     return nil;
 }

@@ -7,29 +7,8 @@
 //
 
 #import "UIImage+Cropper.h"
-#include <math.h>
 
 @implementation UIImage (Cropper)
-
-- (UIImage *)imageWithCornerRadius:(CGFloat)cornerRadius
-                        targetSize:(CGSize)targetSize {
-    
-    UIImage *scaledImage = [self imageByScaleAndCrop:targetSize];
-    
-    CALayer *imageLayer = [CALayer layer];
-    imageLayer.frame = CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height);
-    imageLayer.contents = (id) scaledImage.CGImage;
-    
-    imageLayer.masksToBounds = YES;
-    imageLayer.cornerRadius = cornerRadius;
-    
-    UIGraphicsBeginImageContext(scaledImage.size);
-    [imageLayer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return roundedImage;
-}
 
 - (UIImage *)imageByScaleAndCrop:(CGSize)targetSize {
     
@@ -66,7 +45,7 @@
             
             thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
             
-        } else if (widthFactor < heightFactor) {
+        } else {
             
             thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
         }
@@ -90,6 +69,10 @@
 - (UIImage *)imageByCircularScaleAndCrop:(CGSize)targetSize {
     //bitmap context properties
     float scaleFactor = [[UIScreen mainScreen] scale];
+    
+    if (CGSizeEqualToSize(targetSize, CGSizeZero)) {
+        targetSize = self.size;
+    }
     
     CGColorSpaceRef colorSpace =
     CGColorSpaceCreateDeviceRGB();
@@ -140,8 +123,6 @@
     
     CGImageRef renderedImage =
     CGBitmapContextCreateImage(context);
-    
-    //tidy up
     CGColorSpaceRelease(colorSpace);
     CGContextRelease(context);
     

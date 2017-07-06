@@ -276,10 +276,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             pos = [weakSelf inputToolBarStartPos];
         }
         
-        if (animated) {
-            
-            NSLog(@"%@", view.superview.layer.debugDescription);
-        }
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
     };
     
@@ -289,22 +285,12 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
+
     NSParameterAssert(self.senderID != 0);
     NSParameterAssert(self.senderDisplayName != nil);
     
     [super viewWillAppear:animated];
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    
-    [self updateCollectionViewInsets];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -580,7 +566,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
         
-        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
+        chatCell.textView.text = [self attributedStringForItem:messageItem];
         chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
         chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
     }

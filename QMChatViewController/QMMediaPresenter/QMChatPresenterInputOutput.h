@@ -15,8 +15,7 @@
 @protocol QMChatPresenterInput <NSObject>
 
 @property (nonatomic, copy, nullable) QBChatMessage *message;
-@property (nonatomic, copy) NSString *modelID;
-
+@property (nonatomic, copy, nullable) NSString *modelID;
 
 - (void)didTapContainer;
 - (void)requestForMedia;

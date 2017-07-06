@@ -12,10 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class QMWebImageCombinedOperation;
-
 typedef UIImage  * _Nullable (^QMCustomTransformBlock)(NSURL *imageURL, UIImage *originalImage);
-
 
 typedef NS_ENUM(NSInteger, QMImageTransformType) {
     
@@ -27,8 +24,6 @@ typedef NS_ENUM(NSInteger, QMImageTransformType) {
 
 
 @interface QMImageTransform : NSObject
-
-@property (assign, nonatomic, readonly) CGSize size;
 
 + (instancetype)transformWithType:(QMImageTransformType)transformType
                              size:(CGSize)size;
@@ -53,23 +48,21 @@ typedef void(^QMWebImageCompletionWithFinishedBlock)(UIImage *_Nullable image, U
 + (SDWebImageManager *)sharedManager NS_UNAVAILABLE;
 - (UIImage *)originalImageWithURL:(NSURL *)url;
 - (BOOL)hasImageOperationWithURL:(NSURL *)url;
-- (QMWebImageCombinedOperation *)operationWithURL:(NSURL *)url;
+- (id<SDWebImageOperation>)operationWithURL:(NSURL *)url;
 - (void)cancelOperationWithURL:(NSURL *)url;
 
-- (QMWebImageCombinedOperation *)downloadImageWithURL:(NSURL *)url
+- (id<SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
                                        transform:(nullable QMImageTransform *)transform
                                          options:(SDWebImageOptions)options
                                         progress:(_Nullable SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(QMWebImageCompletionWithFinishedBlock)completedBlock;
 
-- (QMWebImageCombinedOperation *)downloadImageWithURL:(NSURL *)url
+- (id<SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
                                            token:(nullable NSString *)token
                                        transform:(QMImageTransform *)transform
                                          options:(SDWebImageOptions)options
                                         progress:(_Nullable SDWebImageDownloaderProgressBlock)progressBlock
                                        completed:(QMWebImageCompletionWithFinishedBlock)completedBlock;
-
 @end
-
 
 NS_ASSUME_NONNULL_END

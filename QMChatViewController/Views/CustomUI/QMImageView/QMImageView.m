@@ -215,15 +215,16 @@ static NSArray *qm_colors = nil;
     _url = url;
     [self sd_cancelCurrentAnimationImagesLoad];
     
-    QMImageTransformType type = self.imageViewType == QMImageViewTypeCircle ?  QMImageTransformTypeCircle : QMImageTransformTypeCustom;
+    QMImageTransformType type = self.imageViewType == QMImageViewTypeCircle ? QMImageTransformTypeCircle : QMImageTransformTypeCustom;
     QMImageTransform *transform;
-    if (type == QMImageTransformTypeCircle)
-    transform =
-    [QMImageTransform transformWithType:type size:self.bounds.size];
+    if (type == QMImageTransformTypeCircle) {
+        
+        transform = [QMImageTransform transformWithType:type size:self.bounds.size];
+    }
     
     else if (type == QMImageTransformTypeCustom) {
         
-    transform =
+        transform =
         [QMImageTransform transformWithCustomTransformBlock:^UIImage *(NSURL *imageURL, UIImage *originalImage) {
             return [originalImage imageWithCornerRadius:4.0 targetSize:self.bounds.size];
         }];
@@ -246,11 +247,9 @@ static NSArray *qm_colors = nil;
          ^(UIImage *image, UIImage *transfomedImage,
            NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
          {
-             
              if (!weakSelf) return;
              
              if (!error) {
-                 
                  
                  if (transfomedImage) {
                      weakSelf.textLayer.hidden = YES;
@@ -291,7 +290,6 @@ static NSArray *qm_colors = nil;
                 options:(SDWebImageOptions)options
                progress:(SDWebImageDownloaderProgressBlock)progress
          completedBlock:(SDExternalCompletionBlock)completedBlock  {
-    
     
     BOOL urlIsValid = url &&url.scheme && url.host;
     

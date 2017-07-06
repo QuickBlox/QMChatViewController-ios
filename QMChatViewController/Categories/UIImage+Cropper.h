@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (Cropper)
+
 - (UIImage *)imageWithCornerRadius:(CGFloat)cornerRadius
                         targetSize:(CGSize)targetSize;
 - (UIImage *)imageByScaleAndCrop:(CGSize)targetSize;
 - (UIImage *)imageByCircularScaleAndCrop:(CGSize)targetSize;
+- (UIImage *)roundedCornerImage:(NSInteger)cornerSize borderSize:(NSInteger)borderSize;
 
 @end
