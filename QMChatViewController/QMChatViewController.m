@@ -186,13 +186,13 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     dispatch_block_t batchUpdatesBlock = ^{
         
-        if (!self.collectionView.delegate) {
-            return;
-        }
-        
         NSArray *indexPaths =
         [self.chatDataSource performChangesWithMessages:messages
                                              updateType:updateType];
+        if (!self.collectionView.dataSource) {
+            return;
+        }
+        
         switch (updateType) {
                 
             case QMDataSourceActionTypeAdd:
@@ -297,14 +297,9 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     
     [self updateCollectionViewInsets];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+    
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #import "QMChatPresenterDelegate.h"
+
 @protocol QMMediaHandler;
 
 @protocol QMMediaViewDelegate <NSObject>
@@ -23,6 +24,8 @@
 
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL isActive;
+@property (nonatomic, assign) BOOL isLoading;
+
 @property (nonatomic, assign) NSTimeInterval currentTime;
 @property (nonatomic, assign) NSTimeInterval duration;
 @property (nonatomic, assign) CGFloat offset;
@@ -41,5 +44,5 @@
 - (void)didTapContainer:(id<QMMediaViewDelegate>)view;
 - (void)didTapPlayButton:(id<QMMediaViewDelegate>)view;
 - (void)requestMedia:(id<QMMediaViewDelegate>)view;
-
+- (void)shouldCancelOperation:(id<QMMediaViewDelegate>)view;
 @end

@@ -16,16 +16,28 @@
     
     UIImage *scaledImage = [self imageByScaleAndCrop:targetSize];
     
-    CALayer *imageLayer = [CALayer layer];
-    imageLayer.frame = CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height);
-    imageLayer.contents = (id) scaledImage.CGImage;
+    UIGraphicsBeginImageContextWithOptions(scaledImage.size, NO, self.scale);
     
-    imageLayer.masksToBounds = YES;
-    imageLayer.cornerRadius = cornerRadius;
+    // Build a context that's the same dimensions as the new size
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0, scaledImage.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
     
-    UIGraphicsBeginImageContext(scaledImage.size);
-    [imageLayer renderInContext:UIGraphicsGetCurrentContext()];
+    // Create a clipping path with rounded corners
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height)
+                                               byRoundingCorners:UIRectCornerAllCorners
+                                                     cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+    
+    CGContextAddPath(context, path.CGPath);
+    CGContextClip(context);
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height), scaledImage.CGImage);
+    // Draw the image to the context; the clipping path will make anything outside the rounded rect transparent
+    
+    // Create a CGImage from the context
     UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
+    
     UIGraphicsEndImageContext();
     
     return roundedImage;

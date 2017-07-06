@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     
     [super awakeFromNib];
-    [self.circularProgress removeFromSuperview];
+    
     _progressView.layer.masksToBounds = YES;
     self.layer.masksToBounds = YES;
 }
@@ -27,16 +27,10 @@
 }
 
 - (void)setIsActive:(BOOL)isActive {
-    [super setIsActive:isActive];
     
-//    [UIView transitionWithView:self.progressView
-//                      duration:0.15
-//                       options:UIViewAnimationOptionTransitionCrossDissolve
-//                    animations:^{
-//                        self.progressView.alpha = isActive ? 1.0 : 0.0;
-//                    } completion:nil];
-
+    [super setIsActive:isActive];
 }
+
 - (void)layoutSubviews {
     
     [super layoutSubviews];
