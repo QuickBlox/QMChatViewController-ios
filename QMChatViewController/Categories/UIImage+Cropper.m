@@ -10,6 +10,38 @@
 
 @implementation UIImage (Cropper)
 
+- (UIImage *)imageWithCornerRadius:(CGFloat)cornerRadius
+                        targetSize:(CGSize)targetSize {
+    
+    UIImage *scaledImage = [self imageByScaleAndCrop:targetSize];
+    
+    UIGraphicsBeginImageContextWithOptions(scaledImage.size, NO, self.scale);
+    
+    // Build a context that's the same dimensions as the new size
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, 0, scaledImage.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    // Create a clipping path with rounded corners
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height)
+                                               byRoundingCorners:UIRectCornerAllCorners
+                                                     cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
+    
+    CGContextAddPath(context, path.CGPath);
+    CGContextClip(context);
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, scaledImage.size.width, scaledImage.size.height), scaledImage.CGImage);
+    // Draw the image to the context; the clipping path will make anything outside the rounded rect transparent
+    
+    // Create a CGImage from the context
+    UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return roundedImage;
+}
+
 - (UIImage *)imageByScaleAndCrop:(CGSize)targetSize {
     
     UIImage *newImage = nil;

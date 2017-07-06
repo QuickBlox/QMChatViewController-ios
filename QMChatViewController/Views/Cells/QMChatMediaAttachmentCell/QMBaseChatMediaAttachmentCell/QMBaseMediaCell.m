@@ -15,7 +15,6 @@
 
 @synthesize messageID = _messageID;
 @synthesize mediaHandler = _mediaHandler;
-//@synthesize presenter = _presenter;
 @synthesize duration = _duration;
 @synthesize offset = _offset;
 @synthesize currentTime = _currentTime;
@@ -24,6 +23,7 @@
 @synthesize isActive = _isActive;
 @synthesize image = _image;
 @synthesize thumbnailImage = _thumbnailImage;
+@synthesize isLoading = _isLoading;
 
 //MARK: - NSObject
 
@@ -57,9 +57,29 @@
     self.circularProgress.hideProgressIcons = YES;
     self.durationLabel.text = nil;
     self.progressLabel.text = nil;
-    
+    self.circularProgress.hidden = YES;
+    self.progressLabel.hidden = YES;
     self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.previewImageView.layer.cornerRadius = 4.0;
+//    self.previewImageView.layer.cornerRadius = 4.0;
+//    self.previewImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
+//    self.previewImageView.layer.shouldRasterize = YES;
+}
+
+- (void)setIsLoading:(BOOL)isLoading {
+    
+    if (_isLoading != isLoading) {
+        
+        self.circularProgress.hidden = !isLoading;
+        
+        if (isLoading) {
+            [self.circularProgress startSpinProgressBackgroundLayer];
+        }
+        else {
+            self.progressLabel.hidden = YES;
+            [self.circularProgress stopSpinProgressBackgroundLayer];
+        }
+        _isLoading = isLoading;
+    }
 }
 
 
@@ -67,11 +87,14 @@
     
     [super prepareForReuse];
     
- //   [self.presenter cancellMediaOperation];
-    [self setIsReady:YES];
+    self.isReady = NO;
+    self.isLoading = NO;
+    self.isActive = NO;
+    self.progressLabel.hidden = YES;
+    self.circularProgress.hidden = YES;
+    [self.circularProgress stopSpinProgressBackgroundLayer];
     self.circularProgress.hideProgressIcons = YES;
     self.progress = 0.0;
-    self.isActive = NO;
     self.previewImageView.image = nil;
 }
 
@@ -86,7 +109,9 @@
     self.durationLabel.text = [self timestampString:currentTime forDuration:_duration];
     
 }
-
+- (void)showLoadingError:(NSError *)error {
+    
+}
 - (void)setProgress:(CGFloat)progress {
     
     if (self.isReady) {
@@ -98,10 +123,6 @@
         self.progressLabel.hidden = NO;
         self.circularProgress.hidden = NO;
         [self.circularProgress stopSpinProgressBackgroundLayer];
-    }
-    else {
-        self.progressLabel.hidden = YES;
-        self.circularProgress.hidden = YES;
     }
     
     self.progressLabel.text = [NSString stringWithFormat:@"%2.0f%%", progress * 100.0f];
@@ -124,13 +145,10 @@
 - (void)setIsReady:(BOOL)isReady {
     
     _isReady = isReady;
-    
-    isReady ? [self.circularProgress stopSpinProgressBackgroundLayer] : [self.circularProgress startSpinProgressBackgroundLayer];
-    
-    self.circularProgress.hidden = isReady;
-    self.progressLabel.hidden = isReady;
+    if (isReady) {
+    self.progressLabel.hidden = YES;
+    }
     self.mediaPlayButton.enabled = isReady;
-  //  NSLog(@"<isReady: %@, messageID:%@, view:%@", isReady? @"YES" : @"NO", self.presenter, self);
 }
 
 - (void)setThumbnailImage:(UIImage *)image {
@@ -264,11 +282,5 @@
         return [super gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
     }
 }
-
-- (void)updateView {
-    
-}
-
-
 
 @end

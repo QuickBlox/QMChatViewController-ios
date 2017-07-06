@@ -274,7 +274,9 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     
     qm_cache_operation cacheOp = ^() {
         
-        return [self.imageCache queryCacheOperationForKey:key done:^(UIImage * _Nullable image, NSData * _Nullable data, SDImageCacheType cacheType) {
+        return [self.imageCache queryCacheOperationForKey:key done:^(UIImage * _Nullable image,
+                                                                     NSData * _Nullable data,
+                                                                     SDImageCacheType cacheType) {
             
             if (operation.isCancelled) {
                 cleanupTransform();
@@ -311,7 +313,9 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
                         // ignore image read from NSURLCache if image if cached but force refreshing
                         downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
                     }
+                    
                     NSURL *urlToDownload = url;
+                    
                     if (token) {
                         NSURLComponents *components =
                         [NSURLComponents componentsWithURL:url
@@ -321,6 +325,7 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
                         
                         urlToDownload = [components URL];
                     }
+                    
                     SDWebImageDownloadToken * subOperation =
                     [self.imageDownloader downloadImageWithURL:urlToDownload
                                                        options:downloaderOptions

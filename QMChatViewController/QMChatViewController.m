@@ -186,13 +186,13 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     dispatch_block_t batchUpdatesBlock = ^{
         
-        if (!self.collectionView.delegate) {
-            return;
-        }
-        
         NSArray *indexPaths =
         [self.chatDataSource performChangesWithMessages:messages
                                              updateType:updateType];
+        if (!self.collectionView.dataSource) {
+            return;
+        }
+        
         switch (updateType) {
                 
             case QMDataSourceActionTypeAdd:
@@ -291,6 +291,11 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [super viewWillAppear:animated];
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
+    
+    [self updateCollectionViewInsets];
+    
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -566,7 +571,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
         
-        chatCell.textView.text = [self attributedStringForItem:messageItem];
+        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
         chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
         chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
     }
