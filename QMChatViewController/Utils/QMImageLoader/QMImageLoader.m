@@ -8,7 +8,6 @@
 
 #import "QMImageLoader.h"
 
-
 @interface QMWebImageCombinedOperation : NSObject <SDWebImageOperation>
 
 @property (copy, nonatomic) NSString *operationID;

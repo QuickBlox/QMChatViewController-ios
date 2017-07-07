@@ -16,7 +16,7 @@
     
     self.circularProgress.tintColor = [UIColor grayColor];
     self.progressLabel.textColor = [UIColor grayColor];
-    self.mediaPlayButton.tintColor = [UIColor grayColor];
+    self.mediaPlayButton.tintColor = [UIColor whiteColor];
     self.durationLabel.textColor = [UIColor grayColor];
 }
 

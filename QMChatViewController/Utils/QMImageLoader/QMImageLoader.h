@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, QMImageTransformType) {
 
 + (instancetype)transformWithCustomTransformBlock:(QMCustomTransformBlock)transformBlock;
 + (instancetype)transformWithSize:(CGSize)size isCircle:(BOOL)isCircle; //deprecate???
+
 - (NSString *)keyWithURL:(NSURL *)url;
 
 @end

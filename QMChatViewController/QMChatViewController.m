@@ -571,7 +571,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
         
-        chatCell.textView.attributedText = [self attributedStringForItem:messageItem];
+        chatCell.textView.text = [self attributedStringForItem:messageItem];
         chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
         chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
     }
