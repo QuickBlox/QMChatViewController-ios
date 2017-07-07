@@ -40,10 +40,10 @@
                                                  name:UIApplicationDidReceiveMemoryWarningNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveDeviceOrientationDidChangeNotification:)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeviceOrientationDidChangeNotification:)
+//                                                 name:UIDeviceOrientationDidChangeNotification
+//                                               object:nil];
     
     /**
      *  Init cache
@@ -96,18 +96,25 @@
     [self resetLayout];
 }
 
-- (void)didReceiveDeviceOrientationDidChangeNotification:(NSNotification *)notification {
-    
-    [self resetLayout];
-    [self invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
-}
+//- (void)didReceiveDeviceOrientationDidChangeNotification:(NSNotification *)notification {
+//    
+//    [self resetLayout];
+//    [self invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
+//}
 
 //MARK: - Collection view flow layout
+
+- (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds {
+    
+    QMCollectionViewFlowLayoutInvalidationContext *context = [QMCollectionViewFlowLayoutInvalidationContext context];
+    context.invalidateFlowLayoutMessagesCache = YES;
+    
+    return context;
+}
 
 - (void)invalidateLayoutWithContext:(QMCollectionViewFlowLayoutInvalidationContext *)context {
     
     if (context.invalidateDataSourceCounts) {
-        
         context.invalidateFlowLayoutAttributes = YES;
         context.invalidateFlowLayoutDelegateMetrics = YES;
     }

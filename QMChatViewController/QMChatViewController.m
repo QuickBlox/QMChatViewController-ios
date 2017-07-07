@@ -8,7 +8,6 @@
 
 #import "QMChatViewController.h"
 #import "QMChatCollectionView.h"
-#import "QMToolbarContentView.h"
 #import "QMChatCollectionViewFlowLayout.h"
 #import "QMChatSection.h"
 #import "QMDateUtils.h"
@@ -52,6 +51,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 @synthesize pickerController = _pickerController;
 
+#pragma mark - Initialization
+
 + (UINib *)nib {
     
     return [QMChatResources nibWithNibName:NSStringFromClass([QMChatViewController class])];
@@ -75,13 +76,71 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.inputToolbar.delegate = nil;
     
     self.senderDisplayName = nil;
-    
-    if ([self isViewLoaded]) {
-        [self.view removeObserver:self forKeyPath:@"frame"];
-    }
 }
 
-#pragma mark - Initialization
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    [[[self class] nib] instantiateWithOwner:self options:nil];
+    
+    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+    
+    [self configureMessagesViewController];
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    //Customize your toolbar buttons
+    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
+    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
+    self.inputToolbar.audioRecordingIsEnabled = YES;
+    
+    __weak __typeof(self) weakSelf = self;
+    self.systemInputToolbar = [[QMKVOView alloc] init];
+    self.systemInputToolbar.collectionView = self.collectionView;
+    self.systemInputToolbar.inputView = self.inputToolbar;
+    self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
+    self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView *view, BOOL animated) {
+    
+        NSInteger pos = view.superview.frame.size.height - view.frame.origin.y ;
+        
+        if (view.superview.frame.origin.y > 0 && pos == 0) {
+            return;
+        }
+        
+        if (!weakSelf.inputToolbar.contentView.textView.isFirstResponder && pos == 0) {
+            [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]
+                                             animated:animated];
+            return;
+        }
+        
+        CGFloat v = [weakSelf inputToolBarStartPos];
+        if (pos < v ) {
+            pos = [weakSelf inputToolBarStartPos];
+        }
+        
+        [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
+    };
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    
+    NSParameterAssert(self.senderID != 0);
+    NSParameterAssert(self.senderDisplayName != nil);
+    
+    [super viewWillAppear:animated];
+    self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
+    
+    [self updateCollectionViewInsets];
+    
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+}
+
+- (void)didReceiveMemoryWarning {
+    
+    [super didReceiveMemoryWarning];
+    NSLog(@"MEMORY WARNING: %s", __PRETTY_FUNCTION__);
+}
 
 - (void)configureMessagesViewController {
     
@@ -96,8 +155,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     self.inputToolbar.delegate = self;
     self.inputToolbar.contentView.textView.delegate = self;
-    
-    self.automaticallyScrollsToMostRecentMessage = YES;
 }
 
 - (void)registerCells {
@@ -219,12 +276,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     }
 }
 
-// KVO Method
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    [self.collectionView reloadData];
-}
-
 #pragma mark - View lifecycle
 
 - (NSUInteger)inputToolBarStartPos {
@@ -234,74 +285,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     }
     
     return 0;
-}
-
-- (void)viewDidLoad {
-    
-    [super viewDidLoad];
-
-    [[[self class] nib] instantiateWithOwner:self options:nil];
-    
-    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-    
-    [self configureMessagesViewController];
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    //Customize your toolbar buttons
-    self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
-    self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
-    self.inputToolbar.audioRecordingIsEnabled = YES;
-    
-    __weak __typeof(self) weakSelf = self;
-    self.systemInputToolbar = [[QMKVOView alloc] init];
-    self.systemInputToolbar.collectionView = self.collectionView;
-    self.systemInputToolbar.inputView = self.inputToolbar;
-    self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
-    self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView * view, BOOL animated) {
-        
-        NSInteger pos = view.superview.frame.size.height - view.frame.origin.y ;
-        
-        if (view.superview.frame.origin.y > 0 && pos == 0) {
-            return;
-        }
-        
-        if (!weakSelf.inputToolbar.contentView.textView.isFirstResponder && pos == 0) {
-            [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]
-                                             animated:animated];
-            return;
-        }
-        
-        CGFloat v = [weakSelf inputToolBarStartPos];
-        if (pos < v ) {
-            pos = [weakSelf inputToolBarStartPos];
-        }
-        
-        [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
-    };
-    
-    [self.view addObserver:self
-                forKeyPath:@"frame"
-                   options:NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-
-    NSParameterAssert(self.senderID != 0);
-    NSParameterAssert(self.senderDisplayName != nil);
-    
-    [super viewWillAppear:animated];
-    self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    
-    [self updateCollectionViewInsets];
-    
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
-}
-
-- (void)didReceiveMemoryWarning {
-    
-    [super didReceiveMemoryWarning];
-    NSLog(@"MEMORY WARNING: %s", __PRETTY_FUNCTION__);
 }
 
 #pragma mark - Tool bar
@@ -1023,38 +1006,16 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        [self resetLayoutAndCaches];
-    }];
-    
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    if (self.inputToolbar.contentView.textView.isFirstResponder) {
+        [self.inputToolbar.contentView.textView resignFirstResponder];
+    }
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     
     [super traitCollectionDidChange:previousTraitCollection];
-}
-
-- (void)resetLayoutAndCaches {
-    
-    QMCollectionViewFlowLayoutInvalidationContext *context = [QMCollectionViewFlowLayoutInvalidationContext context];
-    context.invalidateFlowLayoutMessagesCache = YES;
-    [self.collectionView.collectionViewLayout invalidateLayoutWithContext:context];
-}
-
-- (UICollectionReusableView *)collectionView:(QMChatCollectionView *)collectionView
-                    sectionHeaderAtIndexPath:(NSIndexPath *)indexPath {
-    //    QMHeaderCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-    //                                                                                    withReuseIdentifier:[QMHeaderCollectionReusableView cellReuseIdentifier] forIndexPath:indexPath];
-    //
-    //    QMChatSection *chatSection = [self.chatSectionManager chatSectionAtIndex:indexPath.section];
-    //    headerView.headerLabel.text = [self nameForSectionWithDate:[chatSection lastMessageDate]];
-    //    headerView.transform = self.collectionView.transform;
-    //
-    //    return headerView;
-    return nil;
 }
 
 - (BOOL)scrollIsAtTop {
