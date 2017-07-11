@@ -248,7 +248,7 @@ static dispatch_queue_t _serialQueue = nil;
 
 - (BOOL)messageExists:(QBChatMessage *)message {
     
-    return [_messages containsObject:message];
+    return [self.allMessages containsObject:message];
 }
 
 - (NSUInteger)indexThatConformsToMessage:(QBChatMessage *)message {
