@@ -398,6 +398,12 @@ static NSArray *qm_colors = nil;
     [self.layer addSublayer:_textLayer];
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    _textLayer.frame = self.bounds;
+}
+
 - (UIColor *)colorForString:(NSString*)string {
     
     if (!string) {

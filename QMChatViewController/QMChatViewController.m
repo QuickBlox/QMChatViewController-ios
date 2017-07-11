@@ -802,8 +802,11 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)setTopContentAdditionalInset:(CGFloat)topContentAdditionalInset {
     
-    _topContentAdditionalInset = topContentAdditionalInset;
-    [self updateCollectionViewInsets];
+    if (topContentAdditionalInset != _topContentAdditionalInset) {
+        
+        _topContentAdditionalInset = topContentAdditionalInset;
+        [self updateCollectionViewInsets];
+    }
 }
 
 - (void)updateCollectionViewInsets {
