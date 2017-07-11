@@ -13,9 +13,7 @@
 #import "QMChatCollectionView.h"
 
 @interface QMChatCollectionViewFlowLayout()
-
 @property (strong, nonatomic) NSMutableDictionary *cache;
-
 @end
 
 @implementation QMChatCollectionViewFlowLayout
@@ -39,12 +37,6 @@
                                              selector:@selector(didReceiveApplicationMemoryWarningNotification:)
                                                  name:UIApplicationDidReceiveMemoryWarningNotification
                                                object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didReceiveDeviceOrientationDidChangeNotification:)
-//                                                 name:UIDeviceOrientationDidChangeNotification
-//                                               object:nil];
-    
     /**
      *  Init cache
      */
@@ -96,18 +88,15 @@
     [self resetLayout];
 }
 
-//- (void)didReceiveDeviceOrientationDidChangeNotification:(NSNotification *)notification {
-//    
-//    [self resetLayout];
-//    [self invalidateLayoutWithContext:[QMCollectionViewFlowLayoutInvalidationContext context]];
-//}
-
 //MARK: - Collection view flow layout
 
 - (UICollectionViewLayoutInvalidationContext *)invalidationContextForBoundsChange:(CGRect)newBounds {
     
     QMCollectionViewFlowLayoutInvalidationContext *context = [QMCollectionViewFlowLayoutInvalidationContext context];
-    context.invalidateFlowLayoutMessagesCache = YES;
+    
+    if (self.collectionView.bounds.size.width != newBounds.size.width) {
+        context.invalidateFlowLayoutMessagesCache = YES;
+    }
     
     return context;
 }
@@ -129,14 +118,13 @@
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
     
-    NSArray *attributesInRect = [super layoutAttributesForElementsInRect:rect];
+    NSArray *attributesInRect = [[NSArray alloc] initWithArray:[super layoutAttributesForElementsInRect:rect]
+                                                     copyItems:YES];
 
-	__weak __typeof(self)weakSelf = self;
     [attributesInRect enumerateObjectsUsingBlock:^(QMChatCellLayoutAttributes *attributesItem, NSUInteger idx, BOOL *stop) {
         
         if (attributesItem.representedElementCategory == UICollectionElementCategoryCell) {
-			__typeof(self)strongSelf = weakSelf;
-            [strongSelf configureCellLayoutAttributes:attributesItem];
+            [self configureCellLayoutAttributes:attributesItem];
         }
     }];
     
@@ -157,25 +145,24 @@
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
     
     CGRect oldBounds = self.collectionView.bounds;
-
-    return CGRectGetWidth(newBounds) > CGRectGetWidth(oldBounds) ||
-    CGRectGetWidth(newBounds) < CGRectGetWidth(oldBounds);
+    return !CGSizeEqualToSize(oldBounds.size, newBounds.size) ? YES : NO;
 }
 
 - (void)prepareForCollectionViewUpdates:(NSArray *)updateItems {
     
-	__weak __typeof(self)weakSelf = self;
+    [super prepareForCollectionViewUpdates:updateItems];
+    
     [updateItems enumerateObjectsUsingBlock:^(UICollectionViewUpdateItem *updateItem, NSUInteger index, BOOL *stop) {
-        __typeof(self)strongSelf = weakSelf;
+    
         if (updateItem.updateAction == UICollectionUpdateActionInsert) {
             
-            CGFloat collectionViewHeight = CGRectGetHeight(strongSelf.collectionView.bounds);
+            CGFloat collectionViewHeight = CGRectGetHeight(self.collectionView.bounds);
             
             QMChatCellLayoutAttributes *attributes =
             [QMChatCellLayoutAttributes layoutAttributesForCellWithIndexPath:updateItem.indexPathAfterUpdate];
             
             if (attributes.representedElementCategory == UICollectionElementCategoryCell) {
-                [strongSelf configureCellLayoutAttributes:attributes];
+                [self configureCellLayoutAttributes:attributes];
             }
             
             attributes.frame = CGRectMake(0.0f,
@@ -184,7 +171,6 @@
                                           CGRectGetHeight(attributes.frame));
         }
     }];
-    [super prepareForCollectionViewUpdates:updateItems];
 }
 
 //MARK:- Invalidation utilities

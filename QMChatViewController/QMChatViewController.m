@@ -84,8 +84,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [[[self class] nib] instantiateWithOwner:self options:nil];
     
-    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-    
     [self configureMessagesViewController];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -100,7 +98,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.systemInputToolbar.inputView = self.inputToolbar;
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
     self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView *view, BOOL animated) {
-    
+        
         NSInteger pos = view.superview.frame.size.height - view.frame.origin.y ;
         
         if (view.superview.frame.origin.y > 0 && pos == 0) {
@@ -131,9 +129,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     
     [self updateCollectionViewInsets];
-    
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -147,6 +142,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [self registerCells];
     [self registerForNotifications:YES];
     
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+    
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
     
@@ -155,6 +154,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     self.inputToolbar.delegate = self;
     self.inputToolbar.contentView.textView.delegate = self;
+    
+    self.automaticallyScrollsToMostRecentMessage = YES;
 }
 
 - (void)registerCells {
@@ -234,39 +235,22 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 #pragma mark QMChatDataSourceDelegate
 
 - (void)changeDataSource:(QMChatDataSource *)dataSource
-            withMessages:(NSArray *)messages
+              indexPaths:(NSArray *)indexPaths
               updateType:(QMDataSourceActionType)updateType {
     
-    if (messages.count == 0) {
-        return;
+    switch (updateType) {
+        case QMDataSourceActionTypeAdd:
+            [self.collectionView insertItemsAtIndexPaths:indexPaths];
+            break;
+            
+        case QMDataSourceActionTypeUpdate:
+            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+            break;
+            
+        case QMDataSourceActionTypeRemove:
+            [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+            break;
     }
-    
-    dispatch_block_t batchUpdatesBlock = ^{
-        
-        NSArray *indexPaths =
-        [self.chatDataSource performChangesWithMessages:messages
-                                             updateType:updateType];
-        if (!self.collectionView.dataSource) {
-            return;
-        }
-        
-        switch (updateType) {
-                
-            case QMDataSourceActionTypeAdd:
-                [self.collectionView insertItemsAtIndexPaths:indexPaths];
-                break;
-                
-            case QMDataSourceActionTypeUpdate:
-                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-                break;
-                
-            case QMDataSourceActionTypeRemove:
-                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
-                break;
-        }
-    };
-    
-    batchUpdatesBlock();
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
@@ -501,7 +485,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 #pragma mark - Collection view data source
 
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
     return [self.chatDataSource messagesCount];
@@ -521,9 +504,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
                                               forIndexPath:indexPath];
     
     [self collectionView:collectionView configureCell:cell forIndexPath:indexPath];
-    
-    cell.layer.shouldRasterize = YES;
-    cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
     
     return cell;
 }
@@ -793,9 +773,11 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     NSUInteger offset = self.collectionView.contentOffset.y +
     constraintValue - self.toolbarBottomLayoutGuide.constant;
-    
-    self.collectionView.contentOffset =
-    CGPointMake(self.collectionView.contentOffset.x, offset);
+    if (!animated) {
+        
+        self.collectionView.contentOffset =
+        CGPointMake(self.collectionView.contentOffset.x, offset);
+    }
     
     self.toolbarBottomLayoutGuide.constant = (int)constraintValue;
     
