@@ -39,9 +39,10 @@
     return transform;
 }
 
-+ (instancetype)transformWithCustomTransformBlock:(QMCustomTransformBlock)customTransformBlock {
++ (instancetype)transformWithSize:(CGSize)size customTransformBlock:(QMCustomTransformBlock)customTransformBlock {
     
     QMImageTransform *transform = [[QMImageTransform alloc] init];
+    transform.size = size;
     transform.transformType = QMImageTransformTypeCustom;
     transform.customTransformBlock = customTransformBlock;
     
@@ -60,6 +61,13 @@
     return [NSString stringWithFormat:@"%@_%@_%@",
             stringWithImageTransformType(_transformType),
             NSStringFromCGSize(_size), url.absoluteString];
+}
+- (UIImage *)applyTransformForImage:(UIImage *)image {
+    __block UIImage *transformedImage;
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        transformedImage =[self imageManager:nil transformDownloadedImage:image withURL:nil];
+    });
+    return transformedImage;
 }
 
 - (UIImage *)imageManager:(SDWebImageManager *)imageManager
@@ -572,7 +580,7 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
                              forKey:transformKey
                              toDisk:YES
                          completion:nil];
-        
+
         return transformedImage;
     }
     
