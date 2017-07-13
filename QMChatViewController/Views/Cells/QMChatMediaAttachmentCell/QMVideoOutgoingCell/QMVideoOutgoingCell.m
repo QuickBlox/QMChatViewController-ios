@@ -27,9 +27,11 @@
 
 - (void)setDuration:(NSTimeInterval)duration {
 
-  //  if (duration > 0) {
+    self.durationLabel.hidden = !(duration > 0);
+    
+    if (duration > 0) {
         self.durationLabel.text = [self timestampStringForDuration:duration];
- //   }
+    }
 }
 
 - (NSString *)timestampStringForDuration:(NSTimeInterval)duration {
