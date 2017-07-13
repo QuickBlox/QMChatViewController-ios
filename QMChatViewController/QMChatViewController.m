@@ -19,7 +19,6 @@
 #import "QMCollectionViewFlowLayoutInvalidationContext.h"
 #import <Photos/Photos.h>
 #import "QMKVOView.h"
-#import "QMMediaPresenter.h"
 #import "QMMediaViewDelegate.h"
 #import "QMAudioRecordButton.h"
 
@@ -244,9 +243,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             break;
             
         case QMDataSourceActionTypeUpdate:
+        {
             [self.collectionView reloadItemsAtIndexPaths:indexPaths];
             break;
-            
+        }
         case QMDataSourceActionTypeRemove:
             [self.collectionView deleteItemsAtIndexPaths:indexPaths];
             break;
