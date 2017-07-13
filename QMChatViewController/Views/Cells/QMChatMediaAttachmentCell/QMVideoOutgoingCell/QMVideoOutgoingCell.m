@@ -15,8 +15,11 @@
     [super awakeFromNib];
     
     self.durationLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:0.55];
-    self.durationLabel.layer.cornerRadius = 3.0f;
+    
+    self.durationLabel.layer.cornerRadius = 4.0f;
     self.durationLabel.layer.masksToBounds = YES;
+    self.durationLabel.layer.shouldRasterize = YES;
+    
     self.durationLabel.textColor = [UIColor whiteColor];
     
     self.previewImageView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];

@@ -224,8 +224,9 @@ static NSArray *qm_colors = nil;
     
     else if (type == QMImageTransformTypeCustom) {
         
-        transform =
-        [QMImageTransform transformWithCustomTransformBlock:^UIImage *(NSURL *imageURL, UIImage *originalImage) {
+    transform =
+        [QMImageTransform transformWithSize:targetSize
+                       customTransformBlock:^UIImage *(NSURL *imageURL, UIImage *originalImage) {
             return [originalImage imageWithCornerRadius:4.0 targetSize:targetSize];
         }];
     }

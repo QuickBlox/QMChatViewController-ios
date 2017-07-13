@@ -34,7 +34,6 @@
 #import "QMAudioOutgoingCell.h"
 
 #import "QMMediaViewDelegate.h"
-#import "QMMediaPresenter.h"
 #import "QMChatBaseLinkPreviewCell.h"
 #import "QMChatIncomingLinkPreviewCell.h"
 #import "QMChatOutgoingLinkPreviewCell.h"

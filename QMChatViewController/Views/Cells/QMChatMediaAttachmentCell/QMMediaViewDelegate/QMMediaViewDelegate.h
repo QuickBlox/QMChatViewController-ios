@@ -9,19 +9,25 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "QMChatPresenterDelegate.h"
+typedef NS_ENUM(NSInteger, QMMediaViewState) {
+    QMMediaViewStateNotReady,
+    QMMediaViewStateReady,
+    QMMediaViewStateLoading,
+    QMMediaViewStateActive
+};
 
 @protocol QMMediaHandler;
 
 @protocol QMMediaViewDelegate <NSObject>
 
 @required
-//@property (strong, nonatomic) id <QMChatPresenterDelegate> presenter;
+
 @property (nonatomic, weak) id <QMMediaHandler> mediaHandler;
 @property (nonatomic, strong) NSString *messageID;
 
 @optional
 
+@property (nonatomic, assign) QMMediaViewState viewState;
 @property (nonatomic, assign) BOOL isReady;
 @property (nonatomic, assign) BOOL isActive;
 @property (nonatomic, assign) BOOL isLoading;
@@ -43,6 +49,5 @@
 
 - (void)didTapContainer:(id<QMMediaViewDelegate>)view;
 - (void)didTapPlayButton:(id<QMMediaViewDelegate>)view;
-- (void)requestMedia:(id<QMMediaViewDelegate>)view;
 - (void)shouldCancelOperation:(id<QMMediaViewDelegate>)view;
 @end

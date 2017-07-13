@@ -18,6 +18,7 @@
     self.durationLabel.layer.cornerRadius = 4.0f;
     self.durationLabel.layer.masksToBounds = YES;
     self.durationLabel.textColor = [UIColor whiteColor];
+    self.durationLabel.layer.shouldRasterize = YES;
 }
 
 - (void)setDuration:(NSTimeInterval)duration {
