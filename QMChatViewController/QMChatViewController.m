@@ -529,14 +529,15 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         QMChatCell *chatCell = (QMChatCell *)cell;
         
         if ([cell isKindOfClass:[QMChatIncomingCell class]]
-            || [cell isKindOfClass:[QMChatOutgoingCell class]]) {
+            || [cell isKindOfClass:[QMChatOutgoingCell class]] ||
+            [cell isKindOfClass:[QMChatBaseLinkPreviewCell class]]) {
             
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
         
+        chatCell.topLabel.text = [self topLabelAttributedStringForItem:messageItem];
         chatCell.textView.text = [self attributedStringForItem:messageItem];
-        chatCell.topLabel.attributedText = [self topLabelAttributedStringForItem:messageItem];
-        chatCell.bottomLabel.attributedText = [self bottomLabelAttributedStringForItem:messageItem];
+        chatCell.bottomLabel.text = [self bottomLabelAttributedStringForItem:messageItem];
     }
 }
 
