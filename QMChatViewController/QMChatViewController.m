@@ -117,6 +117,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
     };
+    
+    self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -126,6 +128,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [super viewWillAppear:animated];
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
+    self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
     
     [self updateCollectionViewInsets];
 }
@@ -144,9 +147,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-    
-    self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
     
     self.chatDataSource = [[QMChatDataSource alloc] init];
     self.chatDataSource.delegate = self;
@@ -812,12 +812,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)updateCollectionViewInsets {
     
-    BOOL shift = [self inputToolBarStartPos] > 0;
+    CGFloat topValue = 0;
+    CGFloat bottomValue = self.topContentAdditionalInset;
     
-    CGFloat bottomValue = self.bottomLayoutGuide.length - [self inputToolBarStartPos]  +
-    (shift ? - [UIApplication sharedApplication].statusBarFrame.size.height : 0);
-    
-    [self setCollectionViewInsetsTopValue:self.topContentAdditionalInset + self.topLayoutGuide.length
+    [self setCollectionViewInsetsTopValue:topValue
                               bottomValue:bottomValue];
 }
 
@@ -834,8 +832,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 }
 
 - (void)setCollectionViewInsetsTopValue:(CGFloat)top bottomValue:(CGFloat)bottom {
-    //
-    UIEdgeInsets insets = UIEdgeInsetsMake(bottom, 0.0f, top , 0.0f);
+    
+    UIEdgeInsets insets = UIEdgeInsetsMake(top, 0.0f, bottom , 0.0f);
     
     if (UIEdgeInsetsEqualToEdgeInsets(self.collectionView.contentInset, insets)) {
         return;
@@ -991,8 +989,12 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    [coordinator animateAlongsideTransition:nil
+                                 completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self updateCollectionViewInsets];
+    }];
     
     if (self.inputToolbar.contentView.textView.isFirstResponder) {
         [self.inputToolbar.contentView.textView resignFirstResponder];
