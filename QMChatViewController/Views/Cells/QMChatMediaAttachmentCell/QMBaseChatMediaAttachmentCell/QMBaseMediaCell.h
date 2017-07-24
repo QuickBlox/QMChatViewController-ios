@@ -8,7 +8,7 @@
 
 #import "QMChatCell.h"
 #import "FFCircularProgressView.h"
-
+#import "QMChatResources.h"
 #import "QMMediaViewDelegate.h"
 
 @interface QMBaseMediaCell : QMChatCell <QMMediaViewDelegate>
@@ -25,3 +25,5 @@
 - (CALayer *)maskLayerFromImage:(UIImage *)image
                       withFrame:(CGRect)frame;
 @end
+
+

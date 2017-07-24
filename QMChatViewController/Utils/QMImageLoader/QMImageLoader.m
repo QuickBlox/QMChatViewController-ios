@@ -113,7 +113,7 @@
     }
 #warning need update this case
 //    else {
-//        
+//
 //        UIImage *img = [image resizedImageBySpec:self.spec];
 //        
 //        return img;
@@ -186,7 +186,7 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     
     self = [super initWithCache:cache downloader:downloader];
     if (self) {
-        
+        _runningOperations = [NSMutableDictionary dictionary];
         _transforms = [NSMutableDictionary dictionary];
     }
     
@@ -455,6 +455,7 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
                          }
                      }];
                     operation.cancelBlock = ^{
+                       // NSLog(@"_QMI URL = %@", url);
                         [self.imageDownloader cancel:subOperation];
                         __strong __typeof(weakOperation) strongOperation = weakOperation;
                         [self safelyRemoveOperationFromRunning:strongOperation];
@@ -643,4 +644,7 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     }
 }
 
+- (void)dealloc {
+  // NSLog(@"dealloc combined Operation");
+}
 @end

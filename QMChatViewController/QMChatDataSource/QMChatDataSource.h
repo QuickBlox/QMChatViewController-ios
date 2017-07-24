@@ -79,10 +79,11 @@ typedef NS_ENUM(NSInteger, QMDataSourceActionType) {
 
 @protocol QMChatDataSourceDelegate <NSObject>
 
-- (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs;
+- (void)chatDataSource:(QMChatDataSource *)chatDataSource
+willBeChangedWithMessageIDs:(NSArray *)messagesIDs;
 
 - (void)changeDataSource:(QMChatDataSource *)dataSource
-              indexPaths:(NSArray *)indexPaths
+            withMessages:(NSArray *)messages
               updateType:(QMDataSourceActionType)updateType;
 
 @end

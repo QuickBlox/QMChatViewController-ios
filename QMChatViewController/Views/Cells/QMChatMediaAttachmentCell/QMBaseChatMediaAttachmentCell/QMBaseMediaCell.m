@@ -16,7 +16,6 @@
 @synthesize messageID = _messageID;
 @synthesize mediaHandler = _mediaHandler;
 @synthesize duration = _duration;
-@synthesize offset = _offset;
 @synthesize currentTime = _currentTime;
 @synthesize progress = _progress;
 @synthesize isReady = _isReady;
@@ -25,11 +24,6 @@
 @synthesize thumbnailImage = _thumbnailImage;
 @synthesize isLoading = _isLoading;
 
-//MARK: - NSObject
-
-- (void)deallock {
-    NSLog(@"deallock base cell");
-}
 
 - (void)awakeFromNib {
     
@@ -147,7 +141,7 @@
     if (isReady) {
         self.progressLabel.hidden = YES;
     }
-  //  self.mediaPlayButton.enabled = isReady;
+    //  self.mediaPlayButton.enabled = isReady;
 }
 
 - (void)setThumbnailImage:(UIImage *)image {
@@ -199,14 +193,10 @@
 
 - (NSString *)timestampString:(NSTimeInterval)duration {
     
-    if (duration < 60)
-    {
-        
+    if (duration < 60) {
         return [NSString stringWithFormat:@"0:%02d", (int)round(duration)];
-        
     }
-    else if (duration < 3600)
-    {
+    else if (duration < 3600) {
         return [NSString stringWithFormat:@"%d:%02d", (int)duration / 60, (int)duration % 60];
     }
     
@@ -217,17 +207,16 @@
 {
     
     NSString *timestampString  = nil;
+    
     if (duration < 60) {
-        if (currentTime < duration)
-        {
+        if (currentTime < duration) {
             timestampString = [NSString stringWithFormat:@"0:%02d", (int)round(currentTime)];
         }
         else {
             timestampString = [NSString stringWithFormat:@"0:%02d", (int)ceil(currentTime)];
         }
     }
-    else if (duration < 3600)
-    {
+    else if (duration < 3600) {
         timestampString = [NSString stringWithFormat:@"%d:%02d", (int)currentTime / 60, (int)currentTime % 60];
     }
     else {
@@ -284,41 +273,40 @@
 
 -(void)setViewState:(QMMediaViewState)viewState {
     
-//    if (_viewState != viewState) {
+    //    if (_viewState != viewState) {
     
-        switch (viewState) {
-            case QMMediaViewStateNotReady: {
-                
-                break;
-            }
-            case QMMediaViewStateReady: {
-                
-                break;
-            }
-            case QMMediaViewStateLoading: {
-                
-                break;
-            }
-            case QMMediaViewStateActive: {
-                
-                break;
-            }
-            default:
-                break;
+    switch (viewState) {
+        case QMMediaViewStateNotReady: {
+            
+            break;
         }
-        
-        UIImage *buttonImage = QMPlayButtonImageForStatus(viewState);
+        case QMMediaViewStateReady: {
+            
+            break;
+        }
+        case QMMediaViewStateLoading: {
+            
+            break;
+        }
+        case QMMediaViewStateActive: {
+            
+            break;
+        }
+        default:
+            break;
+    }
+    
+    UIImage *buttonImage = QMPlayButtonImageForStatus(viewState);
     NSTimeInterval animationDuration = self.viewState == QMMediaViewStateActive ? 0.15 : 0.0;
-        [UIView transitionWithView:self.mediaPlayButton
-                          duration:animationDuration
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            [self.mediaPlayButton setImage:buttonImage
-                                                  forState:UIControlStateNormal];
-                            [self.mediaPlayButton setImage:buttonImage
-                                                  forState:UIControlStateDisabled];
-                        } completion:nil];
-//    }
+    [UIView transitionWithView:self.mediaPlayButton
+                      duration:animationDuration
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        [self.mediaPlayButton setImage:buttonImage
+                                              forState:UIControlStateNormal];
+                        [self.mediaPlayButton setImage:buttonImage
+                                              forState:UIControlStateDisabled];
+                    } completion:nil];
 }
 
 static inline UIImage *QMPlayButtonImageForStatus(QMMediaViewState state) {

@@ -232,25 +232,40 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 #pragma mark -
 #pragma mark QMChatDataSourceDelegate
-
 - (void)changeDataSource:(QMChatDataSource *)dataSource
-              indexPaths:(NSArray *)indexPaths
+            withMessages:(NSArray *)messages
               updateType:(QMDataSourceActionType)updateType {
     
-    switch (updateType) {
-        case QMDataSourceActionTypeAdd:
-            [self.collectionView insertItemsAtIndexPaths:indexPaths];
-            break;
-            
-        case QMDataSourceActionTypeUpdate:
-        {
-            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-            break;
-        }
-        case QMDataSourceActionTypeRemove:
-            [self.collectionView deleteItemsAtIndexPaths:indexPaths];
-            break;
+    if (messages.count == 0) {
+        return;
     }
+    
+    dispatch_block_t batchUpdatesBlock = ^{
+        
+        NSArray *indexPaths =
+        [self.chatDataSource performChangesWithMessages:messages
+                                             updateType:updateType];
+        if (!self.collectionView.dataSource) {
+            return;
+        }
+        
+        switch (updateType) {
+                
+            case QMDataSourceActionTypeAdd:
+                [self.collectionView insertItemsAtIndexPaths:indexPaths];
+                break;
+                
+            case QMDataSourceActionTypeUpdate:
+                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+                break;
+                
+            case QMDataSourceActionTypeRemove:
+                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+                break;
+        }
+    };
+    
+    batchUpdatesBlock();
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {
@@ -568,7 +583,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
     
     return action == @selector(copy:);
-    
 }
 
 - (void)collectionView:(QMChatCollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {

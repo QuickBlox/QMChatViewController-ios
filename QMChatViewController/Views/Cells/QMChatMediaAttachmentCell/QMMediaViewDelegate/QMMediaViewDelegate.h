@@ -34,14 +34,12 @@ typedef NS_ENUM(NSInteger, QMMediaViewState) {
 
 @property (nonatomic, assign) NSTimeInterval currentTime;
 @property (nonatomic, assign) NSTimeInterval duration;
-@property (nonatomic, assign) CGFloat offset;
 @property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, strong) UIImage *thumbnailImage;
 @property (nonatomic, strong) UIImage *image;
 
 - (void)showLoadingError:(NSError *)error;
 - (void)showUploadingError:(NSError *)error;
-
 
 @end
 
@@ -50,4 +48,5 @@ typedef NS_ENUM(NSInteger, QMMediaViewState) {
 - (void)didTapContainer:(id<QMMediaViewDelegate>)view;
 - (void)didTapPlayButton:(id<QMMediaViewDelegate>)view;
 - (void)shouldCancelOperation:(id<QMMediaViewDelegate>)view;
+
 @end
