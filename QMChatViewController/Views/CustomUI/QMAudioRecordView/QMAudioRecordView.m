@@ -158,7 +158,7 @@
         int animationCurveOption = 7 << 16;
         [UIView animateWithDuration:0.25 * durationFactor
                               delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState | animationCurveOption
+                            options:options | animationCurveOption
                          animations:^{
                              
                              _recordIndicatorView.alpha = 0.5f;

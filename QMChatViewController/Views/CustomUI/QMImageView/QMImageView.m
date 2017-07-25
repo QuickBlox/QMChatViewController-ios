@@ -172,7 +172,6 @@ static NSArray *qm_colors = nil;
 //MARK: - NSObject
 
 - (void)dealloc {
-    
     [self sd_cancelCurrentAnimationImagesLoad];
 }
 
@@ -212,7 +211,10 @@ static NSArray *qm_colors = nil;
         return;
     }
     
+   //f NSLog(@"_QMI OLD URL = %@ newURL = %@", _url, url);
+    
     _url = url;
+    
     [self sd_cancelCurrentAnimationImagesLoad];
     
     CGSize targetSize = self.bounds.size;
@@ -294,7 +296,9 @@ static NSArray *qm_colors = nil;
     
     BOOL urlIsValid = url &&url.scheme && url.host;
     
+   // NSLog(@"_QMI OLD URL = %@ newURL = %@", _url, url);
     _url = url;
+    
     [self sd_cancelCurrentAnimationImagesLoad];
     
     self.image = placehoder;
@@ -330,7 +334,7 @@ static NSArray *qm_colors = nil;
                  completedBlock(image, error, cacheType, imageURL);
              }
          }];
-        
+    
         [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
     }
     else {
