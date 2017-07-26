@@ -213,7 +213,7 @@
         CGFloat maximumWidth = self.itemWidth - layoutModel.avatarSize.width - layoutModel.maxWidthMarginSpace;
         
         if (layoutModel.maxWidth > 0) {
-            maximumWidth = layoutModel.maxWidth - layoutModel.avatarSize.width - layoutModel.maxWidthMarginSpace;
+            maximumWidth = MIN(maximumWidth, layoutModel.maxWidth - layoutModel.avatarSize.width - layoutModel.maxWidthMarginSpace);
         }
         NSAssert(maximumWidth >= 0, @"Maximum width cannot be a negative nuber. Please check your maxWidthMarginSpace value.");
         
