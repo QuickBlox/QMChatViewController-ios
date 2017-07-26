@@ -51,7 +51,6 @@ static dispatch_queue_t _serialQueue = nil;
         
         _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
-        
     }
     
     return self;
@@ -175,12 +174,12 @@ static dispatch_queue_t _serialQueue = nil;
         }
         else if (updateType == QMDataSourceActionTypeUpdate) {
             
-            _messages[[self indexPathForMessage:msg].item] = msg;
+            self.messages[[self indexPathForMessage:msg].item] = msg;
         }
         
         else if (QMDataSourceActionTypeRemove) {
             
-            [_messages removeObjectAtIndex:[self indexPathForMessage:msg].item];
+            [self.messages removeObjectAtIndex:[self indexPathForMessage:msg].item];
         }
     }
     
@@ -224,13 +223,13 @@ static dispatch_queue_t _serialQueue = nil;
 
 - (NSInteger)messagesCount {
     
-    return _messages.count;
+    return self.allMessages.count;
 }
 
 - (NSUInteger)insertMessage:(QBChatMessage *)message {
     
     NSUInteger index = [self indexThatConformsToMessage:message];
-    [_messages insertObject:message atIndex:index];
+    [self.messages insertObject:message atIndex:index];
     
     return index;
 }
@@ -241,7 +240,7 @@ static dispatch_queue_t _serialQueue = nil;
         return nil;
     }
     
-    return _messages[indexPath.item];
+    return self.allMessages[indexPath.item];
 }
 
 
@@ -368,4 +367,3 @@ static dispatch_queue_t _serialQueue = nil;
 }
 
 @end
-
