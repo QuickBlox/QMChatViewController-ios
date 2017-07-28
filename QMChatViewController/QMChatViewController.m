@@ -43,6 +43,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 //Keyboard observing
 @property (strong, nonatomic) QMKVOView *systemInputToolbar;
+@property (weak, nonatomic) QMKVOView *inputAccessoryView;
 
 @end
 
@@ -67,9 +68,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [self registerForNotifications:NO];
     
-    self.collectionView.dataSource = nil;
-    self.collectionView.delegate = nil;
-    
     self.inputToolbar.contentView.textView.delegate = nil;
     self.inputToolbar.contentView.textView.pasteDelegate = nil;
     self.inputToolbar.delegate = nil;
@@ -79,9 +77,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 - (void)viewDidLoad {
     
+    [[[self class] nib] instantiateWithOwner:self options:nil];
+    
     [super viewDidLoad];
     
-    [[[self class] nib] instantiateWithOwner:self options:nil];
     
     [self configureMessagesViewController];
     
@@ -98,8 +97,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
     self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView *view, BOOL animated) {
         
-        NSInteger pos = view.superview.frame.size.height - view.frame.origin.y ;
-        
+        CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
         if (view.superview.frame.origin.y > 0 && pos == 0) {
             return;
         }
@@ -110,9 +108,9 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
             return;
         }
         
-        CGFloat v = [weakSelf inputToolBarStartPos];
+        const CGFloat v = [weakSelf inputToolBarStartPos];
         if (pos < v ) {
-            pos = [weakSelf inputToolBarStartPos];
+            pos = v;
         }
         
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
@@ -128,7 +126,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [super viewWillAppear:animated];
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
-    self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
+    
+    if (!self.inputToolbar.contentView.textView.isFirstResponder) {
+        self.toolbarBottomLayoutGuide.constant = [self inputToolBarStartPos];
+    }
     
     [self updateCollectionViewInsets];
 }
@@ -709,10 +710,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     if (textView != self.inputToolbar.contentView.textView) {
         return;
     }
-    
-    //[textView resignFirstResponder];
 }
-
 
 #pragma mark - UIAlertViewDelegate
 
@@ -779,24 +777,25 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 #pragma mark - Input toolbar utilities
 
-- (void)setToolbarBottomConstraintValue:(NSInteger)constraintValue animated:(BOOL)animated {
+- (void)setToolbarBottomConstraintValue:(CGFloat)constraintValue animated:(BOOL)animated {
     
-    if (constraintValue == (NSUInteger)self.toolbarBottomLayoutGuide.constant
-        || constraintValue < 0) {
+    if (constraintValue < 0) {
         return;
     }
     
-    NSUInteger offset = self.collectionView.contentOffset.y +
-    constraintValue - self.toolbarBottomLayoutGuide.constant;
     if (!animated) {
+        
+        CGFloat offset = self.collectionView.contentOffset.y +
+        constraintValue - self.toolbarBottomLayoutGuide.constant;
         
         self.collectionView.contentOffset =
         CGPointMake(self.collectionView.contentOffset.x, offset);
     }
     
-    self.toolbarBottomLayoutGuide.constant = (int)constraintValue;
+    self.toolbarBottomLayoutGuide.constant = constraintValue;
     
     if (animated) {
+    
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             

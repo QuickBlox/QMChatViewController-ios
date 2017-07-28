@@ -13,35 +13,21 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
 @interface QMKVOView()
 
 @property (assign, nonatomic, getter=isObserverAdded) BOOL observerAdded;
-@property (assign, nonatomic) NSInteger previosPos;
+
 @end
 
 @implementation QMKVOView
 
-#pragma mark - Life cycle
-- (void)dealloc {
-    //ILog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
-}
-
 #pragma mark - Actions
-- (void)setPos:(NSUInteger )pos {
-    
-//    if (_previosPos == pos || (self.superview.window.frame.size.height - pos) <= 44) {
-//        return;
-//    }
-//    _previosPos = pos;
-//    
-    CGRect frame = self.superview.frame;
-    frame.origin.y = pos;
-    self.superview.frame = frame;
-}
 
 - (void)setCollectionView:(UICollectionView *)collectionView {
     
     _collectionView = collectionView;
     
-    [_collectionView.panGestureRecognizer addTarget:self
-                                             action:@selector(handlePanGestureRecognizer:)];
+    if (floor(NSFoundationVersionNumber) >= NSFoundationVersionNumber_iOS_9_0) {
+        [_collectionView.panGestureRecognizer addTarget:self
+                                                 action:@selector(handlePanGestureRecognizer:)];
+    }
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {
@@ -75,9 +61,9 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
                        context:(void *)context {
     
     if ([keyPath isEqualToString:@"center"] ) {
-        
         if (self.hostViewFrameChangeBlock) {
-            self.hostViewFrameChangeBlock(self.superview, _collectionView.panGestureRecognizer.state != UIGestureRecognizerStateChanged);
+            self.hostViewFrameChangeBlock(self.superview,
+                                          _collectionView.panGestureRecognizer.state != UIGestureRecognizerStateChanged);
         }
     }
 }
@@ -90,14 +76,16 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
     
     if (gesture.state == UIGestureRecognizerStateChanged) {
         
-        CGPoint panPoint = [gesture locationInView:self.window];
-        CGRect hostViewRect = [self.window convertRect:self.superview.frame
-                                                               toView:nil];
-        CGFloat toolbarMinY =
-        CGRectGetMinY(hostViewRect) - CGRectGetHeight(self.inputView.frame);
+        UIView *host = self.superview;
+        UIView *input = self.inputView;
         
-        if (panPoint.y >= toolbarMinY) {
-            [self setPos:(int)panPoint.y];
+        CGRect frame = host.frame;
+        const CGPoint panPoint = [gesture locationInView:input.window];
+        const CGRect hostViewRect = [input convertRect:frame toView:host];
+        
+        if (panPoint.y >= hostViewRect.origin.y) {
+            frame.origin.y += hostViewRect.origin.y - panPoint.y;
+            host.frame = frame;
         }
     }
 }
