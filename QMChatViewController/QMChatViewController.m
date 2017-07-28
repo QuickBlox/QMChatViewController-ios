@@ -730,8 +730,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [self didPickAttachmentImage:image];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -871,7 +871,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     NSIndexPath *pathToLastMessage = [NSIndexPath indexPathForRow:0 inSection:0];
     
     if ([visibleInxexPathes containsObject:pathToLastMessage]) {
-        
         return NO;
     }
     
@@ -1009,8 +1008,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         [self updateCollectionViewInsets];
     }];
     
-    if (self.inputToolbar.contentView.textView.isFirstResponder) {
-        [self.inputToolbar.contentView.textView resignFirstResponder];
+    if (self.inputToolbar.contentView.textView.isFirstResponder && self.splitViewController) {
+        if(!self.splitViewController.isCollapsed) {
+            [self.inputToolbar.contentView.textView resignFirstResponder];
+        }
     }
 }
 
