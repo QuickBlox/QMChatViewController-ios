@@ -125,6 +125,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     NSParameterAssert(self.senderDisplayName != nil);
     
     [super viewWillAppear:animated];
+    
     self.toolbarHeightConstraint.constant = self.inputToolbar.preferredDefaultHeight;
     
     if (!self.inputToolbar.contentView.textView.isFirstResponder) {
@@ -145,8 +146,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [self registerCells];
     [self registerForNotifications:YES];
     
-    self.collectionView.dataSource = self;
-    self.collectionView.delegate = self;
     self.collectionView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     
     self.chatDataSource = [[QMChatDataSource alloc] init];
@@ -266,7 +265,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         }
     };
     
-    batchUpdatesBlock();
+    [self.collectionView performBatchUpdates:batchUpdatesBlock completion:nil];
 }
 
 - (void)chatDataSource:(QMChatDataSource *)chatDataSource willBeChangedWithMessageIDs:(NSArray *)messagesIDs {

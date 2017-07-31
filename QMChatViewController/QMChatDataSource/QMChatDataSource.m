@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableSet *dateDividers;
+@property (strong, nonatomic) dispatch_queue_t serialQueue;
 
 @end
 
@@ -33,8 +34,6 @@ NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
     }
 };
 
-static dispatch_queue_t _serialQueue = nil;
-
 #pragma mark -
 #pragma mark Initialization
 
@@ -44,10 +43,7 @@ static dispatch_queue_t _serialQueue = nil;
     
     if (self) {
         
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            _serialQueue = dispatch_queue_create("com.qmchatvc.datasource.queue", DISPATCH_QUEUE_SERIAL);
-        });
+        _serialQueue = dispatch_queue_create("com.qmchatvc.datasource.queue", DISPATCH_QUEUE_SERIAL);
         
         _dateDividers = [NSMutableSet set];
         _messages = [NSMutableArray array];
@@ -57,7 +53,7 @@ static dispatch_queue_t _serialQueue = nil;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"\n[QMDataSource] \n\t messages: %@", self.allMessages];
+    return [NSString stringWithFormat:@"%@\t messages: %@", [super description], self.allMessages];
 }
 
 #pragma mark -
