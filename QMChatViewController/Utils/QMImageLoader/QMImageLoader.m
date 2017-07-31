@@ -545,11 +545,11 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
                          completedBlock(nil, tranformedImageFromCache, nil, cacheType, YES, url);
                      }
                  });
-                 [self safelyRemoveOperationFromRunning:operation];
+                 [self safelyRemoveOperationFromRunning:weakOperation];
                  return;
              }
              
-             operation.cacheOperation = cacheOp();
+             weakOperation.cacheOperation = cacheOp();
          }];
     }
     else {
