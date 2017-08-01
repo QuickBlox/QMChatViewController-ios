@@ -338,5 +338,4 @@ NSString *const QMPlaceholderDidChangeHeight = @"com.quickblox.qmunicate.QMPlace
     return [super becomeFirstResponder];
 }
 
-
 @end

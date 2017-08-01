@@ -43,7 +43,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 //Keyboard observing
 @property (strong, nonatomic) QMKVOView *systemInputToolbar;
-@property (weak, nonatomic) QMKVOView *inputAccessoryView;
 
 @end
 
@@ -115,6 +114,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
     };
+    
+    self.inputToolbar.contentView.textView.inputAccessoryView = self.systemInputToolbar;
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
 }
@@ -204,20 +205,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [QMChatIncomingLinkPreviewCell registerForReuseInView:self.collectionView];
     // Register link preview outgoing cell
     [QMChatOutgoingLinkPreviewCell registerForReuseInView:self.collectionView];
-    UINib *locIncomingNib = [QMChatLocationIncomingCell nib];
-    NSString *locIncomingIdentifier = [QMChatLocationIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:locIncomingNib forCellWithReuseIdentifier:locIncomingIdentifier];
 }
 
-#pragma mark - UI Responder
-
-- (UIView *)inputAccessoryView {
-    return self.systemInputToolbar;
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
 
 #pragma mark - Getters
 

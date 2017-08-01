@@ -18,6 +18,11 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
 
 @implementation QMKVOView
 
+- (void)dealloc {
+    
+    NSLog(@"QMKVOView dealloc");
+}
+
 #pragma mark - Actions
 
 - (void)setCollectionView:(UICollectionView *)collectionView {
