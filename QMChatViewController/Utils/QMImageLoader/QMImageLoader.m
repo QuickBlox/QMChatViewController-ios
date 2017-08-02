@@ -111,14 +111,6 @@
             break;
         }
     }
-#warning need update this case
-//    else {
-//
-//        UIImage *img = [image resizedImageBySpec:self.spec];
-//        
-//        return img;
-//    }
-    
     return nil;
 }
 
