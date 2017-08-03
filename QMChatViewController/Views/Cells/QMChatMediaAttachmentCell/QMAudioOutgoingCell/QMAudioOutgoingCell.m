@@ -35,11 +35,6 @@
     _progressView.layer.mask = [self maskLayerFromImage:stretchableImage withFrame:_progressView.bounds];
 }
 
-- (void)setIsActive:(BOOL)isActive {
-    [super setIsActive:isActive];
-}
-
-
 - (void)setCurrentTime:(NSTimeInterval)currentTime {
     
     [super setCurrentTime:currentTime];
@@ -51,7 +46,7 @@
     self.durationLabel.text = timeStamp;
     
     if (duration > 0) {
-        BOOL animated = self.isActive && currentTime > 0;
+        BOOL animated = self.viewState == QMMediaViewStateActive && currentTime > 0;
         [self.progressView setProgress:currentTime/duration
                               animated:animated];
     }

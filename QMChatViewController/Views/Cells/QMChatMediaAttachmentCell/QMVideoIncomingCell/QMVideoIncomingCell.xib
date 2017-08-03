@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13122.19" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.16"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13137.5"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -80,12 +80,6 @@
                                             <constraint firstAttribute="width" constant="50" id="Fip-ZJ-LQI"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2F-Xs-R7z">
-                                        <rect key="frame" x="53" y="87" width="42" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j79-43-uiW">
                                         <rect key="frame" x="2" y="23" width="42" height="21"/>
                                         <constraints>
@@ -99,9 +93,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="sRs-ay-hfh" firstAttribute="centerY" secondItem="Fa7-ju-G0X" secondAttribute="centerY" id="8rU-yB-lsg"/>
-                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerX" secondItem="th2-rm-wzW" secondAttribute="centerX" id="9D7-Nm-kFS"/>
                                     <constraint firstAttribute="trailing" secondItem="4Tj-AD-mYY" secondAttribute="trailing" id="JbZ-J7-TpC"/>
-                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerY" secondItem="1rv-oZ-ov9" secondAttribute="centerY" id="L1k-zy-HPC"/>
                                     <constraint firstAttribute="trailing" secondItem="pgQ-H7-Y5u" secondAttribute="trailing" id="MHb-21-BnI"/>
                                     <constraint firstItem="j79-43-uiW" firstAttribute="top" secondItem="Fa7-ju-G0X" secondAttribute="top" constant="2" id="PS3-ZF-RrF"/>
                                     <constraint firstItem="th2-rm-wzW" firstAttribute="centerY" secondItem="sRs-ay-hfh" secondAttribute="centerY" id="Qia-nd-4DR"/>
@@ -109,17 +101,13 @@
                                     <constraint firstItem="4Tj-AD-mYY" firstAttribute="top" secondItem="Fa7-ju-G0X" secondAttribute="bottom" id="XHe-Ey-FfR"/>
                                     <constraint firstItem="Fa7-ju-G0X" firstAttribute="top" secondItem="pgQ-H7-Y5u" secondAttribute="bottom" id="Xog-ld-U4i"/>
                                     <constraint firstAttribute="bottom" secondItem="4Tj-AD-mYY" secondAttribute="bottom" id="bxS-ng-UxW"/>
-                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerX" secondItem="1rv-oZ-ov9" secondAttribute="centerX" id="eiA-MB-h1L"/>
-                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerX" secondItem="1rv-oZ-ov9" secondAttribute="centerX" id="jvm-lN-1fe"/>
                                     <constraint firstItem="4Tj-AD-mYY" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="pfI-Aj-Cr2"/>
                                     <constraint firstItem="pgQ-H7-Y5u" firstAttribute="top" secondItem="1rv-oZ-ov9" secondAttribute="top" id="qvi-DU-nQs"/>
                                     <constraint firstItem="sRs-ay-hfh" firstAttribute="centerX" secondItem="Fa7-ju-G0X" secondAttribute="centerX" id="tk4-mU-Sx0"/>
                                     <constraint firstItem="th2-rm-wzW" firstAttribute="centerX" secondItem="sRs-ay-hfh" secondAttribute="centerX" id="vM4-HP-zpM"/>
-                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerY" secondItem="1rv-oZ-ov9" secondAttribute="centerY" id="who-hi-3YO"/>
                                     <constraint firstAttribute="trailing" secondItem="Fa7-ju-G0X" secondAttribute="trailing" id="x6E-80-NrW"/>
                                     <constraint firstItem="pgQ-H7-Y5u" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="xDn-Pp-trQ"/>
                                     <constraint firstItem="Fa7-ju-G0X" firstAttribute="leading" secondItem="1rv-oZ-ov9" secondAttribute="leading" id="xUT-Sx-H5g"/>
-                                    <constraint firstItem="u2F-Xs-R7z" firstAttribute="centerY" secondItem="th2-rm-wzW" secondAttribute="centerY" id="xr0-uQ-T5m"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -175,7 +163,6 @@
                 <outlet property="messageContainerRightInsetConstraint" destination="tJS-yu-Sgw" id="71M-yl-xUk"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="JYn-ad-AzN" id="kBu-AD-ojU"/>
                 <outlet property="previewImageView" destination="Fa7-ju-G0X" id="Q16-Fx-xHm"/>
-                <outlet property="progressLabel" destination="u2F-Xs-R7z" id="dLN-2e-jUq"/>
                 <outlet property="textViewBottomLabelVerticalSpaceConstraint" destination="XHe-Ey-FfR" id="Hh5-xs-Juc"/>
                 <outlet property="topLabel" destination="pgQ-H7-Y5u" id="56f-VT-nrf"/>
                 <outlet property="topLabelHeightConstraint" destination="9mx-bN-is7" id="gRI-ev-FiX"/>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13137.5"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -72,12 +72,6 @@
                                             <constraint firstAttribute="width" constant="45" id="JC2-wp-8rV"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F1B-QJ-vAs">
-                                        <rect key="frame" x="53" y="86" width="42" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -85,7 +79,6 @@
                                     <constraint firstItem="VoV-NK-Opc" firstAttribute="centerY" secondItem="ukH-9J-jpb" secondAttribute="centerY" id="4Rt-mA-Wo7"/>
                                     <constraint firstItem="PAF-cC-e9g" firstAttribute="leading" secondItem="ukH-9J-jpb" secondAttribute="leading" id="8ZS-jd-7ix"/>
                                     <constraint firstItem="PAF-cC-e9g" firstAttribute="top" secondItem="ukH-9J-jpb" secondAttribute="top" id="AB7-oI-1vC"/>
-                                    <constraint firstItem="F1B-QJ-vAs" firstAttribute="centerX" secondItem="ukH-9J-jpb" secondAttribute="centerX" id="CiY-Qf-LuA"/>
                                     <constraint firstItem="g9R-pB-Koi" firstAttribute="leading" secondItem="ukH-9J-jpb" secondAttribute="leading" id="Jgh-3f-NE1"/>
                                     <constraint firstAttribute="trailing" secondItem="g9R-pB-Koi" secondAttribute="trailing" id="USW-J4-Mak"/>
                                     <constraint firstItem="Zp3-vY-R3P" firstAttribute="top" secondItem="g9R-pB-Koi" secondAttribute="bottom" id="Zx4-Gx-KBA"/>
@@ -93,7 +86,6 @@
                                     <constraint firstAttribute="bottom" secondItem="Zp3-vY-R3P" secondAttribute="bottom" id="hyf-t0-eqL"/>
                                     <constraint firstItem="g9R-pB-Koi" firstAttribute="top" secondItem="PAF-cC-e9g" secondAttribute="bottom" id="ikv-cd-AlZ"/>
                                     <constraint firstAttribute="trailing" secondItem="Zp3-vY-R3P" secondAttribute="trailing" id="l4O-V8-fEE"/>
-                                    <constraint firstItem="F1B-QJ-vAs" firstAttribute="centerY" secondItem="ukH-9J-jpb" secondAttribute="centerY" id="uy1-rJ-usw"/>
                                     <constraint firstItem="Zp3-vY-R3P" firstAttribute="leading" secondItem="ukH-9J-jpb" secondAttribute="leading" id="w21-DS-5dl"/>
                                 </constraints>
                             </view>
@@ -146,7 +138,6 @@
                 <outlet property="messageContainerBottomInsetConstraint" destination="tTp-g8-2qS" id="DrZ-25-7gA"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="svk-Rq-C3N" id="i95-7p-9mq"/>
                 <outlet property="previewImageView" destination="g9R-pB-Koi" id="nqM-Bv-9QP"/>
-                <outlet property="progressLabel" destination="F1B-QJ-vAs" id="Joo-rB-uT5"/>
                 <outlet property="textViewBottomLabelVerticalSpaceConstraint" destination="Zx4-Gx-KBA" id="Veb-m1-8M0"/>
                 <outlet property="topLabel" destination="PAF-cC-e9g" id="cJL-Cl-biy"/>
                 <outlet property="topLabelHeightConstraint" destination="ZxP-nf-dRP" id="esl-nu-0xw"/>
