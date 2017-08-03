@@ -512,7 +512,9 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     return cell;
 }
 
-- (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(QMChatCollectionView *)collectionView
+         configureCell:(UICollectionViewCell *)cell
+          forIndexPath:(NSIndexPath *)indexPath {
     
     if ([cell isKindOfClass:[QMChatContactRequestCell class]]) {
         
@@ -533,8 +535,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         QMChatCell *chatCell = (QMChatCell *)cell;
         
         if ([cell isKindOfClass:[QMChatIncomingCell class]]
-            || [cell isKindOfClass:[QMChatOutgoingCell class]] ||
-            [cell isKindOfClass:[QMChatBaseLinkPreviewCell class]]) {
+            || [cell isKindOfClass:[QMChatOutgoingCell class]]
+            || [cell isKindOfClass:[QMChatBaseLinkPreviewCell class]]) {
             
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
@@ -611,8 +613,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 #pragma mark - Input toolbar delegate
 
-- (void)messagesInputToolbar:(QMInputToolbar *)toolbar
-       didPressLeftBarButton:(UIButton *)sender {
+- (void)messagesInputToolbar:(QMInputToolbar *)toolbar didPressLeftBarButton:(UIButton *)sender {
     
     if (toolbar.sendButtonOnRight) {
         
@@ -624,8 +625,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     }
 }
 
-- (void)messagesInputToolbar:(QMInputToolbar *)toolbar
-      didPressRightBarButton:(UIButton *)sender {
+- (void)messagesInputToolbar:(QMInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender {
     
     if (toolbar.sendButtonOnRight) {
         

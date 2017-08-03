@@ -39,7 +39,7 @@ static void * kQMFrameKeyValueObservingContext = &kQMFrameKeyValueObservingConte
     
     if (self.isObserverAdded) {
         
-        if (self.hostViewFrameChangeBlock) {
+        if (self.hostViewFrameChangeBlock && newSuperview) {
             self.hostViewFrameChangeBlock(newSuperview, NO);
         }
         
