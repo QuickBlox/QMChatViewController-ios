@@ -10,6 +10,45 @@
 #import "QMMediaViewDelegate.h"
 #import "QMChatResources.h"
 
+
+@interface UIButton (QMAnimated)
+
+- (void)qm_setImage:(UIImage *)image
+           animated:(BOOL)animated;
+- (void)qm_setImage:(UIImage *)image;
+
+@end
+
+@implementation UIButton (QMAnimated)
+
+- (void)qm_setImage:(UIImage *)image {
+    [self qm_setImage:image animated:YES];
+}
+
+- (void)qm_setImage:(UIImage *)buttonImage
+           animated:(BOOL)animated  {
+    
+    NSParameterAssert(buttonImage);
+    
+    dispatch_block_t imageSetBlock = ^{
+        [self setImage:buttonImage
+              forState:UIControlStateNormal];
+    };
+    
+    if (animated) {
+        [UIView transitionWithView:self
+                          duration:0.15
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:imageSetBlock
+                        completion:nil];
+    }
+    else {
+        imageSetBlock();
+    }
+}
+
+@end
+
 @implementation QMBaseMediaCell
 
 @synthesize viewState = _viewState;
@@ -18,75 +57,43 @@
 @synthesize duration = _duration;
 @synthesize currentTime = _currentTime;
 @synthesize progress = _progress;
-@synthesize isReady = _isReady;
-@synthesize isActive = _isActive;
 @synthesize image = _image;
 @synthesize thumbnailImage = _thumbnailImage;
-@synthesize isLoading = _isLoading;
-
+@synthesize cancellable = _cancellable;
+@synthesize playable = _playable;
 
 - (void)awakeFromNib {
-    
     [super awakeFromNib];
     
-    NSString *imageName  = @"play_icon";
-    UIImage *buttonImage = [QMChatResources imageNamed:imageName];
-    
-    if (buttonImage) {
-        
-        [self.mediaPlayButton setImage:buttonImage
-                              forState:UIControlStateNormal];
-    }
-    
-    self.mediaPlayButton.hidden = NO;
-    self.mediaPlayButton.enabled = YES;
-    
-    [self.mediaPlayButton setTitle:nil
-                          forState:UIControlStateNormal];
-    
+    self.circularProgress.hideProgressIcons = YES;
+    self.circularProgress.hidden = YES;
     [self.mediaPlayButton addTarget:self
                              action:@selector(activateMedia:)
-                   forControlEvents:UIControlEventTouchDown];
+                   forControlEvents:UIControlEventTouchUpInside];
     
-    self.circularProgress.hideProgressIcons = YES;
-    self.durationLabel.text = nil;
-    self.progressLabel.text = nil;
-    self.circularProgress.hidden = YES;
-    self.progressLabel.hidden = YES;
-    self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
-}
-
-- (void)setIsLoading:(BOOL)isLoading {
+    [self setViewState:QMMediaViewStateNotReady];
     
-    if (_isLoading != isLoading) {
-        
-        self.circularProgress.hidden = !isLoading;
-        
-        if (isLoading) {
-            [self.circularProgress startSpinProgressBackgroundLayer];
-        }
-        else {
-            self.progressLabel.hidden = YES;
-            [self.circularProgress stopSpinProgressBackgroundLayer];
-        }
-        _isLoading = isLoading;
+    UIImage *buttonImage = QMPlayButtonImageForState(_viewState);
+    
+    if (buttonImage) {
+        [self.mediaPlayButton qm_setImage:buttonImage
+                                 animated:YES];
     }
 }
-
 
 - (void)prepareForReuse {
     
     [super prepareForReuse];
-    
-    self.isReady = NO;
-    self.isLoading = NO;
-    self.isActive = NO;
-    self.progressLabel.hidden = YES;
-    self.circularProgress.hidden = YES;
-    [self.circularProgress stopSpinProgressBackgroundLayer];
-    self.circularProgress.hideProgressIcons = YES;
+    [self setViewState:QMMediaViewStateNotReady];
     self.progress = 0.0;
     self.previewImageView.image = nil;
+    
+    UIImage *buttonImage = QMPlayButtonImageForState(_viewState);
+    
+    if (buttonImage) {
+        [self.mediaPlayButton qm_setImage:buttonImage
+                                 animated:YES];
+    }
 }
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime {
@@ -94,31 +101,30 @@
     if (_currentTime == currentTime) {
         return;
     }
+    
     if (currentTime > _duration) {
         currentTime = _duration;
     }
     _currentTime = currentTime;
     
     self.durationLabel.text = [self timestampString:currentTime forDuration:_duration];
-    
 }
+
 - (void)showLoadingError:(NSError *)error {
     
 }
+
 - (void)setProgress:(CGFloat)progress {
     
-    if (self.isReady) {
+    if (self.viewState != QMMediaViewStateLoading) {
         return;
     }
     
     if (progress > 0.0) {
         
-        self.progressLabel.hidden = NO;
         self.circularProgress.hidden = NO;
         [self.circularProgress stopSpinProgressBackgroundLayer];
     }
-    
-    self.progressLabel.text = [NSString stringWithFormat:@"%2.0f%%", progress * 100.0f];
     
     if (progress >= 1) {
         self.circularProgress.hidden = YES;
@@ -135,60 +141,27 @@
     self.durationLabel.text = [self timestampString:duration];
 }
 
-- (void)setIsReady:(BOOL)isReady {
-    
-    _isReady = isReady;
-    if (isReady) {
-        self.progressLabel.hidden = YES;
-    }
-    //  self.mediaPlayButton.enabled = isReady;
-}
 
 - (void)setThumbnailImage:(UIImage *)image {
+    
     _thumbnailImage = image;
+    
     self.previewImageView.image = image;
     [self.previewImageView setNeedsLayout];
 }
 
 - (void)setImage:(UIImage *)image {
+    
     _image = image;
+    
     self.previewImageView.image = image;
     [self.previewImageView setNeedsLayout];
 }
 
-- (void)setIsActive:(BOOL)isActive {
-    
-    if (_isActive == isActive) {
-        return;
-    }
-    _isActive = isActive;
-    
-    NSString *imageName = isActive ? @"pause_icon" : @"play_icon";
-    UIImage *buttonImage = [QMChatResources imageNamed:imageName];
-    
-    if (buttonImage) {
-        
-        [UIView transitionWithView:self.mediaPlayButton
-                          duration:0.15
-                           options:UIViewAnimationOptionTransitionCrossDissolve
-                        animations:^{
-                            [self.mediaPlayButton setImage:buttonImage
-                                                  forState:UIControlStateNormal];
-                            [self.mediaPlayButton setImage:buttonImage
-                                                  forState:UIControlStateDisabled];
-                        } completion:nil];
-        
-        
-    }
-    
-    if (!isActive) {
-        self.durationLabel.text = [self timestampString:self.duration];
-    }
-}
 
 - (IBAction)activateMedia:(id)sender {
     
-    [self.mediaHandler didTapPlayButton:self];
+    [self.mediaHandler didTapMediaButton:self];
 }
 
 - (NSString *)timestampString:(NSTimeInterval)duration {
@@ -203,7 +176,8 @@
     return [NSString stringWithFormat:@"%d:%02d:%02d", (int)duration / 3600, (int)duration / 60, (int)duration % 60];
 }
 
-- (NSString *)timestampString:(NSTimeInterval)currentTime forDuration:(NSTimeInterval)duration
+- (NSString *)timestampString:(NSTimeInterval)currentTime
+                  forDuration:(NSTimeInterval)duration
 {
     
     NSString *timestampString  = nil;
@@ -271,57 +245,49 @@
     }
 }
 
--(void)setViewState:(QMMediaViewState)viewState {
+- (void)setViewState:(QMMediaViewState)viewState {
     
-    //    if (_viewState != viewState) {
+    if (_viewState == viewState) {
+        return;
+    }
+    _viewState = viewState;
     
-    switch (viewState) {
-        case QMMediaViewStateNotReady: {
-            
-            break;
-        }
-        case QMMediaViewStateReady: {
-            
-            break;
-        }
-        case QMMediaViewStateLoading: {
-            
-            break;
-        }
-        case QMMediaViewStateActive: {
-            
-            break;
-        }
-        default:
-            break;
+    if (viewState == QMMediaViewStateLoading) {
+        self.mediaPlayButton.hidden = !self.cancellable;
+        [self.circularProgress startSpinProgressBackgroundLayer];
+    }
+    else {
+        self.mediaPlayButton.hidden = !self.playable;
+        [self.circularProgress stopSpinProgressBackgroundLayer];
+    }
+    self.circularProgress.hidden = viewState != QMMediaViewStateLoading;
+    
+    UIImage *buttonImage = QMPlayButtonImageForState(viewState);
+    
+    if (buttonImage) {
+        [self.mediaPlayButton qm_setImage:buttonImage
+                                 animated:YES];
     }
     
-    UIImage *buttonImage = QMPlayButtonImageForStatus(viewState);
-    NSTimeInterval animationDuration = self.viewState == QMMediaViewStateActive ? 0.15 : 0.0;
-    [UIView transitionWithView:self.mediaPlayButton
-                      duration:animationDuration
-                       options:UIViewAnimationOptionTransitionCrossDissolve
-                    animations:^{
-                        [self.mediaPlayButton setImage:buttonImage
-                                              forState:UIControlStateNormal];
-                        [self.mediaPlayButton setImage:buttonImage
-                                              forState:UIControlStateDisabled];
-                    } completion:nil];
+    
 }
 
-static inline UIImage *QMPlayButtonImageForStatus(QMMediaViewState state) {
+static inline UIImage* QMPlayButtonImageForState(QMMediaViewState state) {
     
-    NSString *imageName;
+    NSString *imageName = nil;
     
     switch (state) {
+            
         case QMMediaViewStateNotReady: imageName = @"download_icon"; break;
-        case QMMediaViewStateReady:    imageName  = @"play_icon"; break;
+        case QMMediaViewStateReady:    imageName = @"play_icon"; break;
         case QMMediaViewStateLoading:  imageName = @"cancel_icon"; break;
         case QMMediaViewStateActive:   imageName = @"pause_icon"; break;
+        case QMMediaViewStateError:    imageName = @"pause_icon"; break;
     }
     
     return [QMChatResources imageNamed:imageName];
 }
+
 
 
 @end

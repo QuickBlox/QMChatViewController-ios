@@ -26,10 +26,6 @@
                           animated:NO];
 }
 
-- (void)setIsActive:(BOOL)isActive {
-    
-    [super setIsActive:isActive];
-}
 
 - (void)layoutSubviews {
     
@@ -42,16 +38,18 @@
 }
 
 - (void)setCurrentTime:(NSTimeInterval)currentTime {
-    
+
     [super setCurrentTime:currentTime];
+    
     NSInteger duration = self.duration;
+    
     NSString *timeStamp = [self timestampString:currentTime
                                     forDuration:duration];
     
     self.durationLabel.text = timeStamp;
     
     if (duration > 0) {
-        BOOL animated = self.isActive && currentTime > 0;
+        BOOL animated = self.viewState == QMMediaViewStateActive && currentTime > 0;
         [self.progressView setProgress:currentTime/duration
                               animated:animated];
     }

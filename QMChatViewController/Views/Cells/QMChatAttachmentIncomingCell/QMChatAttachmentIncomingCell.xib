@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13156.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13137.5"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -64,12 +64,6 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afE-E3-ffD">
-                                        <rect key="frame" x="74" y="97" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -79,9 +73,7 @@
                                     <constraint firstItem="wKm-2n-DD8" firstAttribute="top" secondItem="rjR-Gw-mBf" secondAttribute="bottom" id="64J-3k-oJS"/>
                                     <constraint firstItem="rjR-Gw-mBf" firstAttribute="leading" secondItem="xQC-MA-Zb4" secondAttribute="leading" id="Gz2-T6-wmb"/>
                                     <constraint firstAttribute="bottom" secondItem="Swu-eq-zQd" secondAttribute="bottom" id="MHY-pr-NYi"/>
-                                    <constraint firstAttribute="centerX" secondItem="afE-E3-ffD" secondAttribute="centerX" id="PNh-hI-EMX"/>
                                     <constraint firstAttribute="trailing" secondItem="rjR-Gw-mBf" secondAttribute="trailing" id="bsC-C6-1Cq"/>
-                                    <constraint firstAttribute="centerY" secondItem="afE-E3-ffD" secondAttribute="centerY" id="eK9-a0-mq7"/>
                                     <constraint firstItem="Swu-eq-zQd" firstAttribute="leading" secondItem="xQC-MA-Zb4" secondAttribute="leading" id="kkk-If-Rhy"/>
                                     <constraint firstAttribute="trailing" secondItem="Swu-eq-zQd" secondAttribute="trailing" id="xAe-Q2-NsG"/>
                                     <constraint firstItem="Swu-eq-zQd" firstAttribute="top" secondItem="wKm-2n-DD8" secondAttribute="bottom" id="yv0-Xg-DDn"/>
@@ -135,7 +127,6 @@
                 <outlet property="messageContainer" destination="xQC-MA-Zb4" id="dvn-CA-89e"/>
                 <outlet property="messageContainerBottomInsetConstraint" destination="piN-Jq-qV9" id="KCA-aQ-sJo"/>
                 <outlet property="messageContainerTopInsetConstraint" destination="JKv-0o-gME" id="y51-M7-KmB"/>
-                <outlet property="progressLabel" destination="afE-E3-ffD" id="nPz-VZ-ZRb"/>
                 <outlet property="textViewBottomLabelVerticalSpaceConstraint" destination="yv0-Xg-DDn" id="n8o-68-Crr"/>
                 <outlet property="topLabel" destination="rjR-Gw-mBf" id="HxZ-1R-ug0"/>
                 <outlet property="topLabelHeightConstraint" destination="JQy-ZG-nyp" id="E0b-Jf-0Xd"/>

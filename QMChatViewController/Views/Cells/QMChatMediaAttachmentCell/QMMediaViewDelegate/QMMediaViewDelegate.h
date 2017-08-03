@@ -13,7 +13,8 @@ typedef NS_ENUM(NSInteger, QMMediaViewState) {
     QMMediaViewStateNotReady,
     QMMediaViewStateReady,
     QMMediaViewStateLoading,
-    QMMediaViewStateActive
+    QMMediaViewStateActive,
+    QMMediaViewStateError
 };
 
 @protocol QMMediaHandler;
@@ -27,14 +28,15 @@ typedef NS_ENUM(NSInteger, QMMediaViewState) {
 
 @optional
 
+@property (nonatomic, assign) BOOL cancellable;
+@property (nonatomic, assign) BOOL playable;
+
 @property (nonatomic, assign) QMMediaViewState viewState;
-@property (nonatomic, assign) BOOL isReady;
-@property (nonatomic, assign) BOOL isActive;
-@property (nonatomic, assign) BOOL isLoading;
 
 @property (nonatomic, assign) NSTimeInterval currentTime;
 @property (nonatomic, assign) NSTimeInterval duration;
 @property (nonatomic, assign) CGFloat progress;
+
 @property (nonatomic, strong) UIImage *thumbnailImage;
 @property (nonatomic, strong) UIImage *image;
 
@@ -45,8 +47,6 @@ typedef NS_ENUM(NSInteger, QMMediaViewState) {
 
 @protocol QMMediaHandler
 
-- (void)didTapContainer:(id<QMMediaViewDelegate>)view;
-- (void)didTapPlayButton:(id<QMMediaViewDelegate>)view;
-- (void)shouldCancelOperation:(id<QMMediaViewDelegate>)view;
+- (void)didTapMediaButton:(id<QMMediaViewDelegate>)view;
 
 @end
