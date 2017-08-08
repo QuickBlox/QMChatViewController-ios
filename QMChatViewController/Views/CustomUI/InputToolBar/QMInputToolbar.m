@@ -133,6 +133,11 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         
         if (!self.audioRecordButtonItem.superview) {
             [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+            [self audioRecordButtonItem].translatesAutoresizingMaskIntoConstraints = false;
+            
+            [[[self audioRecordButtonItem].centerXAnchor constraintEqualToAnchor:self.contentView.rightBarButtonContainerView.centerXAnchor] setActive:YES];
+            
+            [[[self audioRecordButtonItem].centerYAnchor constraintEqualToAnchor:self.contentView.rightBarButtonContainerView.centerYAnchor] setActive:YES];
         }
     }
     else {
@@ -392,7 +397,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     if (!_audioRecordButtonItem) {
         
-        UIImage *recordImage = [QMChatResources imageNamed:@"MicOverlay"];
+        UIImage *recordImage = [UIImage imageNamed:@"ic_audio"];
         UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
         
         CGRect frame = CGRectMake(12, 0, recordImage.size.width, 32.0);

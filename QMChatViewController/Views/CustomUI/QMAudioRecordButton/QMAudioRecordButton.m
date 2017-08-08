@@ -9,8 +9,6 @@
 #import "QMAudioRecordButton.h"
 #import "QMChatResources.h"
 
-//#import <SexyTooltip/SexyTooltip.h>
-
 static const CGFloat innerCircleRadius = 110.0f;
 static const CGFloat outerCircleRadius = innerCircleRadius + 50.0f;
 static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius;
@@ -53,21 +51,19 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self != nil)
-    {
-        self.exclusiveTouch = true;
-        self.multipleTouchEnabled = false;
+    
+    if (self != nil) {
         
-        _hitTestEdgeInsets = UIEdgeInsetsMake(-100, -100, -100, -100);
+        super.exclusiveTouch = true;
         _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
         _panRecognizer.cancelsTouchesInView = false;
         _panRecognizer.delegate = self;
         
-        _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
-        _panRecognizer.cancelsTouchesInView = false;
-        _panRecognizer.delegate = self;
+        UIImage *iconImage = [[UIImage imageNamed:@"ic_audio"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _innerIconView = [[UIImageView alloc] initWithImage:iconImage];
+        _innerIconView.tintColor = [UIColor whiteColor];
         
-        _iconView.image = [UIImage imageNamed:@"MicOverlay"];
+        _iconView.image = [UIImage imageNamed:@"ic_audio"];
         [self addGestureRecognizer:_panRecognizer];
     }
     return self;
@@ -119,15 +115,14 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
         
         _overlayWindow.rootViewController = [[UIViewController alloc] init];
         _overlayWindow.rootViewController.view.backgroundColor = [UIColor clearColor];
-        _innerCircleView = [[UIImageView alloc] initWithImage:[self innerCircleImage]];
+        _innerCircleView = [[UIImageView alloc] initWithImage:innerCircleImage()];
         _innerCircleView.alpha = 0.0f;
         [_overlayWindow.rootViewController.view addSubview:_innerCircleView];
         
-        _outerCircleView = [[UIImageView alloc] initWithImage:[self outerCircleImage]];
+        _outerCircleView = [[UIImageView alloc] initWithImage:outerCircleImage()];
         _outerCircleView.alpha = 0.0f;
         [_overlayWindow.rootViewController.view addSubview:_outerCircleView];
         
-        _innerIconView = [[UIImageView alloc] initWithImage:[QMChatResources imageNamed:@"MicOverlay"]];
         _innerIconView.alpha = 0.0f;
         [_overlayWindow.rootViewController.view addSubview:_innerIconView];
     }
@@ -149,20 +144,25 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     _innerCircleView.alpha = 0.2f;
     _outerCircleView.alpha = 0.2f;
     
-    if ([[[UIDevice currentDevice] systemVersion] intValue] >= 8) {
-        
-        [UIView animateWithDuration:0.50 delay:0.0 usingSpringWithDamping:0.55f initialSpringVelocity:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _innerCircleView.transform = CGAffineTransformIdentity;
-            _outerCircleView.transform = CGAffineTransformMakeScale(outerCircleMinScale, outerCircleMinScale);
-        } completion:nil];
-        
-        [UIView animateWithDuration:0.1 animations:^{
-            _innerCircleView.alpha = 1.0f;
-            self.iconView.alpha = 0.0f;
-            _innerIconView.alpha = 1.0f;
-            _outerCircleView.alpha = 1.0f;
-        }];
-    }
+    [UIView animateWithDuration:0.50
+                          delay:0.0
+         usingSpringWithDamping:0.45f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         _innerCircleView.transform = CGAffineTransformIdentity;
+                         _outerCircleView.transform = CGAffineTransformMakeScale(outerCircleMinScale, outerCircleMinScale);
+                         _innerIconView.transform = CGAffineTransformMakeScale(1.5, 1.5);
+                         
+                     } completion:nil];
+    
+    [UIView animateWithDuration:0.1 animations:^{
+        _innerCircleView.alpha = 1.0f;
+        _iconView.alpha = 0.0f;
+        _innerIconView.alpha = 1.0f;
+        _outerCircleView.alpha = 1.0f;
+    }];
+    
     
     [self displayLink].paused = false;
 }
@@ -173,12 +173,14 @@ static const CGFloat outerCircleMinScale = innerCircleRadius / outerCircleRadius
     _animatedIn = false;
     _displayLink.paused = true;
     _currentLevel = 0.0f;
+    
     [UIView animateWithDuration:0.18 animations:^{
         _innerCircleView.transform = CGAffineTransformMakeScale(0.2f, 0.2f);
         _outerCircleView.transform = CGAffineTransformMakeScale(0.2f, 0.2f);
+        _innerIconView.transform = CGAffineTransformIdentity;
         _innerCircleView.alpha = 0.0f;
         _outerCircleView.alpha = 0.0f;
-        self.iconView.alpha = 1.0f;
+        _iconView.alpha = 1.0f;
         _innerIconView.alpha = 0.0f;
     } completion:^(BOOL finished) {
         if (finished) {
@@ -260,6 +262,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unus
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     
     if (_processCurrentTouch) {
+        
         _cancelled = true;
         
         CGFloat velocity = _lastVelocity;
@@ -284,7 +287,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unus
         
         _lastVelocity = 0.0;
         
-        if (ABS(CFAbsoluteTimeGetCurrent() - _lastTouchTime) < 1.0) {
+        if (ABS(CFAbsoluteTimeGetCurrent() - _lastTouchTime) < .5) {
             _processCurrentTouch = false;
             
             return false;
@@ -325,20 +328,25 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unus
 }
 
 - (void)panGesture:(UIPanGestureRecognizer *)__unused recognizer {
-    NSLog(@"panGesture");
+    
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
     
-    if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)
-        || !self.enabled
-        || self.hidden) {
+    if (!self.enabled || self.hidden) {
         return [super pointInside:point withEvent:event];
     }
+    CGFloat margin = 100.0;
+    CGRect hitFrame = CGRectInset(self.bounds, -margin, -margin);
+    BOOL contains = CGRectContainsPoint(hitFrame, point);
+    NSLog(@"contains = %@", contains ? @"YES" : @"NO");
     
-    CGRect hitFrame = UIEdgeInsetsInsetRect(self.bounds, self.hitTestEdgeInsets);
+    if (contains && !self.isHighlighted && event.type == UIEventTypeTouches)
+    {
+        self.highlighted = YES;
+    }
     
-    return CGRectContainsPoint(hitFrame, point);
+    return contains;
 }
 
 //MARK: Static methods
@@ -355,7 +363,7 @@ UIColor *QMApplicationColor()
     return color;
 }
 
-- (UIImage *)innerCircleImage {
+UIImage *innerCircleImage() {
     
     static UIImage *image = nil;
     static dispatch_once_t onceToken;
@@ -371,7 +379,7 @@ UIColor *QMApplicationColor()
     return image;
 }
 
-- (UIImage *)outerCircleImage {
+UIImage *outerCircleImage() {
     
     static UIImage *image = nil;
     static dispatch_once_t onceToken;

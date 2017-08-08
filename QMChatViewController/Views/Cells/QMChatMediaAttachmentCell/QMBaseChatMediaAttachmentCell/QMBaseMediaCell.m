@@ -10,15 +10,6 @@
 #import "QMMediaViewDelegate.h"
 #import "QMChatResources.h"
 
-
-@interface UIButton (QMAnimated)
-
-- (void)qm_setImage:(UIImage *)image
-           animated:(BOOL)animated;
-- (void)qm_setImage:(UIImage *)image;
-
-@end
-
 @implementation UIButton (QMAnimated)
 
 - (void)qm_setImage:(UIImage *)image {
@@ -63,10 +54,12 @@
 @synthesize playable = _playable;
 
 - (void)awakeFromNib {
+    
     [super awakeFromNib];
     
     self.circularProgress.hideProgressIcons = YES;
     self.circularProgress.hidden = YES;
+    [self.mediaPlayButton setTitle:nil forState:UIControlStateNormal];
     [self.mediaPlayButton addTarget:self
                              action:@selector(activateMedia:)
                    forControlEvents:UIControlEventTouchUpInside];
@@ -252,7 +245,14 @@
     }
     _viewState = viewState;
     
+    [self updateViewWithState:viewState];
+}
+
+- (void)updateViewWithState:(QMMediaViewState)viewState {
+    
+    NSLog(@"view state = %ld", (long)viewState);
     if (viewState == QMMediaViewStateLoading) {
+        NSLog(@"Cancellable :%@", self.cancellable ? @"YES": @"NO");
         self.mediaPlayButton.hidden = !self.cancellable;
         [self.circularProgress startSpinProgressBackgroundLayer];
     }
@@ -260,16 +260,19 @@
         self.mediaPlayButton.hidden = !self.playable;
         [self.circularProgress stopSpinProgressBackgroundLayer];
     }
+    
     self.circularProgress.hidden = viewState != QMMediaViewStateLoading;
     
-    UIImage *buttonImage = QMPlayButtonImageForState(viewState);
-    
-    if (buttonImage) {
-        [self.mediaPlayButton qm_setImage:buttonImage
-                                 animated:YES];
+    UIImage *buttonImage = [self imageForButtonWithState:viewState];
+    if (!buttonImage) {
+        buttonImage = QMPlayButtonImageForState(viewState);
     }
     
-    
+    [self.mediaPlayButton qm_setImage:buttonImage];
+}
+
+- (UIImage *)imageForButtonWithState:(QMMediaViewState)viewState {
+    return nil;
 }
 
 static inline UIImage* QMPlayButtonImageForState(QMMediaViewState state) {
@@ -278,16 +281,17 @@ static inline UIImage* QMPlayButtonImageForState(QMMediaViewState state) {
     
     switch (state) {
             
-        case QMMediaViewStateNotReady: imageName = @"download_icon"; break;
-        case QMMediaViewStateReady:    imageName = @"play_icon"; break;
-        case QMMediaViewStateLoading:  imageName = @"cancel_icon"; break;
-        case QMMediaViewStateActive:   imageName = @"pause_icon"; break;
-        case QMMediaViewStateError:    imageName = @"pause_icon"; break;
+        case QMMediaViewStateNotReady: imageName = @"ic_download"; break;
+        case QMMediaViewStateReady:    imageName = @"ic_play"; break;
+        case QMMediaViewStateLoading:  imageName = @"ic_cancel"; break;
+        case QMMediaViewStateActive:   imageName = @"ic_pause"; break;
+        case QMMediaViewStateError:    imageName = @"ic_retry"; break;
     }
     
-    return [QMChatResources imageNamed:imageName];
+    UIImage *buttonImage =
+    [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    return buttonImage;
 }
-
-
 
 @end
