@@ -133,11 +133,9 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         
         if (!self.audioRecordButtonItem.superview) {
             [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+            
             [self audioRecordButtonItem].translatesAutoresizingMaskIntoConstraints = false;
-            
-            [[[self audioRecordButtonItem].centerXAnchor constraintEqualToAnchor:self.contentView.rightBarButtonContainerView.centerXAnchor] setActive:YES];
-            
-            [[[self audioRecordButtonItem].centerYAnchor constraintEqualToAnchor:self.contentView.rightBarButtonContainerView.centerYAnchor] setActive:YES];
+            [self addCenterConstraintsToItem:self.contentView.rightBarButtonContainerView];
         }
     }
     else {
@@ -147,10 +145,31 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
         
         if (!self.audioRecordButtonItem.superview) {
             [self.contentView.leftBarButtonContainerView addSubview:[self audioRecordButtonItem]];
+            [self audioRecordButtonItem].translatesAutoresizingMaskIntoConstraints = false;
+            [self addCenterConstraintsToItem:self.contentView.leftBarButtonContainerView];
         }
     }
     
     self.audioRecordButtonItem.hidden = hasDataToSend;
+}
+
+- (void)addCenterConstraintsToItem:(UIView *)itemToAdd {
+    
+    [[NSLayoutConstraint constraintWithItem:self.audioRecordButtonItem
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:itemToAdd
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];;
+    
+    [[NSLayoutConstraint constraintWithItem:self.audioRecordButtonItem
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:itemToAdd
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f] setActive:YES];
 }
 
 - (void)toggleSendButtonEnabled {
