@@ -44,14 +44,6 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fa7-ju-G0X">
                                         <rect key="frame" x="0.0" y="21" width="148" height="152"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRs-ay-hfh">
-                                        <rect key="frame" x="52" y="75" width="45" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="45" id="dR3-nq-OdS"/>
-                                            <constraint firstAttribute="height" constant="45" id="iA9-bW-uph"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nickname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgQ-H7-Y5u" customClass="TTTAttributedLabel">
                                         <rect key="frame" x="0.0" y="0.0" width="148" height="21"/>
                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -74,7 +66,6 @@
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="th2-rm-wzW" customClass="FFCircularProgressView">
                                         <rect key="frame" x="49.5" y="72.5" width="50" height="50"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="9sl-pb-YcA"/>
                                             <constraint firstAttribute="width" constant="50" id="Fip-ZJ-LQI"/>
@@ -89,6 +80,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRs-ay-hfh">
+                                        <rect key="frame" x="52.5" y="75.5" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="dR3-nq-OdS"/>
+                                            <constraint firstAttribute="height" constant="44" id="iA9-bW-uph"/>
+                                        </constraints>
+                                        <state key="normal" image="ic_play-video"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -171,4 +170,7 @@
             <point key="canvasLocation" x="206" y="476"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="ic_play-video" width="44" height="44"/>
+    </resources>
 </document>

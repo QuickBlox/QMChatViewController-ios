@@ -11,6 +11,14 @@
 #import "QMChatResources.h"
 #import "QMMediaViewDelegate.h"
 
+@interface UIButton (QMAnimated)
+
+- (void)qm_setImage:(UIImage *)image
+           animated:(BOOL)animated;
+- (void)qm_setImage:(UIImage *)image;
+
+@end
+
 @interface QMBaseMediaCell : QMChatCell <QMMediaViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *previewImageView;
@@ -23,6 +31,7 @@
 
 - (CALayer *)maskLayerFromImage:(UIImage *)image
                       withFrame:(CGRect)frame;
+
 @end
 
 

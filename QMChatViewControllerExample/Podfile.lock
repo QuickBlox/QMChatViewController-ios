@@ -1,45 +1,65 @@
 PODS:
+  - FFCircularProgressView (0.5)
   - QMCVDevelopment (0.4.1.1):
+    - FFCircularProgressView
     - QMCVDevelopment/Categories (= 0.4.1.1)
     - QMCVDevelopment/Protocols (= 0.4.1.1)
     - QMCVDevelopment/QMChatDataSource (= 0.4.1.1)
     - QMCVDevelopment/QMChatLocationSnapshotter (= 0.4.1.1)
+    - QMCVDevelopment/QMMediaPresenter (= 0.4.1.1)
     - QMCVDevelopment/Sections (= 0.4.1.1)
     - QMCVDevelopment/Utils (= 0.4.1.1)
+    - QMCVDevelopment/ViewModels (= 0.4.1.1)
     - QMCVDevelopment/Views (= 0.4.1.1)
-    - SDWebImage (~> 3.6)
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/Categories (0.4.1.1):
+    - FFCircularProgressView
     - QMCVDevelopment/QMChatLocationSnapshotter
-    - SDWebImage (~> 3.6)
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/Protocols (0.4.1.1):
-    - SDWebImage (~> 3.6)
+    - FFCircularProgressView
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/QMChatDataSource (0.4.1.1):
-    - SDWebImage (~> 3.6)
+    - FFCircularProgressView
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/QMChatLocationSnapshotter (0.4.1.1):
-    - SDWebImage (~> 3.6)
+    - FFCircularProgressView
+    - SDWebImage (~> 4.0.0)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/QMMediaPresenter (0.4.1.1):
+    - FFCircularProgressView
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/Sections (0.4.1.1):
+    - FFCircularProgressView
     - QMCVDevelopment/QMChatDataSource
-    - SDWebImage (~> 3.6)
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/Utils (0.4.1.1):
+    - FFCircularProgressView
     - QMCVDevelopment/Categories
-    - SDWebImage (~> 3.6)
+    - SDWebImage (~> 4.0.0)
+    - TTTAttributedLabel (> 1.13)
+  - QMCVDevelopment/ViewModels (0.4.1.1):
+    - FFCircularProgressView
+    - QMCVDevelopment/Categories
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QMCVDevelopment/Views (0.4.1.1):
+    - FFCircularProgressView
     - QMCVDevelopment/Categories
     - QMCVDevelopment/Protocols
     - QMCVDevelopment/Utils
-    - SDWebImage (~> 3.6)
+    - SDWebImage (~> 4.0.0)
     - TTTAttributedLabel (> 1.13)
   - QuickBlox (2.7.6)
-  - SDWebImage (3.8.2):
-    - SDWebImage/Core (= 3.8.2)
-  - SDWebImage/Core (3.8.2)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
   - TTTAttributedLabel (2.0.0)
 
 DEPENDENCIES:
@@ -51,11 +71,12 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  QMCVDevelopment: f459b796b0102a3f9e5e9fc7a1dcec653b8bbd53
+  FFCircularProgressView: 683a4ab1e1bd613246a3dffa61503ffdebcde8d8
+  QMCVDevelopment: 490d61f649a0b6a26f62503c34b51ea081b8adb5
   QuickBlox: 348157145386d7fe568f5dab13ef7c4e4c1b5e05
-  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
 
 PODFILE CHECKSUM: 75210a90fc37445073f25d6462938d3d7817a5d9
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.2.0

@@ -62,12 +62,18 @@
             stringWithImageTransformType(_transformType),
             NSStringFromCGSize(_size), url.absoluteString];
 }
-- (UIImage *)applyTransformForImage:(UIImage *)image {
-    __block UIImage *transformedImage;
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        transformedImage =[self imageManager:nil transformDownloadedImage:image withURL:nil];
+
+- (void)applyTransformForImage:(UIImage *)image completionBlock:(void(^)(UIImage *transformedImage))transformCompletionBlock {
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        UIImage *transformed = [self imageManager:nil transformDownloadedImage:image withURL:nil];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            transformCompletionBlock(transformed);
+        });
     });
-    return transformedImage;
 }
 
 - (UIImage *)imageManager:(SDWebImageManager *)imageManager
@@ -144,6 +150,16 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
 @end
 
 @implementation QMImageLoader
+
+- (void)cancelAll {
+    
+    @synchronized (self.runningOperations) {
+        
+        NSArray<QMWebImageCombinedOperation *> *copiedOperations = [self.runningOperations.allValues copy];
+        [copiedOperations makeObjectsPerformSelector:@selector(cancel)];
+        [self.runningOperations removeAllObjects];
+    }
+}
 
 - (void)cancelImageOperationForURL:(NSURL *)url {
     

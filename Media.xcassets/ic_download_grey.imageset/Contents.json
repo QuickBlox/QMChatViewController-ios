@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Image.png",
+      "filename" : "ic_download_grey.pdf",
       "scale" : "1x"
     },
     {
@@ -17,5 +17,8 @@
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }

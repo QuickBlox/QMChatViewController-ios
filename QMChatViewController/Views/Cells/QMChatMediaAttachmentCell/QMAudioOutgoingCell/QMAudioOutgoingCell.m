@@ -10,6 +10,15 @@
 
 @implementation QMAudioOutgoingCell
 
++ (QMChatCellLayoutModel)layoutModel {
+    
+    QMChatCellLayoutModel defaultLayoutModel = [super layoutModel];
+    defaultLayoutModel.avatarSize = CGSizeMake(0, 0);
+    defaultLayoutModel.containerInsets = UIEdgeInsetsMake(0, 0, 0, 8),
+    defaultLayoutModel.staticContainerSize = CGSizeMake(182, 48);
+    
+    return defaultLayoutModel;
+}
 - (void)awakeFromNib {
     
     [super awakeFromNib];

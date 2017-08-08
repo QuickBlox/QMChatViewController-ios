@@ -75,6 +75,7 @@ Pod::Spec.new do |s|
   end
 
   s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
+  s.resources = "QMChatViewController/Icons/Media.xcassets"
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
   s.dependency "TTTAttributedLabel", "> 1.13"

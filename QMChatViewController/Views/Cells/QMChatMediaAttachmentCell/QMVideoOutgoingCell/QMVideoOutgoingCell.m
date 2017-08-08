@@ -26,7 +26,7 @@
 }
 
 - (void)setDuration:(NSTimeInterval)duration {
-
+    
     self.durationLabel.hidden = !(duration > 0);
     
     if (duration > 0) {
@@ -46,5 +46,19 @@
     return [NSString stringWithFormat:@"%d:%02d:%02d", (int)duration / 3600, (int)duration / 60, (int)duration % 60];
 }
 
+- (UIImage *)imageForButtonWithState:(QMMediaViewState)viewState {
+    
+    NSString *imageName = nil;
+    
+    switch (viewState) {
+        case QMMediaViewStateNotReady: imageName = @"ic_download-video"; break;
+        case QMMediaViewStateReady:    imageName = @"ic_play-video"; break;
+        case QMMediaViewStateLoading:  imageName = @"ic_cancel-video"; break;
+        case QMMediaViewStateActive:   imageName = @"ic_pause-video"; break;
+        case QMMediaViewStateError:    imageName = @"ic_retry-video"; break;
+    }
+    
+    return [UIImage imageNamed:imageName];
+}
 
 @end

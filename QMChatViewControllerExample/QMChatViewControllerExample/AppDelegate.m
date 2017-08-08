@@ -16,7 +16,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    UIImage *image = [UIImage imageNamed:@"ic_audio"];
     return YES;
 }
 

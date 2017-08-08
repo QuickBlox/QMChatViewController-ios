@@ -14,9 +14,9 @@
     
     [super awakeFromNib];
     
-    self.circularProgress.tintColor = [UIColor grayColor];
-    self.mediaPlayButton.tintColor = [UIColor whiteColor];
-    self.durationLabel.textColor = [UIColor grayColor];
+    self.circularProgress.tintColor = [UIColor colorWithRed:127/255.0 green:140/255.0 blue:155/255.0 alpha:1.0];
+    self.mediaPlayButton.tintColor = [UIColor colorWithRed:127/255.0 green:140/255.0 blue:155/255.0 alpha:1.0];
+    self.durationLabel.textColor = [UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0];
 }
 
 
