@@ -53,10 +53,7 @@
         case QMMediaViewStateError:    imageName = @"ic_retry-video"; break;
     }
     
-    UIImage *buttonImage = [UIImage imageNamed:imageName];
-   // [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    return buttonImage;
+    return  [UIImage imageNamed:imageName];
 }
 
 @end

@@ -26,7 +26,7 @@
 }
 
 - (void)setDuration:(NSTimeInterval)duration {
-
+    
     self.durationLabel.hidden = !(duration > 0);
     
     if (duration > 0) {
@@ -42,7 +42,7 @@
     else if (duration < 3600) {
         return [NSString stringWithFormat:@"%d:%02d", (int)duration / 60, (int)duration % 60];
     }
-
+    
     return [NSString stringWithFormat:@"%d:%02d:%02d", (int)duration / 3600, (int)duration / 60, (int)duration % 60];
 }
 
@@ -58,10 +58,7 @@
         case QMMediaViewStateError:    imageName = @"ic_retry-video"; break;
     }
     
-    UIImage *buttonImage = [UIImage imageNamed:imageName];
-  //  [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    return buttonImage;
+    return [UIImage imageNamed:imageName];
 }
 
 @end
