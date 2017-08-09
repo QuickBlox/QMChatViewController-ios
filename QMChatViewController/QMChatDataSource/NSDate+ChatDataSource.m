@@ -7,7 +7,6 @@
 //
 
 #import "NSDate+ChatDataSource.h"
-#import "QMDateUtils.h"
 
 @implementation NSDate (ChatDataSource)
 
@@ -24,7 +23,7 @@
 }
 
 - (NSComparisonResult)compareWithDate:(NSDate *)dateToCompareWith {
-
+    
     NSUInteger date1 = (NSUInteger)[self timeIntervalSince1970];
     NSUInteger date2 = (NSUInteger)[dateToCompareWith timeIntervalSince1970];
     
@@ -50,19 +49,18 @@
     dateComponents.second = -1;
     
     NSDate *endDate =  [[self calendar] dateByAddingComponents:dateComponents
-                                                  toDate:[self dateAtStartOfDay]
-                                                 options:0];
+                                                        toDate:[self dateAtStartOfDay]
+                                                       options:0];
     return endDate;
 }
 
-- (NSString *)stringDate {
+- (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate respectOrderedSame:(BOOL)respectOrderedSame {
     
-    return [QMDateUtils formattedStringFromDate:self];
-}
-
-- (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate {
-    return ([self compare:startDate] == NSOrderedDescending &&
-            [self compare:endDate]  == NSOrderedAscending);
+    return respectOrderedSame ?
+    ([self compare:startDate] != NSOrderedAscending &&
+     [self compare:endDate] != NSOrderedDescending) :
+    ([self compare:startDate] == NSOrderedDescending &&
+     [self compare:endDate]  == NSOrderedAscending);
 }
 
 @end
