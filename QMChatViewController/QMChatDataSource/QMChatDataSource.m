@@ -289,30 +289,34 @@ NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
 
 // MARK: - Date Dividers
 
+- (NSDate *)appropriateDividerForMessageDate:(NSDate *)messageDate {
+    NSDate *dividerDate = nil;
+    NSEnumerator *enumerator = [[self.dateDividers copy] objectEnumerator];
+    for (NSDate *date in enumerator) {
+        NSComparisonResult comparisonResult = [messageDate compareWithDate:date];
+        if (comparisonResult == NSOrderedDescending) {
+            NSDate *rangedDate = [date dateByAddingTimeInterval:(_customDividerInterval-1)];
+            if ([messageDate isBetweenStartDate:date andEndDate:rangedDate respectOrderedSame:YES]) {
+                dividerDate = date;
+                break;
+            }
+        }
+        else if (comparisonResult == NSOrderedSame) {
+            dividerDate = date;
+            break;
+        }
+    }
+    return dividerDate;
+}
+
 - (BOOL)hasMessages:(QBChatMessage *)messageToUpdate forUpdateType:(QMDataSourceActionType)updateType {
     
     NSDate *startDate = nil;
     NSDate *endDate = nil;
     
     if (_customDividerInterval > 0) {
-        // finding date divider that belongs to this message first
-        NSEnumerator *enumerator = [[self.dateDividers copy] objectEnumerator];
-        for (NSDate *date in enumerator) {
-            NSComparisonResult comparisonResult = [messageToUpdate.dateSent compareWithDate:date];
-            if (comparisonResult == NSOrderedDescending) {
-                NSDate *rangedDate = [date dateByAddingTimeInterval:_customDividerInterval];
-                if ([messageToUpdate.dateSent isBetweenStartDate:date andEndDate:rangedDate respectOrderedSame:YES]) {
-                    startDate = date;
-                    endDate = rangedDate;
-                    break;
-                }
-            }
-            else if (comparisonResult == NSOrderedSame) {
-                startDate = date;
-                endDate = [date dateByAddingTimeInterval:_customDividerInterval];
-                break;
-            }
-        }
+        startDate = [self appropriateDividerForMessageDate:messageToUpdate.dateSent];
+        endDate = [startDate dateByAddingTimeInterval:(_customDividerInterval-1)];
     }
     else {
         startDate = [messageToUpdate.dateSent dateAtStartOfDay];
@@ -356,10 +360,9 @@ static inline QBChatMessage *dateDividerMessage(NSDate *date, BOOL __unused isCu
         return;
     }
     
-    NSDate *divideDate = _customDividerInterval > 0 ? message.dateSent : [message.dateSent dateAtStartOfDay];
-    
     if (updateType == QMDataSourceActionTypeAdd) {
         
+        NSDate *divideDate = _customDividerInterval > 0 ? message.dateSent : [message.dateSent dateAtStartOfDay];
         if (_customDividerInterval > 0) {
             
             BOOL belongsToExistentDividers = NO;
@@ -368,14 +371,14 @@ static inline QBChatMessage *dateDividerMessage(NSDate *date, BOOL __unused isCu
             for (NSDate *date in enumerator) {
                 NSComparisonResult comparisonResult = [message.dateSent compareWithDate:date];
                 if (comparisonResult > NSOrderedAscending) {
-                    NSDate *rangedDate = [date dateByAddingTimeInterval:_customDividerInterval];
+                    NSDate *rangedDate = [date dateByAddingTimeInterval:(_customDividerInterval-1)];
                     if ((comparisonResult == NSOrderedSame) || [message.dateSent isBetweenStartDate:date andEndDate:rangedDate respectOrderedSame:NO]) {
                         belongsToExistentDividers = YES;
                         break;
                     }
                 }
                 else {
-                    NSDate *rangedDate = [date dateByAddingTimeInterval:-(_customDividerInterval)];
+                    NSDate *rangedDate = [date dateByAddingTimeInterval:-(_customDividerInterval-1)];
                     if ([message.dateSent isBetweenStartDate:rangedDate andEndDate:date respectOrderedSame:NO]) {
                         removeDate = date;
                         break;
@@ -420,6 +423,8 @@ static inline QBChatMessage *dateDividerMessage(NSDate *date, BOOL __unused isCu
         if (hasMessages) {
             return;
         }
+        
+        NSDate *divideDate = _customDividerInterval > 0 ? [self appropriateDividerForMessageDate:message.dateSent] : [message.dateSent dateAtStartOfDay];
         
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage *chatMessage, NSDictionary<NSString *,id> *bindings) {
             return chatMessage.isDateDividerMessage && [chatMessage.dateSent isEqualToDate:divideDate];
