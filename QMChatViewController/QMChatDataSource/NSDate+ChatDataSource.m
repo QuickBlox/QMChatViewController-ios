@@ -57,10 +57,10 @@
 - (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate respectOrderedSame:(BOOL)respectOrderedSame {
     
     return respectOrderedSame ?
-    ([self compare:startDate] != NSOrderedAscending &&
-     [self compare:endDate] != NSOrderedDescending) :
-    ([self compare:startDate] == NSOrderedDescending &&
-     [self compare:endDate]  == NSOrderedAscending);
+    ([self compareWithDate:startDate] != NSOrderedAscending &&
+     [self compareWithDate:endDate] != NSOrderedDescending) :
+    ([self compareWithDate:startDate] == NSOrderedDescending &&
+     [self compareWithDate:endDate]  == NSOrderedAscending);
 }
 
 @end
