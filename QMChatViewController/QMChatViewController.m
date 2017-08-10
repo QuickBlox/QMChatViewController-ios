@@ -97,17 +97,16 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView *view, BOOL animated) {
         
         CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
-        if (view.superview.frame.origin.y > 0 && pos == 0) {
-            return;
-        }
         
-        if (!weakSelf.inputToolbar.contentView.textView.isFirstResponder && pos == 0) {
-            [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]
-                                             animated:animated];
-            return;
+        if (weakSelf.inputToolbar.contentView.textView.isFirstResponder) {
+            
+            if (view.superview.frame.origin.y > 0 && pos == 0) {
+                return;
+            }
         }
-        
+
         const CGFloat v = [weakSelf inputToolBarStartPos];
+        
         if (pos < v ) {
             pos = v;
         }
@@ -239,18 +238,18 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         }
         
         switch (updateType) {
-                
+            
             case QMDataSourceActionTypeAdd:
-                [self.collectionView insertItemsAtIndexPaths:indexPaths];
-                break;
-                
+            [self.collectionView insertItemsAtIndexPaths:indexPaths];
+            break;
+            
             case QMDataSourceActionTypeUpdate:
-                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-                break;
-                
+            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+            break;
+            
             case QMDataSourceActionTypeRemove:
-                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
-                break;
+            [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+            break;
         }
     };
     
@@ -783,7 +782,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.toolbarBottomLayoutGuide.constant = constraintValue;
     
     if (animated) {
-    
+        
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
@@ -940,10 +939,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         switch (status)
         {
             case PHAuthorizationStatusAuthorized:
-                if (completion) {
-                    completion(YES);
-                }
-                break;
+            if (completion) {
+                completion(YES);
+            }
+            break;
             case PHAuthorizationStatusNotDetermined:
             {
                 [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus authorizationStatus)
@@ -957,10 +956,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
                 break;
             }
             default:
-                if (completion) {
-                    completion(NO);
-                }
-                break;
+            if (completion) {
+                completion(NO);
+            }
+            break;
         }
     }
 }
@@ -993,8 +992,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [coordinator animateAlongsideTransition:nil
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [self updateCollectionViewInsets];
-    }];
+                                     [self updateCollectionViewInsets];
+                                 }];
     
     if (self.inputToolbar.contentView.textView.isFirstResponder && self.splitViewController) {
         if(!self.splitViewController.isCollapsed) {
