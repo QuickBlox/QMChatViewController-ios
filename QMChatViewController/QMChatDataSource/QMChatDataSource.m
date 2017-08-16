@@ -430,6 +430,10 @@ static inline QBChatMessage *dateDividerMessage(NSDate *date, BOOL isCustom) {
         
         QBChatMessage *msg = [[self.allMessages filteredArrayUsingPredicate:predicate] firstObject];
         
+        if (divideDate == nil) {
+            return;
+        }
+        
         [self.dateDividers removeObject:divideDate];
         
         if (updateType == QMDataSourceActionTypeUpdate) {
