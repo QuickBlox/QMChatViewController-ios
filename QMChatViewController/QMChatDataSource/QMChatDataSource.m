@@ -96,14 +96,19 @@ NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
 
 // MARK: - Data Source
 
-- (void)changeDataSourceWithMessages:(NSArray*)messages forUpdateType:(QMDataSourceActionType)updateType {
+- (void)changeDataSourceWithMessages:(NSArray *)messages forUpdateType:(QMDataSourceActionType)updateType {
     
     dispatch_async(_serialQueue, ^{
         
         NSMutableArray *messageIDs = [NSMutableArray arrayWithCapacity:messages.count];
         NSMutableArray *messagesArray = [NSMutableArray arrayWithCapacity:messages.count];
-        
-        for (QBChatMessage *message in messages) {
+        NSEnumerator *enumerator = [messages objectEnumerator];
+        if (_customDividerInterval > 0) {
+            NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateSent"
+                                                                         ascending:YES];
+            enumerator = [[messages sortedArrayUsingDescriptors:@[descriptor]] objectEnumerator];
+        }
+        for (QBChatMessage *message in enumerator) {
             
             NSAssert(message.dateSent != nil, @"Message must have dateSent!");
             
@@ -374,13 +379,6 @@ static inline QBChatMessage *dateDividerMessage(NSDate *date, BOOL isCustom) {
                     NSDate *rangedDate = [date dateByAddingTimeInterval:(_customDividerInterval-1)];
                     if ((comparisonResult == NSOrderedSame) || [message.dateSent isBetweenStartDate:date andEndDate:rangedDate respectOrderedSame:NO]) {
                         belongsToExistentDividers = YES;
-                        break;
-                    }
-                }
-                else {
-                    NSDate *rangedDate = [date dateByAddingTimeInterval:-(_customDividerInterval-1)];
-                    if ([message.dateSent isBetweenStartDate:rangedDate andEndDate:date respectOrderedSame:NO]) {
-                        removeDate = date;
                         break;
                     }
                 }
