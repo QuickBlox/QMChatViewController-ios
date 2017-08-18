@@ -17,7 +17,7 @@
 
 @implementation QMChatBaseLinkPreviewCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib {   
     
     [super awakeFromNib];
 }

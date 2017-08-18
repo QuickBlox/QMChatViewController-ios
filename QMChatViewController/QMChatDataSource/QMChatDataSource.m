@@ -127,7 +127,7 @@ NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
                 [messagesArray addObject:message];
             }
             
-            QBChatMessage * dividerMessage = [self handleMessage:message forUpdateType:updateType];
+            QBChatMessage *dividerMessage = [self handleMessage:message forUpdateType:updateType];
             
             if (dividerMessage) {
                 [messagesArray addObject:dividerMessage];

@@ -15,7 +15,8 @@
     
     UIImage *scaledImage = [self imageByScaleAndCrop:targetSize];
     
-    UIGraphicsBeginImageContextWithOptions(scaledImage.size, NO, self.scale);
+    float scaleFactor = [[UIScreen mainScreen] scale];
+    UIGraphicsBeginImageContextWithOptions(scaledImage.size, NO, scaleFactor);
     
     // Build a context that's the same dimensions as the new size
     CGContextRef context = UIGraphicsGetCurrentContext();

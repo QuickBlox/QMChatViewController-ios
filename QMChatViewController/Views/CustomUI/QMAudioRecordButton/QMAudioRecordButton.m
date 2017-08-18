@@ -200,7 +200,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unus
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    NSLog(@"continueTrackingWithTouch ");
     if ([super continueTrackingWithTouch:touch withEvent:event])
     {
         _lastVelocity = [_panRecognizer velocityInView:self].x;
@@ -339,8 +338,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)__unus
     CGFloat margin = 100.0;
     CGRect hitFrame = CGRectInset(self.bounds, -margin, -margin);
     BOOL contains = CGRectContainsPoint(hitFrame, point);
-    NSLog(@"contains = %@", contains ? @"YES" : @"NO");
-    
+
     if (contains && !self.isHighlighted && event.type == UIEventTypeTouches)
     {
         self.highlighted = YES;
