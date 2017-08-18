@@ -17,12 +17,13 @@
 
 @implementation QMChatBaseLinkPreviewCell
 
-- (void)awakeFromNib {   
-    
-    [super awakeFromNib];
-}
-
 //MARK: -  QMImageViewDelegate
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    self.urlDescription.layer.drawsAsynchronously = YES;
+}
 
 - (void)imageViewDidTap:(QMImageView *)imageView {
     
@@ -68,8 +69,8 @@
     [resultHostString appendAttributedString:host];
     
     self.urlLabel.attributedText = resultHostString;
-    self.previewImageView.image = previewImage;
     self.urlDescription.text = urlDesription;
+    self.previewImageView.image = previewImage;
 }
 
 @end

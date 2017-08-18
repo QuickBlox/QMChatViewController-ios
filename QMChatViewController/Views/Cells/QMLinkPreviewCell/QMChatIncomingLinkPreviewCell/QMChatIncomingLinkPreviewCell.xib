@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -72,24 +72,19 @@
                                         <rect key="frame" x="12" y="43" width="153" height="17"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="17" id="cQD-ji-90p"/>
+                                            <constraint firstAttribute="height" constant="17" id="SPe-t2-mrr"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                         <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YNl-MB-4Di">
-                                        <rect key="frame" x="12" y="62" width="153" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" id="GGD-2M-sB6"/>
-                                        </constraints>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" placeholderIntrinsicWidth="153" placeholderIntrinsicHeight="26" translatesAutoresizingMaskIntoConstraints="NO" id="YNl-MB-4Di">
+                                        <rect key="frame" x="12" y="62" width="153" height="26"/>
+                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Host Description" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" translatesAutoresizingMaskIntoConstraints="NO" id="qU9-Gs-4yZ">
-                                        <rect key="frame" x="12" y="89" width="153" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Host Description" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" translatesAutoresizingMaskIntoConstraints="NO" id="qU9-Gs-4yZ">
+                                        <rect key="frame" x="12" y="90" width="153" height="16"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" id="HfQ-Je-qRf"/>
-                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -98,19 +93,19 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="2O4-zX-rtn" firstAttribute="top" secondItem="oXL-xI-3yM" secondAttribute="bottom" constant="2" id="058-9G-ZzQ"/>
-                                    <constraint firstItem="qU9-Gs-4yZ" firstAttribute="top" secondItem="YNl-MB-4Di" secondAttribute="bottom" constant="2" id="0zd-EU-OSv"/>
                                     <constraint firstItem="oXL-xI-3yM" firstAttribute="top" secondItem="OCu-MY-AoI" secondAttribute="bottom" identifier="incCellMsgTextTopToTopLabelBottom" id="3OE-7j-rdE"/>
                                     <constraint firstAttribute="trailing" secondItem="YNl-MB-4Di" secondAttribute="trailing" id="9QA-l4-UwH"/>
                                     <constraint firstItem="ivD-6P-hW0" firstAttribute="leading" secondItem="M7t-Ea-Hs4" secondAttribute="leading" identifier="incCellBottomLabelLeadingToContainerLeading" id="AXl-QY-okC"/>
                                     <constraint firstAttribute="trailing" secondItem="OCu-MY-AoI" secondAttribute="trailing" identifier="incCellMsgContainerTrailingToTopLabelTrailing" id="E0b-aL-fpT"/>
                                     <constraint firstAttribute="trailing" secondItem="2O4-zX-rtn" secondAttribute="trailing" id="Idg-z7-Gc6"/>
+                                    <constraint firstItem="qU9-Gs-4yZ" firstAttribute="top" secondItem="YNl-MB-4Di" secondAttribute="bottom" priority="750" constant="2" id="M3r-xl-cuX"/>
                                     <constraint firstItem="oXL-xI-3yM" firstAttribute="leading" secondItem="M7t-Ea-Hs4" secondAttribute="leading" identifier="incCellMsgTextLeadingToMsgContainerLeading" id="Mgc-f6-DnB"/>
                                     <constraint firstItem="ivD-6P-hW0" firstAttribute="top" secondItem="qU9-Gs-4yZ" secondAttribute="bottom" id="PFQ-vN-o1P"/>
                                     <constraint firstItem="OCu-MY-AoI" firstAttribute="leading" secondItem="M7t-Ea-Hs4" secondAttribute="leading" id="cCQ-DN-GGh"/>
+                                    <constraint firstItem="YNl-MB-4Di" firstAttribute="top" secondItem="2O4-zX-rtn" secondAttribute="bottom" constant="2" id="jvz-Ze-ezf"/>
                                     <constraint firstItem="OCu-MY-AoI" firstAttribute="top" secondItem="M7t-Ea-Hs4" secondAttribute="top" identifier="incCellTopLabelTopToMsgContainerTop" id="nW3-tm-tLL"/>
                                     <constraint firstAttribute="trailing" secondItem="qU9-Gs-4yZ" secondAttribute="trailing" id="oxm-m5-Vv8"/>
                                     <constraint firstAttribute="trailing" secondItem="ivD-6P-hW0" secondAttribute="trailing" id="si7-03-cvU"/>
-                                    <constraint firstItem="YNl-MB-4Di" firstAttribute="top" secondItem="2O4-zX-rtn" secondAttribute="bottom" constant="2" id="tt7-kb-feo"/>
                                     <constraint firstAttribute="trailing" secondItem="oXL-xI-3yM" secondAttribute="trailing" id="uX7-92-voE"/>
                                     <constraint firstAttribute="bottom" secondItem="ivD-6P-hW0" secondAttribute="bottom" identifier="incCellMsgContainerToBottomLabelBottom" id="viO-53-QnN"/>
                                 </constraints>
@@ -125,6 +120,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="M7t-Ea-Hs4" firstAttribute="leading" secondItem="dkR-id-gBA" secondAttribute="trailing" constant="-7" id="0Dc-Ou-9tx"/>
                             <constraint firstItem="dkR-id-gBA" firstAttribute="top" secondItem="2O4-zX-rtn" secondAttribute="top" id="1wV-Qw-bUZ"/>
                             <constraint firstItem="M7t-Ea-Hs4" firstAttribute="leading" secondItem="NaZ-bw-eRI" secondAttribute="leading" constant="15" identifier="incCellMsgContainerLeadingToContainerLeading" id="4Ec-XZ-RYs"/>
                             <constraint firstItem="dkR-id-gBA" firstAttribute="bottom" secondItem="qU9-Gs-4yZ" secondAttribute="bottom" id="8Yv-WE-ewL"/>
@@ -133,7 +129,6 @@
                             <constraint firstItem="M7t-Ea-Hs4" firstAttribute="top" secondItem="NaZ-bw-eRI" secondAttribute="top" constant="3" identifier="incCellMsgContainerTopToContainerTop" id="Jfk-SB-B9I"/>
                             <constraint firstAttribute="width" constant="183" id="eFw-fY-Erx"/>
                             <constraint firstItem="qU9-Gs-4yZ" firstAttribute="leading" secondItem="dkR-id-gBA" secondAttribute="trailing" constant="5" id="i7N-e3-T2A"/>
-                            <constraint firstItem="dkR-id-gBA" firstAttribute="leading" secondItem="NaZ-bw-eRI" secondAttribute="leading" constant="20" id="o4x-nS-ZpD"/>
                             <constraint firstAttribute="bottom" secondItem="M7t-Ea-Hs4" secondAttribute="bottom" constant="3" identifier="incCellContainerBottomToMsgContainerBottom" id="rnP-nR-DQv"/>
                             <constraint firstItem="2O4-zX-rtn" firstAttribute="leading" secondItem="dkR-id-gBA" secondAttribute="trailing" constant="5" id="xqi-18-16c"/>
                         </constraints>

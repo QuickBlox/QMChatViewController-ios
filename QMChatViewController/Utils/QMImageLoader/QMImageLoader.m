@@ -117,14 +117,6 @@
             break;
         }
     }
-#warning need update this case
-//    else {
-//
-//        UIImage *img = [image resizedImageBySpec:self.spec];
-//        
-//        return img;
-//    }
-    
     return nil;
 }
 
@@ -283,13 +275,18 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     NSString *transformKey = [transform keyWithURL:url];
     
     if (transform) {
-        self.transforms[transformKey] = transform;
+        @synchronized (self.transforms) {
+            self.transforms[transformKey] = transform;
+        }
     }
     
     dispatch_block_t cleanupTransform = ^() {
         
         if (transformKey) {
-            self.transforms[transformKey] = nil;
+            
+            @synchronized (self.transforms) {
+                self.transforms[transformKey] = nil;
+            }
         }
     };
     

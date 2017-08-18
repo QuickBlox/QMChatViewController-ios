@@ -43,7 +43,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 //Keyboard observing
 @property (strong, nonatomic) QMKVOView *systemInputToolbar;
-@property (weak, nonatomic) QMKVOView *inputAccessoryView;
 
 @end
 
@@ -98,23 +97,24 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView *view, BOOL animated) {
         
         CGFloat pos = view.superview.frame.size.height - view.frame.origin.y ;
-        if (view.superview.frame.origin.y > 0 && pos == 0) {
-            return;
-        }
         
-        if (!weakSelf.inputToolbar.contentView.textView.isFirstResponder && pos == 0) {
-            [weakSelf setToolbarBottomConstraintValue:[weakSelf inputToolBarStartPos]
-                                             animated:animated];
-            return;
+        if (weakSelf.inputToolbar.contentView.textView.isFirstResponder) {
+            
+            if (view.superview.frame.origin.y > 0 && pos == 0) {
+                return;
+            }
         }
-        
+
         const CGFloat v = [weakSelf inputToolBarStartPos];
+        
         if (pos < v ) {
             pos = v;
         }
         
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
     };
+    
+    self.inputToolbar.contentView.textView.inputAccessoryView = self.systemInputToolbar;
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
 }
@@ -204,20 +204,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [QMChatIncomingLinkPreviewCell registerForReuseInView:self.collectionView];
     // Register link preview outgoing cell
     [QMChatOutgoingLinkPreviewCell registerForReuseInView:self.collectionView];
-    UINib *locIncomingNib = [QMChatLocationIncomingCell nib];
-    NSString *locIncomingIdentifier = [QMChatLocationIncomingCell cellReuseIdentifier];
-    [self.collectionView registerNib:locIncomingNib forCellWithReuseIdentifier:locIncomingIdentifier];
 }
 
-#pragma mark - UI Responder
-
-- (UIView *)inputAccessoryView {
-    return self.systemInputToolbar;
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
 
 #pragma mark - Getters
 
@@ -250,18 +238,18 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         }
         
         switch (updateType) {
-                
+            
             case QMDataSourceActionTypeAdd:
-                [self.collectionView insertItemsAtIndexPaths:indexPaths];
-                break;
-                
+            [self.collectionView insertItemsAtIndexPaths:indexPaths];
+            break;
+            
             case QMDataSourceActionTypeUpdate:
-                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-                break;
-                
+            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+            break;
+            
             case QMDataSourceActionTypeRemove:
-                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
-                break;
+            [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+            break;
         }
     };
     
@@ -523,7 +511,9 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     return cell;
 }
 
-- (void)collectionView:(QMChatCollectionView *)collectionView configureCell:(UICollectionViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(QMChatCollectionView *)collectionView
+         configureCell:(UICollectionViewCell *)cell
+          forIndexPath:(NSIndexPath *)indexPath {
     
     if ([cell isKindOfClass:[QMChatContactRequestCell class]]) {
         
@@ -544,8 +534,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         QMChatCell *chatCell = (QMChatCell *)cell;
         
         if ([cell isKindOfClass:[QMChatIncomingCell class]]
-            || [cell isKindOfClass:[QMChatOutgoingCell class]] ||
-            [cell isKindOfClass:[QMChatBaseLinkPreviewCell class]]) {
+            || [cell isKindOfClass:[QMChatOutgoingCell class]]
+            || [cell isKindOfClass:[QMChatBaseLinkPreviewCell class]]) {
             
             chatCell.textView.enabledTextCheckingTypes = self.enableTextCheckingTypes;
         }
@@ -622,8 +612,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
 
 #pragma mark - Input toolbar delegate
 
-- (void)messagesInputToolbar:(QMInputToolbar *)toolbar
-       didPressLeftBarButton:(UIButton *)sender {
+- (void)messagesInputToolbar:(QMInputToolbar *)toolbar didPressLeftBarButton:(UIButton *)sender {
     
     if (toolbar.sendButtonOnRight) {
         
@@ -635,8 +624,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     }
 }
 
-- (void)messagesInputToolbar:(QMInputToolbar *)toolbar
-      didPressRightBarButton:(UIButton *)sender {
+- (void)messagesInputToolbar:(QMInputToolbar *)toolbar didPressRightBarButton:(UIButton *)sender {
     
     if (toolbar.sendButtonOnRight) {
         
@@ -794,7 +782,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.toolbarBottomLayoutGuide.constant = constraintValue;
     
     if (animated) {
-    
+        
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
@@ -951,10 +939,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
         switch (status)
         {
             case PHAuthorizationStatusAuthorized:
-                if (completion) {
-                    completion(YES);
-                }
-                break;
+            if (completion) {
+                completion(YES);
+            }
+            break;
             case PHAuthorizationStatusNotDetermined:
             {
                 [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus authorizationStatus)
@@ -968,10 +956,10 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
                 break;
             }
             default:
-                if (completion) {
-                    completion(NO);
-                }
-                break;
+            if (completion) {
+                completion(NO);
+            }
+            break;
         }
     }
 }
@@ -1004,8 +992,8 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [coordinator animateAlongsideTransition:nil
                                  completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [self updateCollectionViewInsets];
-    }];
+                                     [self updateCollectionViewInsets];
+                                 }];
     
     if (self.inputToolbar.contentView.textView.isFirstResponder && self.splitViewController) {
         if(!self.splitViewController.isCollapsed) {
