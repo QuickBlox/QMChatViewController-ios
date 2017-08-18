@@ -36,10 +36,6 @@ Pod::Spec.new do |s|
     ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
   end
 
-  s.subspec 'QMMediaPresenter' do |ss|
-    ss.source_files = 'QMChatViewController/QMMediaPresenter/**/*.{h,m}'
-  end
-
   s.subspec 'Categories' do |ss|
 	   ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
      ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
