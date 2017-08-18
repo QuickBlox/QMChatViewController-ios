@@ -119,13 +119,21 @@ static NSString *value_date_separator = @".";
         int dayDiff = timeinfo.tm_yday - timeinfo_now.tm_yday;
         BOOL currentWeek = timeinfo.tm_yday >= (timeinfo_now.tm_yday - timeinfo_now.tm_wday);
         
+        NSString *prefix = nil;
         if (dayDiff == 0
             || dayDiff == -1
             || !currentWeek) {
-            return [[NSString alloc] initWithFormat:@"%@ %@ %@", [self formatDateForDayRange:date], timePrefix, [self formatDateForTimeRange:date] ];
+            prefix = [self formatDateForDayRange:date];
         }
         else {
-            return [[NSString alloc] initWithFormat:@"%@ %@ %@", [self formatDateForWeekRange:date], timePrefix, [self formatDateForTimeRange:date]];
+            prefix = [self formatDateForWeekRange:date];
+        }
+        
+        if (timePrefix.length > 0) {
+            return [[NSString alloc] initWithFormat:@"%@ %@ %@", prefix, timePrefix, [self formatDateForTimeRange:date]];
+        }
+        else {
+            return [[NSString alloc] initWithFormat:@"%@ %@", prefix, [self formatDateForTimeRange:date]];
         }
     }
 }

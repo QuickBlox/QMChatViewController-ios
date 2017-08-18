@@ -10,13 +10,11 @@
 
 @interface NSDate (ChatDataSource)
 
-@property (nonatomic, readonly) NSString *stringDate;
-
 - (NSComparisonResult)compareWithDate:(NSDate*)dateToCompareWith;
 
 - (NSDate *)dateAtStartOfDay;
 - (NSDate *)dateAtEndOfDay;
 
-- (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate;
+- (BOOL)isBetweenStartDate:(NSDate *)startDate andEndDate:(NSDate *)endDate respectOrderedSame:(BOOL)respectOrderedSame;
 
 @end
