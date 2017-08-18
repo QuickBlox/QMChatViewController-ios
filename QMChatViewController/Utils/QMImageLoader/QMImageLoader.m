@@ -468,7 +468,7 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
                          }
                      }];
                     operation.cancelBlock = ^{
-                       // NSLog(@"_QMI URL = %@", url);
+
                         [self.imageDownloader cancel:subOperation];
                         __strong __typeof(weakOperation) strongOperation = weakOperation;
                         [self safelyRemoveOperationFromRunning:strongOperation];
@@ -657,7 +657,4 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     }
 }
 
-- (void)dealloc {
-  // NSLog(@"dealloc combined Operation");
-}
 @end

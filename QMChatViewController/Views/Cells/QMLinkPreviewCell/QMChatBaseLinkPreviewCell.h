@@ -1,10 +1,10 @@
 //
 //  QMChatBaseLinkPreviewCell.h
-//  Pods
+//
 //
 //  Created by Vitaliy Gurkovsky on 3/31/17.
 //
-//
+
 
 #import "QMChatCell.h"
 #import "QMImageView.h"

@@ -46,6 +46,7 @@
     NSString *imageName = nil;
     
     switch (viewState) {
+            
         case QMMediaViewStateNotReady: imageName = @"ic_download-video"; break;
         case QMMediaViewStateReady:    imageName = @"ic_play-video"; break;
         case QMMediaViewStateLoading:  imageName = @"ic_cancel-video"; break;

@@ -249,10 +249,8 @@
 }
 
 - (void)updateViewWithState:(QMMediaViewState)viewState {
-    
-    NSLog(@"view state = %ld", (long)viewState);
+
     if (viewState == QMMediaViewStateLoading) {
-        NSLog(@"Cancellable :%@", self.cancellable ? @"YES": @"NO");
         self.mediaPlayButton.hidden = !self.cancellable;
         [self.circularProgress startSpinProgressBackgroundLayer];
     }
