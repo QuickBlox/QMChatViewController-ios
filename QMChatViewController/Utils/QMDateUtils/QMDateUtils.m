@@ -204,8 +204,9 @@ static NSString *value_date_separator = @".";
                 return [[NSString alloc] initWithFormat:@"%d:%02d PM", (hours - 12 == 0) ? 12 : (hours - 12), minutes];
             }
         }
-        else
+        else {
             return [[NSString alloc] initWithFormat:@"%02d:%02d", hours, minutes];
+        }
     }
 }
 
@@ -263,7 +264,7 @@ static NSString *value_date_separator = @".";
     localtime_r(&t, &timeinfo);
     
     int day = timeinfo.tm_mday;
-    int month = timeinfo.tm_mon;
+    int month = timeinfo.tm_mon + 1;
     int year = timeinfo.tm_year;
     
     if (isArabic) {
