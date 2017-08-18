@@ -73,6 +73,7 @@ Pod::Spec.new do |s|
   s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
   s.dependency "QuickBlox", ">= 2.10"
   s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 3.8.2"
+  s.dependency "SDWebImage", "~> 4.0.0"
+  s.dependency "FFCircularProgressView"
 
 end
