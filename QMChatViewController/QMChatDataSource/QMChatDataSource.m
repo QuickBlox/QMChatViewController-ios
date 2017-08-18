@@ -103,10 +103,13 @@ NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
         NSMutableArray *messageIDs = [NSMutableArray arrayWithCapacity:messages.count];
         NSMutableArray *messagesArray = [NSMutableArray arrayWithCapacity:messages.count];
         NSEnumerator *enumerator = [messages objectEnumerator];
-        if (_customDividerInterval > 0) {
-            NSSortDescriptor *descriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateSent"
-                                                                         ascending:YES];
-            enumerator = [[messages sortedArrayUsingDescriptors:@[descriptor]] objectEnumerator];
+        if (_customDividerInterval > 0
+            && updateType == QMDataSourceActionTypeAdd) {
+            NSSortDescriptor *dateSentDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateSent"
+                                                                                 ascending:YES];
+            NSSortDescriptor *idDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"ID"
+                                                                           ascending:YES];
+            enumerator = [[messages sortedArrayUsingDescriptors:@[dateSentDescriptor, idDescriptor]] objectEnumerator];
         }
         for (QBChatMessage *message in enumerator) {
             
