@@ -80,7 +80,6 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [super viewDidLoad];
     
-    
     [self configureMessagesViewController];
     
     self.automaticallyAdjustsScrollViewInsets = NO;

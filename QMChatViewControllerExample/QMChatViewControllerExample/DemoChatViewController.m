@@ -40,7 +40,7 @@ NS_ENUM(NSUInteger, QMMessageType) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = [UIColor lightGrayColor];
     self.topContentAdditionalInset =
     self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height;
     
