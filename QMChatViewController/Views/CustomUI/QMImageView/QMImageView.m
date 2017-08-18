@@ -211,8 +211,6 @@ static NSArray *qm_colors = nil;
         return;
     }
     
-   //f NSLog(@"_QMI OLD URL = %@ newURL = %@", _url, url);
-    
     _url = url;
     
     [self sd_cancelCurrentAnimationImagesLoad];
@@ -260,9 +258,6 @@ static NSArray *qm_colors = nil;
                      [weakSelf setNeedsLayout];
                  }
              }
-             else {
-                 NSLog(@"downloadImageWithURL:%@ error: %@",imageURL, error.localizedDescription);
-             }
              
              if (completedBlock) {
                  completedBlock(image, error, cacheType, imageURL);
@@ -296,7 +291,6 @@ static NSArray *qm_colors = nil;
     
     BOOL urlIsValid = url &&url.scheme && url.host;
     
-   // NSLog(@"_QMI OLD URL = %@ newURL = %@", _url, url);
     _url = url;
     
     [self sd_cancelCurrentAnimationImagesLoad];
@@ -325,9 +319,6 @@ static NSArray *qm_colors = nil;
                      weakSelf.image = image;
                      [weakSelf setNeedsLayout];
                  }
-             }
-             else {
-                 NSLog(@"downloadImageWithURL:%@ error: %@",imageURL, error.localizedDescription);
              }
              
              if (completedBlock) {

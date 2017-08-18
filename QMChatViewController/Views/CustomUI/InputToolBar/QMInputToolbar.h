@@ -41,13 +41,56 @@
 
 @optional
 
-- (BOOL)messagesInputToolbarAudioRecordingEnabled:(QMInputToolbar *)toolbar;
+/**
+ Asks the delegate if it can start the audio recording by touching the audio record button.
+ 
+ @param toolbar An instance of `QBChatMessageInputToolbar`
+ @return YES if the audio recording should start or NO if it should not.
+ */
+- (BOOL)messagesInputToolbarAudioRecordingShouldStart:(QMInputToolbar *)toolbar;
+
+/**
+ This method is called when an audio recording has started.
+ 
+ @param toolbar An instance of `QBChatMessageInputToolbar`
+ */
 - (void)messagesInputToolbarAudioRecordingStart:(QMInputToolbar *)toolbar;
+
+/**
+ This method is called when an audio recording has cancelled.
+ 
+ @param toolbar An instance of `QBChatMessageInputToolbar`
+ */
 - (void)messagesInputToolbarAudioRecordingCancel:(QMInputToolbar *)toolbar;
+
+/**
+ This method is called when an audio recording has completed.
+ 
+ @param toolbar An instance of `QBChatMessageInputToolbar`
+ */
 - (void)messagesInputToolbarAudioRecordingComplete:(QMInputToolbar *)toolbar;
+
+/**
+ This method is called when an audio recording has paused because of timeout.
+ @discussion: This mehod will be called only if 'inputPanelAudioRecordingMaximumDuration:' is adopted.
+ @param toolbar An instance of `QBChatMessageInputToolbar`.
+ */
 - (void)messagesInputToolbarAudioRecordingPausedByTimeOut:(QMInputToolbar *)toolbar;
 
+/**
+ Tells the delegate to return the current duration.
+ 
+ @param toolbar An instance of `QBChatMessageInputToolbar`
+ @return Current duration of the audio recorder.
+ */
 - (NSTimeInterval)inputPanelAudioRecordingDuration:(QMInputToolbar *)toolbar;
+
+/**
+ Tells the delegate to return the maximum duration.
+ 
+ @param toolbar An instance of `QBChatMessageInputToolbar`
+ @return The maximum duration of the recorded audio.
+ */
 - (NSTimeInterval)inputPanelAudioRecordingMaximumDuration:(QMInputToolbar *)toolbar;
 
 @end
@@ -102,11 +145,22 @@
  */
 - (QMToolbarContentView *)loadToolbarContentView;
 
-@property (assign, nonatomic) BOOL audioRecordingIsEnabled;
+/**
+ Enables ability to record and send audio attachments.
+ @default NO
+ @discussion: If YES, the 'audio record' button is enabled on the 'send button' side.
+ @warning: Methods of delegate for audio recording should be adopted.
+ */
+@property (assign, nonatomic) BOOL audioRecordingEnabled;
 
-- (void)startAudioRecording;
-- (void)finishAudioRecording;
-- (void)forceFinishRecording;
+/**
+ Cancels current audio recording and calls the delegate method 'messagesInputToolbarAudioRecordingCancel:'
+ */
+- (void)cancelAudioRecording;
+
+/**
+ Performs the shake animation for audio record button.
+ */
 - (void)shakeControls;
 
 @end

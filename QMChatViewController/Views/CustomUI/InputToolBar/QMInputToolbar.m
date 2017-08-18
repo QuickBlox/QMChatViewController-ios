@@ -51,11 +51,10 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     return self;
 }
 
-- (void)setAudioRecordingIsEnabled:(BOOL)audioRecordingIsEnabled {
+- (void)setAudioRecordingEnabled:(BOOL)audioRecordingEnabled {
     
-    if (_audioRecordingIsEnabled != audioRecordingIsEnabled) {
-        
-        _audioRecordingIsEnabled = audioRecordingIsEnabled;
+    if (_audioRecordingEnabled != audioRecordingEnabled) {
+        _audioRecordingEnabled = audioRecordingEnabled;
         [self toggleSendButtonEnabled];
     }
 }
@@ -126,28 +125,26 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     BOOL hasTextAttachment = [self.contentView.textView hasTextAttachment];
     BOOL hasDataToSend = hasText || hasTextAttachment;
     
+    UIButton *buttonToUpdate;
+    UIView *buttonContainer;
     if (self.sendButtonOnRight) {
-        
-        self.contentView.rightBarButtonItem.hidden = !hasDataToSend;
-        self.contentView.rightBarButtonItem.enabled = [self.contentView.textView hasText];
-        
-        if (!self.audioRecordButtonItem.superview) {
-            [self.contentView.rightBarButtonContainerView addSubview:[self audioRecordButtonItem]];
-            
-            [self audioRecordButtonItem].translatesAutoresizingMaskIntoConstraints = false;
-            [self addCenterConstraintsToItem:self.contentView.rightBarButtonContainerView];
-        }
+        buttonToUpdate = self.contentView.rightBarButtonItem;
+        buttonContainer = self.contentView.rightBarButtonContainerView;
     }
     else {
+        buttonToUpdate = self.contentView.leftBarButtonItem;
+        buttonContainer = self.contentView.leftBarButtonContainerView;
+    }
+    
+    buttonToUpdate.hidden = !hasDataToSend;
+    buttonToUpdate.enabled = [self.contentView.textView hasText];
+    
+    if (!self.audioRecordButtonItem.superview) {
         
-        self.contentView.leftBarButtonItem.hidden = !hasDataToSend;
-        self.contentView.leftBarButtonItem.enabled = [self.contentView.textView hasText];
+        [buttonContainer addSubview:[self audioRecordButtonItem]];
         
-        if (!self.audioRecordButtonItem.superview) {
-            [self.contentView.leftBarButtonContainerView addSubview:[self audioRecordButtonItem]];
-            [self audioRecordButtonItem].translatesAutoresizingMaskIntoConstraints = false;
-            [self addCenterConstraintsToItem:self.contentView.leftBarButtonContainerView];
-        }
+        [self audioRecordButtonItem].translatesAutoresizingMaskIntoConstraints = false;
+        [self addCenterConstraintsToItem:buttonContainer];
     }
     
     self.audioRecordButtonItem.hidden = hasDataToSend;
@@ -174,7 +171,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 - (void)toggleSendButtonEnabled {
     
-    if (self.audioRecordingIsEnabled) {
+    if (self.audioRecordingEnabled) {
         
         [self toggleButtons];
         return;
@@ -326,7 +323,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
 
 - (void)recordButtonInteractionDidBegin {
     
-    if ([self.delegate messagesInputToolbarAudioRecordingEnabled:self]) {
+    if ([self.delegate messagesInputToolbarAudioRecordingShouldStart:self]) {
         
         self.recording = YES;
         [self setShowRecordingInterface:true velocity:0.0f];
@@ -346,7 +343,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     }
 }
 
-- (void)forceFinishRecording {
+- (void)cancelAudioRecording {
     
     if (self.isRecording) {
         self.recording = NO;
