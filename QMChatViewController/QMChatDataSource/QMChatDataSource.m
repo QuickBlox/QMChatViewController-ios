@@ -321,7 +321,7 @@ NSComparator messageComparator = ^(QBChatMessage *obj1, QBChatMessage *obj2) {
     
     if (_customDividerInterval > 0) {
         startDate = [self appropriateDividerForMessageDate:messageToUpdate.dateSent];
-        endDate = [startDate dateByAddingTimeInterval:(_customDividerInterval-1)];
+        endDate = [startDate dateByAddingTimeInterval:(_customDividerInterval)];
     }
     else {
         startDate = [messageToUpdate.dateSent dateAtStartOfDay];
@@ -376,7 +376,7 @@ static inline QBChatMessage *dateDividerMessage(NSDate *date, BOOL isCustom) {
             for (NSDate *date in enumerator) {
                 NSComparisonResult comparisonResult = [message.dateSent compareWithDate:date];
                 if (comparisonResult > NSOrderedAscending) {
-                    NSDate *rangedDate = [date dateByAddingTimeInterval:(_customDividerInterval-1)];
+                    NSDate *rangedDate = [date dateByAddingTimeInterval:(_customDividerInterval)];
                     if ((comparisonResult == NSOrderedSame) || [message.dateSent isBetweenStartDate:date andEndDate:rangedDate respectOrderedSame:NO]) {
                         belongsToExistentDividers = YES;
                         break;
