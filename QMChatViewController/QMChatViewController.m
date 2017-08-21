@@ -9,7 +9,6 @@
 #import "QMChatViewController.h"
 #import "QMChatCollectionView.h"
 #import "QMChatCollectionViewFlowLayout.h"
-#import "QMChatSection.h"
 #import "QMDateUtils.h"
 #import "QMChatResources.h"
 #import "NSString+QM.h"
