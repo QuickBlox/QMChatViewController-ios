@@ -73,9 +73,9 @@ Pod::Spec.new do |s|
   s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
   s.resources = "QMChatViewController/Icons/Media.xcassets"
   s.requires_arc = true
-  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
-  s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 4.0.0"
+  s.dependency "TTTAttributedLabel"
+  s.dependency "SDWebImage"
   s.dependency "FFCircularProgressView"
+  s.dependency "QuickBlox", ">= 2.10"
 
 end
