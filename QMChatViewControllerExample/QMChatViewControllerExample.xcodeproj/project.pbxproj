@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		36BD5932AC6D835CE8B3330D /* libPods-QMChatViewControllerExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10D615FA10254D7AEA18709A /* libPods-QMChatViewControllerExample.a */; };
 		5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECC1AE67418005AA288 /* libxml2.dylib */; };
 		5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EECE1AE67424005AA288 /* libc++.dylib */; };
 		5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5519EED01AE6742F005AA288 /* MobileCoreServices.framework */; };
@@ -23,11 +22,12 @@
 		BF5331301B6F9036000B5409 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5331261B6F9036000B5409 /* main.m */; };
 		BF5331311B6F9036000B5409 /* quickblox-image.png in Resources */ = {isa = PBXBuildFile; fileRef = BF5331271B6F9036000B5409 /* quickblox-image.png */; };
 		BF5331321B6F9036000B5409 /* UIImage+fixOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5331291B6F9036000B5409 /* UIImage+fixOrientation.m */; };
+		DA22403663D2D55157B6CF83 /* Pods_QMChatViewControllerExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1721F9C0D7E7B539D837D5E8 /* Pods_QMChatViewControllerExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		10D615FA10254D7AEA18709A /* libPods-QMChatViewControllerExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMChatViewControllerExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134208D0546FB610AF3719D7 /* Pods-QMChatViewControllerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMChatViewControllerExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-QMChatViewControllerExample/Pods-QMChatViewControllerExample.release.xcconfig"; sourceTree = "<group>"; };
+		1721F9C0D7E7B539D837D5E8 /* Pods_QMChatViewControllerExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QMChatViewControllerExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5501A77D1AD2DA8F00D0AE0D /* QMChatViewControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMChatViewControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5519EECC1AE67418005AA288 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5519EECE1AE67424005AA288 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -64,7 +64,7 @@
 				5519EED11AE6742F005AA288 /* MobileCoreServices.framework in Frameworks */,
 				5519EECF1AE67424005AA288 /* libc++.dylib in Frameworks */,
 				5519EECD1AE67418005AA288 /* libxml2.dylib in Frameworks */,
-				36BD5932AC6D835CE8B3330D /* libPods-QMChatViewControllerExample.a in Frameworks */,
+				DA22403663D2D55157B6CF83 /* Pods_QMChatViewControllerExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +100,7 @@
 				5519EED21AE6743B005AA288 /* CFNetwork.framework */,
 				5519EED01AE6742F005AA288 /* MobileCoreServices.framework */,
 				BBAEFEA0B1BD3D49332EE268 /* libPods.a */,
-				10D615FA10254D7AEA18709A /* libPods-QMChatViewControllerExample.a */,
+				1721F9C0D7E7B539D837D5E8 /* Pods_QMChatViewControllerExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,7 +162,7 @@
 		5501A7751AD2DA8F00D0AE0D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "QuickBlox Team";
 				TargetAttributes = {
 					5501A77C1AD2DA8F00D0AE0D = {
@@ -249,11 +249,19 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-QMChatViewControllerExample/Pods-QMChatViewControllerExample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FFCircularProgressView/FFCircularProgressView.framework",
+				"${BUILT_PRODUCTS_DIR}/QMCVDevelopment/QMCVDevelopment.framework",
 				"${PODS_ROOT}/QuickBlox/Quickblox.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/TTTAttributedLabel/TTTAttributedLabel.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FFCircularProgressView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QMCVDevelopment.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quickblox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTTAttributedLabel.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -304,14 +312,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -349,14 +363,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

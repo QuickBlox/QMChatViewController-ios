@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "QMCVDevelopment"
-  s.version      = "0.5"
+  s.version      = "0.5.1"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
@@ -73,9 +73,9 @@ Pod::Spec.new do |s|
   s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
   s.resources = "QMChatViewController/Icons/Media.xcassets"
   s.requires_arc = true
-  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
-  s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 4.0.0"
+  s.dependency "TTTAttributedLabel"
+  s.dependency "SDWebImage"
   s.dependency "FFCircularProgressView"
+  s.dependency "QuickBlox", ">= 2.10"
 
 end
