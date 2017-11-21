@@ -76,6 +76,6 @@ Pod::Spec.new do |s|
   s.dependency "TTTAttributedLabel"
   s.dependency "SDWebImage"
   s.dependency "FFCircularProgressView"
-  s.dependency "QuickBlox", ">= 2.10"
+  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
 
 end
