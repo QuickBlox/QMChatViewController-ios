@@ -7,6 +7,7 @@
 //
 
 #import "QMImageLoader.h"
+#import <Quickblox/Quickblox.h>
 
 @interface QMWebImageCombinedOperation : NSObject <SDWebImageOperation>
 
@@ -179,9 +180,24 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     static QMImageLoader *_loader = nil;
     dispatch_once(&onceToken, ^{
         
-        SDImageCache *qmCache = [[SDImageCache alloc] initWithNamespace:@"default"];
+        SDImageCache *qmCache = nil;
+        NSString *groupIdentifier = QBSettings.applicationGroupIdentifier;
+        if (groupIdentifier.length > 0) {
+            
+            NSString *diskCacheDirectory = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier].path stringByAppendingPathComponent:@"default"];
+            
+            qmCache = diskCacheDirectory.length ?
+            [[SDImageCache alloc] initWithNamespace:@"default"
+                                 diskCacheDirectory:diskCacheDirectory] :
+            [[SDImageCache alloc] initWithNamespace:@"default"];
+        }
+        else {
+            qmCache = [[SDImageCache alloc] initWithNamespace:@"default"];
+        }
         
         SDWebImageDownloader *qmDownloader = [SDWebImageDownloader sharedDownloader];
+        
+        [[SDWebImageDownloader sharedDownloader] setShouldDecompressImages:NO];
         
         _loader = [[QMImageLoader alloc] initWithCache:qmCache downloader:qmDownloader];
     });
@@ -601,7 +617,6 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     return nil;
 }
 
-
 - (void)cancelOperationWithURL:(NSURL *)url {
     
     [[self operationWithURL:url] cancel];
@@ -634,6 +649,18 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
     }
     
     return exists;
+}
+
+- (NSString *)pathForOriginalImageWithURL:(NSURL *)url {
+    
+    NSString *key = [self cacheKeyForURL:url];
+    NSString *path = [self.imageCache defaultCachePathForKey:key];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        return path;
+    }
+    
+    return nil;
 }
 
 @end
