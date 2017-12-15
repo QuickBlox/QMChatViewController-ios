@@ -195,9 +195,9 @@ NSString *stringWithImageTransformType(QMImageTransformType transformType) {
             qmCache = [[SDImageCache alloc] initWithNamespace:@"default"];
         }
         
-        SDWebImageDownloader *qmDownloader = [SDWebImageDownloader sharedDownloader];
+        qmCache.maxMemoryCost = 25 * 1024 * 1024;
         
-        [[SDWebImageDownloader sharedDownloader] setShouldDecompressImages:NO];
+        SDWebImageDownloader *qmDownloader = [SDWebImageDownloader sharedDownloader];
         
         _loader = [[QMImageLoader alloc] initWithCache:qmCache downloader:qmDownloader];
     });
