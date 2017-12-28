@@ -25,11 +25,11 @@ Pod::Spec.new do |s|
 					* Auto Layout inside.
                    DESC
 
-  s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
+  s.homepage     = "https://github.com/ZalakSA/QMChatViewController-ios.git"
   s.license      = { :type => "BSD", :file => "LICENSE" }
   s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com", "Vitaliy Gurkovsky" => "vitaliy.gurkovsky@injoit.com"}
   s.platform     = :ios, "8.0"
-  s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/ZalakSA/QMChatViewController-ios.git", :tag => "#{s.version}" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
   s.subspec 'Categories' do |ss|
