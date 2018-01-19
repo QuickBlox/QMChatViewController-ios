@@ -410,7 +410,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
                                                           handler();
                                                       }]];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SA_STR_CANCEL", nil)
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
     
@@ -979,7 +979,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"SA_STR_CANCEL", nil)
+                                          cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                           otherButtonTitles:NSLocalizedString(@"Open Settings", nil),nil];
     
     [alert show];
