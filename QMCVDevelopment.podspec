@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
   s.license      = { :type => "BSD", :file => "LICENSE" }
   s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com", "Vitaliy Gurkovsky" => "vitaliy.gurkovsky@injoit.com"}
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
   s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
   s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
@@ -73,9 +73,9 @@ Pod::Spec.new do |s|
   s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
   s.resources = "QMChatViewController/Icons/Media.xcassets"
   s.requires_arc = true
-  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
-  s.dependency "TTTAttributedLabel", "> 1.13"
-  s.dependency "SDWebImage", "~> 4.0.0"
+  s.dependency "TTTAttributedLabel"
+  s.dependency "SDWebImage"
   s.dependency "FFCircularProgressView"
+  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External" }
 
 end
