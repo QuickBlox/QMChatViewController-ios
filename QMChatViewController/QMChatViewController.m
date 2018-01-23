@@ -30,6 +30,7 @@ const NSUInteger kQMSystemInputToolbarDebugHeight = 0;
 UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate,
 UIAlertViewDelegate, QMChatDataSourceDelegate>
 
+
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
 
@@ -80,6 +81,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     [super viewDidLoad];
     
     [self configureMessagesViewController];
+    [self configureProgressView];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     //Customize your toolbar buttons
@@ -137,6 +139,24 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     
     [super didReceiveMemoryWarning];
     NSLog(@"MEMORY WARNING: %s", __PRETTY_FUNCTION__);
+}
+
+- (void)configureProgressView {
+    
+    self.progressView.hidden = YES;
+    self.progressView.hideProgressIcons = YES;
+}
+
+- (void)startSpinProgress {
+    
+    self.progressView.hidden = NO;
+    [self.progressView startSpinProgressBackgroundLayer];
+}
+
+- (void)stopSpinProgress {
+    
+    self.progressView.hidden = YES;
+    [self.progressView stopSpinProgressBackgroundLayer];
 }
 
 - (void)configureMessagesViewController {
