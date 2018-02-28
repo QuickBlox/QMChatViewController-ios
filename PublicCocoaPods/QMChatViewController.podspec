@@ -58,7 +58,7 @@ Pod::Spec.new do |s|
   s.subspec 'Views' do |ss|
     ss.dependency 'QMChatViewController/Categories'
     ss.dependency 'QMChatViewController/Protocols'
-	  ss.dependency 'QMChatViewController/Utils'
+    ss.dependency 'QMChatViewController/Utils'
     ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 

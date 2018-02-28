@@ -8,20 +8,20 @@
 
 Pod::Spec.new do |s|
 
-  s.name         = "QMCVDevelopment"
+  s.name         = "QMChatViewController"
   s.version      = "0.6"
   s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
   s.description  = <<-DESC
-  * Ready-to-go chat view controller with a set of cells.
-  * Automatic cell size calculation.
-  * UI customisation for chat cells.
-  * Flexibility in improving and extending functionality.
-  * Easy to connect with Quickblox.
-  * Optimised and performant.
-  * Supports portrait and landscape orientations.
-  * Auto Layout inside.
-  DESC
+                    * Ready-to-go chat view controller with a set of cells.
+                    * Automatic cell size calculation.
+                    * UI customisation for chat cells.
+                    * Flexibility in improving and extending functionality.
+                    * Easy to connect with Quickblox.
+                    * Optimised and performant.
+                    * Supports portrait and landscape orientations.
+                    * Auto Layout inside.
+                    DESC
 
   s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
   s.license      = { :type => "BSD", :file => "LICENSE" }
@@ -35,23 +35,23 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Categories' do |ss|
-	   ss.dependency 'QMCVDevelopment/QMChatLocationSnapshotter'
+	   ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
      ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
   end
 
   s.subspec 'Utils' do |ss|
-	   ss.dependency 'QMCVDevelopment/Categories'
+	   ss.dependency 'QMChatViewController/Categories'
      ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
   end
 
   s.subspec 'ViewModels' do |ss|
 
-    ss.dependency 'QMCVDevelopment/Categories'
+    ss.dependency 'QMChatViewController/Categories'
     ss.source_files = 'QMChatViewController/ViewModels/**/*.{h,m}'
   end
 
   s.subspec 'Sections' do |ss|
-	   ss.dependency 'QMCVDevelopment/QMChatDataSource'
+	   ss.dependency 'QMChatViewController/QMChatDataSource'
      ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
   end
 
@@ -64,9 +64,9 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Views' do |ss|
-  	 ss.dependency 'QMCVDevelopment/Categories'
-  	 ss.dependency 'QMCVDevelopment/Protocols'
-     ss.dependency 'QMCVDevelopment/Utils'
+  	 ss.dependency 'QMChatViewController/Categories'
+  	 ss.dependency 'QMChatViewController/Protocols'
+     ss.dependency 'QMChatViewController/Utils'
      ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
   end
 
