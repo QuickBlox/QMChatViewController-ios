@@ -413,7 +413,7 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     
     if (!_audioRecordButtonItem) {
         
-        UIImage *recordImage = [UIImage imageNamed:@"ic_audio"];
+        UIImage *recordImage = [QMChatResources imageNamed:@"ic_audio"];
         UIImage *normalImage = [recordImage imageMaskedWithColor:[UIColor lightGrayColor]];
         
         CGRect frame = CGRectMake(12, 0, recordImage.size.width, 32.0);
