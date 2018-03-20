@@ -10,11 +10,11 @@
 
 Pod::Spec.new do |s|
 
-  s.name         = "QMChatViewController"
-  s.version      = "0.6.1"
-  s.summary      = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
+    s.name = "QMChatViewController"
+    s.version = "0.6.1"
+    s.summary = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
-  s.description  = <<-DESC
+    s.description = <<-DESC
 					* Ready-to-go chat view controller with a set of cells.
 					* Automatic cell size calculation.
 					* UI customisation for chat cells.
@@ -25,51 +25,72 @@ Pod::Spec.new do |s|
 					* Auto Layout inside.
                    DESC
 
-  s.homepage     = "https://github.com/QuickBlox/QMChatViewController-ios"
-  s.license      = { :type => "BSD", :file => "LICENSE" }
-  s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com", "Vitaliy Gurkovsky" => "vitaliy.gurkovsky@injoit.com"}
-  s.platform     = :ios, "9.0"
-  s.source       = { :git => "https://github.com/QuickBlox/QMChatViewController-ios.git", :tag => "#{s.version}" }
-  s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
+    s.homepage = "https://github.com/QuickBlox/QMChatViewController-ios"
+    s.license = { :type => "BSD", :file => "LICENSE" }
+    s.authors = {
+        "Andrey Ivanov" => "andrey.ivanov@quickblox.com",
+        "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com",
+        "Vitaliy Gurkovsky" => "vitaliy.gurkovsky@injoit.com"
+    }
+    s.platform = :ios, "9.0"
+    s.source = {
+        :git => "https://github.com/QuickBlox/QMChatViewController-ios.git",
+        :tag => "#{s.version}"
+    }
+    s.source_files = "QMChatViewController/QMChatViewController.{h,m}"
 
-  s.subspec 'Categories' do |ss|
-     ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
-  end
+    s.subspec 'QMChatLocationSnapshotter' do |ss|
+        ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
+    end
 
-  s.subspec 'Utils' do |ss|
-    ss.dependency 'QMChatViewController/Categories'
-    ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
-  end
+    s.subspec 'Categories' do |ss|
+        ss.dependency 'QMChatViewController/QMChatLocationSnapshotter'
+        ss.source_files = 'QMChatViewController/Categories/*.{h,m}'
+    end
 
-  s.subspec 'QMChatLocationSnapshotter' do |ss|
-    ss.dependency 'QMChatViewController/Utils'
-    ss.source_files = 'QMChatViewController/QMChatLocationSnapshotter/*.{h,m}'
-  end
+    s.subspec 'Utils' do |ss|
+        ss.dependency 'QMChatViewController/Categories'
+        ss.source_files = 'QMChatViewController/Utils/**/*.{h,m}'
+    end
 
-  s.subspec 'QMChatDataSource' do |ss|
-    ss.dependency 'QMChatViewController/Utils'
-    ss.source_files = 'QMChatViewController/QMChatDataSource/**/*.{h,m}'
-  end
+    s.subspec 'ViewModels' do |ss|
+        ss.dependency 'QMChatViewController/Categories'
+        ss.source_files = 'QMChatViewController/ViewModels/**/*.{h,m}'
+    end
 
-  s.subspec 'Protocols' do |ss|
-    ss.source_files = 'QMChatViewController/Protocols/*.{h}'
-  end
+    s.subspec 'Sections' do |ss|
+        ss.dependency 'QMChatViewController/QMChatDataSource'
+        ss.source_files = 'QMChatViewController/QMChatSection/*.{h,m}'
+    end
 
-  s.subspec 'Views' do |ss|
-    ss.dependency 'QMChatViewController/Categories'
-    ss.dependency 'QMChatViewController/Protocols'
-    ss.dependency 'QMChatViewController/Utils'
-    ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
-  end
+    s.subspec 'QMChatDataSource' do |ss|
+        ss.source_files = 'QMChatViewController/QMChatDataSource/*.{h,m}'
+    end
 
-  s.resource_bundles = { "QMChatViewController" => ["QMChatViewController/**/*.xib", "QMChatViewController/**/*.png"] }
-  s.resources = "QMChatViewController/Icons/Media.xcassets"
-  s.requires_arc = true
-  s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
-  s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
-  s.dependency "QuickBlox"
-  s.dependency "TTTAttributedLabel"
-  s.dependency "SDWebImage"
-  s.dependency "FFCircularProgressView"
+    s.subspec 'Protocols' do |ss|
+        ss.source_files = 'QMChatViewController/Protocols/*.{h}'
+    end
+
+    s.subspec 'Views' do |ss|
+        ss.dependency 'QMChatViewController/Categories'
+        ss.dependency 'QMChatViewController/Protocols'
+        ss.dependency 'QMChatViewController/Utils'
+        ss.source_files = 'QMChatViewController/Views/**/*.{h,m}'
+    end
+
+    s.resource_bundles = {
+        'QMChatViewController' => [
+        'QMChatViewController/**/*.xcassets',
+        'QMChatViewController/**/*.xib'
+        ]
+    }
+    s.resource = 'QMChatViewController/**/*.xcassets'
+    s.requires_arc = true
+    s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
+    s.prefix_header_contents = '#import <Quickblox/Quickblox.h>'
+    s.dependency "QuickBlox"
+    s.dependency "TTTAttributedLabel"
+    s.dependency "SDWebImage"
+    s.dependency "FFCircularProgressView"
 
 end
