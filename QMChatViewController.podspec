@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
     s.name = "QMChatViewController"
-    s.version = "0.6"
+    s.version = "0.6.1"
     s.summary = "An elegant ready-to-go chat view controller for iOS chat applications that use Quickblox communication backend."
 
     s.description = <<-DESC
