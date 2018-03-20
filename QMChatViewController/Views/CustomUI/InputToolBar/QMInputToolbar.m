@@ -183,7 +183,6 @@ static void * kQMInputToolbarKeyValueObservingContext = &kQMInputToolbarKeyValue
     if (self.sendButtonOnRight) {
         
         self.contentView.rightBarButtonItem.enabled = hasText || hasTextAttachment;
-        
     }
     else {
         
