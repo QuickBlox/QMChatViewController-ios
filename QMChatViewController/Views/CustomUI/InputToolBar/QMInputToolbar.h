@@ -14,6 +14,8 @@
 @class QMAudioRecordButton;
 
 @protocol QMAudioRecordToolbarDelegate <NSObject>
+
+@optional
 /**
  Asks the delegate if it can start the audio recording by touching the audio record button.
  
