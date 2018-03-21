@@ -25,11 +25,9 @@ static void * kChatKeyValueObservingContext = &kChatKeyValueObservingContext;
 
 const NSUInteger kQMSystemInputToolbarDebugHeight = 0;
 
-@interface QMChatViewController ()
-<QMInputToolbarDelegate, UIImagePickerControllerDelegate,
-UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate,
-UIAlertViewDelegate, QMChatDataSourceDelegate>
-
+@interface QMChatViewController () <QMInputToolbarDelegate, UIImagePickerControllerDelegate,
+UINavigationControllerDelegate, UIActionSheetDelegate, UIScrollViewDelegate, UIAlertViewDelegate,
+QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
 
 @property (weak, nonatomic) IBOutlet QMChatCollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet QMInputToolbar *inputToolbar;
@@ -170,6 +168,7 @@ UIAlertViewDelegate, QMChatDataSourceDelegate>
     self.chatDataSource.delegate = self;
     
     self.inputToolbar.delegate = self;
+    self.inputToolbar.audioRecordDelegate = self;
     self.inputToolbar.contentView.textView.delegate = self;
     
     self.automaticallyScrollsToMostRecentMessage = YES;
