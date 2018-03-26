@@ -85,7 +85,6 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
     //Customize your toolbar buttons
     self.inputToolbar.contentView.leftBarButtonItem = [self accessoryButtonItem];
     self.inputToolbar.contentView.rightBarButtonItem = [self sendButtonItem];
-    self.inputToolbar.audioRecordingEnabled = YES;
     
     __weak __typeof(self) weakSelf = self;
     self.systemInputToolbar = [[QMKVOView alloc] init];
