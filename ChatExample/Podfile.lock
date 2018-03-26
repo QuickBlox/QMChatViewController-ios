@@ -1,0 +1,68 @@
+PODS:
+  - FFCircularProgressView (0.5)
+  - QMChatViewController (0.6.2):
+    - FFCircularProgressView
+    - QMChatViewController/Categories (= 0.6.2)
+    - QMChatViewController/Protocols (= 0.6.2)
+    - QMChatViewController/QMChatDataSource (= 0.6.2)
+    - QMChatViewController/QMChatLocationSnapshotter (= 0.6.2)
+    - QMChatViewController/Utils (= 0.6.2)
+    - QMChatViewController/Views (= 0.6.2)
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QMChatViewController/Categories (0.6.2):
+    - FFCircularProgressView
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QMChatViewController/Protocols (0.6.2):
+    - FFCircularProgressView
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QMChatViewController/QMChatDataSource (0.6.2):
+    - FFCircularProgressView
+    - QMChatViewController/Utils
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QMChatViewController/QMChatLocationSnapshotter (0.6.2):
+    - FFCircularProgressView
+    - QMChatViewController/Utils
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QMChatViewController/Utils (0.6.2):
+    - FFCircularProgressView
+    - QMChatViewController/Categories
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QMChatViewController/Views (0.6.2):
+    - FFCircularProgressView
+    - QMChatViewController/Categories
+    - QMChatViewController/Protocols
+    - QMChatViewController/Utils
+    - QuickBlox
+    - SDWebImage
+    - TTTAttributedLabel
+  - QuickBlox (2.16)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
+  - TTTAttributedLabel (2.0.0)
+
+DEPENDENCIES:
+  - QMChatViewController
+
+SPEC CHECKSUMS:
+  FFCircularProgressView: 683a4ab1e1bd613246a3dffa61503ffdebcde8d8
+  QMChatViewController: 093d3ad9aa08ecf07e115647207ddab4356eb996
+  QuickBlox: fc3ab36e290d703573fdfa8e3066eade722460f0
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
+
+PODFILE CHECKSUM: 6c5d5d6961bca255ad2eb4972a6d8538668a888d
+
+COCOAPODS: 1.4.0

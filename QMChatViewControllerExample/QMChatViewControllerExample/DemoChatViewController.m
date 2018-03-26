@@ -34,9 +34,6 @@ NS_ENUM(NSUInteger, QMMessageType) {
     return 300.0f;
 }
 
-- (CGFloat)heightForSectionHeader {
-    return 40.0f;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
