@@ -48,6 +48,8 @@ class ChatViewController: QMChatViewController {
         self.finishSendingMessage(animated: true)
     }
     
+//    override inputtoolbar
+    
     override func viewClass(forItem item: QBChatMessage) -> AnyClass {
         
         if item.isDateDividerMessage {
@@ -57,6 +59,8 @@ class ChatViewController: QMChatViewController {
             return CustomCell.self
         }
     }
+    
+    
     
     override func collectionView(_ collectionView: QMChatCollectionView!, dynamicSizeAt indexPath: IndexPath!, maxWidth: CGFloat) -> CGSize {
         
