@@ -58,7 +58,9 @@ class ChatViewController: QMChatViewController {
         }
     }
     
-    override func collectionView(_ collectionView: QMChatCollectionView!, dynamicSizeAt indexPath: IndexPath!, maxWidth: CGFloat) -> CGSize {
+    override func collectionView(_ collectionView: QMChatCollectionView!,
+                                 dynamicSizeAt indexPath: IndexPath!,
+                                 maxWidth: CGFloat) -> CGSize {
         
         let size = TTTAttributedLabel.sizeThatFitsAttributedString(self.attributedString(forItem: self.chatDataSource.message(for: indexPath)),
                                                                    withConstraints: CGSize(width:maxWidth, height:1000),
@@ -66,7 +68,8 @@ class ChatViewController: QMChatViewController {
         return size
     }
     
-    override func collectionView(_ collectionView: QMChatCollectionView!, minWidthAt indexPath: IndexPath!) -> CGFloat {
+    override func collectionView(_ collectionView: QMChatCollectionView!,
+                                 minWidthAt indexPath: IndexPath!) -> CGFloat {
         
         let msg = self.chatDataSource.message(for: indexPath)
         let viewClass: AnyClass = self.viewClass(forItem: msg!)
