@@ -61,6 +61,26 @@
                                             <segue destination="LGg-GY-vP7" kind="show" id="HsO-Nd-FiP"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="bWj-P4-OW7" style="IBUITableViewCellStyleDefault" id="P7G-27-qdQ">
+                                        <rect key="frame" x="0.0" y="123" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="P7G-27-qdQ" id="J6o-I9-PWF">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Embed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bWj-P4-OW7">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="sTD-cH-6YX" kind="show" id="gzl-NH-7x6"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -85,43 +105,57 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="ZTm-6m-m1n" kind="relationship" relationship="viewControllers" id="pna-hZ-JB6"/>
+                        <segue destination="Sj9-Ac-pHW" kind="relationship" relationship="viewControllers" id="aEJ-hB-6tA"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jpQ-gy-C7Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="742" y="989"/>
+            <point key="canvasLocation" x="742" y="1008"/>
         </scene>
-        <!--Chat View Controller-->
+        <!--View Controller-->
+        <scene sceneID="t4J-uw-Z1U">
+            <objects>
+                <viewController id="sTD-cH-6YX" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oEa-8W-VCm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EMN-nq-vm2">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
+                                <connections>
+                                    <segue destination="Sj9-Ac-pHW" kind="embed" id="nGO-qT-EUX"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="EMN-nq-vm2" firstAttribute="trailing" secondItem="H4m-4h-YG0" secondAttribute="trailing" id="Brr-4K-1ja"/>
+                            <constraint firstItem="H4m-4h-YG0" firstAttribute="bottom" secondItem="EMN-nq-vm2" secondAttribute="bottom" constant="140" id="H9I-yA-KUQ"/>
+                            <constraint firstItem="EMN-nq-vm2" firstAttribute="top" secondItem="oEa-8W-VCm" secondAttribute="top" id="Sej-xe-F2R"/>
+                            <constraint firstItem="EMN-nq-vm2" firstAttribute="leading" secondItem="H4m-4h-YG0" secondAttribute="leading" id="pMD-x2-auT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="H4m-4h-YG0"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HKk-sI-3kB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1809" y="-355"/>
+        </scene>
+        <!--Item-->
         <scene sceneID="gjs-cb-kls">
             <objects>
                 <viewController id="Sj9-Ac-pHW" customClass="ChatViewController" customModule="ChatExample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="phq-JM-P46">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="HM3-CI-svk"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="h30-k5-goz"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hBk-YS-k5X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1524" y="184"/>
-        </scene>
-        <!--Chat-->
-        <scene sceneID="wPl-gj-UfW">
-            <objects>
-                <viewController id="ZTm-6m-m1n" customClass="ChatViewController" customModule="ChatExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="E1Z-Jm-55K">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="fdb-AU-LLx"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Chat" id="Y2l-5X-caR"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="t5s-s6-Scp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1524" y="988"/>
+            <point key="canvasLocation" x="1729" y="432"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="loI-pp-4ro">
@@ -140,4 +174,7 @@
             <point key="canvasLocation" x="-209" y="184"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="nGO-qT-EUX"/>
+    </inferredMetricsTieBreakers>
 </document>
