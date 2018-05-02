@@ -93,21 +93,20 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
     self.systemInputToolbar.frame = CGRectMake(0, 0, 0, kQMSystemInputToolbarDebugHeight);
     self.systemInputToolbar.hostViewFrameChangeBlock = ^(UIView *view, BOOL animated) {
         
-       CGFloat pos = weakSelf.view.frame.size.height - [view.superview convertPoint:view.frame.origin toView:weakSelf.view].y;
-
+        CGFloat pos = weakSelf.view.frame.size.height - [weakSelf.view.superview convertPoint:view.frame.origin toView:weakSelf.view].y;
+        
         if (weakSelf.inputToolbar.contentView.textView.isFirstResponder) {
-            
-            if (view.superview.frame.origin.y > 0 && pos == 0) {
+            if (view.superview.frame.origin.y > 0 && pos <= 0) {
                 return;
             }
         }
-
+        
         const CGFloat v = [weakSelf inputToolBarStartPos];
-
+        
         if (pos < v || !view) {
             pos = v;
         }
-
+        
         [weakSelf setToolbarBottomConstraintValue:pos animated:animated];
     };
     
@@ -254,18 +253,18 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
         }
         
         switch (updateType) {
-            
+                
             case QMDataSourceActionTypeAdd:
-            [self.collectionView insertItemsAtIndexPaths:indexPaths];
-            break;
-            
+                [self.collectionView insertItemsAtIndexPaths:indexPaths];
+                break;
+                
             case QMDataSourceActionTypeUpdate:
-            [self.collectionView reloadItemsAtIndexPaths:indexPaths];
-            break;
-            
+                [self.collectionView reloadItemsAtIndexPaths:indexPaths];
+                break;
+                
             case QMDataSourceActionTypeRemove:
-            [self.collectionView deleteItemsAtIndexPaths:indexPaths];
-            break;
+                [self.collectionView deleteItemsAtIndexPaths:indexPaths];
+                break;
         }
     };
     
@@ -282,7 +281,7 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
 #pragma mark - View lifecycle
 
 - (NSUInteger)inputToolBarStartPos {
-
+    
     return 0;
 }
 
@@ -794,12 +793,6 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
     self.toolbarBottomLayoutGuide.constant = constraintValue;
     
     if (animated) {
-        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            self.navigationController.interactivePopGestureRecognizer.enabled = YES;
-        });
-        
         [self.view layoutIfNeeded];
     }
 }
@@ -950,10 +943,10 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
         switch (status)
         {
             case PHAuthorizationStatusAuthorized:
-            if (completion) {
-                completion(YES);
-            }
-            break;
+                if (completion) {
+                    completion(YES);
+                }
+                break;
             case PHAuthorizationStatusNotDetermined:
             {
                 [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus authorizationStatus)
@@ -967,10 +960,10 @@ QMChatDataSourceDelegate, QMAudioRecordToolbarDelegate>
                 break;
             }
             default:
-            if (completion) {
-                completion(NO);
-            }
-            break;
+                if (completion) {
+                    completion(NO);
+                }
+                break;
         }
     }
 }
