@@ -1,4 +1,4 @@
-# QMChatViewController
+# QMChatViewController is deprecated and won't be supported.
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/QMChatViewController.svg)](https://cocoapods.org/pods/QMChatViewController)
 [![CocoaPods](https://img.shields.io/cocoapods/dt/QMChatViewController.svg)](https://cocoapods.org/pods/QMChatViewController)
